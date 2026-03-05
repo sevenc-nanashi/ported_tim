@@ -233,3 +233,27 @@ task :format do
   files = Dir.glob("./lua/**/*.lua")
   sh "stylua #{files.join(" ")}"
 end
+
+task :tasklist do
+  require "yaml"
+  project = YAML.load_file("aulua.yaml")
+  puts "| カテゴリ | スクリプト | 動作確認 | DLL | パラメーター最適化 | シェーダー化 |"
+  puts "|---|---|---|---|---|---|"
+  project["scripts"].each do |script|
+    script["sources"].each do |source|
+      content = File.read(source["path"])
+      if content.include?("--label:")
+        label = content[/--label:(.*)/, 1]
+        if content.include?("require")
+          dll = ":x:"
+        else
+          dll = "-"
+        end
+        filename = File.basename(source["path"]).delete_suffix(".lua")
+        label.gsub!(/#{prefix}\\?/, "")
+        label = "-" if label.empty?
+        puts "| #{label} | #{filename} | ？ | #{dll} | :x: | - |"
+      end
+    end
+  end
+end

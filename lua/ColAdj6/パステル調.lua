@@ -17,25 +17,42 @@ local brightness = 70
 ---step=0.1
 local threshold = 10
 
+--group:エッジ
+
 ---$track:色付ｴｯｼﾞ
 ---min=0
 ---max=100
 ---step=0.1
 local colored_edge = 50
 
----$value:しきい値ぼかし
+---$trac:しきい値ぼかし
+---min=0
+---max=100
+---step=0.1
 local shw = 8
 
----$value:縁補正
+---$track:縁補正
+---min=0
+---max=500
+---step=1
 local edc = 1
 
----$value:エッジ強さ
+---$track:エッジ強さ
+---min=0
+---max=1000
+---step=0.1
 local pow = 100
 
----$value:エッジしきい値
+---$track:エッジしきい値
+---min=-100
+---max=100
+---step=0.01
 local sh = 0
 
----$value:エッジぼかし
+---$track:エッジぼかし
+---min=0
+---max=100
+---step=1
 local blur = 1
 
 -- require("T_Color_Module")

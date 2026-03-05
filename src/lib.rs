@@ -57,10 +57,6 @@ impl PortedTimMod2 {
         threshold_pct: f64,
         shw: f64,
     ) -> anyhow::Result<()> {
-        aviutl2::lprintln!(
-            "pastel called with width={}, height={}, saturation_pct={}, brightness_pct={}, threshold_pct={}, shw={}",
-            width, height, saturation_pct, brightness_pct, threshold_pct, shw
-        );
         let buffer_size = width
             .checked_mul(height)
             .and_then(|v| v.checked_mul(4))

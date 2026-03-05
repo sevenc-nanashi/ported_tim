@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\メタル化
+--label:tim2\T_Color_Module.anm
 --filter
 ---$track:反転濃度1
 ---min=0
