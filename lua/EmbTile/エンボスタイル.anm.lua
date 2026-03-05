@@ -1,0 +1,153 @@
+--label:tim2
+--track0:サイズ,50,1000,100
+--track1:幅,0,100,10
+--track2:高さ,0,3,1.5
+--track3:角度,-360,360,-45
+--value@alp:エンボス透明度[0-100],0
+
+obj.setoption("antialias", 0)
+
+bsi = obj.track0
+if bsi < 50 then
+    bsi = 50
+end
+wh = obj.track1
+si = bsi - 2 * wh
+if si < 0 then
+    wh = bsi / 2
+end
+dsi = si / 2
+alp = (100 - alp) / 100
+
+n = math.floor(obj.w / bsi)
+nx = math.floor((n + 1) / 2)
+
+n = math.floor(obj.h / bsi)
+ny = math.floor((n + 1) / 2)
+
+for i = -nx, nx do
+    for j = -ny, ny do
+        bim = bsi * i - 0.5 * si
+        bip = bsi * i + 0.5 * si
+        bjm = bsi * j - 0.5 * si
+        bjp = bsi * j + 0.5 * si
+
+        bims = bim + obj.w / 2
+        bips = bip + obj.w / 2
+        bjms = bjm + obj.h / 2
+        bjps = bjp + obj.h / 2
+
+        -- 中心
+        x0 = bim
+        x1 = bip
+        y0 = bjm
+        y1 = bjp
+        u0 = bims
+        u1 = bips
+        v0 = bjms
+        v1 = bjps
+        obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+
+        -- 上
+        x0 = bim
+        x1 = bip
+        y0 = bjm - wh
+        y1 = bjm
+        u0 = bims
+        u1 = bips
+        v0 = bjms - si / 2
+        v1 = bjms
+        obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+
+        -- 下
+        x0 = bim
+        x1 = bip
+        y0 = bjp
+        y1 = bjp + wh
+        u0 = bims
+        u1 = bips
+        v0 = bjps
+        v1 = bjps + si / 2
+        obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+
+        -- 左
+        x0 = bim - wh
+        x1 = bim
+        y0 = bjm
+        y1 = bjp
+        u0 = bims - si / 2
+        u1 = bims
+        v0 = bjms
+        v1 = bjps
+        obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+
+        -- 右
+        x0 = bip
+        x1 = bip + wh
+        y0 = bjm
+        y1 = bjp
+        u0 = bips
+        u1 = bips + si / 2
+        v0 = bjms
+        v1 = bjps
+        obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+
+        -- 左上
+        x0 = bim - wh
+        x1 = bim
+        y0 = bjm - wh
+        y1 = bjm
+        u0 = bims - si / 2
+        u1 = bims
+        v0 = bjms - si / 2
+        v1 = bjms
+        obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+
+        -- 右上
+        x0 = bip
+        x1 = bip + wh
+        y0 = bjm - wh
+        y1 = bjm
+        u0 = bips
+        u1 = bips + si / 2
+        v0 = bjms - si / 2
+        v1 = bjms
+        obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+
+        -- 左下
+        x0 = bim - wh
+        x1 = bim
+        y0 = bjp
+        y1 = bjp + wh
+        u0 = bims - si / 2
+        u1 = bims
+        v0 = bjps
+        v1 = bjps + si / 2
+        obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+
+        -- 右下
+        x0 = bip
+        x1 = bip + wh
+        y0 = bjp
+        y1 = bjp + wh
+        u0 = bips
+        u1 = bips + si / 2
+        v0 = bjps
+        v1 = bjps + si / 2
+        obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+    end
+end
+
+obj.load("figure", "四角形", 0xffffff, bsi)
+obj.setoption("blend", 3)
+obj.effect("凸エッジ", "幅", wh, "高さ", obj.track2, "角度", obj.track3)
+obj.effect("画像ループ", "横回数", 2 * nx + 1, "縦回数", 2 * ny + 1)
+obj.alpha = alp
+obj.draw()
+
+obj.load("figure", "四角形", 0x0, bsi)
+obj.setoption("blend", 1)
+obj.effect("凸エッジ", "幅", wh, "高さ", obj.track2, "角度", obj.track3)
+obj.effect("画像ループ", "横回数", 2 * nx + 1, "縦回数", 2 * ny + 1)
+obj.alpha = alp
+obj.draw()

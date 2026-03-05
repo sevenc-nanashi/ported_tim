@@ -1,0 +1,11 @@
+[package]
+name = "ported_tim"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "ported_tim"
+crate-type = ["cdylib"]
+
+[dependencies]
+aviutl2 = "0.20.3"

@@ -1,0 +1,233 @@
+--label:tim2
+--track0:角数,3,100,6,1
+--track1:高さ,0,20000,200
+--track2:上半径,0,10000,100
+--track3:下半径,0,10000,300
+--value@Futa:蓋/chk,0
+--value@cchk:中心基準/chk,1
+--value@rev:両面化/chk,0
+--value@star:星型化/chk,0
+--value@cst:くびれ率,50
+--value@int:角を整数化[0/1],0
+--value@ant:ｱﾝﾁｴｲﾘｱｽ[0/1],0
+
+local zoom = obj.getvalue("zoom") * 0.01
+local N = obj.track0
+local H = obj.track1 * zoom
+local R1 = obj.track2 * zoom
+local R2 = obj.track3 * zoom
+local obh = obj.h
+local iso = Futa and math.pi * 0.5 or 0
+ant = ant or 1
+int = int or 0
+Futa = Futa or 0
+cchk = cchk or 1
+rev = rev or 0
+star = star or 0
+cst = cst or 50
+local uX = {}
+local uZ = {}
+local dX = {}
+local dZ = {}
+obj.setoption("antialias", ant)
+if int == 1 then
+    N = math.floor(N)
+end
+if star == 0 then
+    for i = 0, N do
+        local rad = 2 * i * math.pi / N + iso
+        local cos = math.cos(rad)
+        local sin = math.sin(rad)
+        uX[i] = R1 * cos
+        uZ[i] = R1 * sin
+        dX[i] = R2 * cos
+        dZ[i] = R2 * sin
+    end
+else
+    cst = 1 - cst * 0.01
+    N = 2 * N
+    for i = 0, N, 2 do
+        local rad = 2 * i * math.pi / N + iso
+        local cos = math.cos(rad)
+        local sin = math.sin(rad)
+        uX[i] = R1 * cos
+        uZ[i] = R1 * sin
+        dX[i] = R2 * cos
+        dZ[i] = R2 * sin
+    end
+    R1 = R1 * cst
+    R2 = R2 * cst
+    for i = 1, N, 2 do
+        local rad = 2 * i * math.pi / N + iso
+        local cos = math.cos(rad)
+        local sin = math.sin(rad)
+        uX[i] = R1 * cos
+        uZ[i] = R1 * sin
+        dX[i] = R2 * cos
+        dZ[i] = R2 * sin
+    end
+end
+
+local U = {}
+for i = 0, N do
+    U[i] = i / N * obj.w
+end
+
+local Y1, Y2
+if cchk == 1 and rev == 0 then
+    Y1 = -H * 0.5
+    Y2 = H * 0.5
+else
+    Y1 = -H
+    Y2 = 0
+end
+
+for i = 0, N - 1 do
+    obj.drawpoly(
+        uX[i],
+        Y1,
+        uZ[i],
+        uX[i + 1],
+        Y1,
+        uZ[i + 1],
+        dX[i + 1],
+        Y2,
+        dZ[i + 1],
+        dX[i],
+        Y2,
+        dZ[i],
+        U[i],
+        0,
+        U[i + 1],
+        0,
+        U[i + 1],
+        obh,
+        U[i],
+        obh
+    )
+end
+
+if rev == 0 then
+    if Futa == 1 then
+        for i = 0, N - 1 do
+            obj.drawpoly(
+                0,
+                Y1,
+                0,
+                0,
+                Y1,
+                0,
+                uX[i + 1],
+                Y1,
+                uZ[i + 1],
+                uX[i],
+                Y1,
+                uZ[i],
+                U[i],
+                0,
+                U[i + 1],
+                0,
+                U[i + 1],
+                0,
+                U[i],
+                0
+            )
+            obj.drawpoly(
+                0,
+                Y2,
+                0,
+                0,
+                Y2,
+                0,
+                dX[i],
+                Y2,
+                dZ[i],
+                dX[i + 1],
+                Y2,
+                dZ[i + 1],
+                U[i + 1],
+                obh,
+                U[i],
+                obh,
+                U[i],
+                obh,
+                U[i + 1],
+                obh
+            )
+        end
+    end
+else
+    for i = 0, N - 1 do
+        obj.drawpoly(
+            uX[i + 1],
+            -Y1,
+            uZ[i + 1],
+            uX[i],
+            -Y1,
+            uZ[i],
+            dX[i],
+            0,
+            dZ[i],
+            dX[i + 1],
+            0,
+            dZ[i + 1],
+            U[i + 1],
+            0,
+            U[i],
+            0,
+            U[i],
+            obh,
+            U[i + 1],
+            obh
+        )
+    end
+
+    if Futa == 1 then
+        for i = 0, N - 1 do
+            obj.drawpoly(
+                0,
+                Y1,
+                0,
+                0,
+                Y1,
+                0,
+                uX[i + 1],
+                Y1,
+                uZ[i + 1],
+                uX[i],
+                Y1,
+                uZ[i],
+                U[i],
+                0,
+                U[i + 1],
+                0,
+                U[i + 1],
+                0,
+                U[i],
+                0
+            )
+            obj.drawpoly(
+                0,
+                -Y1,
+                0,
+                0,
+                -Y1,
+                0,
+                uX[i],
+                -Y1,
+                uZ[i],
+                uX[i + 1],
+                -Y1,
+                uZ[i + 1],
+                U[i + 1],
+                0,
+                U[i],
+                0,
+                U[i],
+                0,
+                U[i + 1],
+                0
+            )
+        end
+    end
+end
