@@ -351,9 +351,9 @@ scripts:
     label: モーフィング(輪郭)-オプション
   - path: "./lua/Split/スプリット(位置拡張).lua"
     label: スプリット(位置拡張)
-  - path: "./lua/Split/スプリット(形状拡張:ｱﾝｶｰ).lua"
+  - path: "./lua/Split/スプリット(形状拡張__アンカー).lua"
     label: スプリット(形状拡張:ｱﾝｶｰ)
-  - path: "./lua/Split/スプリット(形状拡張:ﾌｧｲﾙ).lua"
+  - path: "./lua/Split/スプリット(形状拡張__ファイル).lua"
     label: スプリット(形状拡張:ﾌｧｲﾙ)
   - path: "./lua/Split/スプリット.lua"
     label: スプリット
@@ -363,7 +363,7 @@ scripts:
     label: ストローク用アンカー
   - path: "./lua/Stroke/ストローク(反復).lua"
     label: ストローク(反復)
-  - path: "./lua/Stroke/ストローク(配置:変動).lua"
+  - path: "./lua/Stroke/ストローク(配置__変動).lua"
     label: ストローク(配置:変動)
   - path: "./lua/Stroke/ストローク(配置).lua"
     label: ストローク(配置)

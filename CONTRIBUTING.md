@@ -14,12 +14,15 @@
   - パラメーター定義を改善する
   - シェーダーによる実装に置き換える
 
+> [!WARNING]
+> 最終目標はシェーダーでの実装のため、Rustでの並列化はしません。
+> ただし、シェーダーでの実装が難しい場合はRustでの並列化を行います。
+
 ## デコンパイルのメモ
 
 プロンプト：
 
----
-
+````md
 port this to rust function that takes the same parameter as lua, with single thread.
 Tell me when there are undefined variables or functions.
 use unreachable! for unreachable part, and anyhow::Result for errors.
@@ -33,4 +36,4 @@ C:
 ```c
 ```
 
----
+````
