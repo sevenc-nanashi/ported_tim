@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\減色パレット
+--label:tim2\T_Color_Module.anm
 ---$track:色数
 ---min=1
 ---max=512

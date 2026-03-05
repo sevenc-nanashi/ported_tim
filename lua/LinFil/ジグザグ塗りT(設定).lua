@@ -1,4 +1,4 @@
---label:tim2\ジグザグ塗りT.anm\ジグザグ塗りT(設定)
+--label:tim2\ジグザグ塗りT.anm
 ---$track:角度
 ---min=-3600
 ---max=3600

@@ -1,4 +1,4 @@
---label:tim2\任意多角形.obj\任意多角形分離指定（表示）
+--label:tim2\任意多角形.obj
 ---$track:厚み
 ---min=0
 ---max=1000

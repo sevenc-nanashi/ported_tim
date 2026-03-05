@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\イコライズ
+--label:tim2\T_Color_Module.anm
 ---$track:計算法
 ---min=0
 ---max=2

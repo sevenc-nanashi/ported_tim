@@ -1,4 +1,4 @@
---label:tim2\ライトバースト.anm\ライトバースト
+--label:tim2\ライトバースト.anm
 ---$track:輝度
 ---min=0
 ---max=200

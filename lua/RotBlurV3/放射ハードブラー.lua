@@ -1,4 +1,4 @@
---label:tim2\T_RotBlur_Module.anm\放射ハードブラー
+--label:tim2\T_RotBlur_Module.anm
 ---$track:中心X
 ---min=-5000
 ---max=5000

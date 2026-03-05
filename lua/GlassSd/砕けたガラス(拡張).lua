@@ -1,4 +1,4 @@
---label:tim2\砕けたガラス.anm\砕けたガラス(拡張)
+--label:tim2\砕けたガラス.anm
 ---$track:分割ﾊﾟﾀｰﾝ
 ---min=0
 ---max=4

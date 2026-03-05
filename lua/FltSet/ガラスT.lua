@@ -1,4 +1,4 @@
---label:tim2\T_Filter_Module.anm\ガラスT
+--label:tim2\T_Filter_Module.anm
 ---$track:歪み量
 ---min=0
 ---max=500

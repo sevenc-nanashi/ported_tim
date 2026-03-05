@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\粒状化
+--label:tim2\T_Color_Module.anm
 ---$track:量
 ---min=0
 ---max=100

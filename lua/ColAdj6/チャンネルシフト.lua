@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\チャンネルシフト
+--label:tim2\T_Color_Module.anm
 ---$track:アルファ
 ---min=0
 ---max=6

@@ -1,4 +1,4 @@
---label:tim2\T_Filter_Module.anm\グラフィックペンT
+--label:tim2\T_Filter_Module.anm
 ---$track:線長
 ---min=2
 ---max=200

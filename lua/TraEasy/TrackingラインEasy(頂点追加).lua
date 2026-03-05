@@ -1,4 +1,4 @@
---label:tim2\TrackingラインEasy.anm\TrackingラインEasy(頂点追加)
+--label:tim2\TrackingラインEasy.anm
 ---$track:+頂点数
 ---min=2
 ---max=16

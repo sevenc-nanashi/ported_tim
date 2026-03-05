@@ -1,4 +1,4 @@
---label:tim2\カスタムフレア.anm\ベース
+--label:tim2\カスタムフレア.anm
 ---$track:移動量
 ---min=-500
 ---max=500

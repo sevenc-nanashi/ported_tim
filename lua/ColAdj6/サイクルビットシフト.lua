@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\サイクルビットシフト
+--label:tim2\T_Color_Module.anm
 ---$track:R8bit
 ---min=-100
 ---max=100

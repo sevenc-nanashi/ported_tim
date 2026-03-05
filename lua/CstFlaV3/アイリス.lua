@@ -1,4 +1,4 @@
---label:tim2\カスタムフレア.anm\アイリス
+--label:tim2\カスタムフレア.anm
 ---$track:形状
 ---min=1
 ---max=14

@@ -1,4 +1,4 @@
---label:tim2\T_Filter_Module.anm\シャープT
+--label:tim2\T_Filter_Module.anm
 ---$track:強さ
 ---min=0
 ---max=1000

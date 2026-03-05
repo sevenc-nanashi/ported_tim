@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\チャンネルミキサー(SetR)
+--label:tim2\T_Color_Module.anm
 ---$track:赤←赤％
 ---min=-300
 ---max=300

@@ -1,4 +1,4 @@
---label:tim2\モーフィング.anm\モーフィング-ポイント追加
+--label:tim2\モーフィング.anm
 ---$track:ﾎﾟｲﾝﾄ数
 ---min=1
 ---max=16

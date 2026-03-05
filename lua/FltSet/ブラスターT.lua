@@ -1,4 +1,4 @@
---label:tim2\T_Filter_Module.anm\ブラスターT
+--label:tim2\T_Filter_Module.anm
 ---$track:しきい値
 ---min=0
 ---max=255

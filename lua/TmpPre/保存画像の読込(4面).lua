@@ -1,4 +1,4 @@
---label:tim2\一時保存読込.obj\保存画像の読込(4面)
+--label:tim2\一時保存読込.obj
 ---$track:読込先
 ---min=1
 ---max=4

@@ -1,4 +1,4 @@
---label:tim2\集中線T.obj\集中線T2
+--label:tim2\集中線T.obj
 ---$track:発生量
 ---min=0
 ---max=100

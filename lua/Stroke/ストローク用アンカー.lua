@@ -1,4 +1,4 @@
---label:tim2\ストロークT.anm\ストローク用アンカー
+--label:tim2\ストロークT.anm
 ---$track:ｱﾝｶｰ数
 ---min=1
 ---max=12

@@ -1,4 +1,4 @@
---label:tim2\網点分解T.anm\網点分解(CMY)
+--label:tim2\網点分解T.anm
 ---$track:サイズ
 ---min=5
 ---max=1000

@@ -1,4 +1,4 @@
---label:tim2\カスタムフレア.anm\レンズ軌道
+--label:tim2\カスタムフレア.anm
 ---$track:密度
 ---min=1
 ---max=100

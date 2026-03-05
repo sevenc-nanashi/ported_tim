@@ -1,4 +1,4 @@
---label:tim2\スカイドーム.anm\通常画像用前処理
+--label:tim2\スカイドーム.anm
 ---$track:H範囲
 ---min=0
 ---max=360

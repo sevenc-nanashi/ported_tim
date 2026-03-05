@@ -1,4 +1,4 @@
---label:tim2\一時保存読込.obj\一時的に保存(4面)
+--label:tim2\一時保存読込.obj
 ---$track:保存先
 ---min=1
 ---max=4

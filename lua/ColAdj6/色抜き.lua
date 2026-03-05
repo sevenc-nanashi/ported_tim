@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\色抜き
+--label:tim2\T_Color_Module.anm
 ---$track:色抜き量
 ---min=0
 ---max=100

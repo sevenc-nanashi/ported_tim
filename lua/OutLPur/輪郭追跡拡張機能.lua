@@ -1,4 +1,4 @@
---label:tim2\輪郭追跡.anm\輪郭追跡拡張機能
+--label:tim2\輪郭追跡.anm
 ---$track:破線周期
 ---min=0
 ---max=100

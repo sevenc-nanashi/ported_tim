@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\ブリーチバイパス
+--label:tim2\T_Color_Module.anm
 ---$track:強度
 ---min=0
 ---max=100

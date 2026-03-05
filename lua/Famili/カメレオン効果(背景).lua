@@ -1,4 +1,4 @@
---label:tim2\カメレオン効果.anm\カメレオン効果(背景)
+--label:tim2\カメレオン効果.anm
 ---$track:中心X
 ---min=-10000
 ---max=10000

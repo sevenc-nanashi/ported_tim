@@ -1,4 +1,4 @@
---label:tim2\ストロークT.anm\ストローク(配置)
+--label:tim2\ストロークT.anm
 ---$track:進捗度1
 ---min=0
 ---max=100

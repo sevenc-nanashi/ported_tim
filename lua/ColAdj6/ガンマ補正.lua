@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\ガンマ補正
+--label:tim2\T_Color_Module.anm
 ---$track:赤
 ---min=1
 ---max=1000

@@ -1,4 +1,4 @@
---label:tim2\T_RotBlur_Module.anm\ハードブラー拡張
+--label:tim2\T_RotBlur_Module.anm
 ---$track:基準位置
 ---min=-100
 ---max=100

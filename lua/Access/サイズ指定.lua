@@ -1,4 +1,4 @@
---label:tim2\サイズ修正T.anm\サイズ指定
+--label:tim2\サイズ修正T.anm
 ---$track:横
 ---min=0
 ---max=5000

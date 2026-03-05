@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\最大/最小
+--label:tim2\T_Color_Module.anm
 ---$track:MAX/MIN
 ---min=1
 ---max=2

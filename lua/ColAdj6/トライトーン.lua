@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\トライトーン
+--label:tim2\T_Color_Module.anm
 ---$track:飽和点1
 ---min=0
 ---max=255

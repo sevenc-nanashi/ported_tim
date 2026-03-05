@@ -1,4 +1,4 @@
---label:tim2\グループ補助.anm\グループ補助1
+--label:tim2\グループ補助.anm
 ---$track:X
 ---min=-20000
 ---max=20000

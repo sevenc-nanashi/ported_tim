@@ -1,4 +1,4 @@
---label:tim2\ジグザグ塗りT.anm\ジグザグ塗りT(ﾃﾞｨｽﾌﾟﾚｲｽﾒﾝﾄﾏｯﾌﾟ)
+--label:tim2\ジグザグ塗りT.anm
 ---$track:MAPﾚｲﾔ
 ---min=1
 ---max=100

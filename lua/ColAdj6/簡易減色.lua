@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\簡易減色
+--label:tim2\T_Color_Module.anm
 ---$track:減色量
 ---min=0
 ---max=7

@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\特定色域変換T
+--label:tim2\T_Color_Module.anm
 ---$track:色相範囲
 ---min=0
 ---max=360

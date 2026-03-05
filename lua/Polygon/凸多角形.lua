@@ -1,4 +1,4 @@
---label:tim2\任意多角形.obj\凸多角形
+--label:tim2\任意多角形.obj
 ---$track:ｶﾞｲﾄﾞ表示
 ---min=0
 ---max=1

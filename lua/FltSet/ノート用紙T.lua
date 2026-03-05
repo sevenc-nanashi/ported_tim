@@ -1,4 +1,4 @@
---label:tim2\T_Filter_Module.anm\ノート用紙T
+--label:tim2\T_Filter_Module.anm
 ---$track:しきい値
 ---min=0
 ---max=255

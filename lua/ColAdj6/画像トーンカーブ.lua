@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\画像トーンカーブ
+--label:tim2\T_Color_Module.anm
 ---$track:X or R
 ---min=-10000
 ---max=10000

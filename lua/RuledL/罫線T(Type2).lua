@@ -1,4 +1,4 @@
---label:tim2\罫線T.anm\罫線T(Type2)
+--label:tim2\罫線T.anm
 ---$track:制御点数
 ---min=1
 ---max=16

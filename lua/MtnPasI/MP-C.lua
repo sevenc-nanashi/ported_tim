@@ -1,4 +1,4 @@
---label:tim2\モーションパスC.anm\MP-C
+--label:tim2\モーションパスC.anm
 ---$track:X座標
 ---min=-10000
 ---max=10000

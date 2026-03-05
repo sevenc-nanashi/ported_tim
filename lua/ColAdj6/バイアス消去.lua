@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\バイアス消去
+--label:tim2\T_Color_Module.anm
 ---$track:範囲
 ---min=0
 ---max=500

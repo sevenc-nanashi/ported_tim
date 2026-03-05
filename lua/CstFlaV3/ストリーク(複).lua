@@ -1,4 +1,4 @@
---label:tim2\カスタムフレア.anm\ストリーク(複)
+--label:tim2\カスタムフレア.anm
 ---$track:光芒長
 ---min=0
 ---max=2000

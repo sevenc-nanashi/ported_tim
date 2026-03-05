@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\単色化(T)
+--label:tim2\T_Color_Module.anm
 ---$track:R
 ---min=0
 ---max=255

@@ -1,4 +1,4 @@
---label:tim2\カスタムフレア.anm\ゆらめき
+--label:tim2\カスタムフレア.anm
 ---$track:サイズ
 ---min=10
 ---max=1000

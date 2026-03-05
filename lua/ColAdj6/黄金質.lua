@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\黄金質
+--label:tim2\T_Color_Module.anm
 ---$track:飽和点1
 ---min=0
 ---max=255

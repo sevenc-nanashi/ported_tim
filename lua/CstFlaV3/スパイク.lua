@@ -1,4 +1,4 @@
---label:tim2\カスタムフレア.anm\スパイク
+--label:tim2\カスタムフレア.anm
 ---$track:長さ
 ---min=0
 ---max=3000

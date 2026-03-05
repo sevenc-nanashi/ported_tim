@@ -1,4 +1,4 @@
---label:tim2\簡易リピーター.anm\リピーター(表示)
+--label:tim2\簡易リピーター.anm
 ---$track:透過率%
 ---min=0
 ---max=100

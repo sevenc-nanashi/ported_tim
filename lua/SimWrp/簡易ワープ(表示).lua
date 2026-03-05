@@ -1,4 +1,4 @@
---label:tim2\簡易ワープ.anm\簡易ワープ(表示)
+--label:tim2\簡易ワープ.anm
 ---$track:分割数
 ---min=1
 ---max=200

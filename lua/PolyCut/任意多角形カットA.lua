@@ -1,4 +1,4 @@
---label:tim2\任意多角形カット.anm\任意多角形カットA
+--label:tim2\任意多角形カット.anm
 ---$track:頂点X
 ---min=-50000
 ---max=50000

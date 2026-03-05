@@ -1,4 +1,4 @@
---label:tim2\カスタムフレア.anm\虹輪
+--label:tim2\カスタムフレア.anm
 ---$track:大きさ
 ---min=1
 ---max=5000

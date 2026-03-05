@@ -1,4 +1,4 @@
---label:tim2\サイズ修正T.anm\領域サイズ指定+事前拡大回転
+--label:tim2\サイズ修正T.anm
 ---$track:幅
 ---min=0
 ---max=5000

@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\簡易トーンカーブ
+--label:tim2\T_Color_Module.anm
 ---$check:赤カーブ全体統一
 local rename_me_check0 = true
 

@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\基準色変更
+--label:tim2\T_Color_Module.anm
 ---$track:変化
 ---min=0
 ---max=100

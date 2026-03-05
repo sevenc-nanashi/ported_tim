@@ -1,4 +1,4 @@
---label:tim2\ワイヤー3D.anm\ワイヤー3D(マップ)
+--label:tim2\ワイヤー3D.anm
 ---$track:横分割数
 ---min=1
 ---max=100

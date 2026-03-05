@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\しきい値
+--label:tim2\T_Color_Module.anm
 ---$track:しきい値1
 ---min=0
 ---max=255

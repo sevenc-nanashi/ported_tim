@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\ポスタリゼーション
+--label:tim2\T_Color_Module.anm
 ---$track:R階調数
 ---min=2
 ---max=256

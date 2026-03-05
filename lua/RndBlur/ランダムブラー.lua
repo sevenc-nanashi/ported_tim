@@ -1,4 +1,4 @@
---label:tim2\T_RandomBlur_Module.anm\ランダムブラー
+--label:tim2\T_RandomBlur_Module.anm
 ---$track:最大ｽﾞﾚ量
 ---min=0
 ---max=5000

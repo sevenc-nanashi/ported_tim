@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\メディアンカット減色
+--label:tim2\T_Color_Module.anm
 ---$track:MC色数
 ---min=0
 ---max=500

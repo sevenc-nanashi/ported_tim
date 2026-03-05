@@ -1,4 +1,4 @@
---label:tim2\モーフィング.anm\モーフィング-表示
+--label:tim2\モーフィング.anm
 ---$track:変化度
 ---min=0
 ---max=100

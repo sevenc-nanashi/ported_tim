@@ -17,7 +17,7 @@ local flip_upper = 170
 -- ---max=2
 -- ---step=1
 -- local gray_mode = 1
----$select:ｸﾞﾚｰ処理
+---$select:グレー処理
 ---RGB平均=0
 ---NTSC加重平均法=1
 ---HDTV法=2

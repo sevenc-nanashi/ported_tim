@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\ネオン
+--label:tim2\T_Color_Module.anm
 ---$track:輝度中心
 ---min=-200
 ---max=200

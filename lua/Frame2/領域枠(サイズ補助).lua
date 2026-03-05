@@ -1,4 +1,4 @@
---label:tim2\領域枠.anm\領域枠(サイズ補助)
+--label:tim2\領域枠.anm
 ---$track:追加幅
 ---min=-5000
 ---max=5000

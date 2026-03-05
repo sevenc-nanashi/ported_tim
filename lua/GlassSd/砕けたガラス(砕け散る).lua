@@ -1,4 +1,4 @@
---label:tim2\砕けたガラス.anm\砕けたガラス(砕け散る)
+--label:tim2\砕けたガラス.anm
 ---$track:粉砕度
 ---min=0
 ---max=10000

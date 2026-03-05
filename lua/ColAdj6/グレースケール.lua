@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\グレースケール
+--label:tim2\T_Color_Module.anm
 ---$track:ｸﾞﾚｰ処理
 ---min=0
 ---max=2

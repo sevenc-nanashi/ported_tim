@@ -72,7 +72,7 @@ task :seed do
                 path = File.join(root, current_script.gsub("/", "__") + ".lua")
                 File.write(
                   path,
-                  "--label:#{prefix}\\#{filename[1..]}\\#{current_script}\n" +
+                  "--label:#{prefix}\\#{filename[1..]}\n" +
                     current_script_lines.join("\n")
                 )
                 sources[extension] << {
@@ -92,7 +92,7 @@ task :seed do
           path = File.join(root, current_script.gsub("/", "__") + ".lua")
           File.write(
             path,
-            "--label:#{prefix}\\#{filename[1..]}\\#{current_script}\n" +
+            "--label:#{prefix}\\#{filename[1..]}\n" +
               current_script_lines.join("\n")
           )
           sources[extension] << {

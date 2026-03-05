@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\２値化
+--label:tim2\T_Color_Module.anm
 ---$track:閾値
 ---min=0
 ---max=255

@@ -1,4 +1,4 @@
---label:tim2\T_RotBlur_Module.anm\方向ハードブラー
+--label:tim2\T_RotBlur_Module.anm
 ---$track:ブラー量
 ---min=0
 ---max=2000

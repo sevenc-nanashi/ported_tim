@@ -1,4 +1,4 @@
---label:tim2\けいおんグッズ.obj\ティーカップ
+--label:tim2\けいおんグッズ.obj
 ---$track:サイズ
 ---min=0
 ---max=5000

@@ -1,4 +1,4 @@
---label:tim2\T_Filter_Module.anm\モザイクタイルT
+--label:tim2\T_Filter_Module.anm
 ---$track:サイズ
 ---min=0
 ---max=2000

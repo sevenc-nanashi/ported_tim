@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\フリンジ修正
+--label:tim2\T_Color_Module.anm
 ---$track:補正法
 ---min=0
 ---max=3

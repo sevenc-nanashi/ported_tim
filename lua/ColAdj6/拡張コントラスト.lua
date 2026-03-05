@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\拡張コントラスト
+--label:tim2\T_Color_Module.anm
 ---$track:中心
 ---min=-255
 ---max=255

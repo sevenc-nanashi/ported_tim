@@ -1,4 +1,4 @@
---label:tim2\スカイドーム.anm\スカイドーム
+--label:tim2\スカイドーム.anm
 
 ---$track:水平回転
 ---min=-3600

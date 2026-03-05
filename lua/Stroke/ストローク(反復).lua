@@ -1,4 +1,4 @@
---label:tim2\ストロークT.anm\ストローク(反復)
+--label:tim2\ストロークT.anm
 ---$track:進捗度
 ---min=0
 ---max=100

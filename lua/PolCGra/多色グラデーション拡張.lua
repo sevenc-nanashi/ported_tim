@@ -1,4 +1,4 @@
---label:tim2\多色グラデーション.anm\多色グラデーション拡張
+--label:tim2\多色グラデーション.anm
 ---$track:番号
 ---min=1
 ---max=8

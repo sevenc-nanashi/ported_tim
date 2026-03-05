@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\白黒
+--label:tim2\T_Color_Module.anm
 ---$track:R%
 ---min=-500
 ---max=500

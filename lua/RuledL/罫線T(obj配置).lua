@@ -1,4 +1,4 @@
---label:tim2\罫線T.anm\罫線T(obj配置)
+--label:tim2\罫線T.anm
 ---$track:位置1
 ---min=1
 ---max=1000

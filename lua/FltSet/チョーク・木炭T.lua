@@ -1,4 +1,4 @@
---label:tim2\T_Filter_Module.anm\チョーク・木炭T
+--label:tim2\T_Filter_Module.anm
 ---$track:木炭適用
 ---min=0
 ---max=100

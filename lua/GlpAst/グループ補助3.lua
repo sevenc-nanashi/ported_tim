@@ -1,4 +1,4 @@
---label:tim2\グループ補助.anm\グループ補助3
+--label:tim2\グループ補助.anm
 ---$track:縦横比
 ---min=-100
 ---max=100

@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm\簡易コロラマ
+--label:tim2\T_Color_Module.anm
 ---$track:Fシフト
 ---min=0
 ---max=5000

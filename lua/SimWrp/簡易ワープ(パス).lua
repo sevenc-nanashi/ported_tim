@@ -1,4 +1,4 @@
---label:tim2\簡易ワープ.anm\簡易ワープ(パス)
+--label:tim2\簡易ワープ.anm
 ---$track:基準X
 ---min=-10000
 ---max=10000

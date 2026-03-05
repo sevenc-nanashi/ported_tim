@@ -1,27 +1,27 @@
---label:tim2\T_Color_Module.anm\パステル調
+--label:tim2\T_Color_Module.anm
 ---$track:彩度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 70
+local saturation = 70
 
 ---$track:明度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 70
+local brightness = 70
 
 ---$track:しきい値
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 10
+local threshold = 10
 
 ---$track:色付ｴｯｼﾞ
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 50
+local colored_edge = 50
 
 ---$value:しきい値ぼかし
 local shw = 8
@@ -39,7 +39,7 @@ local sh = 0
 local blur = 1
 
 require("T_Color_Module")
-local Ces = rename_me_track3 / 100
+local Ces = colored_edge / 100
 if Ces > 0 then
     obj.setoption("drawtarget", "tempbuffer")
     obj.copybuffer("cache:org", "obj")
@@ -64,7 +64,7 @@ if Ces > 0 then
     obj.copybuffer("obj", "cache:org")
 end
 local userdata, w, h = obj.getpixeldata()
-T_Color_Module.Pastel(userdata, w, h, rename_me_track0, rename_me_track1, rename_me_track2, shw or 0)
+T_Color_Module.Pastel(userdata, w, h, saturation, brightness, threshold, shw or 0)
 obj.putpixeldata(userdata)
 if Ces > 0 then
     obj.copybuffer("tmp", "obj")
