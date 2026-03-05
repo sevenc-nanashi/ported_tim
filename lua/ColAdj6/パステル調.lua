@@ -38,12 +38,15 @@ local sh = 0
 ---$value:エッジぼかし
 local blur = 1
 
-require("T_Color_Module")
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+
 local Ces = colored_edge / 100
 if Ces > 0 then
+    obj.setoption("drawtarget", "tempbuffer", obj.w, obj.h)
+    obj.copybuffer("cache:org", "object")
+    obj.copybuffer("tempbuffer", "object")
     obj.setoption("drawtarget", "tempbuffer")
-    obj.copybuffer("cache:org", "obj")
-    obj.copybuffer("tmp", "obj")
     obj.effect(
         "エッジ抽出",
         "強さ",
@@ -59,16 +62,17 @@ if Ces > 0 then
     obj.effect("反転", "透明度反転", 1)
     obj.setoption("blend", "alpha_sub")
     obj.draw()
-    obj.setoption("blend", 0)
-    obj.copybuffer("cache:Edg", "tmp")
-    obj.copybuffer("obj", "cache:org")
+    obj.setoption("blend", "none")
+    obj.copybuffer("cache:Edg", "tempbuffer")
+    obj.copybuffer("object", "cache:org")
 end
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.Pastel(userdata, w, h, saturation, brightness, threshold, shw or 0)
-obj.putpixeldata(userdata)
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.pastel(userdata, w, h, saturation, brightness, threshold, shw or 0)
+obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.setoption("draw_state", false)
 if Ces > 0 then
-    obj.copybuffer("tmp", "obj")
-    obj.copybuffer("obj", "cache:Edg")
+    obj.copybuffer("tempbuffer", "object")
+    obj.copybuffer("object", "cache:Edg")
     obj.draw(0, 0, 0, 1, Ces)
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
 end

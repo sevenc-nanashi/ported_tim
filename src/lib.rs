@@ -1,7 +1,8 @@
+use aviutl2::{anyhow, module::ScriptModuleFunctions};
 use std::ptr::NonNull;
 
-use aviutl2::{anyhow, module::ScriptModuleFunctions};
 mod metal;
+mod pastel;
 
 #[aviutl2::plugin(ScriptModule)]
 struct PortedTimMod2 {}
@@ -22,7 +23,6 @@ impl aviutl2::module::ScriptModule for PortedTimMod2 {
 #[aviutl2::module::functions]
 impl PortedTimMod2 {
     fn metal(
-        &self,
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -45,6 +45,37 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
         metal::metal(image_buffer, flip_upper, flip_lower, gray_mode);
+        Ok(())
+    }
+
+    fn pastel(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        saturation_pct: f64,
+        brightness_pct: f64,
+        threshold_pct: f64,
+        shw: f64,
+    ) -> anyhow::Result<()> {
+        aviutl2::lprintln!(
+            "pastel called with width={}, height={}, saturation_pct={}, brightness_pct={}, threshold_pct={}, shw={}",
+            width, height, saturation_pct, brightness_pct, threshold_pct, shw
+        );
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        pastel::pastel_bgra(
+            image_buffer,
+            width,
+            height,
+            saturation_pct,
+            brightness_pct,
+            threshold_pct,
+            shw,
+        );
         Ok(())
     }
 }
