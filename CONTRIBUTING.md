@@ -21,7 +21,9 @@
 ---
 
 port this to rust function that takes the same parameter as lua, with single thread.
-Abort when there are undefined variables or functions.
+Tell me when there are undefined variables or functions.
+use unreachable! for unreachable part, and anyhow::Result for errors.
+Callee's buffer's pixel structure is BGRA, and the output buffer's pixel structure is also BGRA.
 
 Callee:
 ```lua

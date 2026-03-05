@@ -194,9 +194,12 @@ task :rewrite_parameters do
           raise "Invalid check format in #{file}: #{match}"
         end
 
+        if default != "0" && default != "1"
+          warn "Invalid default value for check in #{file}: #{match}"
+        end
         <<~LUA
       ---$check:#{check_name}
-      local rename_me_check0 = #{default == "0" ? "false" : "true"}
+      local rename_me_check0 = #{default.start_with?("0") ? "false" : "true"}
       LUA
       end
       content.gsub!(/--color:(.*)/) do |match|

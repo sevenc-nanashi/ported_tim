@@ -1,6 +1,8 @@
+#![allow(clippy::too_many_arguments)]
 use aviutl2::{anyhow, module::ScriptModuleFunctions};
 use std::ptr::NonNull;
 
+mod binarization;
 mod enh_grayscale;
 mod grayscale;
 mod metal;
@@ -23,6 +25,7 @@ impl aviutl2::module::ScriptModule for PortedTimMod2 {
 }
 
 #[aviutl2::module::functions]
+#[allow(clippy::too_many_arguments)]
 impl PortedTimMod2 {
     fn metal(
         image_buffer: NonNull<u8>,
@@ -118,8 +121,8 @@ impl PortedTimMod2 {
         gamma_exp: f64,
         col: Option<u32>,
     ) -> anyhow::Result<()> {
-        let buffer_size = (width as usize)
-            .checked_mul(height as usize)
+        let buffer_size = width
+            .checked_mul(height)
             .and_then(|v| v.checked_mul(4))
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
@@ -139,6 +142,38 @@ impl PortedTimMod2 {
             col,
         )
         .map_err(|e| anyhow::anyhow!(e))?;
+        Ok(())
+    }
+
+    fn binarization(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        threshold: u8,
+        gray_mode: u8,
+        auto_detect_method: u8,
+        colorize: bool,
+        color1: u32,
+        color2: u32,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        binarization::binarization(
+            image_buffer,
+            width,
+            height,
+            threshold,
+            gray_mode,
+            auto_detect_method,
+            colorize,
+            color1,
+            color2,
+        )?;
+
         Ok(())
     }
 }
