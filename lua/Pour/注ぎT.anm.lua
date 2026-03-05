@@ -1,24 +1,64 @@
 --label:tim2
---track0:水位,-5000,5000,0
---track1:振幅,-1000,1000,10
---track2:波長,2,5000,100,1
---track3:本体α,0,100,100
---value@Ta:波─α,100
---value@col:└色/col,0x80ffff
---value@S:└振動速度,0
---value@D:└位相ズレ,0
---value@V:└位相速度,0
---value@Rw:反転波─表示/chk,0
---value@colr:└色/col,0x53c9c9
---value@colw:枠─色/col,0xffffff
---value@ws:└幅,6
---value@wb:└ぼかし,4
+---$track:水位
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:振幅
+---min=-1000
+---max=1000
+---step=0.1
+local rename_me_track1 = 10
+
+---$track:波長
+---min=2
+---max=5000
+---step=1
+local rename_me_track2 = 100
+
+---$track:本体α
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:波─α
+local Ta = 100
+
+---$value:└色/col
+local col = 0x80ffff
+
+---$value:└振動速度
+local S = 0
+
+---$value:└位相ズレ
+local D = 0
+
+---$value:└位相速度
+local V = 0
+
+---$value:反転波─表示/chk
+local Rw = 0
+
+---$value:└色/col
+local colr = 0x53c9c9
+
+---$value:枠─色/col
+local colw = 0xffffff
+
+---$value:└幅
+local ws = 6
+
+---$value:└ぼかし
+local wb = 4
+
 local pi = math.pi
 local Pr = { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
-local Z = -obj.track0
-local A = obj.track1
-local L = math.floor(obj.track2)
-local T = obj.track3 / 100
+local Z = -rename_me_track0
+local A = rename_me_track1
+local L = math.floor(rename_me_track2)
+local T = rename_me_track3 / 100
 local SG = 1
 A = A * math.cos(obj.time * 2 * pi * S)
 if A < 0 then

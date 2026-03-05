@@ -1,13 +1,42 @@
 --label:tim2
---track0:サイズ補正,0,20000,200
---track1:表示,0,2,0,1
---track2:視X/深度,-10000,10000,100
---track3:視点Y,-10000,10000,100
---value@N:分割数,30
---value@are:領域,{-100,-100,100,100,0,0}
---value@gr:ガイド径,40
---value@lw:ライン幅,4
---value@ANT:アンチエイリアス,1
+---$track:サイズ補正
+---min=0
+---max=20000
+---step=0.1
+local rename_me_track0 = 200
+
+---$track:表示
+---min=0
+---max=2
+---step=1
+local rename_me_track1 = 0
+
+---$track:視X/深度
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:視点Y
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:分割数
+local N = 30
+
+---$value:領域
+local are = { -100, -100, 100, 100, 0, 0 }
+
+---$value:ガイド径
+local gr = 40
+
+---$value:ライン幅
+local lw = 4
+
+---$value:アンチエイリアス
+local ANT = 1
 
 function LineDraw(p1, p2)
     local dx = p2.x - p1.x
@@ -82,10 +111,10 @@ function dtd(a, b)
 end
 
 obj.setanchor("are", 3)
-local t = (obj.track0 + 100) / 200
-local s = (obj.track1 + 100) / 200
-local Rsize = obj.track0 / 100
-local va = obj.track1
+local t = (rename_me_track0 + 100) / 200
+local s = (rename_me_track1 + 100) / 200
+local Rsize = rename_me_track0 / 100
+local va = rename_me_track1
 local w, h = obj.getpixel()
 if ANT == nil then
     ANT = 0
@@ -155,8 +184,8 @@ if va == 0 then
 elseif va == 1 then
     obj.load("tempbuffer")
     obj.setoption("antialias", ANT)
-    vx = obj.track2
-    vy = obj.track3
+    vx = rename_me_track2
+    vy = rename_me_track3
     bvx = Rsize * vx
     bvy = Rsize * vy
     obj.setoption("drawtarget", "tempbuffer", iw + 2 * math.abs(bvx), ih + 2 * math.abs(bvy)) --面倒臭くなって適当＞＜;
@@ -198,7 +227,7 @@ else
     zoom = obj.getvalue("zoom") * 0.01
     w2 = w / 2 --/zoom
     h2 = h / 2 --/zoom
-    L = w * obj.track2 / 100
+    L = w * rename_me_track2 / 100
     qcp = { x = (qs[1].x + qs[2].x) / 2, y = (qs[1].y + qs[4].y) / 2 }
     K = L * (Rsize - 1)
 

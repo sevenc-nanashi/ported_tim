@@ -1,25 +1,79 @@
 --label:tim2
---track0:サイズ,1,2000,200,1
---track1:誤差％,0,100,30
---track2:線幅,1,200,6,1
---track3:巻き数,0,200,5,0.01
---check0:時間展開,0;
---value@_1:色/col,0xff0000
---value@_2:間隔,0
---value@_3:中心ずれサイズ,{0,0}
---value@_4:減衰速度％,0
---value@_5:減衰形状,0
---value@_6:円状≦100,100
---value@_8:開始角度,0
---value@_9:半径ｵﾌｾｯﾄ,0
---value@_10:誤差比[-100..100],0
---value@_7:時間展開法[0..3],0
---value@_11:周分割≦30,4
---value@_12:分解能≦50,40
---value@_13:重ね描き,0
---value@_14:シード,0
---value@_15:└変化間隔,0
---value@_0:PI,nil
+---$track:サイズ
+---min=1
+---max=2000
+---step=1
+local rename_me_track0 = 200
+
+---$track:誤差％
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 30
+
+---$track:線幅
+---min=1
+---max=200
+---step=1
+local rename_me_track2 = 6
+
+---$track:巻き数
+---min=0
+---max=200
+---step=0.01
+local rename_me_track3 = 5
+
+---$check:時間展開
+local rename_me_check0 = true
+
+---$value:色/col
+local _1 = 0xff0000
+
+---$value:間隔
+local _2 = 0
+
+---$value:中心ずれサイズ
+local _3 = { 0, 0 }
+
+---$value:減衰速度％
+local _4 = 0
+
+---$value:減衰形状
+local _5 = 0
+
+---$value:円状≦100
+local _6 = 100
+
+---$value:開始角度
+local _8 = 0
+
+---$value:半径ｵﾌｾｯﾄ
+local _9 = 0
+
+---$value:誤差比[-100..100]
+local _10 = 0
+
+---$value:時間展開法[0..3]
+local _7 = 0
+
+---$value:周分割≦30
+local _11 = 4
+
+---$value:分解能≦50
+local _12 = 40
+
+---$value:重ね描き
+local _13 = 0
+
+---$value:シード
+local _14 = 0
+
+---$value:└変化間隔
+local _15 = 0
+
+---$value:PI
+local _0 = nil
+
 local PI = math.pi
 local sin = math.sin
 local cos = math.cos
@@ -30,10 +84,10 @@ local sqrt = math.sqrt
 local floor = math.floor
 local ceil = math.ceil
 _0 = _0 or {}
-local SZ = (_0[1] or obj.track0) / 2
-local RS = (_0[2] or obj.track1) / 100
-local Lw = floor(_0[3] or obj.track2)
-local RN = _0[4] or obj.track3
+local SZ = (_0[1] or rename_me_track0) / 2
+local RS = (_0[2] or rename_me_track1) / 100
+local Lw = floor(_0[3] or rename_me_track2)
+local RN = _0[4] or rename_me_track3
 local CL = _1 or 0xffffff
 local DN = abs(_2 or 2)
 if DN < 1 then
@@ -73,7 +127,7 @@ if Ju == 0 then
 end
 local SD = abs(_14 or 0) + 1
 local SR = floor(_15 or 0)
-local CK = _0[0] == nil and obj.check0 or _0[0]
+local CK = _0[0] == nil and rename_me_check0 or _0[0]
 _0 = nil
 _1 = nil
 _2 = nil

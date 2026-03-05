@@ -1,11 +1,36 @@
 --label:tim2\任意多角形カット.anm\任意多角形カットA
---track0:頂点X,-50000,50000,0
---track1:頂点Y,-50000,50000,0
---track2:頂点数,0,16,4,1
---track3:厚み,0,1000,0
---value@wcol:側面色/col,""
---value@are:領域,{-100,-100,100,-100,100,100,-100,100}
---value@ANT:アンチエイリアス,0
+---$track:頂点X
+---min=-50000
+---max=50000
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:頂点Y
+---min=-50000
+---max=50000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:頂点数
+---min=0
+---max=16
+---step=1
+local rename_me_track2 = 4
+
+---$track:厚み
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:側面色/col
+local wcol = ""
+
+---$value:領域
+local are = { -100, -100, 100, -100, 100, 100, -100, 100 }
+
+---$value:アンチエイリアス
+local ANT = 0
 
 function muki(ax, ay, bx, by)
     if ax * by - ay * bx > 0 then
@@ -105,8 +130,8 @@ function mydp(p1, p2, p3)
     end
 end
 
-TC = obj.track3 / 2
-N = obj.track2
+TC = rename_me_track3 / 2
+N = rename_me_track2
 
 zoom = obj.getvalue("zoom") * 0.01
 w, h = obj.getpixel()
@@ -132,12 +157,12 @@ if N == 0 then
     N = obj.getoption("section_num") + 1
     for i = 1, N - 1 do
         pos[i] = {}
-        pos[i].x = obj.getvalue(0, 0, i - 1)
-        pos[i].y = obj.getvalue(1, 0, i - 1)
+        pos[i].x = obj.getvalue("track.rename_me_track0", 0, i - 1)
+        pos[i].y = obj.getvalue("track.rename_me_track1", 0, i - 1)
     end
     pos[N] = {}
-    pos[N].x = obj.getvalue(0, 0, -1)
-    pos[N].y = obj.getvalue(1, 0, -1)
+    pos[N].x = obj.getvalue("track.rename_me_track0", 0, -1)
+    pos[N].y = obj.getvalue("track.rename_me_track1", 0, -1)
 else
     obj.setanchor("are", N, "loop")
     for i = 1, N do

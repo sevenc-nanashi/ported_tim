@@ -1,20 +1,59 @@
 --label:tim2\多色グラデーション.anm\多色グラデーション
---track0:幅,0,5000,100
---track1:中心X,-20000,20000,0
---track2:中心Y,-20000,20000,0
---track3:表示,0,1,0
---value@col1:色1,"0x00ff00"
---value@col2: 色2,"0xffff00"
---value@col3: 色3,"0xff0000"
---value@col4: 色4,"0x0000ff"
---value@col5: 色5,""
---value@col6: 色6,""
---value@col7: 色7,""
---value@col8: 色8,""
---value@size: ガイド半径,100
---value@colG: ガイド色,"0xffffff"
+---$track:幅
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 100
 
-if obj.track3 == 1 then
+---$track:中心X
+---min=-20000
+---max=20000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:中心Y
+---min=-20000
+---max=20000
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:表示
+---min=0
+---max=1
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:色1
+local col1 = "0x00ff00"
+
+---$value: 色2
+local col2 = "0xffff00"
+
+---$value: 色3
+local col3 = "0xff0000"
+
+---$value: 色4
+local col4 = "0x0000ff"
+
+---$value: 色5
+local col5 = ""
+
+---$value: 色6
+local col6 = ""
+
+---$value: 色7
+local col7 = ""
+
+---$value: 色8
+local col8 = ""
+
+---$value: ガイド半径
+local size = 100
+
+---$value: ガイド色
+local colG = "0xffffff"
+
+if rename_me_track3 == 1 then
     obj.load("figure", "円", colG, size)
     obj.effect("縁取り")
 
@@ -77,9 +116,9 @@ else
     cenX = {}
     cenY = {}
     cc = { col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 }
-    haba = obj.track0
-    sox = obj.track1
-    soy = obj.track2
+    haba = rename_me_track0
+    sox = rename_me_track1
+    soy = rename_me_track2
     N = obj.getoption("section_num") + 1
     if N > 8 then
         N = 8

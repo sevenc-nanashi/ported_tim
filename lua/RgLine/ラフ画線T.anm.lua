@@ -1,29 +1,79 @@
 --label:tim2
---track0:長さ,0,500,10,1
---track1:強度上限,0,255,128,1
---track2:強度下限,0,255,0,1
---track3:しきい値,0,1000,0,1
---value@_1:線色/col,0x0
---value@_2:背景−色/col,0xffffff
---value@_3:└元絵比率%,0
---value@_4:└透明度%,0
---value@_5:画線ガンマ,100
---value@_6:スクリーン合成/chk,1
---value@_7:境界補正/chk,0
---value@_8:└追加色/col,0xffffff
---value@_9:方向表示指定,"11110000"
---value@_10:長さMAPﾚｲﾔｰ,0
---value@_11:抽出−サイズ,1
---value@_12:└強度,300
---value@_13:└しきい値,0
---value@_0:PI,nil
---check0:画線のみ,0;
+---$track:長さ
+---min=0
+---max=500
+---step=1
+local rename_me_track0 = 10
+
+---$track:強度上限
+---min=0
+---max=255
+---step=1
+local rename_me_track1 = 128
+
+---$track:強度下限
+---min=0
+---max=255
+---step=1
+local rename_me_track2 = 0
+
+---$track:しきい値
+---min=0
+---max=1000
+---step=1
+local rename_me_track3 = 0
+
+---$value:線色/col
+local _1 = 0x0
+
+---$value:背景−色/col
+local _2 = 0xffffff
+
+---$value:└元絵比率%
+local _3 = 0
+
+---$value:└透明度%
+local _4 = 0
+
+---$value:画線ガンマ
+local _5 = 100
+
+---$value:スクリーン合成/chk
+local _6 = 1
+
+---$value:境界補正/chk
+local _7 = 0
+
+---$value:└追加色/col
+local _8 = 0xffffff
+
+---$value:方向表示指定
+local _9 = "11110000"
+
+---$value:長さMAPﾚｲﾔｰ
+local _10 = 0
+
+---$value:抽出−サイズ
+local _11 = 1
+
+---$value:└強度
+local _12 = 300
+
+---$value:└しきい値
+local _13 = 0
+
+---$value:PI
+local _0 = nil
+
+---$check:画線のみ
+local rename_me_check0 = true
+
 _0 = _0 or {}
-local pw = _0[1] or obj.track0
-local Lu = _0[2] or obj.track1
-local Ld = _0[3] or obj.track2
-local Ls = _0[4] or obj.track3
-local Is = _0[0] == nil and obj.check0 or _0[0]
+local pw = _0[1] or rename_me_track0
+local Lu = _0[2] or rename_me_track1
+local Ld = _0[3] or rename_me_track2
+local Ls = _0[4] or rename_me_track3
+local Is = _0[0] == nil and rename_me_check0 or _0[0]
 local col1 = _1 or 0x0
 local col2 = _2 or 0xffffff
 local Oal = _3 or 0

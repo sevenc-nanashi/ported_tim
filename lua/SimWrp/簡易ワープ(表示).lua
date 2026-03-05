@@ -1,14 +1,39 @@
 --label:tim2\簡易ワープ.anm\簡易ワープ(表示)
---track0:分割数,1,200,30
---track1:境界固定,0,1,
---value@PSA:パス表示,0
---value@kcol:基準色,0xffffff
---value@mcol:移動色,0xff0000
---value@acol:影響範囲色,0x00ff00
---value@dcol:被影響範囲色,0x0000ff
---value@fcol:文字色,0xff00ff
---value@sz:表示サイズ,50
---value@lw:線幅,3
+---$track:分割数
+---min=1
+---max=200
+---step=0.1
+local rename_me_track0 = 30
+
+---$track:境界固定
+---min=0
+---max=1
+---step=0.1
+local rename_me_track1 = 0
+
+---$value:パス表示
+local PSA = 0
+
+---$value:基準色
+local kcol = 0xffffff
+
+---$value:移動色
+local mcol = 0xff0000
+
+---$value:影響範囲色
+local acol = 0x00ff00
+
+---$value:被影響範囲色
+local dcol = 0x0000ff
+
+---$value:文字色
+local fcol = 0xff00ff
+
+---$value:表示サイズ
+local sz = 50
+
+---$value:線幅
+local lw = 3
 
 function TK(Z)
     if Z >= 1 then
@@ -18,8 +43,8 @@ function TK(Z)
     end
 end
 
-M = math.floor(obj.track0)
-BS = math.floor(obj.track1)
+M = math.floor(rename_me_track0)
+BS = math.floor(rename_me_track1)
 
 dw = obj.w / M
 dh = obj.h / M

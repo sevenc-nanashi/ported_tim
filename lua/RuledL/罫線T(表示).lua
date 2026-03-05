@@ -1,16 +1,42 @@
 --label:tim2\罫線T.anm\罫線T(表示)
---track0:線幅,1,500,6,1
---track1:1行目高比,0,500,100
---track2:1列目幅比,0,500,100
---track3:背景透明度,0,100,0
---value@wcl:線色/col,0xffffff
---value@SvC:座標保存/chk,1
---check0:エッジ調整,0;
+---$track:線幅
+---min=1
+---max=500
+---step=1
+local rename_me_track0 = 6
+
+---$track:1行目高比
+---min=0
+---max=500
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:1列目幅比
+---min=0
+---max=500
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:背景透明度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:線色/col
+local wcl = 0xffffff
+
+---$value:座標保存/chk
+local SvC = 1
+
+---$check:エッジ調整
+local rename_me_check0 = true
+
 local RL = RuledlineT
-local Lw = obj.track0
-local balp = 1 - obj.track3 * 0.01
+local Lw = rename_me_track0
+local balp = 1 - rename_me_track3 * 0.01
 local wcl = wcl or 0xffffff
-local EGC = obj.check0 and 1 or 0
+local EGC = rename_me_check0 and 1 or 0
 local LPX = RL.LPX
 local LPY = RL.LPY
 local ACX = RL.ACX or {}
@@ -33,8 +59,8 @@ local DrawSL = function(x0, y0, x1, y1, Lw, P)
     obj.drawpoly(u0, v0, 0, u1, v1, 0, u2, v2, 0, u3, v3, 0)
 end
 if RL.typ == 1 then
-    hp = obj.track1
-    wp = obj.track2
+    hp = rename_me_track1
+    wp = rename_me_track2
     local dw = RL.dw
     local dh = dw
     local nx = RL.nx

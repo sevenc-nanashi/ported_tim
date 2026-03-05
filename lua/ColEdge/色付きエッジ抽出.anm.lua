@@ -1,19 +1,47 @@
 --label:tim2
---track0:ズレX,-20000,20000,0
---track1:ズレY,-20000,20000,0
---track2:輝度,0,200,100
---track3:縁補正,0,1000,1
+---$track:ズレX
+---min=-20000
+---max=20000
+---step=0.1
+local rename_me_track0 = 0
 
---value@Edchk:透明度エッジ/chk,0
---value@orichk:ｵﾘｼﾞﾅﾙ表示/chk,0
---value@pow:エッジ強さ,100
---value@sh:エッジしきい値,0
---value@blur:エッジぼかし,2
+---$track:ズレY
+---min=-20000
+---max=20000
+---step=0.1
+local rename_me_track1 = 0
 
-local dx = obj.track0
-local dy = obj.track1
-local ld = obj.track2
-local edc = obj.track3
+---$track:輝度
+---min=0
+---max=200
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:縁補正
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track3 = 1
+
+---$value:透明度エッジ/chk
+local Edchk = 0
+
+---$value:ｵﾘｼﾞﾅﾙ表示/chk
+local orichk = 0
+
+---$value:エッジ強さ
+local pow = 100
+
+---$value:エッジしきい値
+local sh = 0
+
+---$value:エッジぼかし
+local blur = 2
+
+local dx = rename_me_track0
+local dy = rename_me_track1
+local ld = rename_me_track2
+local edc = rename_me_track3
 
 local w, h = obj.getpixel()
 

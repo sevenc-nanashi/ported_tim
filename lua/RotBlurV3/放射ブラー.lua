@@ -1,16 +1,39 @@
 --label:tim2\T_RotBlur_Module.anm\放射ブラー
---track0:中心X,-5000,5000,0
---track1:中心Y,-5000,5000,0
---track2:ブラー量,0,1000,20
---track3:基準位置,-100,100,0
---value@ck:サイズ保持/chk,1
---value@Sbai:表示限界倍率,3
+---$track:中心X
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:中心Y
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:ブラー量
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track2 = 20
+
+---$track:基準位置
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:サイズ保持/chk
+local ck = 1
+
+---$value:表示限界倍率
+local Sbai = 3
 
 obj.setanchor("track", 0, "line")
-local dx = obj.track0
-local dy = obj.track1
-local Br = obj.track2
-local BasP = 0.01 * obj.track3
+local dx = rename_me_track0
+local dy = rename_me_track1
+local Br = rename_me_track2
+local BasP = 0.01 * rename_me_track3
 Br = math.min(Br, 200 / (1 + BasP) - 0.1)
 local userdata, w, h
 local addX1, addX2, addY1, addY2 = 0, 0, 0, 0

@@ -1,25 +1,65 @@
 --label:tim2\カスタムフレア.anm\ストリーク(複)
---track0:光芒長,0,2000,400
---track1:光芒高さ,0,2000,5
---track2:強度,0,100,100
---track3:回転,-3600,3600,0
---value@basechk:ベースカラー/chk,1
---value@col:光芒色/col,0x9999ff
---value@n:本数,3
---value@t:位置％,-100
---value@OFSET:位置オフセット％,{0,0,0}
---value@exp:拡大率,50
---value@dh:間隔,5
---value@ddh:間隔ﾗﾝﾀﾞﾑ,5
---value@dw:横ﾗﾝﾀﾞﾑ,10
---value@blink:点滅,0.1
+---$track:光芒長
+---min=0
+---max=2000
+---step=0.1
+local rename_me_track0 = 400
+
+---$track:光芒高さ
+---min=0
+---max=2000
+---step=0.1
+local rename_me_track1 = 5
+
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:ベースカラー/chk
+local basechk = 1
+
+---$value:光芒色/col
+local col = 0x9999ff
+
+---$value:本数
+local n = 3
+
+---$value:位置％
+local t = -100
+
+---$value:位置オフセット％
+local OFSET = { 0, 0, 0 }
+
+---$value:拡大率
+local exp = 50
+
+---$value:間隔
+local dh = 5
+
+---$value:間隔ﾗﾝﾀﾞﾑ
+local ddh = 5
+
+---$value:横ﾗﾝﾀﾞﾑ
+local dw = 10
+
+---$value:点滅
+local blink = 0.1
+
 obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存
 if basechk == 1 then
     col = CustomFlareColor
 end
-local l = obj.track0 * 2
-local r = obj.track1 * 0.5
-local rot = obj.track3
+local l = rename_me_track0 * 2
+local r = rename_me_track1 * 0.5
+local rot = rename_me_track3
 exp = exp * 0.01
 obj.load("figure", "円", col, r)
 obj.effect("ぼかし", "範囲", r / 2.5)
@@ -46,7 +86,7 @@ for i = 0, n - 1 do
     if alpha > 1 then
         alpha = 1
     end
-    alpha = alpha * obj.track2 * 0.01
+    alpha = alpha * rename_me_track2 * 0.01
     local ox = obj.rand(-dw, dw, i, 1000) * 0.5
     local oy = (i - (n - 1) * 0.5) * dh + obj.rand(-ddh, ddh, i, 2000) * 0.5
     ox, oy = cos * ox + sin * oy, -sin * ox + cos * oy

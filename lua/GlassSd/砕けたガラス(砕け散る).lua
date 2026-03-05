@@ -1,20 +1,63 @@
 --label:tim2\砕けたガラス.anm\砕けたガラス(砕け散る)
---track0:粉砕度,0,10000,50
---track1:サイズ,10,1000,150
---track2:屈折率,0,5000,25
---track3:動径速度,0,500,10
---value@chk:オリジナル表示/chk,0
---value@rotv:回転速度,5
---value@vz:Z速度,7
---value@pos:XY速度中心,{0,0}
---value@gr:重力方向,{0,100,0}
---value@blur:ぼかし,25
---value@alpha:透明度[%],25
---value@d:厚さ,5
---value@L:光線方向,{1,0,1}
---value@refp:正反射強度[%],75
---value@fvrd:形状&速度ﾗﾝﾀﾞﾑ性[%],{70,50}
---value@rnd:乱数パターン,100
+---$track:粉砕度
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:サイズ
+---min=10
+---max=1000
+---step=0.1
+local rename_me_track1 = 150
+
+---$track:屈折率
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track2 = 25
+
+---$track:動径速度
+---min=0
+---max=500
+---step=0.1
+local rename_me_track3 = 10
+
+---$value:オリジナル表示/chk
+local chk = 0
+
+---$value:回転速度
+local rotv = 5
+
+---$value:Z速度
+local vz = 7
+
+---$value:XY速度中心
+local pos = { 0, 0 }
+
+---$value:重力方向
+local gr = { 0, 100, 0 }
+
+---$value:ぼかし
+local blur = 25
+
+---$value:透明度[%]
+local alpha = 25
+
+---$value:厚さ
+local d = 5
+
+---$value:光線方向
+local L = { 1, 0, 1 }
+
+---$value:正反射強度[%]
+local refp = 75
+
+---$value:形状&速度ﾗﾝﾀﾞﾑ性[%]
+local fvrd = { 70, 50 }
+
+---$value:乱数パターン
+local rnd = 100
 
 function sqsplit1()
     local frdm = frd * 0.0001
@@ -290,10 +333,10 @@ end
 
 -------------------------------------------------
 
-local of = obj.track0
-gsize = obj.track1
-local nk = obj.track2
-local vr = obj.track3
+local of = rename_me_track0
+gsize = rename_me_track1
+local nk = rename_me_track2
+local vr = rename_me_track3
 
 w, h = obj.getpixel()
 whf = w * 0.5

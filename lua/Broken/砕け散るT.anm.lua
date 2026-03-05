@@ -1,19 +1,61 @@
 --label:tim2
---track0:粉砕度,0,5000,100
---track1:時間差,0,1000,100
---track2:限界半径,-10000,10000,300
---track3:厚さ,0,1000,20
---value@size:破片サイズ,50
---value@Rk:ランダム形状,100
---value@ax:中心X,0
---value@ay:中心Y,0
---value@az:中心Z,0
---value@speed:速度,100
---value@grav:重力,100
---value@impact:距離影響,100
---value@spin:ランダム回転,100
---value@diff:ランダム方向,100
---value@step:再生速度,1.0
+---$track:粉砕度
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:時間差
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:限界半径
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track2 = 300
+
+---$track:厚さ
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track3 = 20
+
+---$value:破片サイズ
+local size = 50
+
+---$value:ランダム形状
+local Rk = 100
+
+---$value:中心X
+local ax = 0
+
+---$value:中心Y
+local ay = 0
+
+---$value:中心Z
+local az = 0
+
+---$value:速度
+local speed = 100
+
+---$value:重力
+local grav = 100
+
+---$value:距離影響
+local impact = 100
+
+---$value:ランダム回転
+local spin = 100
+
+---$value:ランダム方向
+local diff = 100
+
+---$value:再生速度
+local step = 1.0
+
 local hxx = {}
 local hyy = {}
 local px = {}
@@ -27,10 +69,10 @@ local pv = {}
 local han = {}
 local tt = {}
 
-tm = step * obj.track0 / 1000
-delay = obj.track1
-Rm = obj.track2
-dti = obj.track3
+tm = step * rename_me_track0 / 1000
+delay = rename_me_track1
+Rm = rename_me_track2
+dti = rename_me_track3
 obj.effect()
 grav = grav * 6
 delay = delay * 0.002

@@ -1,15 +1,40 @@
 --label:tim2\T_Filter_Module.anm\ガラスT
---track0:歪み量,0,500,50
---track1:滑らか,0,200,5,1
---track2:周期/ｻｲｽﾞ,1,100,20
---track3:分断,0,100,0
---value@fig:形状[1..3],1
---value@nv:変化速度,0
---value@seed:乱数シード,0
+---$track:歪み量
+---min=0
+---max=500
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:滑らか
+---min=0
+---max=200
+---step=1
+local rename_me_track1 = 5
+
+---$track:周期/ｻｲｽﾞ
+---min=1
+---max=100
+---step=0.1
+local rename_me_track2 = 20
+
+---$track:分断
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:形状[1..3]
+local fig = 1
+
+---$value:変化速度
+local nv = 0
+
+---$value:乱数シード
+local seed = 0
 
 require("T_Filter_Module")
-local size = obj.track0
-local per = obj.track2
+local size = rename_me_track0
+local per = rename_me_track2
 fig = ((fig or 1) - 1) % 3 + 1
 obj.effect("領域拡張", "塗りつぶし", 1, "上", size, "下", size, "左", size, "右", size)
 obj.copybuffer("cache:ori", "obj")
@@ -86,7 +111,7 @@ end
 obj.setoption("drawtarget", "tempbuffer", w, h)
 
 local userdata, w, h = obj.getpixeldata()
-T_Filter_Module.Flattening(userdata, w, h, obj.track3 * 0.01)
+T_Filter_Module.Flattening(userdata, w, h, rename_me_track3 * 0.01)
 obj.putpixeldata(userdata)
 obj.draw()
 
@@ -104,6 +129,6 @@ obj.effect(
     "param1",
     size,
     "ぼかし",
-    obj.track1
+    rename_me_track1
 )
 obj.effect("クリッピング", "上", size, "下", size, "左", size, "右", size)

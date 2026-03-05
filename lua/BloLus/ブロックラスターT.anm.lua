@@ -1,28 +1,63 @@
 --label:tim2
---track0:高さ,1,1000,30
---track1:振幅,-5000,5000,100
---track2:波長,1,5000,600
---track3:ﾗﾝﾀﾞﾑ性,-100,100,0
---check0:縦方向,0;
---value@rtv:速度(px/s),100
---value@sfh:ｵﾌｾｯﾄ(px),0
---value@aut:振幅単位,0
---value@ick:画像もシフト(px)/chk,0
---value@dw1:開始振幅%,100
---value@dw2:終了振幅%,100
---value@seed:シード,0
+---$track:高さ
+---min=1
+---max=1000
+---step=0.1
+local rename_me_track0 = 30
 
-local A = obj.track1
+---$track:振幅
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:波長
+---min=1
+---max=5000
+---step=0.1
+local rename_me_track2 = 600
+
+---$track:ﾗﾝﾀﾞﾑ性
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$check:縦方向
+local rename_me_check0 = true
+
+---$value:速度(px/s)
+local rtv = 100
+
+---$value:ｵﾌｾｯﾄ(px)
+local sfh = 0
+
+---$value:振幅単位
+local aut = 0
+
+---$value:画像もシフト(px)/chk
+local ick = 0
+
+---$value:開始振幅%
+local dw1 = 100
+
+---$value:終了振幅%
+local dw2 = 100
+
+---$value:シード
+local seed = 0
+
+local A = rename_me_track1
 if A ~= 0 then
-    if obj.check0 then
+    if rename_me_check0 then
         obj.effect("ローテーション", "90度回転", 1)
     end
 
     local pi = math.pi
     local sin = math.sin
-    local L = obj.track0
-    local D = obj.track2
-    local R = obj.track3 / 100
+    local L = rename_me_track0
+    local D = rename_me_track2
+    local R = rename_me_track3 / 100
     local w, h = obj.getpixel()
     rtv = rtv or 0
     sfh = sfh or 0
@@ -90,7 +125,7 @@ if A ~= 0 then
         s = s + 1
     end
     obj.load("tempbuffer")
-    if obj.check0 then
+    if rename_me_check0 then
         obj.effect("ローテーション", "90度回転", -1)
     end
 end

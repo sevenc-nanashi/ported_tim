@@ -1,22 +1,59 @@
 --label:tim2\ストロークT.anm\ストローク(反復)
---track0:進捗度,0,100,50,0.01
---track1:左端残し,0,2000,0,1
---track2:右端残し,0,2000,0,1
---track3:繰返ﾓｰﾄﾞ,1,3,1,1
---value@smN:軌道精度,30
---value@CirObt:環状軌道/chk,0
---value@richk:軌道[0-1],1
---value@topadj:先頭調整/chk,0
---value@fat:幅変動[%],{100,100,100}
---value@posZ:z軸方向,{0,0,0}
---value@RnD:最大ﾗﾝﾀﾞﾑ長[%],50
---value@seed:乱数シード,0
---value@fbapp:ﾌﾚｰﾑﾊﾞｯﾌｧ表示/chk,0
+---$track:進捗度
+---min=0
+---max=100
+---step=0.01
+local rename_me_track0 = 50
 
-local sp1 = obj.track1
-local sp2 = obj.track2
-local t = obj.track0 * 0.01
-local AP = obj.track3 --1は根本固定、2は先端固定、3はランダム
+---$track:左端残し
+---min=0
+---max=2000
+---step=1
+local rename_me_track1 = 0
+
+---$track:右端残し
+---min=0
+---max=2000
+---step=1
+local rename_me_track2 = 0
+
+---$track:繰返ﾓｰﾄﾞ
+---min=1
+---max=3
+---step=1
+local rename_me_track3 = 1
+
+---$value:軌道精度
+local smN = 30
+
+---$value:環状軌道/chk
+local CirObt = 0
+
+---$value:軌道[0-1]
+local richk = 1
+
+---$value:先頭調整/chk
+local topadj = 0
+
+---$value:幅変動[%]
+local fat = { 100, 100, 100 }
+
+---$value:z軸方向
+local posZ = { 0, 0, 0 }
+
+---$value:最大ﾗﾝﾀﾞﾑ長[%]
+local RnD = 50
+
+---$value:乱数シード
+local seed = 0
+
+---$value:ﾌﾚｰﾑﾊﾞｯﾌｧ表示/chk
+local fbapp = 0
+
+local sp1 = rename_me_track1
+local sp2 = rename_me_track2
+local t = rename_me_track0 * 0.01
+local AP = rename_me_track3 --1は根本固定、2は先端固定、3はランダム
 topadj = topadj or 2 --互換用
 
 T_stroke_f = function()

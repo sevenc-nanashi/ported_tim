@@ -1,15 +1,49 @@
 --label:tim2\カスタムフレア.anm\アイリス(単)
---track0:形状,1,14,1,1
---track1:サイズ％,0,5000,30
---track2:強度,0,100,50
---track3:ぼかし,0,1000,5
---value@basechk:ベースカラー/chk,1
---value@col:色/col,0xccccff
---value@t:位置％,0
---value@OFSET:位置ズレ％,{0,0,0}
---value@rot:回転,0
---value@acr:ｱﾝｶｰに合わせる/chk,0
---value@blink:点滅,0.2
+---$track:形状
+---min=1
+---max=14
+---step=1
+local rename_me_track0 = 1
+
+---$track:サイズ％
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track1 = 30
+
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 50
+
+---$track:ぼかし
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track3 = 5
+
+---$value:ベースカラー/chk
+local basechk = 1
+
+---$value:色/col
+local col = 0xccccff
+
+---$value:位置％
+local t = 0
+
+---$value:位置ズレ％
+local OFSET = { 0, 0, 0 }
+
+---$value:回転
+local rot = 0
+
+---$value:ｱﾝｶｰに合わせる/chk
+local acr = 0
+
+---$value:点滅
+local blink = 0.2
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)
@@ -20,10 +54,10 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * obj.track2 * 0.01
-local fig = obj.track0
-local size = obj.track1 * 0.01
-local blur = obj.track3
+alpha = alpha * rename_me_track2 * 0.01
+local fig = rename_me_track0
+local size = rename_me_track1 * 0.01
+local blur = rename_me_track3
 t = t * 0.01
 obj.load("image", obj.getinfo("script_path") .. "CF-image\\I" .. fig .. ".png")
 obj.effect("グラデーション", "color", col, "color2", col, "blend", 5)

@@ -1,12 +1,39 @@
 --label:tim2\モーフィング.anm\モーフィング-ポイント指定
---track0:ﾎﾟｲﾝﾄ数,1,14,3,1
---track1:画像番号,1,2,1,1
---track2:ﾎﾟｲﾝﾄｻｲｽﾞ,0,500,30,1
---track3:ﾌｫﾝﾄｻｲｽﾞ,0,500,30,1
---value@pcol:ポイント色/col,0xffffff
---value@fcol:文字色/col,0x0
---value@pos:座標,{-100,0,0,0,100,0}
---check0:ポイント表示,0;
+---$track:ﾎﾟｲﾝﾄ数
+---min=1
+---max=14
+---step=1
+local rename_me_track0 = 3
+
+---$track:画像番号
+---min=1
+---max=2
+---step=1
+local rename_me_track1 = 1
+
+---$track:ﾎﾟｲﾝﾄｻｲｽﾞ
+---min=0
+---max=500
+---step=1
+local rename_me_track2 = 30
+
+---$track:ﾌｫﾝﾄｻｲｽﾞ
+---min=0
+---max=500
+---step=1
+local rename_me_track3 = 30
+
+---$value:ポイント色/col
+local pcol = 0xffffff
+
+---$value:文字色/col
+local fcol = 0x0
+
+---$value:座標
+local pos = { -100, 0, 0, 0, 100, 0 }
+
+---$check:ポイント表示
+local rename_me_check0 = true
 
 Morphing_drawANC = function()
     if Morphing_check0 then
@@ -31,9 +58,9 @@ Morphing_drawANC = function()
     Morphing_PC = nil
 end
 
-local AN = obj.track0
-Morphing_PC = obj.track1
-Morphing_check0 = obj.check0
+local AN = rename_me_track0
+Morphing_PC = rename_me_track1
+Morphing_check0 = rename_me_check0
 
 if Morphing_obj == nil then
     Morphing_obj = {}
@@ -41,9 +68,9 @@ end
 
 Morphing_Pst = {}
 Morphing_Pst.pcol = pcol
-Morphing_Pst.psize = obj.track2
+Morphing_Pst.psize = rename_me_track2
 Morphing_Pst.fcol = fcol
-Morphing_Pst.fsize = obj.track3
+Morphing_Pst.fsize = rename_me_track3
 
 local w, h = obj.getpixel()
 local w2, h2 = w * 0.5, h * 0.5

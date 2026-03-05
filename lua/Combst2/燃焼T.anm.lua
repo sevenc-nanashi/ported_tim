@@ -1,40 +1,79 @@
 --label:tim2
---track0:展開,0,100,50
---track1:強度,0,200,100
---track2:しきい値,0,200,100
---track3:周期/燃幅,10,200,100
---value@col1:燃焼色1/col,0xff4747
---value@col2:燃焼色2/col,0xffce5b
---value@orAP:画像表示/chk,1
---value@fiAP:炎表示/chk,1
---value@seed:シード,0
---value@mode:合成ﾓｰﾄﾞ[0-9],1
---value@map:レイヤー指定,0
---value@GE:ｴﾌｪｸﾄ取得/chk,1
---value@IE:一時保存EXT/chk,0
---check0:展開を調整,0;
+---$track:展開
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:強度
+---min=0
+---max=200
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:しきい値
+---min=0
+---max=200
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:周期/燃幅
+---min=10
+---max=200
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:燃焼色1/col
+local col1 = 0xff4747
+
+---$value:燃焼色2/col
+local col2 = 0xffce5b
+
+---$value:画像表示/chk
+local orAP = 1
+
+---$value:炎表示/chk
+local fiAP = 1
+
+---$value:シード
+local seed = 0
+
+---$value:合成ﾓｰﾄﾞ[0-9]
+local mode = 1
+
+---$value:レイヤー指定
+local map = 0
+
+---$value:ｴﾌｪｸﾄ取得/chk
+local GE = 1
+
+---$value:一時保存EXT/chk
+local IE = 0
+
+---$check:展開を調整
+local rename_me_check0 = true
 
 if orAP == 1 or fiAP == 1 then
     require("T_burning_Module")
     local userdata, w, h
-    local T = (obj.track0 * 0.02 - 1) * 128
-    local Si = obj.track3 * 0.01
+    local T = (rename_me_track0 * 0.02 - 1) * 128
+    local Si = rename_me_track3 * 0.01
     local ST, Sh
 
     seed = seed or 0
     map = map or 0
 
-    if obj.check0 then
+    if rename_me_check0 then
         ST = 60
         if Si < 1 then
             ST = 60 / Si
         end
         Sh = 30 * Si + 30
-        ST = (ST + 2 * obj.track1 - 200) * 0.01
-        Sh = Sh * obj.track2 * 0.01 * 0.01
+        ST = (ST + 2 * rename_me_track1 - 200) * 0.01
+        Sh = Sh * rename_me_track2 * 0.01 * 0.01
     else
-        ST = obj.track1 * 0.006
-        Sh = obj.track2 * 0.006
+        ST = rename_me_track1 * 0.006
+        Sh = rename_me_track2 * 0.006
     end
 
     obj.copybuffer("cache:ori", "obj")
@@ -60,7 +99,7 @@ if orAP == 1 or fiAP == 1 then
         ECW = 200 - Si * 20
     end
 
-    if obj.check0 then
+    if rename_me_check0 then
         local kaku = math.tan(math.pi * ECW * 0.0025)
         T = (1 + 1 / kaku) * T
     end

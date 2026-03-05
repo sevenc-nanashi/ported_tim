@@ -1,15 +1,48 @@
 --label:tim2
---track0:縮小率,0,500,100
---track1:回転,-3600,3600,0
---track2:シフト,-5000,5000,0
---track3:元画像,0,100,0
---value@chk:円形配置/chk,0
---value@rev:反転/chk,0
---value@rep:繰返し/chk,0
---value@gmode:合成モード[0-9],0
---value@S:混色度合,30
---value@dc:境界補正,0.055
---value@reC:位置ズレ補正/chk,1
+---$track:縮小率
+---min=0
+---max=500
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:シフト
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:元画像
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:円形配置/chk
+local chk = 0
+
+---$value:反転/chk
+local rev = 0
+
+---$value:繰返し/chk
+local rep = 0
+
+---$value:合成モード[0-9]
+local gmode = 0
+
+---$value:混色度合
+local S = 30
+
+---$value:境界補正
+local dc = 0.055
+
+---$value:位置ズレ補正/chk
+local reC = 1
 
 local iox = obj.ox
 local ioy = obj.oy
@@ -27,18 +60,18 @@ T_R_gradation.T_R_gradationLine(
     w,
     h,
     S,
-    obj.track0 * 0.01,
-    math.rad(obj.track1),
+    rename_me_track0 * 0.01,
+    math.rad(rename_me_track1),
     rev,
     chk,
-    obj.track2,
+    rename_me_track2,
     rep,
     dc
 )
 
 obj.putpixeldata(userdata)
 obj.setoption("blend", math.floor(gmode))
-obj.draw(0, 0, 0, 1, 1 - obj.track3 * 0.01)
+obj.draw(0, 0, 0, 1, 1 - rename_me_track3 * 0.01)
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
 

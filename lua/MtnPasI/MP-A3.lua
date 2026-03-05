@@ -1,17 +1,54 @@
 --label:tim2\モーションパスA-V2.anm\MP-A3
---track0:X座標,-10000,10000,0
---track1:Y座標,-10000,10000,-100
---track2:Z座標,-10000,10000,0
---track3:ねじれ,-3600,3600,0
---value@BN:分割数,20
---value@CHA:描画方法(0-4),0
---value@TY:相対/絶対(0/1),0
---value@APP:パス描画(0/1),0
---value@PCOL:パス描画色1,0xff0000
---value@QCOL:パス描画色2,0x0000ff
---value@foc:フォーカス,0
---value@TOPA:先頭表示,0
---value@SEC:内部,0
+---$track:X座標
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:Y座標
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track1 = -100
+
+---$track:Z座標
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:ねじれ
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:分割数
+local BN = 20
+
+---$value:描画方法(0-4)
+local CHA = 0
+
+---$value:相対/絶対(0/1)
+local TY = 0
+
+---$value:パス描画(0/1)
+local APP = 0
+
+---$value:パス描画色1
+local PCOL = 0xff0000
+
+---$value:パス描画色2
+local QCOL = 0x0000ff
+
+---$value:フォーカス
+local foc = 0
+
+---$value:先頭表示
+local TOPA = 0
+
+---$value:内部
+local SEC = 0
 
 -- 関数共通
 
@@ -66,10 +103,10 @@ end
 obj.setoption("antialias", 1)
 
 NN = NN + 1
-XX[NN] = obj.track0
-YY[NN] = obj.track1
-ZZ[NN] = obj.track2
-TW[NN] = obj.track3
+XX[NN] = rename_me_track0
+YY[NN] = rename_me_track1
+ZZ[NN] = rename_me_track2
+TW[NN] = rename_me_track3
 
 if SEC == 1 and CHA < 3 then
     for i = 0, NN do

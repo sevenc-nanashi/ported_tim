@@ -1,28 +1,67 @@
 --label:tim2\網点分解T.anm\網点分解(CMY)
---track0:サイズ,5,1000,10
---track1:最小,0,500,0
---track2:最大,0,500,120
---track3:ﾎﾞｶｼ補正,0,500,50,1
---value@fig:形状/fig,"円"
---value@deg1:網点角度C,15
---value@deg2:網点角度M,75
---value@deg3:網点角度Y,30
---value@Drt:網点も回転/chk,0
---value@rV:公転速度,0
---value@mV:自転速度,0
---value@Bcol:背景色/col,0xffffff
---value@Dcut:型抜法[0/1/2],2
---check0:簡易表示,0
+---$track:サイズ
+---min=5
+---max=1000
+---step=0.1
+local rename_me_track0 = 10
+
+---$track:最小
+---min=0
+---max=500
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:最大
+---min=0
+---max=500
+---step=0.1
+local rename_me_track2 = 120
+
+---$track:ﾎﾞｶｼ補正
+---min=0
+---max=500
+---step=1
+local rename_me_track3 = 50
+
+---$value:形状/fig
+local fig = "円"
+
+---$value:網点角度C
+local deg1 = 15
+
+---$value:網点角度M
+local deg2 = 75
+
+---$value:網点角度Y
+local deg3 = 30
+
+---$value:網点も回転/chk
+local Drt = 0
+
+---$value:公転速度
+local rV = 0
+
+---$value:自転速度
+local mV = 0
+
+---$value:背景色/col
+local Bcol = 0xffffff
+
+---$value:型抜法[0/1/2]
+local Dcut = 2
+
+---$check:簡易表示
+local rename_me_check0 = false
 
 local EAP = 0
-if obj.check0 and obj.getinfo("saving") == false then
+if rename_me_check0 and obj.getinfo("saving") == false then
     EAP = 1
 end
 
-local siz = obj.track0
-local tsi1 = obj.track1 * 0.01
-local tsi2 = obj.track2 * 0.01
-local BS = obj.track3 * 0.01 * siz
+local siz = rename_me_track0
+local tsi1 = rename_me_track1 * 0.01
+local tsi2 = rename_me_track2 * 0.01
+local BS = rename_me_track3 * 0.01 * siz
 
 if EAP == 1 then
     siz = siz / 4

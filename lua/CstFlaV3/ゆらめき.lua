@@ -1,18 +1,58 @@
 --label:tim2\カスタムフレア.anm\ゆらめき
---track0:サイズ,10,1000,250
---track1:光芒量,0,100,55
---track2:強度,0,200,60
---track3:回転,-3600,3600,0
---value@basechk:ベースカラー/chk,1
---value@col:光芒色/col,0x9999ff
---value@t:位置％,-100
---value@OFSET:位置オフセット％,{0,0,0}
---value@rnd:先端ぼかし％,100
---value@speed:光芒変化速度,0.2
---value@fig:形状[1-8],5
---value@clp:ｸﾘｯﾌﾟ位置幅ﾎﾞｶｼ,{0,0,0}
---value@aub:ｸﾘｯﾌﾟ向き/chk,0
---value@blink:点滅,0.1
+---$track:サイズ
+---min=10
+---max=1000
+---step=0.1
+local rename_me_track0 = 250
+
+---$track:光芒量
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 55
+
+---$track:強度
+---min=0
+---max=200
+---step=0.1
+local rename_me_track2 = 60
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:ベースカラー/chk
+local basechk = 1
+
+---$value:光芒色/col
+local col = 0x9999ff
+
+---$value:位置％
+local t = -100
+
+---$value:位置オフセット％
+local OFSET = { 0, 0, 0 }
+
+---$value:先端ぼかし％
+local rnd = 100
+
+---$value:光芒変化速度
+local speed = 0.2
+
+---$value:形状[1-8]
+local fig = 5
+
+---$value:ｸﾘｯﾌﾟ位置幅ﾎﾞｶｼ
+local clp = { 0, 0, 0 }
+
+---$value:ｸﾘｯﾌﾟ向き/chk
+local aub = 0
+
+---$value:点滅
+local blink = 0.1
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)
@@ -23,9 +63,9 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-local w = obj.track0
-local c_num = obj.track1
-local c_alp = obj.track2 * 0.01
+local w = rename_me_track0
+local c_num = rename_me_track1
+local c_alp = rename_me_track2 * 0.01
 fig = math.floor(fig)
 if fig > 8 then
     fig = 8
@@ -57,7 +97,7 @@ if clp[2] > 0 then
 end
 r = r / 2.5
 obj.effect("クリッピング", "上", r)
-obj.effect("極座標変換", "回転", obj.track3)
+obj.effect("極座標変換", "回転", rename_me_track3)
 local x0 = -r + dx
 local y0 = -r + dy
 local x1 = r + dx

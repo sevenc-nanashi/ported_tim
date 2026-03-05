@@ -1,11 +1,26 @@
 --label:tim2\T_Color_Module.anm\ブリーチバイパス
---track0:強度,0,100,100
---track1:彩度,0,100,70
---track2:ガンマ値,1,1000,120
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:彩度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 70
+
+---$track:ガンマ値
+---min=1
+---max=1000
+---step=0.1
+local rename_me_track2 = 120
+
 require("T_Color_Module")
-local alp = obj.track0 * 0.01
-local sai = alp * obj.track1 + (1 - alp) * 100
-local r = alp * 100 / obj.track2 + 1 - alp
+local alp = rename_me_track0 * 0.01
+local sai = alp * rename_me_track1 + (1 - alp) * 100
+local r = alp * 100 / rename_me_track2 + 1 - alp
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", 5)

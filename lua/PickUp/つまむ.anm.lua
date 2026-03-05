@@ -1,14 +1,32 @@
 --label:tim2
---track0:ﾂﾏﾐ量％,-1000,1000,100
---track1:半径％,0,1000,100
---track2:横比％,0,1000,100
---value@N:分割量,30
---value@Cpos:中心,{0,0}
+---$track:ﾂﾏﾐ量％
+---min=-1000
+---max=1000
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:半径％
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:横比％
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track2 = 100
+
+---$value:分割量
+local N = 30
+
+---$value:中心
+local Cpos = { 0, 0 }
 
 local w, h = obj.getpixel()
-local A = h * obj.track0 * 0.01
-local hr = obj.track1 * 0.01
-local hw = obj.track2 * 0.01
+local A = h * rename_me_track0 * 0.01
+local hr = rename_me_track1 * 0.01
+local hw = rename_me_track2 * 0.01
 
 N = math.max(2, N)
 local Nh = N * 0.5

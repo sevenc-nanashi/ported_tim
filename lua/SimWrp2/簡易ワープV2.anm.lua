@@ -1,21 +1,66 @@
 --label:tim2
---track0:基準X,-10000,10000,0
---track1:基準Y,-10000,10000,0
---track2:移動X,-10000,10000,100
---track3:移動Y,-10000,10000,100
---value@ATp:影響範囲,200
---value@DFp:被影響範囲,200
---value@POS:絶対/相対/chk,1
---value@M:分割数,30
---value@BS:境界固定/chk,0
---value@PSA:パス表示/chk,0
---value@mcol:移動色/col,0xff0000
---value@acol:影響範囲色/col,0x00ff00
---value@dcol:被影響範囲色/col,0x0000ff
---value@fcol:文字色/col,0xff00ff
---value@sz:表示サイズ,50
---value@lw:線幅,3
---check0:中心XY基準,0;
+---$track:基準X
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:基準Y
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:移動X
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:移動Y
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:影響範囲
+local ATp = 200
+
+---$value:被影響範囲
+local DFp = 200
+
+---$value:絶対/相対/chk
+local POS = 1
+
+---$value:分割数
+local M = 30
+
+---$value:境界固定/chk
+local BS = 0
+
+---$value:パス表示/chk
+local PSA = 0
+
+---$value:移動色/col
+local mcol = 0xff0000
+
+---$value:影響範囲色/col
+local acol = 0x00ff00
+
+---$value:被影響範囲色/col
+local dcol = 0x0000ff
+
+---$value:文字色/col
+local fcol = 0xff00ff
+
+---$value:表示サイズ
+local sz = 50
+
+---$value:線幅
+local lw = 3
+
+---$check:中心XY基準
+local rename_me_check0 = true
 
 local TK = function(Z)
     if Z >= 1 then
@@ -37,10 +82,10 @@ else
     SwarpT_DF = {}
 end
 
-SwarpT_X0[SwarpT_N] = obj.track0
-SwarpT_Y0[SwarpT_N] = obj.track1
-SwarpT_X1[SwarpT_N] = obj.track2
-SwarpT_Y1[SwarpT_N] = obj.track3
+SwarpT_X0[SwarpT_N] = rename_me_track0
+SwarpT_Y0[SwarpT_N] = rename_me_track1
+SwarpT_X1[SwarpT_N] = rename_me_track2
+SwarpT_Y1[SwarpT_N] = rename_me_track3
 if POS == 1 then
     SwarpT_X1[SwarpT_N] = SwarpT_X1[SwarpT_N] + SwarpT_X0[SwarpT_N]
     SwarpT_Y1[SwarpT_N] = SwarpT_Y1[SwarpT_N] + SwarpT_Y0[SwarpT_N]
@@ -60,7 +105,7 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
     local w2 = w / 2
     local h2 = h / 2
 
-    if obj.check0 then
+    if rename_me_check0 then
         for k = 1, SwarpT_N do
             SwarpT_X0[k] = SwarpT_X0[k] + cx
             SwarpT_Y0[k] = SwarpT_Y0[k] + cy

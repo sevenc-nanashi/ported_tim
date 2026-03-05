@@ -1,18 +1,57 @@
 --label:tim2\ワイヤー3D.anm\ワイヤー3D(表示)
---track0:横サイズ,0,10000,500
---track1:縦サイズ,0,10000,500
---track2:高さ,-5000,5000,150
---track3:高さ基準,0,100,0,0.01
---value@color:線色/col,0xffffff
---value@BR:塗り/chk,0
---value@colorF:塗色/col,0x0000ff
---value@ant:アンチエイリアス/chk,1
---value@PC:高精度(線のみ)/chk,0
---value@Pst:高精度間隔,2
---value@fig:高精度形状/fig,"円"
---value@adi:高精度自動向き/chk,1
---value@cc:縦横幅,{10,10,2}
---check0:YZ反転,0;
+---$track:横サイズ
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track0 = 500
+
+---$track:縦サイズ
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track1 = 500
+
+---$track:高さ
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track2 = 150
+
+---$track:高さ基準
+---min=0
+---max=100
+---step=0.01
+local rename_me_track3 = 0
+
+---$value:線色/col
+local color = 0xffffff
+
+---$value:塗り/chk
+local BR = 0
+
+---$value:塗色/col
+local colorF = 0x0000ff
+
+---$value:アンチエイリアス/chk
+local ant = 1
+
+---$value:高精度(線のみ)/chk
+local PC = 0
+
+---$value:高精度間隔
+local Pst = 2
+
+---$value:高精度形状/fig
+local fig = "円"
+
+---$value:高精度自動向き/chk
+local adi = 1
+
+---$value:縦横幅
+local cc = { 10, 10, 2 }
+
+---$check:YZ反転
+local rename_me_check0 = true
 
 if WireT_c_nw == nil then
     WireT_c_nw = cc[1] or 10
@@ -31,10 +70,10 @@ if WireT_c_nw == nil then
     end
 end
 
-local c_w = obj.track0
-local c_h = obj.track1
-local c_d = -obj.track2
-local c_bp = obj.track3 * 0.01
+local c_w = rename_me_track0
+local c_h = rename_me_track1
+local c_d = -rename_me_track2
+local c_bp = rename_me_track3 * 0.01
 
 local c_nw = WireT_c_nw
 local c_nh = WireT_c_nh
@@ -68,7 +107,7 @@ if PC == 0 then
 
     if BR == 0 then
         obj.load("figure", "四角形", color, math.max(pw, ph), line)
-        if obj.check0 then
+        if rename_me_check0 then
             o_drawpoly = function(cx, x0, x1, y0, y1, y2, y3, cz, hph)
                 local z0 = cz + hph
                 local z1 = cz - hph
@@ -91,7 +130,7 @@ if PC == 0 then
         obj.load("tempbuffer")
         obj.setoption("drawtarget", "framebuffer")
 
-        if obj.check0 then
+        if rename_me_check0 then
             o_drawpoly = function(cx, x0, x1, y0, y1, y2, y3, cz, hph)
                 local cy = (y0 + y1 + y2 + y3) * 0.25
                 local z0 = cz + hph
@@ -129,7 +168,7 @@ if PC == 0 then
     end
 else
     local setCx, setCz
-    if obj.check0 then
+    if rename_me_check0 then
         setCx = function(x, y0, y1, z0, dz, Pst)
             local dy = y1 - y0
             local r = math.sqrt(dy * dy + dz * dz)
@@ -195,7 +234,7 @@ else
         end
     end
 
-    if obj.check0 then
+    if rename_me_check0 then
         for i = 0, c_nw do
             for j = 0, c_nh do
                 obj.draw(x[i], data[i][j], z[j])

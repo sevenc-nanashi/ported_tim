@@ -1,15 +1,36 @@
 --label:tim2\T_RotBlur_Module.anm\渦
---track0:中心X,-5000,5000,0
---track1:中心Y,-5000,5000,0
---track2:渦量,-3000,3600,100
---track3:変化,0,1,0,1
---value@ck:サイズ保持/chk,1
+---$track:中心X
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:中心Y
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:渦量
+---min=-3000
+---max=3600
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:変化
+---min=0
+---max=1
+---step=1
+local rename_me_track3 = 0
+
+---$value:サイズ保持/chk
+local ck = 1
 
 obj.setanchor("track", 0, "line")
-local dx = obj.track0
-local dy = obj.track1
-local sw = obj.track2
-local ch = obj.track3
+local dx = rename_me_track0
+local dy = rename_me_track1
+local sw = rename_me_track2
+local ch = rename_me_track3
 local userdata, w, h
 w, h = obj.getpixel()
 local r = math.sqrt(w * w + h * h)

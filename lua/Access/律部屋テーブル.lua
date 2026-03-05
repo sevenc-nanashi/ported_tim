@@ -1,10 +1,27 @@
 --label:tim2\けいおんグッズ.obj\律部屋テーブル
---track0:サイズ,0,5000,250
---track1:厚さ補正,0,5000,100
---track2:脚長補正,0,5000,100
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 250
 
---value@tablecol:テーブル色/col,0xc0c0a0
---value@legcol:脚の色/col,0xffffff
+---$track:厚さ補正
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:脚長補正
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track2 = 100
+
+---$value:テーブル色/col
+local tablecol = 0xc0c0a0
+
+---$value:脚の色/col
+local legcol = 0xffffff
 
 function MkSq(x1, y1, z1, x2, y2, z2) -- 数値は対角線指定(1<2)で表裏が正確に
     Szdrawpoly(x1, y1, x2, y2, z1)
@@ -45,10 +62,10 @@ function pole(x1, y1, z1, x2, y2, z2, size)
 end
 
 local zoom = obj.getvalue("zoom") * 0.01
-local sc0 = obj.track0 * zoom
+local sc0 = rename_me_track0 * zoom
 local scl = sc0 / 250
-local td = obj.track1 * 0.01
-local hd = obj.track2 * 0.01
+local td = rename_me_track1 * 0.01
+local hd = rename_me_track2 * 0.01
 
 local y1 = -150 * scl * hd
 local ty = 150 * scl * (1 - hd)

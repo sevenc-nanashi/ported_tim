@@ -1,21 +1,54 @@
 --label:tim2
---track0:角数,3,100,6,1
---track1:高さ,0,20000,200
---track2:上半径,0,10000,100
---track3:下半径,0,10000,300
---value@Futa:蓋/chk,0
---value@cchk:中心基準/chk,1
---value@rev:両面化/chk,0
---value@star:星型化/chk,0
---value@cst:くびれ率,50
---value@int:角を整数化[0/1],0
---value@ant:ｱﾝﾁｴｲﾘｱｽ[0/1],0
+---$track:角数
+---min=3
+---max=100
+---step=1
+local rename_me_track0 = 6
+
+---$track:高さ
+---min=0
+---max=20000
+---step=0.1
+local rename_me_track1 = 200
+
+---$track:上半径
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:下半径
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track3 = 300
+
+---$value:蓋/chk
+local Futa = 0
+
+---$value:中心基準/chk
+local cchk = 1
+
+---$value:両面化/chk
+local rev = 0
+
+---$value:星型化/chk
+local star = 0
+
+---$value:くびれ率
+local cst = 50
+
+---$value:角を整数化[0/1]
+local int = 0
+
+---$value:ｱﾝﾁｴｲﾘｱｽ[0/1]
+local ant = 0
 
 local zoom = obj.getvalue("zoom") * 0.01
-local N = obj.track0
-local H = obj.track1 * zoom
-local R1 = obj.track2 * zoom
-local R2 = obj.track3 * zoom
+local N = rename_me_track0
+local H = rename_me_track1 * zoom
+local R1 = rename_me_track2 * zoom
+local R2 = rename_me_track3 * zoom
 local obh = obj.h
 local iso = Futa and math.pi * 0.5 or 0
 ant = ant or 1

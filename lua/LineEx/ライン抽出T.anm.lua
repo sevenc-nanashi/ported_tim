@@ -1,20 +1,64 @@
 --label:tim2
---track0:半径,1,500,1,1
---track1:強度,0,1000,300
---track2:粒子化幅,0,1000,0,1
---track3:しきい値,0,255,0,1
---value@col1:ライン色/col,0xff0000
---value@col2:背景色/col,0xffffff
---value@Bal:背景透明度,0
---value@Oal:ｵﾘｼﾞﾅﾙ透明度,100
---value@Lr:輝度反転/chk,0
---value@par:粒子[移動/参照]/chk,0
---value@dir:└飛散方向,{0,360}
---value@dck:└飛散ループ/chk,1
---value@arc:追加領域サイズ,0
---value@seed:シード,0
---value@sR:└変化間隔,0
---check0:ラインのみ,0;
+---$track:半径
+---min=1
+---max=500
+---step=1
+local rename_me_track0 = 1
+
+---$track:強度
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 300
+
+---$track:粒子化幅
+---min=0
+---max=1000
+---step=1
+local rename_me_track2 = 0
+
+---$track:しきい値
+---min=0
+---max=255
+---step=1
+local rename_me_track3 = 0
+
+---$value:ライン色/col
+local col1 = 0xff0000
+
+---$value:背景色/col
+local col2 = 0xffffff
+
+---$value:背景透明度
+local Bal = 0
+
+---$value:ｵﾘｼﾞﾅﾙ透明度
+local Oal = 100
+
+---$value:輝度反転/chk
+local Lr = 0
+
+---$value:粒子[移動/参照]/chk
+local par = 0
+
+---$value:└飛散方向
+local dir = { 0, 360 }
+
+---$value:└飛散ループ/chk
+local dck = 1
+
+---$value:追加領域サイズ
+local arc = 0
+
+---$value:シード
+local seed = 0
+
+---$value:└変化間隔
+local sR = 0
+
+---$check:ラインのみ
+local rename_me_check0 = true
+
 dir = dir or { 0, 360 }
 seed = seed or 0
 if sR > 0 then
@@ -30,16 +74,16 @@ if arc > 0 then
 end
 local userdata, w, h = obj.getpixeldata()
 T_LineExtra_Module.SetPublicImage(userdata, w, h)
-obj.effect("ぼかし", "範囲", obj.track0, "サイズ固定", 1)
+obj.effect("ぼかし", "範囲", rename_me_track0, "サイズ固定", 1)
 userdata, w, h = obj.getpixeldata()
 T_LineExtra_Module.LineExt(
     userdata,
     w,
     h,
-    obj.track1,
-    obj.track2,
-    obj.track3,
-    obj.check0,
+    rename_me_track1,
+    rename_me_track2,
+    rename_me_track3,
+    rename_me_check0,
     Bal,
     Oal,
     col1,

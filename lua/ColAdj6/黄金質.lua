@@ -1,10 +1,25 @@
 --label:tim2\T_Color_Module.anm\黄金質
---track0:飽和点1,0,255,0,1
---track1:中心点,0,255,153,1
---track2:飽和点2,0,255,230,1
-local p3 = math.floor(obj.track0)
-local p2 = math.floor(obj.track1)
-local p1 = math.floor(obj.track2)
+---$track:飽和点1
+---min=0
+---max=255
+---step=1
+local rename_me_track0 = 0
+
+---$track:中心点
+---min=0
+---max=255
+---step=1
+local rename_me_track1 = 153
+
+---$track:飽和点2
+---min=0
+---max=255
+---step=1
+local rename_me_track2 = 230
+
+local p3 = math.floor(rename_me_track0)
+local p2 = math.floor(rename_me_track1)
+local p1 = math.floor(rename_me_track2)
 p1, p3 = math.max(p1, p3), math.min(p1, p3)
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()

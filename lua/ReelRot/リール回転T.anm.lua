@@ -1,16 +1,51 @@
 --label:tim2
---track0:開位置％,0,5000,200
---track1:ｵｰﾊﾞｰ量％,0,100,10
---track2:方向,-360,360,-180
---track3:ブラー,0,1000,100
---value@sdy1:開ｵｰﾊﾞｰ補正％,100
---value@sdy2:終ｵｰﾊﾞｰ補正％,100
---value@dt1:開始ｵｰﾊﾞｰﾀｲﾑ％,10
---value@dt2:終了ｵｰﾊﾞｰﾀｲﾑ％,10
---value@ofs:オフセット％,0
---value@TM:時間範囲％,{0,100}
---value@baseChk:横基準/chk,0
---check0:開始位置角度自動調整,0;
+---$track:開位置％
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 200
+
+---$track:ｵｰﾊﾞｰ量％
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 10
+
+---$track:方向
+---min=-360
+---max=360
+---step=0.1
+local rename_me_track2 = -180
+
+---$track:ブラー
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:開ｵｰﾊﾞｰ補正％
+local sdy1 = 100
+
+---$value:終ｵｰﾊﾞｰ補正％
+local sdy2 = 100
+
+---$value:開始ｵｰﾊﾞｰﾀｲﾑ％
+local dt1 = 10
+
+---$value:終了ｵｰﾊﾞｰﾀｲﾑ％
+local dt2 = 10
+
+---$value:オフセット％
+local ofs = 0
+
+---$value:時間範囲％
+local TM = { 0, 100 }
+
+---$value:横基準/chk
+local baseChk = 0
+
+---$check:開始位置角度自動調整
+local rename_me_check0 = true
 
 local norm_pos = function(t)
     return t * t * (3 - 2 * t)
@@ -22,16 +57,16 @@ end
 local w, h = obj.getpixel()
 local t = obj.time / obj.totaltime
 
-local y0 = obj.track0 * 0.01
-local dy = obj.track1 * 0.01
-local deg = obj.track2
-local bl = obj.track3 * 0.01
+local y0 = rename_me_track0 * 0.01
+local dy = rename_me_track1 * 0.01
+local deg = rename_me_track2
+local bl = rename_me_track3 * 0.01
 
 local cos = math.cos(deg * math.pi / 180)
 local sin = math.sin(-deg * math.pi / 180)
 local bs = (baseChk == 1) and w or h
 
-if obj.check0 then
+if rename_me_check0 then
     local x = bs * y0 * sin
     local y = bs * y0 * cos
     x = w * math.floor((x + w * 0.5) / w)

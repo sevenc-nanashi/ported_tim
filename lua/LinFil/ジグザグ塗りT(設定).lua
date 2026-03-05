@@ -1,10 +1,30 @@
 --label:tim2\ジグザグ塗りT.anm\ジグザグ塗りT(設定)
---track0:角度,-3600,3600,20
---track1:本体α,0,100,100
---track2:ラインα,0,100,100
---track3:ぼかし,0,500,0,1
+---$track:角度
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track0 = 20
+
+---$track:本体α
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:ラインα
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:ぼかし
+---min=0
+---max=500
+---step=1
+local rename_me_track3 = 0
+
 T_LineFill = T_LineFill or {}
-T_LineFill.K = obj.track0
-T_LineFill.OgA = obj.track1
-T_LineFill.LnA = obj.track2
-T_LineFill.B = obj.track3
+T_LineFill.K = rename_me_track0
+T_LineFill.OgA = rename_me_track1
+T_LineFill.LnA = rename_me_track2
+T_LineFill.B = rename_me_track3

@@ -1,11 +1,25 @@
 --label:tim2\ワイヤー3D.anm\ワイヤー3D(マップ)
---track0:横分割数,1,100,10,1
---track1:縦分割数,1,100,10,1
---track2:ライン幅,1,1000,2
+---$track:横分割数
+---min=1
+---max=100
+---step=1
+local rename_me_track0 = 10
 
-WireT_c_nw = math.floor(obj.track0)
-WireT_c_nh = math.floor(obj.track1)
-WireT_line = obj.track2
+---$track:縦分割数
+---min=1
+---max=100
+---step=1
+local rename_me_track1 = 10
+
+---$track:ライン幅
+---min=1
+---max=1000
+---step=0.1
+local rename_me_track2 = 2
+
+WireT_c_nw = math.floor(rename_me_track0)
+WireT_c_nh = math.floor(rename_me_track1)
+WireT_line = rename_me_track2
 
 local w, h = obj.getpixel()
 obj.pixeloption("type", "yc")

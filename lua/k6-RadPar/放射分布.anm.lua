@@ -1,22 +1,59 @@
 --label:tim2
---track0:速度,0,10000,30
---track1:放射度,0,100,100
---track2:初期半径,0,10000,100
---track3:個数,1,10000,30,1
---value@dv:速度誤差,1.5
---value@reg:均等動径配置/chk,0
---value@deg:均等角配置/chk,0
---value@fv:初期回転角誤差,360
---value@rv:最大回転速度,45
---value@endlife:消滅時間,0.3
---value@endv:消滅速度,10
---value@cp:中心,{0,0}
---value@seed:乱数シード,200
+---$track:速度
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track0 = 30
 
-local v = obj.track0
-local dr = obj.track1 * 0.01
-local r1 = obj.track2
-local N = math.floor(obj.track3)
+---$track:放射度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:初期半径
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:個数
+---min=1
+---max=10000
+---step=1
+local rename_me_track3 = 30
+
+---$value:速度誤差
+local dv = 1.5
+
+---$value:均等動径配置/chk
+local reg = 0
+
+---$value:均等角配置/chk
+local deg = 0
+
+---$value:初期回転角誤差
+local fv = 360
+
+---$value:最大回転速度
+local rv = 45
+
+---$value:消滅時間
+local endlife = 0.3
+
+---$value:消滅速度
+local endv = 10
+
+---$value:中心
+local cp = { 0, 0 }
+
+---$value:乱数シード
+local seed = 200
+
+local v = rename_me_track0
+local dr = rename_me_track1 * 0.01
+local r1 = rename_me_track2
+local N = math.floor(rename_me_track3)
 fv = 10 * (fv or 360) -- 旧Ver対策
 reg = reg or 0 -- 旧Ver対策
 deg = deg or 0 -- 旧Ver対策

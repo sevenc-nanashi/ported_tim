@@ -1,21 +1,63 @@
 --label:tim2\砕けたガラス.anm\砕けたガラス(エンドレス)
---track0:サイズ,-1000,1000,100
---track1:ガラス量,0,5000,20,1
---track2:屈折率,0,5000,25
---track3:移動速度,-500,500,10
+---$track:サイズ
+---min=-1000
+---max=1000
+---step=0.1
+local rename_me_track0 = 100
 
---value@chk:オリジナル表示/chk,0
---value@rotv:回転速度,5
---value@blur:ぼかし,25
---value@alpha:透明度[%],20
---value@d:厚さ,3
---value@L:光線方向,{1,0,1}
---value@refp:正反射強度[%],75
---value@frd:形状ランダム性[%],100
---value@zornM:サイズランダム性[%],0
---value@Sbeki:小サイズ出現度,100
---value@vrd:速度ランダム性[%],100
---value@rnd:乱数パターン,100
+---$track:ガラス量
+---min=0
+---max=5000
+---step=1
+local rename_me_track1 = 20
+
+---$track:屈折率
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track2 = 25
+
+---$track:移動速度
+---min=-500
+---max=500
+---step=0.1
+local rename_me_track3 = 10
+
+---$value:オリジナル表示/chk
+local chk = 0
+
+---$value:回転速度
+local rotv = 5
+
+---$value:ぼかし
+local blur = 25
+
+---$value:透明度[%]
+local alpha = 20
+
+---$value:厚さ
+local d = 3
+
+---$value:光線方向
+local L = { 1, 0, 1 }
+
+---$value:正反射強度[%]
+local refp = 75
+
+---$value:形状ランダム性[%]
+local frd = 100
+
+---$value:サイズランダム性[%]
+local zornM = 0
+
+---$value:小サイズ出現度
+local Sbeki = 100
+
+---$value:速度ランダム性[%]
+local vrd = 100
+
+---$value:乱数パターン
+local rnd = 100
 
 w, h = obj.getpixel()
 
@@ -27,12 +69,12 @@ end
 
 alpha = 1 - alpha / 100
 
-local NN = obj.track1
-local v = obj.track3
+local NN = rename_me_track1
+local v = rename_me_track3
 local of = obj.time * obj.framerate
 
 local sgn = 1
-local gsize = obj.track0
+local gsize = rename_me_track0
 if gsize < 0 then
     gsize = -gsize
     sgn = 0
@@ -42,7 +84,7 @@ if gsize < 10 then
 end
 
 local gsize_h = gsize / 2
-local nk = obj.track2
+local nk = rename_me_track2
 local apsz_w = w + gsize
 local apsz_h = h + gsize
 

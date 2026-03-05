@@ -1,12 +1,39 @@
 --label:tim2\T_RotBlur_Module.anm\回転ブラー
---track0:中心X,-5000,5000,0
---track1:中心Y,-5000,5000,0
---track2:ブラー量,0,1000,30
---track3:基準位置,-100,100,0
---value@ck:サイズ保持/chk,1
---value@sdw:角度解像度ダウン,0
---value@ap:高精度表示/chk,1
---value@sp:高精度出力/chk,1
+---$track:中心X
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:中心Y
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:ブラー量
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track2 = 30
+
+---$track:基準位置
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:サイズ保持/chk
+local ck = 1
+
+---$value:角度解像度ダウン
+local sdw = 0
+
+---$value:高精度表示/chk
+local ap = 1
+
+---$value:高精度出力/chk
+local sp = 1
 
 local userdata, w, h
 w, h = obj.getpixel()
@@ -18,10 +45,10 @@ end
 require("T_RotBlur_Module")
 userdata, w, h = obj.getpixeldata()
 obj.setanchor("track", 0, "line")
-local dx = obj.track0
-local dy = obj.track1
+local dx = rename_me_track0
+local dy = rename_me_track1
 
 local BL = (not obj.getinfo("saving") and ap == 1) or (obj.getinfo("saving") and sp == 1)
 local TRB = BL and T_RotBlur_Module.RotBlur_S or T_RotBlur_Module.RotBlur_L
-TRB(userdata, w, h, obj.track2, dx, dy, obj.track3, sdw)
+TRB(userdata, w, h, rename_me_track2, dx, dy, rename_me_track3, sdw)
 obj.putpixeldata(userdata)

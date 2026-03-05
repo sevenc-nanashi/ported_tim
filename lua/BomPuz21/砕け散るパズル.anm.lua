@@ -1,27 +1,91 @@
 --label:tim2
---track0:展開,0,5000,50
---track1:速度,-5000,5000,100
---track2:向き,-180,180,30
---track3:サイズ,4,1000,120,1
---value@Pfig:P形状[1〜22],1
---value@LayAp:読込画像表示/chk,0
---value@Csht:配置ズレ/chk,0
---value@Ct:飛散中心,{0,0}
---value@rv:回転速度,100
---value@Gr:重力,{0,100,0}
---value@loadmap:マップ画像読込/chk,0
---value@mapnum:MAP番号[1〜6],1
---value@mapdeg:マップ角度,0
---value@Cmap:マップ中心,{0,0}
---value@limap:マップ限界%,500
---value@spt:隙間,0
---value@seed:乱数シード,0
---value@FBR:表裏反転/chk,0
---check0:マップ反転,0;
+---$track:展開
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:速度
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:向き
+---min=-180
+---max=180
+---step=0.1
+local rename_me_track2 = 30
+
+---$track:サイズ
+---min=4
+---max=1000
+---step=1
+local rename_me_track3 = 120
+
+---$value:P形状[1〜22]
+local Pfig = 1
+
+---$value:読込画像表示/chk
+local LayAp = 0
+
+---$value:配置ズレ/chk
+local Csht = 0
+
+---$value:飛散中心
+local Ct = { 0, 0 }
+
+---$value:回転速度
+local rv = 100
+
+---$value:重力
+local Gr = { 0, 100, 0 }
+
+---$value:マップ画像読込/chk
+local loadmap = 0
+
+---$value:MAP番号[1〜6]
+local mapnum = 1
+
+---$value:マップ角度
+local mapdeg = 0
+
+---$value:マップ中心
+local Cmap = { 0, 0 }
+
+---$value:マップ限界%
+local limap = 500
+
+---$value:隙間
+local spt = 0
+
+---$value:乱数シード
+local seed = 0
+
+---$value:表裏反転/chk
+local FBR = 0
+
+---$check:マップ反転
+local rename_me_check0 = true
+
 Pfig = Pfig or 0
 if Pfig == 0 then
     require("砕け散るパズル-old")
-    OldScript(obj.track0, obj.track1, obj.track2, obj.track3, obj.check0, Ct, rv, Gr, loadmap, mapnum, limap, spt, seed)
+    OldScript(
+        rename_me_track0,
+        rename_me_track1,
+        rename_me_track2,
+        rename_me_track3,
+        rename_me_check0,
+        Ct,
+        rv,
+        Gr,
+        loadmap,
+        mapnum,
+        limap,
+        spt,
+        seed
+    )
 else
     --ピース作成----------
     local Rotxy = function(x0, y0, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
@@ -316,9 +380,9 @@ else
     end
     --メイン----------
     local zoom = obj.getvalue("zoom") * 0.01
-    local apt = obj.track0 * 0.01
-    local Vs = obj.track1 * 7.5
-    local dir = -math.rad(obj.track2)
+    local apt = rename_me_track0 * 0.01
+    local Vs = rename_me_track1 * 7.5
+    local dir = -math.rad(rename_me_track2)
     Csht = Csht or 0
     LayAp = LayAp or 0
     Cmap = Cmap or { 0, 0 }
@@ -334,7 +398,7 @@ else
     Gr[2] = Gr[2] * 30 * zoom
     Gr[3] = Gr[3] * 30 * zoom
     limap = limap * 0.01
-    local SI = math.floor(obj.track3)
+    local SI = math.floor(rename_me_track3)
     local w, h = obj.getpixel()
     local nxd = (w - SI) / SI * 0.5
     local nyd = (h - SI) / SI * 0.5
@@ -373,7 +437,7 @@ else
     --ピース作成
     MakeSpl(SI, spt, Pfig)
     --時間（マップ）作成
-    local T = MakeMap(SI, mapnum, mapdeg, nx, ny, nxd, nyd, Cmap, loadmap, obj.check0, apt, limap)
+    local T = MakeMap(SI, mapnum, mapdeg, nx, ny, nxd, nyd, Cmap, loadmap, rename_me_check0, apt, limap)
     --表示
     obj.setoption("drawtarget", "tempbuffer")
     DrawPoly = ({

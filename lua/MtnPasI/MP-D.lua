@@ -1,18 +1,57 @@
 --label:tim2\モーションパスD.anm\MP-D
---track0:R座標,0,10000,100
---track1:θ座標,-1800,1800,0
---track2:φ座標,-3600,3600,0
---track3:ねじれ,-3600,3600,0
---value@BN:分割数,20
---value@CHA:描画方法(0-4),0
---value@TY:相対/絶対(0/1),0
---value@APP:パス描画(0/1),0
---value@PCOL:パス描画色1,0xff0000
---value@QCOL:パス描画色2,0x0000ff
---value@foc:フォーカス,1
---value@FS:文字サイズ補正,0.5
---value@TOPA:先頭表示,0
---value@SEC:内部,0
+---$track:R座標
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:θ座標
+---min=-1800
+---max=1800
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:φ座標
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:ねじれ
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:分割数
+local BN = 20
+
+---$value:描画方法(0-4)
+local CHA = 0
+
+---$value:相対/絶対(0/1)
+local TY = 0
+
+---$value:パス描画(0/1)
+local APP = 0
+
+---$value:パス描画色1
+local PCOL = 0xff0000
+
+---$value:パス描画色2
+local QCOL = 0x0000ff
+
+---$value:フォーカス
+local foc = 1
+
+---$value:文字サイズ補正
+local FS = 0.5
+
+---$value:先頭表示
+local TOPA = 0
+
+---$value:内部
+local SEC = 0
 
 -- 関数共通
 
@@ -74,16 +113,16 @@ TW = {}
 NN = obj.getoption("section_num")
 
 for i = 0, NN - 1 do
-    XX[i] = obj.getvalue(0, 0, i)
-    YY[i] = obj.getvalue(1, 0, i)
-    ZZ[i] = obj.getvalue(2, 0, i)
-    TW[i] = obj.getvalue(3, 0, i)
+    XX[i] = obj.getvalue("track.rename_me_track0", 0, i)
+    YY[i] = obj.getvalue("track.rename_me_track1", 0, i)
+    ZZ[i] = obj.getvalue("track.rename_me_track2", 0, i)
+    TW[i] = obj.getvalue("track.rename_me_track3", 0, i)
 end
 
-XX[NN] = obj.getvalue(0, 0, -1)
-YY[NN] = obj.getvalue(1, 0, -1)
-ZZ[NN] = obj.getvalue(2, 0, -1)
-TW[NN] = obj.getvalue(3, 0, -1)
+XX[NN] = obj.getvalue("track.rename_me_track0", 0, -1)
+YY[NN] = obj.getvalue("track.rename_me_track1", 0, -1)
+ZZ[NN] = obj.getvalue("track.rename_me_track2", 0, -1)
+TW[NN] = obj.getvalue("track.rename_me_track3", 0, -1)
 
 for i = 0, NN do
     s1 = YY[i] * math.pi / 180

@@ -1,10 +1,34 @@
 --label:tim2\T_RandomBlur_Module.anm\放射ランダムブラー
---track0:中心X,-5000,5000,0
---track1:中心Y,-5000,5000,0
---track2:最大ｽﾞﾚ量,0,5000,200
---track3:基準,-100,100,0
---value@ck:サイズ保持/chk,1
---value@RC:変化固定,0
+---$track:中心X
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:中心Y
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:最大ｽﾞﾚ量
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track2 = 200
+
+---$track:基準
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:サイズ保持/chk
+local ck = 1
+
+---$value:変化固定
+local RC = 0
+
 local userdata, w, h
 w, h = obj.getpixel()
 r = math.sqrt(w * w + h * h)
@@ -17,8 +41,9 @@ end
 require("T_RandomBlur_Module")
 userdata, w, h = obj.getpixeldata()
 obj.setanchor("track", 0, "line")
-dx = obj.track0
-dy = obj.track1
+dx = rename_me_track0
+dy = rename_me_track1
 work = obj.getpixeldata("work")
-local LUD = T_RandomBlur_Module.RadRandBlur(userdata, work, w, h, obj.track2, r / 2, dx, dy, RC, obj.track3 * 0.01)
+local LUD =
+    T_RandomBlur_Module.RadRandBlur(userdata, work, w, h, rename_me_track2, r / 2, dx, dy, RC, rename_me_track3 * 0.01)
 obj.putpixeldata(LUD)

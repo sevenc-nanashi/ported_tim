@@ -1,21 +1,54 @@
 --label:tim2
---track0:サイズ,5,1000,10
---track1:トーン小,0,500,0
---track2:トーン大,0,500,100
---track3:回転,-3600,3600,0
---value@col2:シャドウ色/col,"0x0"
---value@col1:ハイライト色/col,"0xffffff"
---value@fig:トーン形状/fig,"円"
---value@fzs:段違い/chk,1
---value@bkap:背景色非表示/chk,0
---value@tnrep:トーン反転/chk,0
---check0:自分自身で型抜き,1;
+---$track:サイズ
+---min=5
+---max=1000
+---step=0.1
+local rename_me_track0 = 10
+
+---$track:トーン小
+---min=0
+---max=500
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:トーン大
+---min=0
+---max=500
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:シャドウ色/col
+local col2 = "0x0"
+
+---$value:ハイライト色/col
+local col1 = "0xffffff"
+
+---$value:トーン形状/fig
+local fig = "円"
+
+---$value:段違い/chk
+local fzs = 1
+
+---$value:背景色非表示/chk
+local bkap = 0
+
+---$value:トーン反転/chk
+local tnrep = 0
+
+---$check:自分自身で型抜き
+local rename_me_check0 = true
 
 obj.copybuffer("cache:ori_img", "obj")
-local si_x = obj.track0
-local tsi1 = obj.track1 * 0.01
-local tsi2 = obj.track2 * 0.01 - tsi1
-local rz = obj.track3
+local si_x = rename_me_track0
+local tsi1 = rename_me_track1 * 0.01
+local tsi2 = rename_me_track2 * 0.01 - tsi1
+local rz = rename_me_track3
 local w, h = obj.getpixel()
 local si_y = si_x
 local figsz = si_x
@@ -68,7 +101,7 @@ for i = -nx, nx do
         obj.draw(posx[i][j], posy[i][j], 0, con[i][j], al[i][j], 0, 0, rz)
     end
 end
-if obj.check0 then
+if rename_me_check0 then
     obj.copybuffer("obj", "cache:ori_img")
     obj.effect("反転", "透明度反転", 1)
     obj.setoption("blend", "alpha_sub")

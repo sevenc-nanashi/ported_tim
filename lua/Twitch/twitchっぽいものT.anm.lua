@@ -1,22 +1,62 @@
 --label:tim2
---track0:間隔ﾐﾘ秒,1,10000,200
---track1:ｽﾞｰﾑﾌﾞﾗｰ,0,200,100
---track2:ｽﾗｲﾄﾞﾌﾞﾗｰ,0,200,100
---track3:色ｽﾞﾚ補正,0,200,100
---value@blur:ぼかし{量，%},{5,20}
---value@color:色{量，%},{5,20}
---value@light:明るさ{量，%},{20,20}
---value@zoom:ズーム{量，%},{20,20}
---value@slide:スライド{量，%},{10,20}
---value@dirchk:方向指定/chk,0
---value@Drad:指定方向(度),0
---value@Cdir:色ずれタイプ[0-5],0
---value@seed:シード,0
---value@Lset:└ﾚｲﾔｰ依存なし/chk,1
+---$track:間隔ﾐﾘ秒
+---min=1
+---max=10000
+---step=0.1
+local rename_me_track0 = 200
+
+---$track:ｽﾞｰﾑﾌﾞﾗｰ
+---min=0
+---max=200
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:ｽﾗｲﾄﾞﾌﾞﾗｰ
+---min=0
+---max=200
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:色ｽﾞﾚ補正
+---min=0
+---max=200
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:ぼかし{量，%}
+local blur = { 5, 20 }
+
+---$value:色{量，%}
+local color = { 5, 20 }
+
+---$value:明るさ{量，%}
+local light = { 20, 20 }
+
+---$value:ズーム{量，%}
+local zoom = { 20, 20 }
+
+---$value:スライド{量，%}
+local slide = { 10, 20 }
+
+---$value:方向指定/chk
+local dirchk = 0
+
+---$value:指定方向(度)
+local Drad = 0
+
+---$value:色ずれタイプ[0-5]
+local Cdir = 0
+
+---$value:シード
+local seed = 0
+
+---$value:└ﾚｲﾔｰ依存なし/chk
+local Lset = 1
+
 local Cal = (function(LS)
     if LS == 0 then
         return function(time, p, rn1, rn2, seed)
-            local tt = time * 1000 / obj.track0 + 3103
+            local tt = time * 1000 / rename_me_track0 + 3103
             local tf, dt = math.modf(tt)
             local v = {}
             for i = 0, 3 do
@@ -32,7 +72,7 @@ local Cal = (function(LS)
         end
     else
         return function(time, p, rn1, rn2, seed)
-            local tt = time * 1000 / obj.track0 + 3103
+            local tt = time * 1000 / rename_me_track0 + 3103
             local tf, dt = math.modf(tt)
             local v = {}
             for i = 0, 3 do
@@ -124,7 +164,7 @@ obj.effect("色調補正", "明るさ", 100 + li, "色相", cl)
 obj.effect(
     "放射ブラー",
     "範囲",
-    zm * obj.track1 * 0.01,
+    zm * rename_me_track1 * 0.01,
     "X",
     -zmp * slxZ,
     "Y",
@@ -151,8 +191,8 @@ local dx = slx2 - slx1
 local dy = sly2 - sly1
 local dr = math.sqrt(dx * dx + dy * dy)
 local deg = math.atan2(-dx, dy) * 180 / math.pi
-dr = dr * obj.track2 * 0.01
-local dc = dr * obj.track3 * 0.0025
+dr = dr * rename_me_track2 * 0.01
+local dc = dr * rename_me_track3 * 0.0025
 obj.effect("方向ブラー", "角度", deg, "範囲", dr, "サイズ固定", 1)
 obj.effect("領域拡張", "上", dc, "右", dc, "下", dc, "左", dc, "塗りつぶし", 1)
 obj.effect("色ずれ", "ずれ幅", dc, "角度", deg, "type", Cdir)

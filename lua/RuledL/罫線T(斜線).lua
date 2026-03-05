@@ -1,12 +1,36 @@
 --label:tim2\罫線T.anm\罫線T(斜線)
---track0:斜線数,1,16,1,1
---track1:線幅,1,500,6,1
---track2:長さ%,0,200,100
---track3:形状,0,2,0,1
---value@Scl:線色/col,0xffffff
---value@posSL:アンカー,{0,0}
+---$track:斜線数
+---min=1
+---max=16
+---step=1
+local rename_me_track0 = 1
+
+---$track:線幅
+---min=1
+---max=500
+---step=1
+local rename_me_track1 = 6
+
+---$track:長さ%
+---min=0
+---max=200
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:形状
+---min=0
+---max=2
+---step=1
+local rename_me_track3 = 0
+
+---$value:線色/col
+local Scl = 0xffffff
+
+---$value:アンカー
+local posSL = { 0, 0 }
+
 RuledlineT = RuledlineT or {}
-local apnum = obj.track0
+local apnum = rename_me_track0
 obj.setanchor("posSL", apnum)
 RuledlineT.SLX = RuledlineT.SLX or {}
 RuledlineT.SLY = RuledlineT.SLY or {}
@@ -16,9 +40,9 @@ RuledlineT.Sdw = RuledlineT.Sdw or {}
 RuledlineT.Pdw = RuledlineT.Pdw or {}
 local num = (#RuledlineT.SLX or 0) + 1
 RuledlineT.Scl[num] = Scl
-RuledlineT.Sdw[num] = obj.track1
-RuledlineT.Pdw[num] = (1 - obj.track2 * 0.01) * 0.5
-RuledlineT.SLC[num] = math.floor(obj.track3)
+RuledlineT.Sdw[num] = rename_me_track1
+RuledlineT.Pdw[num] = (1 - rename_me_track2 * 0.01) * 0.5
+RuledlineT.SLC[num] = math.floor(rename_me_track3)
 RuledlineT.SLX[num] = {}
 RuledlineT.SLY[num] = {}
 for k = 1, apnum do

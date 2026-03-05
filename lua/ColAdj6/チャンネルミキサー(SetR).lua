@@ -1,10 +1,30 @@
 --label:tim2\T_Color_Module.anm\チャンネルミキサー(SetR)
---track0:赤←赤％,-300,300,100
---track1:赤←緑％,-300,300,0
---track2:赤←青％,-300,300,0
---track3:赤←定数,-300,300,0
+---$track:赤←赤％
+---min=-300
+---max=300
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:赤←緑％
+---min=-300
+---max=300
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:赤←青％
+---min=-300
+---max=300
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:赤←定数
+---min=-300
+---max=300
+---step=0.1
+local rename_me_track3 = 0
+
 ChannelMixerRate = ChannelMixerRate or {}
-ChannelMixerRate[1] = obj.track0
-ChannelMixerRate[2] = obj.track1
-ChannelMixerRate[3] = obj.track2
-ChannelMixerRate[4] = obj.track3
+ChannelMixerRate[1] = rename_me_track0
+ChannelMixerRate[2] = rename_me_track1
+ChannelMixerRate[3] = rename_me_track2
+ChannelMixerRate[4] = rename_me_track3

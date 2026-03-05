@@ -1,15 +1,40 @@
 --label:tim2\T_Filter_Module.anm\ブラスターT
---track0:しきい値,0,255,128,1
---track1:なめらか,1,100,3,1,1
---track2:向き,0,7,1,1
---track3:距離,1,10,5,1
---value@col1:シャドウ/col,0x0
---value@col2:ハイライト/col,0xffffff
---value@ed:エッジ強度,100
+---$track:しきい値
+---min=0
+---max=255
+---step=1
+local rename_me_track0 = 128
+
+---$track:なめらか
+---min=1
+---max=100
+---step=1
+local rename_me_track1 = 3
+
+---$track:向き
+---min=0
+---max=7
+---step=1
+local rename_me_track2 = 1
+
+---$track:距離
+---min=1
+---max=10
+---step=1
+local rename_me_track3 = 5
+
+---$value:シャドウ/col
+local col1 = 0x0
+
+---$value:ハイライト/col
+local col2 = 0xffffff
+
+---$value:エッジ強度
+local ed = 100
 
 require("T_Filter_Module")
-local Len = obj.track3
-local Vec = obj.track2
+local Len = rename_me_track3
+local Vec = rename_me_track2
 local userdata, w, h, w0, h0
 
 obj.copybuffer("cache:original", "obj")
@@ -23,9 +48,9 @@ obj.draw()
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
 
-obj.effect("ぼかし", "範囲", obj.track1, "サイズ固定", 1)
+obj.effect("ぼかし", "範囲", rename_me_track1, "サイズ固定", 1)
 userdata, w, h = obj.getpixeldata()
-T_Filter_Module.easybinarization(userdata, w, h, obj.track0)
+T_Filter_Module.easybinarization(userdata, w, h, rename_me_track0)
 obj.putpixeldata(userdata)
 obj.copybuffer("cache:saveimg", "obj")
 

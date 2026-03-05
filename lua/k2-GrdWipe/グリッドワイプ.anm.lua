@@ -1,11 +1,36 @@
 --label:tim2
---track0:展開,0,100,25
---track1:サイズ,5,5000,50
---track2:回転,-3600,3600,45
---track3:縦横比[%],1,100,5
---value@wtp:ﾜｲﾌﾟﾀｲﾌﾟ[0-8],0
---value@rev:反転/chk,0
---value@centerPos:中心座標,{0,0}
+---$track:展開
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 25
+
+---$track:サイズ
+---min=5
+---max=5000
+---step=0.1
+local rename_me_track1 = 50
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track2 = 45
+
+---$track:縦横比[%]
+---min=1
+---max=100
+---step=0.1
+local rename_me_track3 = 5
+
+---$value:ﾜｲﾌﾟﾀｲﾌﾟ[0-8]
+local wtp = 0
+
+---$value:反転/chk
+local rev = 0
+
+---$value:中心座標
+local centerPos = { 0, 0 }
 
 local wipe_door = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy)
     local T = (L + S / A) * b
@@ -16,7 +41,7 @@ local wipe_door = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy)
     obj.copybuffer("obj", "tmp")
     obj.copybuffer("tmp", "cache:ori")
     obj.setoption("blend", "alpha_sub")
-    local deg = obj.track2 + 90
+    local deg = rename_me_track2 + 90
     for i = -n, n do
         local x = i * S
         local y = x * sin
@@ -71,9 +96,9 @@ local wipe_radial = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy, repN)
             local zoom = 2 * Rw / L
             local x0 = -y0 * sin
             y0 = y0 * cos
-            obj.draw(x0 + cx, y0 + cy, 0, zoom, 1, 0, 0, obj.track2)
+            obj.draw(x0 + cx, y0 + cy, 0, zoom, 1, 0, 0, rename_me_track2)
             if repN == 2 then
-                obj.draw(y0 + cx, -x0 + cy, 0, zoom, 1, 0, 0, obj.track2 + 90)
+                obj.draw(y0 + cx, -x0 + cy, 0, zoom, 1, 0, 0, rename_me_track2 + 90)
             end
         end
     end
@@ -92,7 +117,7 @@ local wipe_rectangular = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy, repN)
     obj.copybuffer("tmp", "cache:ori")
     obj.setoption("drawtarget", "tempbuffer")
     obj.load("figure", "四角形", 0xffffff, L * 0.5)
-    obj.effect("リサイズ", "Y", obj.track3)
+    obj.effect("リサイズ", "Y", rename_me_track3)
     obj.setoption("blend", "alpha_sub")
     for i = -n, n do
         local y0 = i * S
@@ -151,7 +176,7 @@ local wipe_diamond = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy, repN)
     obj.copybuffer("obj", "tmp")
     obj.copybuffer("tmp", "cache:ori")
     obj.setoption("blend", "alpha_sub")
-    local deg = obj.track2
+    local deg = rename_me_track2
     for i = -n, n do
         local x = i * S
         local y = x * cos
@@ -163,10 +188,10 @@ local wipe_diamond = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy, repN)
     end
 end
 
-local b = obj.track0 * 0.01
-local S = obj.track1
-local R = math.rad(obj.track2)
-local A = obj.track3 * 0.01
+local b = rename_me_track0 * 0.01
+local S = rename_me_track1
+local R = math.rad(rename_me_track2)
+local A = rename_me_track3 * 0.01
 
 local w, h = obj.getpixel()
 

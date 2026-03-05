@@ -1,9 +1,24 @@
 --label:tim2
---track0:αﾚｲﾔｰ,1,100,1,1
---track1:指定方法,0,4,0,1
---value@effect:ｴﾌｪｸﾄ適用/chk,1
---value@cksize:ｻｲｽﾞを揃える/chk,1
---check0:透明度反転,0;
+---$track:αﾚｲﾔｰ
+---min=1
+---max=100
+---step=1
+local rename_me_track0 = 1
+
+---$track:指定方法
+---min=0
+---max=4
+---step=1
+local rename_me_track1 = 0
+
+---$value:ｴﾌｪｸﾄ適用/chk
+local effect = 1
+
+---$value:ｻｲｽﾞを揃える/chk
+local cksize = 1
+
+---$check:透明度反転
+local rename_me_check0 = true
 
 --[[
 指定方法
@@ -18,10 +33,10 @@ require("T_Alpha_Module")
 local w0, h0 = obj.getpixel()
 obj.copybuffer("cache:original", "obj")
 
-obj.load("layer", obj.track0, (effect == 1))
+obj.load("layer", rename_me_track0, (effect == 1))
 local userdata, w, h = obj.getpixeldata()
-obj.putpixeldata(T_Alpha_Module.AlphaDataSet(userdata, w, h, obj.track1))
-obj.effect("反転", "透明度反転", obj.check0 and 0 or 1)
+obj.putpixeldata(T_Alpha_Module.AlphaDataSet(userdata, w, h, rename_me_track1))
+obj.effect("反転", "透明度反転", rename_me_check0 and 0 or 1)
 
 obj.copybuffer("tmp", "cache:original")
 obj.setoption("drawtarget", "tempbuffer")

@@ -1,10 +1,30 @@
 --label:tim2\任意多角形.obj\任意多角形
---track0:ｶﾞｲﾄﾞ表示,0,1,0,1
---track1:ｶﾞｲﾄﾞｻｲｽﾞ,0,1000,50
---track2:厚み,0,1000,0
---value@col:色/col,0xffffff
---value@colG: ガイド色/col,0xff0000
---value@fig:図形/fig,"円"
+---$track:ｶﾞｲﾄﾞ表示
+---min=0
+---max=1
+---step=1
+local rename_me_track0 = 0
+
+---$track:ｶﾞｲﾄﾞｻｲｽﾞ
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 50
+
+---$track:厚み
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track2 = 0
+
+---$value:色/col
+local col = 0xffffff
+
+---$value: ガイド色/col
+local colG = 0xff0000
+
+---$value:図形/fig
+local fig = "円"
 
 function muki(ax, ay, bx, by)
     if ax * by - ay * bx > 0 then
@@ -37,8 +57,8 @@ function mydp(p1, p2, p3)
     obj.drawpoly(p1.x, p1.y, 0, p1.x, p1.y, 0, p2.x, p2.y, 0, p3.x, p3.y, 0)
 end
 
-size = obj.track1
-TC = obj.track2 / 2
+size = rename_me_track1
+TC = rename_me_track2 / 2
 N = obj.getoption("section_num") + 1
 N2 = N
 pos = {}
@@ -54,7 +74,7 @@ pos[0] = {}
 pos[0] = pos[N]
 pos[N + 1] = {}
 pos[N + 1] = pos[1]
-mode = math.floor(obj.track0)
+mode = math.floor(rename_me_track0)
 
 pos2 = {}
 for i = 0, N + 1 do

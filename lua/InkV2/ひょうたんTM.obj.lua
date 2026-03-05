@@ -1,20 +1,46 @@
 --label:tim2
---track0:高さ,0,2000,80
---track1:幅,0,2000,250
---track2:くびれ,0,2000,10
---track3:つぶれ,0,100,40
+---$track:高さ
+---min=0
+---max=2000
+---step=0.1
+local rename_me_track0 = 80
 
---value@col:色/col,"0xffffff"
---value@N:分割,30
---value@rpN:繰り返し,1
---value@HA:高精度/chk,0
+---$track:幅
+---min=0
+---max=2000
+---step=0.1
+local rename_me_track1 = 250
+
+---$track:くびれ
+---min=0
+---max=2000
+---step=0.1
+local rename_me_track2 = 10
+
+---$track:つぶれ
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 40
+
+---$value:色/col
+local col = "0xffffff"
+
+---$value:分割
+local N = 30
+
+---$value:繰り返し
+local rpN = 1
+
+---$value:高精度/chk
+local HA = 0
 
 HA = HA or 0
 
-local r1 = obj.track0 * 0.5
-local w = obj.track1 * 0.5
-local q = obj.track2 * 0.5
-local asp = 1 - obj.track3 * 0.01
+local r1 = rename_me_track0 * 0.5
+local w = rename_me_track1 * 0.5
+local q = rename_me_track2 * 0.5
+local asp = 1 - rename_me_track3 * 0.01
 r1 = math.min(w, r1)
 q = math.min(q, r1)
 if HA == 1 then

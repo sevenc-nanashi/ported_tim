@@ -1,14 +1,45 @@
 --label:tim2\モーフィング.anm\モーフィング(輪郭)-表示
---track0:変化度,0,100,50
---track1:サイズ,0,1000,10
---track2:点数,0,20000,120,1
---track3:ｵﾌｾｯﾄ,-2000,2000,0
---value@inum:変形前画像ﾚｲﾔｰ,0
---value@GE:ｴﾌｪｸﾄ取得/chk,1
---value@fig:形状/fig,"円"
---value@col:ドット色/col,0xffffff
---value@td:自動方向/chk,0
---value@IE:一時保存EXT/chk,0
+---$track:変化度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:サイズ
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 10
+
+---$track:点数
+---min=0
+---max=20000
+---step=1
+local rename_me_track2 = 120
+
+---$track:ｵﾌｾｯﾄ
+---min=-2000
+---max=2000
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:変形前画像ﾚｲﾔｰ
+local inum = 0
+
+---$value:ｴﾌｪｸﾄ取得/chk
+local GE = 1
+
+---$value:形状/fig
+local fig = "円"
+
+---$value:ドット色/col
+local col = 0xffffff
+
+---$value:自動方向/chk
+local td = 0
+
+---$value:一時保存EXT/chk
+local IE = 0
 
 Outlinemorphing_T = function(OT)
     local makeOutline = function(ni, nj, ky, T, w, h, SF)
@@ -189,10 +220,10 @@ Outlinemorphing_T = function(OT)
 end
 
 Out_morph_T = Out_morph_T or {}
-Out_morph_T.S = obj.track0 * 0.01
-Out_morph_T.Cw = obj.track1
-Out_morph_T.N = obj.track2
-Out_morph_T.OF = -obj.track3 * 0.01
+Out_morph_T.S = rename_me_track0 * 0.01
+Out_morph_T.Cw = rename_me_track1
+Out_morph_T.N = rename_me_track2
+Out_morph_T.OF = -rename_me_track3 * 0.01
 
 Out_morph_T.inum = inum or 1
 Out_morph_T.fig = fig

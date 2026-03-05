@@ -1,14 +1,34 @@
 --label:tim2\罫線T.anm\罫線T(Type1)
---track0:サイズ,0,500,100,1
---track1:横数,1,100,4,1
---track2:縦数,1,100,4,1
---track3:縦横比%,-100,100,-38.2
+---$track:サイズ
+---min=0
+---max=500
+---step=1
+local rename_me_track0 = 100
+
+---$track:横数
+---min=1
+---max=100
+---step=1
+local rename_me_track1 = 4
+
+---$track:縦数
+---min=1
+---max=100
+---step=1
+local rename_me_track2 = 4
+
+---$track:縦横比%
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track3 = -38.2
+
 RuledlineT = RuledlineT or {}
 RuledlineT.typ = 1
-RuledlineT.dw = obj.track0
-RuledlineT.nx = math.floor(obj.track1)
-RuledlineT.ny = math.floor(obj.track2)
-RuledlineT.asp = obj.track3 * 0.01
+RuledlineT.dw = rename_me_track0
+RuledlineT.nx = math.floor(rename_me_track1)
+RuledlineT.ny = math.floor(rename_me_track2)
+RuledlineT.asp = rename_me_track3 * 0.01
 RuledlineT.LPX = {}
 RuledlineT.LPY = {}
 RuledlineT.cx = 0

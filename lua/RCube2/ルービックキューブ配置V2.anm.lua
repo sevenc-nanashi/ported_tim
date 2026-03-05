@@ -1,12 +1,36 @@
 --label:tim2
---track0:配置,1,3,1,1
---track1:サイズ,0,5000,100
---track2:間隔(%),-1000,1000,10
---value@pPOS:事前回転位置,""
---value@pROT:事前回転方向,""
---value@POS:回転位置,"1251"
---value@ROT:回転方向,"0010"
---value@SHO:内部表示/chk,1
+---$track:配置
+---min=1
+---max=3
+---step=1
+local rename_me_track0 = 1
+
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:間隔(%)
+---min=-1000
+---max=1000
+---step=0.1
+local rename_me_track2 = 10
+
+---$value:事前回転位置
+local pPOS = ""
+
+---$value:事前回転方向
+local pROT = ""
+
+---$value:回転位置
+local POS = "1251"
+
+---$value:回転方向
+local ROT = "0010"
+
+---$value:内部表示/chk
+local SHO = 1
 
 function p_rot(p1, p2, rs, rc)
     return p1 * rc + p2 * rs, -p1 * rs + p2 * rc
@@ -43,8 +67,8 @@ local v1 = {}
 local v2 = {}
 local v3 = {}
 
-local qs = obj.track1
-local dw = qs * (1 + obj.track2 / 100)
+local qs = rename_me_track1
+local dw = qs * (1 + rename_me_track2 / 100)
 
 local DataL = math.min(string.len(POS), string.len(ROT))
 for n = 1, DataL do
@@ -84,7 +108,7 @@ end
 for i = -1, 1 do
     for j = -1, 1 do
         for k = -1, 1 do
-            if obj.track0 == 1 then
+            if rename_me_track0 == 1 then
                 u0[0], v0[0] = (i + 1) * w3, (j + 1) * h3
                 u1[0], v1[0] = (i + 2) * w3, (j + 1) * h3
                 u2[0], v2[0] = (i + 2) * w3, (j + 2) * h3
@@ -114,7 +138,7 @@ for i = -1, 1 do
                 u1[5], v1[5] = (i + 2) * w3, (k + 1) * h3
                 u2[5], v2[5] = (i + 2) * w3, (k + 2) * h3
                 u3[5], v3[5] = (i + 1) * w3, (k + 2) * h3
-            elseif obj.track0 == 3 then
+            elseif rename_me_track0 == 3 then
                 u0[0], v0[0] = (i + 1) * w9, (j + 1) * h6
                 u1[0], v1[0] = (i + 2) * w9, (j + 1) * h6
                 u2[0], v2[0] = (i + 2) * w9, (j + 2) * h6

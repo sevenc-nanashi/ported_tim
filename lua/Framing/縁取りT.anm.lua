@@ -1,21 +1,56 @@
 --label:tim2
---track0:サイズ,0,500,50
---track1:境界ﾎﾞｶｼ,0.1,500,2
---track2:α基準,0,254,128,1
---track3:合成量,-100,100,100
---check0:高精度,0
---value@col1:色1/col,0xffffff
---value@col2:色2/col,0x0
---value@Lgr:距離グラデ/chk,0
---value@Mis:錯覚補正/chk,0
---value@MiV:└色ぼかし量%,25
---value@MiA:└αぼかし量%,25
---value@mode:ﾓｰﾄﾞ[0〜2],0
+---$track:サイズ
+---min=0
+---max=500
+---step=0.1
+local rename_me_track0 = 50
 
-local Sz = obj.track0
-local bl = obj.track1
-local sh = obj.track2
-local Gal = obj.track3 / 100
+---$track:境界ﾎﾞｶｼ
+---min=0.1
+---max=500
+---step=0.1
+local rename_me_track1 = 2
+
+---$track:α基準
+---min=0
+---max=254
+---step=1
+local rename_me_track2 = 128
+
+---$track:合成量
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track3 = 100
+
+---$check:高精度
+local rename_me_check0 = false
+
+---$value:色1/col
+local col1 = 0xffffff
+
+---$value:色2/col
+local col2 = 0x0
+
+---$value:距離グラデ/chk
+local Lgr = 0
+
+---$value:錯覚補正/chk
+local Mis = 0
+
+---$value:└色ぼかし量%
+local MiV = 25
+
+---$value:└αぼかし量%
+local MiA = 25
+
+---$value:ﾓｰﾄﾞ[0〜2]
+local mode = 0
+
+local Sz = rename_me_track0
+local bl = rename_me_track1
+local sh = rename_me_track2
+local Gal = rename_me_track3 / 100
 local col1 = col1 or 0xffffff
 local col2 = col2 or 0x0
 local Lgr = Lgr or 0
@@ -37,7 +72,7 @@ end
 require("T_Framing_Module")
 local userdata, w, h = obj.getpixeldata()
 
-if obj.check0 then
+if rename_me_check0 then
     T_Framing_Module.FramingHi(userdata, w, h, Sz, bl, sh, col1, col2, Lgr)
 else
     T_Framing_Module.Framing(userdata, w, h, Sz, bl, sh, col1, col2, Lgr)

@@ -1,28 +1,65 @@
 --label:tim2\T_Filter_Module.anm\モザイクタイルT
---track0:サイズ,0,2000,50
---track1:溝幅,0,1000,1
---track2:細かさ,1,100,10
---track3:変形量,-500,500,30
---value@asp:縦横比％,100
---value@BL:溝明度,70
---value@tw:凸エッジ幅,2
---value@th:凸エッジ高さ,1
---value@tr:凸エッジ角度,-45
---value@gs:がさつき,50
---value@nv:変化速度,0
---value@seed:乱数シード,0
---check0:がさつき,1;
+---$track:サイズ
+---min=0
+---max=2000
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:溝幅
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 1
+
+---$track:細かさ
+---min=1
+---max=100
+---step=0.1
+local rename_me_track2 = 10
+
+---$track:変形量
+---min=-500
+---max=500
+---step=0.1
+local rename_me_track3 = 30
+
+---$value:縦横比％
+local asp = 100
+
+---$value:溝明度
+local BL = 70
+
+---$value:凸エッジ幅
+local tw = 2
+
+---$value:凸エッジ高さ
+local th = 1
+
+---$value:凸エッジ角度
+local tr = -45
+
+---$value:がさつき
+local gs = 50
+
+---$value:変化速度
+local nv = 0
+
+---$value:乱数シード
+local seed = 0
+
+---$check:がさつき
+local rename_me_check0 = true
 
 local w, h = obj.getpixel()
 asp = asp * 0.01
-local Sw = obj.track0
+local Sw = rename_me_track0
 local Sh = Sw * asp
-local Bw = obj.track1
-local Fr = obj.track2 * 0.1
-local Rf = obj.track3
+local Bw = rename_me_track1
+local Fr = rename_me_track2 * 0.1
+local Rf = rename_me_track3
 local w2, h2 = w + Sw, h + Sh
 
-if obj.check0 then
+if rename_me_check0 then
     require("T_Filter_Module")
     local Vec = math.floor((tr + 45) / 45 - 0.5)
     Vec = Vec % 8

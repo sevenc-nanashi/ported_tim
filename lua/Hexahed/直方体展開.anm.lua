@@ -1,12 +1,39 @@
 --label:tim2
---track0:蓋角度,-90,270,0
---track1:側面角度,-90,270,0
---track2:サイズ,0,5000,100
---track3:奥行き(%),0,5000,100
---value@Hr:高さ(%),100
---value@POS:配置,0
---value@REV:表裏反転,0
---value@ANT:アンチエイリアス,0
+---$track:蓋角度
+---min=-90
+---max=270
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:側面角度
+---min=-90
+---max=270
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:奥行き(%)
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:高さ(%)
+local Hr = 100
+
+---$value:配置
+local POS = 0
+
+---$value:表裏反転
+local REV = 0
+
+---$value:アンチエイリアス
+local ANT = 0
 
 local sx0 = {}
 local sy0 = {}
@@ -30,8 +57,8 @@ local v1 = {}
 local v2 = {}
 local v3 = {}
 
-local sita1 = obj.track0
-local sita2 = obj.track1
+local sita1 = rename_me_track0
+local sita2 = rename_me_track1
 
 local POS = POS
 local REV = REV
@@ -43,13 +70,13 @@ obj.setoption("antialias", ANT)
 Hr = Hr * 0.01
 
 if POS == 0 then
-    ww = obj.track2
+    ww = rename_me_track2
     hh = ww * obj.h / obj.w
-    ll = ww * obj.track3 / 100
+    ll = ww * rename_me_track3 / 100
 else
-    ww = obj.track2
+    ww = rename_me_track2
     hh = ww * (obj.h / 2) / (obj.w / 3)
-    ll = ww * obj.track3 / 100
+    ll = ww * rename_me_track3 / 100
 end
 
 ww2 = ww / 2

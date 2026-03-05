@@ -1,14 +1,36 @@
 --label:tim2\モーフィング.anm\モーフィング(輪郭)-オプション
---track0:ライン幅,0,1000,5
---track1:回転角,-3600,3600,0
---track2:しきい値,0,254,128,1
---track3:対応点ｽﾞﾚ,-2000,2000,0
---value@col2:ライン色/col,0xffffff
+---$track:ライン幅
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track0 = 5
+
+---$track:回転角
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:しきい値
+---min=0
+---max=254
+---step=1
+local rename_me_track2 = 128
+
+---$track:対応点ｽﾞﾚ
+---min=-2000
+---max=2000
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:ライン色/col
+local col2 = 0xffffff
+
 Out_morph_T = Out_morph_T or {}
-Out_morph_T.Lw = obj.track0
-Out_morph_T.Deg = obj.track1
-Out_morph_T.T = obj.track2
-Out_morph_T.SF = obj.track3
+Out_morph_T.Lw = rename_me_track0
+Out_morph_T.Deg = rename_me_track1
+Out_morph_T.T = rename_me_track2
+Out_morph_T.SF = rename_me_track3
 Out_morph_T.col2 = col2
 if obj.getoption("script_name", 1, true) ~= "モーフィング(輪郭)-表示@モーフィング" then
     Outlinemorphing_T(Out_morph_T)

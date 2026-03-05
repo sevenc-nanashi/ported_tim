@@ -138,23 +138,91 @@ task :flatten_dialog do
             display_name, rest = entry.split(",", 2)
             variable_name, initial_value = rest.split("=", 2)
             variable_name = variable_name.delete_prefix("local ")
-            variable_name, kind =
-              if variable_name.end_with?("/chk")
-                [variable_name.delete_suffix("/chk"), "check"]
-              elsif variable_name.end_with?("/col")
-                [variable_name.delete_suffix("/col"), "color"]
-              elsif variable_name.end_with?("/fig")
-                [variable_name.delete_suffix("/fig"), "figure"]
+            display_name, kind =
+              if display_name.end_with?("/chk")
+                [display_name.delete_suffix("/chk"), "check"]
+              elsif display_name.end_with?("/col")
+                [display_name.delete_suffix("/col"), "color"]
+              elsif display_name.end_with?("/fig")
+                [display_name.delete_suffix("/fig"), "figure"]
               else
-                [variable_name, "value"]
+                [display_name, "value"]
               end
 
-            replacements << "--#{kind}@#{variable_name}:#{display_name},#{initial_value}"
+            # replacements << "---##{kind}@#{variable_name}:#{display_name},#{initial_value}"
+            replacements << <<~LUA
+            ---$#{kind}:#{display_name}
+            local #{variable_name} = #{initial_value}
+            LUA
           end
         new_content = content.gsub(/--dialog:.*\n/, replacements.join("\n") + "\n")
         File.write(file, new_content)
       end
     end
+end
+
+task :rewrite_parameters do
+  Dir.glob("./lua/**/*.lua").each do |file|
+    content = File.read(file)
+    content.gsub!(/--track([0-3]):(.*)/) do |match|
+      # --track0:項目名,最小値,最大値,デフォルト値,移動単位
+      track_id = $1
+      track_name, min, max, default, step = $2.split(",")
+      step ||= "0.1"
+      default ||= min
+      raise "Invalid track format in #{file}: #{match}" unless track_name && min && max && default && step
+
+      <<~LUA
+      ---$track:#{track_name}
+      ---min=#{min}
+      ---max=#{max}
+      ---step=#{step}
+      local rename_me_track#{track_id} = #{default}
+      LUA
+    end
+    content.gsub!(/--check0:(.*)/) do |match|
+      # --check0:項目名,デフォルト値（0か1）
+      check_name, default = $1.split(",")
+      default ||= "0"
+      raise "Invalid check format in #{file}: #{match}" unless check_name && default
+
+      <<~LUA
+      ---$check:#{check_name}
+      local rename_me_check0 = #{default == "0" ? "false" : "true"}
+      LUA
+    end
+    content.gsub!(/--color:(.*)/) do |match|
+      # --color:デフォルト値
+      check_name, default = $1.split(",")
+      default ||= "0"
+      raise "Invalid check format in #{file}: #{match}" unless check_name && default
+
+      <<~LUA
+      ---$color:#{check_name}
+      local rename_me_color = #{default == "0" ? "false" : "true"}
+      color = rename_me_color
+      LUA
+    end
+    content.gsub!(/--file:/) do |match|
+      <<~LUA
+      ---$file:ファイル
+      local rename_me_file = ""
+      file = rename_me_file
+      LUA
+    end
+    content.gsub!(/obj.getvalue\(([0-4])/) do |match|
+      obj_id = $1
+      "obj.getvalue(\"track.rename_me_track#{obj_id}\""
+    end
+    content.gsub!(/obj.track([0-4])/) do |match|
+      "rename_me_track#{$1}"
+    end
+    content.gsub!(/obj.check0/) do |match|
+      "rename_me_check0"
+    end
+
+    File.write(file, content)
+  end
 end
 
 task :format do

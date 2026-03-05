@@ -1,22 +1,62 @@
 --label:tim2\集中線T.obj\集中線T2
---track0:発生量,0,100,35
---track1:中心,0,100,60
---track2:分布,0,100,50,0.01
---track3:放射周期,0,100,0
---value@color:色/col,0xffffff
---value@Gr:明るさ,500
---value@yspd:放射速度,0
---value@spd:変化速度,0
---value@rv:回転速度,0
---value@Edd:渦巻,0
---value@TY:タイプ,1
---value@seed:シード,0
---value@w:幅,nil
---value@h:高さ,nil
-local sh = 100 - obj.track0
-local clipY = obj.track1
-local fr1 = obj.track2
-local yfr = obj.track3
+---$track:発生量
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 35
+
+---$track:中心
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 60
+
+---$track:分布
+---min=0
+---max=100
+---step=0.01
+local rename_me_track2 = 50
+
+---$track:放射周期
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:色/col
+local color = 0xffffff
+
+---$value:明るさ
+local Gr = 500
+
+---$value:放射速度
+local yspd = 0
+
+---$value:変化速度
+local spd = 0
+
+---$value:回転速度
+local rv = 0
+
+---$value:渦巻
+local Edd = 0
+
+---$value:タイプ
+local TY = 1
+
+---$value:シード
+local seed = 0
+
+---$value:幅
+local w = nil
+
+---$value:高さ
+local h = nil
+
+local sh = 100 - rename_me_track0
+local clipY = rename_me_track1
+local fr1 = rename_me_track2
+local yfr = rename_me_track3
 local screen_w = w or obj.screen_w
 local screen_h = h or obj.screen_h
 

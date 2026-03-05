@@ -1,25 +1,69 @@
 --label:tim2\T_Color_Module.anm\チャンネルミキサー(表示+SetB)
---track0:青←赤％,-300,300,0
---track1:青←緑％,-300,300,0
---track2:青←青％,-300,300,100
---track3:青←定数,-300,300,0
---value@RR:赤←赤％,100
---value@RG:赤←緑％,0
---value@RB:赤←青％,0
---value@RC:赤←定数,0
---value@GR:緑←赤％,0
---value@GG:緑←緑％,100
---value@GB:緑←青％,0
---value@GC:緑←定数,0
---value@BR:青←赤％,0
---value@BG:青←緑％,0
---value@BB:青←青％,100
---value@BC:青←定数,0
+---$track:青←赤％
+---min=-300
+---max=300
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:青←緑％
+---min=-300
+---max=300
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:青←青％
+---min=-300
+---max=300
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:青←定数
+---min=-300
+---max=300
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:赤←赤％
+local RR = 100
+
+---$value:赤←緑％
+local RG = 0
+
+---$value:赤←青％
+local RB = 0
+
+---$value:赤←定数
+local RC = 0
+
+---$value:緑←赤％
+local GR = 0
+
+---$value:緑←緑％
+local GG = 100
+
+---$value:緑←青％
+local GB = 0
+
+---$value:緑←定数
+local GC = 0
+
+---$value:青←赤％
+local BR = 0
+
+---$value:青←緑％
+local BG = 0
+
+---$value:青←青％
+local BB = 100
+
+---$value:青←定数
+local BC = 0
+
 if ChannelMixerRate then
-    ChannelMixerRate[9] = obj.track0
-    ChannelMixerRate[10] = obj.track1
-    ChannelMixerRate[11] = obj.track2
-    ChannelMixerRate[12] = obj.track3
+    ChannelMixerRate[9] = rename_me_track0
+    ChannelMixerRate[10] = rename_me_track1
+    ChannelMixerRate[11] = rename_me_track2
+    ChannelMixerRate[12] = rename_me_track3
 else
     ChannelMixerRate = { RR, RG, RB, RC, GR, GG, GB, GC, BR, BG, BB, BC }
 end

@@ -1,14 +1,45 @@
 --label:tim2
---track0:範囲,1,500,50
---track1:サイクル,1,20,2,1
---track2:速度,-1000,1000,100
---track3:オフセット,0,1000,0
---value@egm:ミッドトーン無視/chk,0
---value@col1:ハイライト/col,0xffffff
---value@col2: ミッドトーン/col,0x0080ff
---value@col3: シャドウ/col,0x0080ff
---value@bl:ぼかし,1
---check0:ｵﾘｼﾞﾅﾙ表示,1;
+---$track:範囲
+---min=1
+---max=500
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:サイクル
+---min=1
+---max=20
+---step=1
+local rename_me_track1 = 2
+
+---$track:速度
+---min=-1000
+---max=1000
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:オフセット
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:ミッドトーン無視/chk
+local egm = 0
+
+---$value:ハイライト/col
+local col1 = 0xffffff
+
+---$value: ミッドトーン/col
+local col2 = 0x0080ff
+
+---$value: シャドウ/col
+local col3 = 0x0080ff
+
+---$value:ぼかし
+local bl = 1
+
+---$check:ｵﾘｼﾞﾅﾙ表示
+local rename_me_check0 = true
 
 require("T_Color_Module")
 
@@ -16,10 +47,10 @@ local ox, oy, oz = obj.ox, obj.oy, obj.oz
 local cx, cy, cz = obj.cx, obj.cy, obj.cz
 obj.copybuffer("cache:ori", "obj")
 
-local sz = obj.track0
+local sz = rename_me_track0
 
-local repN = math.floor(obj.track1)
-local sft = ((obj.time * obj.track2 + obj.track3) % 100) * 0.01
+local repN = math.floor(rename_me_track1)
+local sft = ((obj.time * rename_me_track2 + rename_me_track3) % 100) * 0.01
 
 local r1, g1, b1 = RGB(col1)
 local r3, g3, b3 = RGB(col3)
@@ -57,7 +88,7 @@ T_Color_Module.TritoneV2(userdata, w, h, r1, g1, b1, r2, g2, b2, r3, g3, b3, 255
 obj.putpixeldata(userdata)
 obj.effect("ぼかし", "範囲", bl)
 
-if obj.check0 then
+if rename_me_check0 then
     obj.copybuffer("tmp", "obj")
     obj.copybuffer("obj", "cache:ori")
     obj.draw()

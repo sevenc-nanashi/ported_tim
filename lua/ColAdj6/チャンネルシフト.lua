@@ -1,13 +1,37 @@
 --label:tim2\T_Color_Module.anm\チャンネルシフト
---track0:アルファ,0,6,0,1
---track1:赤,0,6,1,1
---track2:緑,0,6,2,1
---track3:青,0,6,3,1
---value@Dchk:チャンネル表示/chk,0
---value@fs:フォントサイズ,34
+---$track:アルファ
+---min=0
+---max=6
+---step=1
+local rename_me_track0 = 0
+
+---$track:赤
+---min=0
+---max=6
+---step=1
+local rename_me_track1 = 1
+
+---$track:緑
+---min=0
+---max=6
+---step=1
+local rename_me_track2 = 2
+
+---$track:青
+---min=0
+---max=6
+---step=1
+local rename_me_track3 = 3
+
+---$value:チャンネル表示/chk
+local Dchk = 0
+
+---$value:フォントサイズ
+local fs = 34
+
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()
-T_Color_Module.ShiftChannels(userdata, w, h, obj.track0, obj.track1, obj.track2, obj.track3)
+T_Color_Module.ShiftChannels(userdata, w, h, rename_me_track0, rename_me_track1, rename_me_track2, rename_me_track3)
 obj.putpixeldata(userdata)
 if obj.getinfo("saving") == false and Dchk == 1 then
     obj.setoption("drawtarget", "tempbuffer", w, h)

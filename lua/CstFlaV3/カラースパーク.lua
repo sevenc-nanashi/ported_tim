@@ -1,28 +1,68 @@
 --label:tim2\カスタムフレア.anm\カラースパーク
---track0:サイズ,0,5000,400
---track1:長さ,0,1000,100
---track2:強度,0,100,60
---track3:回転,-3600,3600,0
---value@n:数,100
---value@fig:カラーパターン[1-5],1
---value@dH:幅比率％,5
---value@blur:ぼかし,5
---value@rblur:放射ブラー,5
---value@t:位置％,-100
---value@OFSET:位置オフセット％,{0,0,0}
---value@drh:動径方向バラツキ％,100
---value@blink:点滅,0.2
---value@seed:乱数シード,1
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 400
+
+---$track:長さ
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 60
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:数
+local n = 100
+
+---$value:カラーパターン[1-5]
+local fig = 1
+
+---$value:幅比率％
+local dH = 5
+
+---$value:ぼかし
+local blur = 5
+
+---$value:放射ブラー
+local rblur = 5
+
+---$value:位置％
+local t = -100
+
+---$value:位置オフセット％
+local OFSET = { 0, 0, 0 }
+
+---$value:動径方向バラツキ％
+local drh = 100
+
+---$value:点滅
+local blink = 0.2
+
+---$value:乱数シード
+local seed = 1
+
 local figmax = 5
 obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存
 local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-local size = obj.track0 * 0.5
-local dL = obj.track1 * 0.5
-alpha = alpha * obj.track2 * 0.01
-local rot = obj.track3
+local size = rename_me_track0 * 0.5
+local dL = rename_me_track1 * 0.5
+alpha = alpha * rename_me_track2 * 0.01
+local rot = rename_me_track3
 drh = drh * 0.01
 fig = math.floor(fig)
 if fig > figmax then

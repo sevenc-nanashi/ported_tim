@@ -1,15 +1,48 @@
 --label:tim2\T_Filter_Module.anm\チョーク・木炭T
---track0:木炭適用,0,100,0
---track1:ﾁｭｰｸ適用,0,100,0
---track2:筆圧,0,100,50
---track3:しきい値,0,255,0,1
---value@len:長さ[1-10],7
---value@np:ノイズ強度,30
---value@col1:シャドウ/col,0x0
---value@col2:ハイライト/col,0xffffff
---value@sechk:シード固定/chk,1
---value@seed:シード,0
---check0:しきい値を自動計算,1;
+---$track:木炭適用
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:ﾁｭｰｸ適用
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:筆圧
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 50
+
+---$track:しきい値
+---min=0
+---max=255
+---step=1
+local rename_me_track3 = 0
+
+---$value:長さ[1-10]
+local len = 7
+
+---$value:ノイズ強度
+local np = 30
+
+---$value:シャドウ/col
+local col1 = 0x0
+
+---$value:ハイライト/col
+local col2 = 0xffffff
+
+---$value:シード固定/chk
+local sechk = 1
+
+---$value:シード
+local seed = 0
+
+---$check:しきい値を自動計算
+local rename_me_check0 = true
 
 require("T_Filter_Module")
 if sechk == 0 then
@@ -26,11 +59,11 @@ T_Filter_Module.Preprocessing(
     userdata,
     w,
     h,
-    obj.track0 * 0.01,
-    obj.track1 * 0.01,
-    obj.track2 * 0.01,
-    obj.track3,
-    obj.check0
+    rename_me_track0 * 0.01,
+    rename_me_track1 * 0.01,
+    rename_me_track2 * 0.01,
+    rename_me_track3,
+    rename_me_check0
 )
 obj.putpixeldata(userdata)
 obj.setoption("drawtarget", "tempbuffer", w, h)

@@ -1,31 +1,71 @@
 --label:tim2\カスタムフレア.anm\レンズ軌道
---track0:密度,1,100,10
---track1:サイズ％,0,50,15
---track2:強度,0,100,15
---track3:減衰率,0,100,40
---value@fig:形状/fig,"円"
---value@dsize:サイズ幅％,10
---value@dalp:強度幅％,0
---value@basechk:ベースカラー/chk,1
---value@col:色/col,0xccccff
---value@dcol:色幅％,0
---value@rot:回転,0
---value@drot:回転幅,0
---value@blur:ぼかし,0
---value@seed:乱数シード,0
+---$track:密度
+---min=1
+---max=100
+---step=0.1
+local rename_me_track0 = 10
+
+---$track:サイズ％
+---min=0
+---max=50
+---step=0.1
+local rename_me_track1 = 15
+
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 15
+
+---$track:減衰率
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 40
+
+---$value:形状/fig
+local fig = "円"
+
+---$value:サイズ幅％
+local dsize = 10
+
+---$value:強度幅％
+local dalp = 0
+
+---$value:ベースカラー/chk
+local basechk = 1
+
+---$value:色/col
+local col = 0xccccff
+
+---$value:色幅％
+local dcol = 0
+
+---$value:回転
+local rot = 0
+
+---$value:回転幅
+local drot = 0
+
+---$value:ぼかし
+local blur = 0
+
+---$value:乱数シード
+local seed = 0
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)
 if basechk == 1 then
     col = CustomFlareColor
 end
-local size = CustomFlareW * obj.track1 * 0.01
-local alp = obj.track2 * 0.01
-local gen = obj.track3 * 0.01
+local size = CustomFlareW * rename_me_track1 * 0.01
+local alp = rename_me_track2 * 0.01
+local gen = rename_me_track3 * 0.01
 obj.load("figure", fig, col, size)
 obj.effect("ぼかし", "範囲", blur)
-local countx = math.floor(CustomFlareW / 600 * obj.track0)
-local county = math.floor(CustomFlareH / 600 * obj.track0)
+local countx = math.floor(CustomFlareW / 600 * rename_me_track0)
+local county = math.floor(CustomFlareH / 600 * rename_me_track0)
 gen = -200 * gen / (CustomFlareW * CustomFlareW)
 local st = CustomFlareW / countx
 local dw = st * 0.5

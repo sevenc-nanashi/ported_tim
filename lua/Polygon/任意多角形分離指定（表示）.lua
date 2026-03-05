@@ -1,6 +1,12 @@
 --label:tim2\任意多角形.obj\任意多角形分離指定（表示）
---track0:厚み,0,1000,0
---value@col:色/col,0xffffff
+---$track:厚み
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track0 = 0
+
+---$value:色/col
+local col = 0xffffff
 
 function muki(ax, ay, bx, by)
     if ax * by - ay * bx > 0 then
@@ -33,7 +39,7 @@ function mydp(p1, p2, p3)
     obj.drawpoly(p1.x, p1.y, 0, p1.x, p1.y, 0, p2.x, p2.y, 0, p3.x, p3.y, 0)
 end
 
-TC = obj.track0 / 2
+TC = rename_me_track0 / 2
 
 N = NTBS_N
 pos = {}

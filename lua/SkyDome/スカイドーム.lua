@@ -1,12 +1,37 @@
 --label:tim2\スカイドーム.anm\スカイドーム
 
---track0:水平回転,-3600,3600,0
---track1:垂直回転,-3600,3600,0
---track2:側方回転,-3600,3600,0
---track3:視野角,0,120,30
---value@N:分割数,30
---value@chk:描画処理/chk,1
---check0:親カメラデータを取得
+---$track:水平回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:垂直回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:側方回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:視野角
+---min=0
+---max=120
+---step=0.1
+local rename_me_track3 = 30
+
+---$value:分割数
+local N = 30
+
+---$value:描画処理/chk
+local chk = 1
+
+---$check:親カメラデータを取得
+local rename_me_check0 = false
 
 local chgRP = function(t, f)
     f = -f + math.pi
@@ -77,7 +102,7 @@ end
 
 local L, drz, camt, camf
 
-if obj.check0 then
+if rename_me_check0 then
     local camx, camy, camz
     L = aviutl_camera_param_copy.d
 
@@ -128,10 +153,10 @@ if obj.check0 then
         end
     end
 
-    drz = drz + math.rad(aviutl_camera_param_copy.rz + obj.track2)
+    drz = drz + math.rad(aviutl_camera_param_copy.rz + rename_me_track2)
 else
-    drz = math.rad(obj.track2)
-    L = obj.screen_h * 0.5 / math.tan(math.rad(obj.track3 * 0.5))
+    drz = math.rad(rename_me_track2)
+    L = obj.screen_h * 0.5 / math.tan(math.rad(rename_me_track3 * 0.5))
     camt = 0
     camf = 0
 end
@@ -147,8 +172,8 @@ local hpi = math.pi * 0.5
 local wf = obj.screen_w * 0.5
 local hf = obj.screen_h * 0.5
 
-local dt = math.rad(obj.track1) - camt
-local df = -math.rad(obj.track0) + camf
+local dt = math.rad(rename_me_track1) - camt
+local df = -math.rad(rename_me_track0) + camf
 
 obj.setoption("drawtarget", "tempbuffer", obj.screen_w, obj.screen_h)
 if chk == 1 then

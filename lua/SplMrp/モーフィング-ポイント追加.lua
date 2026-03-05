@@ -1,7 +1,14 @@
 --label:tim2\モーフィング.anm\モーフィング-ポイント追加
---track0:ﾎﾟｲﾝﾄ数,1,16,1,1
---value@pos:座標,{0,0}
-local AN = obj.track0
+---$track:ﾎﾟｲﾝﾄ数
+---min=1
+---max=16
+---step=1
+local rename_me_track0 = 1
+
+---$value:座標
+local pos = { 0, 0 }
+
+local AN = rename_me_track0
 obj.setanchor("pos", AN)
 
 local MP = Morphing_obj[Morphing_PC].pos

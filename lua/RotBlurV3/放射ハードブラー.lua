@@ -1,22 +1,57 @@
 --label:tim2\T_RotBlur_Module.anm\放射ハードブラー
---track0:中心X,-5000,5000,0
---track1:中心Y,-5000,5000,0
---track2:ブラー量,0,200,20
---track3:凸数,3,500,20,1
---value@ck:サイズ保持/chk,1
---value@BasP:基準[-100〜100],0
---value@AmpR:幅ランダム%,50
---value@EG:丸み[-100〜100],0
---value@BM:簡易補正/chk,0
---value@BMC:└係数%,100
---value@rnds:パターン,1
---value@Sbai:表示限界倍率,3
+---$track:中心X
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track0 = 0
 
-local Br = obj.track2 * 0.01
+---$track:中心Y
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:ブラー量
+---min=0
+---max=200
+---step=0.1
+local rename_me_track2 = 20
+
+---$track:凸数
+---min=3
+---max=500
+---step=1
+local rename_me_track3 = 20
+
+---$value:サイズ保持/chk
+local ck = 1
+
+---$value:基準[-100〜100]
+local BasP = 0
+
+---$value:幅ランダム%
+local AmpR = 50
+
+---$value:丸み[-100〜100]
+local EG = 0
+
+---$value:簡易補正/chk
+local BM = 0
+
+---$value:└係数%
+local BMC = 100
+
+---$value:パターン
+local rnds = 1
+
+---$value:表示限界倍率
+local Sbai = 3
+
+local Br = rename_me_track2 * 0.01
 if Bx ~= 0 then
-    local dx = obj.track0
-    local dy = obj.track1
-    local NN = obj.track3
+    local dx = rename_me_track0
+    local dy = rename_me_track1
+    local NN = rename_me_track3
     BasP = RotBlur_BasP or (BasP or 0)
     AmpR = RotBlur_AmpR or (AmpR or 100)
     EG = RotBlur_EG or (EG or 0)

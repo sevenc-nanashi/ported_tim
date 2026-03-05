@@ -1,10 +1,16 @@
 --label:tim2\一時保存読込.obj\保存画像の読込(4面)
---track0:読込先,1,4,1,1
---check0:中心調整,1;
+---$track:読込先
+---min=1
+---max=4
+---step=1
+local rename_me_track0 = 1
 
-i = obj.track0
+---$check:中心調整
+local rename_me_check0 = true
+
+i = rename_me_track0
 obj.copybuffer("obj", "cache:__ichijitekinihozon__")
-if not obj.check0 then
+if not rename_me_check0 then
     if i == 1 then
         obj.effect("クリッピング", "右", obj.screen_w, "下", obj.screen_h)
         obj.ox = obj.screen_w / 2

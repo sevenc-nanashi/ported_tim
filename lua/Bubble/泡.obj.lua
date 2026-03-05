@@ -1,20 +1,53 @@
 --label:tim2
---track0:個数,0,1000,200
---track1:速度,-50,50,-8
---track2:方向,-50,50,0
---track3:形状補正,0,100,50
---value@size:サイズ,100
---value@col:色/col,0xffffff
---value@fw:ゆらぎ幅,2
---value@f_speed:ゆらぎ速度,2
---value@depth:奥行き,15
---value@af:事後エフェクト,0
---value@er:表示領域補正,1
+---$track:個数
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track0 = 200
+
+---$track:速度
+---min=-50
+---max=50
+---step=0.1
+local rename_me_track1 = -8
+
+---$track:方向
+---min=-50
+---max=50
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:形状補正
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 50
+
+---$value:サイズ
+local size = 100
+
+---$value:色/col
+local col = 0xffffff
+
+---$value:ゆらぎ幅
+local fw = 2
+
+---$value:ゆらぎ速度
+local f_speed = 2
+
+---$value:奥行き
+local depth = 15
+
+---$value:事後エフェクト
+local af = 0
+
+---$value:表示領域補正
+local er = 1
 
 obj.load("figure", "円", col, size)
 obj.effect("ぼかし", "範囲", size)
-obj.effect("クリッピング", "右", size * 1.4 * obj.track3 / 100)
-obj.effect("クリッピング", "左", size * 1.4 * obj.track3 / 100)
+obj.effect("クリッピング", "右", size * 1.4 * rename_me_track3 / 100)
+obj.effect("クリッピング", "左", size * 1.4 * rename_me_track3 / 100)
 obj.effect("斜めクリッピング")
 obj.effect("極座標変換")
 
@@ -25,11 +58,11 @@ if af == 0 then
 else
     obj.setoption("dst", "tmp", obj.screen_w * er, obj.screen_h * er)
 end
-s = obj.track1 / 10
-sp = obj.track2 * obj.w
+s = rename_me_track1 / 10
+sp = rename_me_track2 * obj.w
 s = s * obj.time
 fs = f_speed * obj.time * math.pi * 2 / 10
-n = obj.track0
+n = rename_me_track0
 fw = fw * obj.w
 xs = -w
 xe = w

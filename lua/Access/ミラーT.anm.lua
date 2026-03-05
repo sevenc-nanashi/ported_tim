@@ -1,15 +1,38 @@
 --label:tim2
---track0:透明度,0,100,0
---track1:境目調整,-5000,5000,0
---track2:ぼかし,0,300,10
---track3:基準,-100,100,100
---value@col:色1/col,0x000000
---value@chk:単色化(T)/chk,0
+---$track:透明度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 0
 
-local AL = 1 - obj.track0 * 0.01
-local d = 2 * obj.track1
-local rng = obj.track2
-local bs = obj.track3
+---$track:境目調整
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:ぼかし
+---min=0
+---max=300
+---step=0.1
+local rename_me_track2 = 10
+
+---$track:基準
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:色1/col
+local col = 0x000000
+
+---$value:単色化(T)/chk
+local chk = 0
+
+local AL = 1 - rename_me_track0 * 0.01
+local d = 2 * rename_me_track1
+local rng = rename_me_track2
+local bs = rename_me_track3
 local w, h = obj.getpixel()
 
 if d < -2 * h then

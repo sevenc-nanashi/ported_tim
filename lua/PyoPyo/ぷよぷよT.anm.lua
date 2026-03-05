@@ -1,33 +1,82 @@
 --label:tim2
---track0:枠サイズ,0,500,50
---track1:変形量,0,500,20
---track2:回転,-3600,3600,0
---track3:変形速度,0,5000,100
---value@Num:波数,4
---value@spN:波形分割,20
---value@RgRnd:凹凸ﾗﾝﾀﾞﾑ性%,30
---value@Cen:中心＆ﾏｽｸ座標,{0,0,50,0}
---value@Mfg:マスク形状/fig,"円"
---value@Mcl:マスク色/col,0xff0000
---value@StR:マスクサイズ,0
---value@Asp:ﾏｽｸ縦横比%,0
---value@MsRt:マスク回転,0
---value@Blur:ﾏｽｸ境界ブラー,0
---value@MS:マップサイズ,256
---value@BL:滑らかさ,1
---value@seed:乱数シード,0
---value@MapAP:マップ表示/chk,0
---check0:マスク表示,0
+---$track:枠サイズ
+---min=0
+---max=500
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:変形量
+---min=0
+---max=500
+---step=0.1
+local rename_me_track1 = 20
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:変形速度
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:波数
+local Num = 4
+
+---$value:波形分割
+local spN = 20
+
+---$value:凹凸ﾗﾝﾀﾞﾑ性%
+local RgRnd = 30
+
+---$value:中心＆ﾏｽｸ座標
+local Cen = { 0, 0, 50, 0 }
+
+---$value:マスク形状/fig
+local Mfg = "円"
+
+---$value:マスク色/col
+local Mcl = 0xff0000
+
+---$value:マスクサイズ
+local StR = 0
+
+---$value:ﾏｽｸ縦横比%
+local Asp = 0
+
+---$value:マスク回転
+local MsRt = 0
+
+---$value:ﾏｽｸ境界ブラー
+local Blur = 0
+
+---$value:マップサイズ
+local MS = 256
+
+---$value:滑らかさ
+local BL = 1
+
+---$value:乱数シード
+local seed = 0
+
+---$value:マップ表示/chk
+local MapAP = 0
+
+---$check:マスク表示
+local rename_me_check0 = false
 
 local Ratio = function(a, b, t)
     local s = (2 * t + 1) * (t - 1) ^ 2
     return s * a + (1 - s) * b
 end
 
-local Cor = 1 + obj.track0 * 0.01
-local Tra = obj.track1
-local Rot = obj.track2 % 360
-local SpC = obj.track3 * 0.01
+local Cor = 1 + rename_me_track0 * 0.01
+local Tra = rename_me_track1
+local Rot = rename_me_track2 % 360
+local SpC = rename_me_track3 * 0.01
 
 RgRnd = RgRnd * 0.01
 seed = math.abs(seed)
@@ -128,7 +177,7 @@ if MapAP == 0 then
         "ぼかし",
         BL
     )
-    if obj.check0 then
+    if rename_me_check0 then
         obj.copybuffer("tmp", "obj")
         obj.load("figure", Mfg, Mcl, StR)
         if Asp > 0 then

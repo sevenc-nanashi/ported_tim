@@ -1,11 +1,26 @@
 --label:tim2\T_Color_Module.anm\減色パレット
---track0:色数,1,512,16,1
---track1:X分割,1,20,4,1
---track2:Y分割,1,20,4,1
+---$track:色数
+---min=1
+---max=512
+---step=1
+local rename_me_track0 = 16
+
+---$track:X分割
+---min=1
+---max=20
+---step=1
+local rename_me_track1 = 4
+
+---$track:Y分割
+---min=1
+---max=20
+---step=1
+local rename_me_track2 = 4
+
 ClusterReductionIdxC_T = {}
-local idn = obj.track0
-local nx = obj.track1
-local ny = obj.track2
+local idn = rename_me_track0
+local nx = rename_me_track1
+local ny = rename_me_track2
 local idT = {}
 local w, h = obj.getpixel()
 local dx, dy = w / nx, h / ny

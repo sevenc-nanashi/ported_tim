@@ -1,11 +1,36 @@
 --label:tim2\簡易ワープ.anm\簡易ワープ(パス)
---track0:基準X,-10000,10000,0
---track1:基準Y,-10000,10000,0
---track2:移動X,-10000,10000,100
---track3:移動Y,-10000,10000,100
---value@ATp:影響範囲,200
---value@DFp:被影響範囲,200
---value@POS:絶対/相対/chk,1
+---$track:基準X
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:基準Y
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:移動X
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:移動Y
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:影響範囲
+local ATp = 200
+
+---$value:被影響範囲
+local DFp = 200
+
+---$value:絶対/相対/chk
+local POS = 1
 
 if N then
     N = N + 1
@@ -19,10 +44,10 @@ else
     DF = {}
 end
 
-X0[N] = obj.track0
-Y0[N] = obj.track1
-X1[N] = obj.track2
-Y1[N] = obj.track3
+X0[N] = rename_me_track0
+Y0[N] = rename_me_track1
+X1[N] = rename_me_track2
+Y1[N] = rename_me_track3
 if POS == 1 then
     X1[N] = X1[N] + X0[N]
     Y1[N] = Y1[N] + Y0[N]

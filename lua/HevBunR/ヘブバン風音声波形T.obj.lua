@@ -1,23 +1,73 @@
 --label:tim2
---track0:外円ｻｲｽﾞ,0,5000,300,1
---track1:分割量,2,400,120,1
---track2:MAX長%,0,2000,30
---track3:音量上限,1,100000,30000,1
---value@_1:色W1/col,0xc19ec1
---value@_2:色W2/col,0x40acac
---value@_3:色W3/col,0x5a72ec
---value@_4:色C1/col,0x40acac
---value@_5:色C2/col,0xed7aff
---value@_6:音量下限,0
---value@_7:境界補正,2
---value@_8:サイズ配列,{4,3,4,4,1}
---value@_9:個数配列,{100,230,180}
---value@_10:速度配列,{2,2.8,0}
---value@_11: ｵﾘｼﾞﾅﾙ背景設定/chk,0
---value@_12:└波形透明度％,35
---value@_13:└時間オフセット,1000
---value@_0: PI,nil
---check0:波形反転,0
+---$track:外円ｻｲｽﾞ
+---min=0
+---max=5000
+---step=1
+local rename_me_track0 = 300
+
+---$track:分割量
+---min=2
+---max=400
+---step=1
+local rename_me_track1 = 120
+
+---$track:MAX長%
+---min=0
+---max=2000
+---step=0.1
+local rename_me_track2 = 30
+
+---$track:音量上限
+---min=1
+---max=100000
+---step=1
+local rename_me_track3 = 30000
+
+---$value:色W1/col
+local _1 = 0xc19ec1
+
+---$value:色W2/col
+local _2 = 0x40acac
+
+---$value:色W3/col
+local _3 = 0x5a72ec
+
+---$value:色C1/col
+local _4 = 0x40acac
+
+---$value:色C2/col
+local _5 = 0xed7aff
+
+---$value:音量下限
+local _6 = 0
+
+---$value:境界補正
+local _7 = 2
+
+---$value:サイズ配列
+local _8 = { 4, 3, 4, 4, 1 }
+
+---$value:個数配列
+local _9 = { 100, 230, 180 }
+
+---$value:速度配列
+local _10 = { 2, 2.8, 0 }
+
+---$value: ｵﾘｼﾞﾅﾙ背景設定/chk
+local _11 = 0
+
+---$value:└波形透明度％
+local _12 = 35
+
+---$value:└時間オフセット
+local _13 = 1000
+
+---$value: PI
+local _0 = nil
+
+---$check:波形反転
+local rename_me_check0 = false
+
 local floor = math.floor
 local abs = math.abs
 local max = math.max
@@ -31,11 +81,11 @@ local aoi = _0
 if _0[1] == "蒼井" then
     _0 = {}
 end
-local Rev = _0[0] == nil and obj.check0 or _0[0]
-local Siz = math.floor(_0[1] or obj.track0)
-local SpN = floor(_0[2] or obj.track1)
-local MxL = (_0[3] or obj.track2) * Siz / 100
-local SdU = floor(_0[4] or obj.track3)
+local Rev = _0[0] == nil and rename_me_check0 or _0[0]
+local Siz = math.floor(_0[1] or rename_me_track0)
+local SpN = floor(_0[2] or rename_me_track1)
+local MxL = (_0[3] or rename_me_track2) * Siz / 100
+local SdU = floor(_0[4] or rename_me_track3)
 local SdD = floor(_6 or 0)
 local col1 = _1 or 0xc19ec1
 local col2 = _2 or 0x40acac

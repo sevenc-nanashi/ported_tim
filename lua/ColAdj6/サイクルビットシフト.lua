@@ -1,16 +1,38 @@
 --label:tim2\T_Color_Module.anm\サイクルビットシフト
---track0:R8bit,-100,100,0,1
---track1:G8bit,-100,100,0,1
---track2:B8bit,-100,100,0,1
---track3:24bit,-100,100,0,1
---check0:24ビットでシフト,0
+---$track:R8bit
+---min=-100
+---max=100
+---step=1
+local rename_me_track0 = 0
+
+---$track:G8bit
+---min=-100
+---max=100
+---step=1
+local rename_me_track1 = 0
+
+---$track:B8bit
+---min=-100
+---max=100
+---step=1
+local rename_me_track2 = 0
+
+---$track:24bit
+---min=-100
+---max=100
+---step=1
+local rename_me_track3 = 0
+
+---$check:24ビットでシフト
+local rename_me_check0 = false
+
 require("T_Color_Module")
-local r = math.floor(obj.track0)
-local g = math.floor(obj.track1)
-local b = math.floor(obj.track2)
-if obj.check0 then
-    r = math.floor(obj.track3)
+local r = math.floor(rename_me_track0)
+local g = math.floor(rename_me_track1)
+local b = math.floor(rename_me_track2)
+if rename_me_check0 then
+    r = math.floor(rename_me_track3)
 end
 local userdata, w, h = obj.getpixeldata()
-T_Color_Module.CycleBitShift(userdata, w, h, r, g, b, obj.check0)
+T_Color_Module.CycleBitShift(userdata, w, h, r, g, b, rename_me_check0)
 obj.putpixeldata(userdata)

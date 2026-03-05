@@ -1,20 +1,48 @@
 --label:tim2
---track0:出力頻度,1,5000,30
---track1:出力速度,0,5000,30
---track2:初期半径,0,10000,50
---track3:生存時間,0,10000,300
+---$track:出力頻度
+---min=1
+---max=5000
+---step=0.1
+local rename_me_track0 = 30
 
---value@col1:色1/col,0xffff00
---value@col2:色2/col,0xffffff
---value@zV:最終拡大率,50
---value@aV:最終透過度,20
---value@Fai:拡散角度,{-180,180}
+---$track:出力速度
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track1 = 30
+
+---$track:初期半径
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track2 = 50
+
+---$track:生存時間
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track3 = 300
+
+---$value:色1/col
+local col1 = 0xffff00
+
+---$value:色2/col
+local col2 = 0xffffff
+
+---$value:最終拡大率
+local zV = 50
+
+---$value:最終透過度
+local aV = 20
+
+---$value:拡散角度
+local Fai = { -180, 180 }
 
 local T = obj.time
-local dn = obj.track0
-local V = obj.track1
-local R0 = obj.track2
-local Life = obj.track3 * 0.01
+local dn = rename_me_track0
+local V = rename_me_track1
+local R0 = rename_me_track2
+local Life = rename_me_track3 * 0.01
 local dS = 1 / dn
 local i1 = math.max(math.floor(1 + (T - Life) * dn), 0)
 local i2 = math.floor(T * dn)

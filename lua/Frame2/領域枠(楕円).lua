@@ -1,17 +1,42 @@
 --label:tim2\領域枠.anm\領域枠(楕円)
---track0:画線幅,0,5000,10
---track1:追加幅,-5000,5000,0
---track2:追加高さ,-5000,5000,0
---track3:背景濃度,0,100,20
---value@col1:枠色/col,0xffffff
---value@col2:背景色/col,0xccccff
---value@base:基準,{0,0}
+---$track:画線幅
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 10
+
+---$track:追加幅
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:追加高さ
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:背景濃度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 20
+
+---$value:枠色/col
+local col1 = 0xffffff
+
+---$value:背景色/col
+local col2 = 0xccccff
+
+---$value:基準
+local base = { 0, 0 }
 
 local w, h = obj.getpixel()
-local lw = obj.track0
-local pw = obj.track1
-local ph = obj.track2
-local backC = obj.track3 * 0.01
+local lw = rename_me_track0
+local pw = rename_me_track1
+local ph = rename_me_track2
+local backC = rename_me_track3 * 0.01
 local w, h = pw + w + 2 * lw, ph + h + 2 * lw
 base = base or { 0, 0 }
 w = ((w > 1) and w) or 1

@@ -1,11 +1,28 @@
 --label:tim2
---track0:サイズ,4,1000,120,1
---track1:P形状,1,22,1,1
---track2:凹凸,1,2,1,1
---color:0xffffff
+---$track:サイズ
+---min=4
+---max=1000
+---step=1
+local rename_me_track0 = 120
 
-local Pfig = obj.track1
-local SI = math.floor(obj.track0)
+---$track:P形状
+---min=1
+---max=22
+---step=1
+local rename_me_track1 = 1
+
+---$track:凹凸
+---min=1
+---max=2
+---step=1
+local rename_me_track2 = 1
+
+---$color:0xffffff
+local rename_me_color = false
+color = rename_me_color
+
+local Pfig = rename_me_track1
+local SI = math.floor(rename_me_track0)
 
 local DrawUnitBase = function(SI2, ROT, ...)
     if arg[1] == 1 then
@@ -169,7 +186,7 @@ elseif Pfig >= 9 and Pfig <= 22 then
 end
 
 if
-    obj.track2 == 2
+    rename_me_track2 == 2
     and Pfig ~= 2
     and Pfig ~= 6
     and Pfig ~= 10

@@ -1,19 +1,50 @@
 --label:tim2\スプリット.anm\スプリット
---track0:ｽﾌﾟﾘｯﾄ1,0,100,30
---track1:ｽﾌﾟﾘｯﾄ2,0,100,30
---track2:形状,0,300,100
---track3:影響範囲,100,1000,100
---value@spC:上下を揃える/chk,0
---value@hoC:穴だけ開ける/chk,0
---value@spN:横分割数,30
---value@spNy:縦分割数,30
---value@pos:位置,{-100,0,100,0}
---value@bl:透明度境界ボカシ,1
+---$track:ｽﾌﾟﾘｯﾄ1
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 30
 
-local sp1 = obj.track0 * 0.01
-local sp2 = obj.track1 * 0.01
-local fig = obj.track2 * 0.01
-local maxP = obj.track3 * 0.01
+---$track:ｽﾌﾟﾘｯﾄ2
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 30
+
+---$track:形状
+---min=0
+---max=300
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:影響範囲
+---min=100
+---max=1000
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:上下を揃える/chk
+local spC = 0
+
+---$value:穴だけ開ける/chk
+local hoC = 0
+
+---$value:横分割数
+local spN = 30
+
+---$value:縦分割数
+local spNy = 30
+
+---$value:位置
+local pos = { -100, 0, 100, 0 }
+
+---$value:透明度境界ボカシ
+local bl = 1
+
+local sp1 = rename_me_track0 * 0.01
+local sp2 = rename_me_track1 * 0.01
+local fig = rename_me_track2 * 0.01
+local maxP = rename_me_track3 * 0.01
 
 if fig > 1 then
     fig = 10 * fig - 9

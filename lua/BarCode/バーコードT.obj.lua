@@ -1,12 +1,40 @@
 --label:tim2
---track0:最小幅,1,30,2,1
---track1:高さ,1,1000,50,1
---track2:左右余白,10,1000,30,1
---track3:上下余白,10,1000,20,1
---value@TXT:データ,"AviUtl"
---value@col1:線色/col,0x0
---value@col2:背景色/col,0xffffff
---value@UseC:CodeCも併用/chk,0
+---$track:最小幅
+---min=1
+---max=30
+---step=1
+local rename_me_track0 = 2
+
+---$track:高さ
+---min=1
+---max=1000
+---step=1
+local rename_me_track1 = 50
+
+---$track:左右余白
+---min=10
+---max=1000
+---step=1
+local rename_me_track2 = 30
+
+---$track:上下余白
+---min=10
+---max=1000
+---step=1
+local rename_me_track3 = 20
+
+---$value:データ
+local TXT = "AviUtl"
+
+---$value:線色/col
+local col1 = 0x0
+
+---$value:背景色/col
+local col2 = 0xffffff
+
+---$value:CodeCも併用/chk
+local UseC = 0
+
 local PT = {
     [0] = 212222,
     222122,
@@ -212,10 +240,10 @@ local NM = {
     ["}"] = 93,
     ["~"] = 94,
 }
-local B = math.floor(obj.track0)
-local H = math.floor(obj.track1)
-local S = math.floor(obj.track2)
-local D = 2 * math.floor(obj.track3)
+local B = math.floor(rename_me_track0)
+local H = math.floor(rename_me_track1)
+local S = math.floor(rename_me_track2)
+local D = 2 * math.floor(rename_me_track3)
 S = 2 * math.max(S, 10 * B)
 local N = string.len(TXT)
 local MJ

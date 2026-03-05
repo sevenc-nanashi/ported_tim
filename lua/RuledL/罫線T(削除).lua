@@ -1,8 +1,15 @@
 --label:tim2\罫線T.anm\罫線T(削除)
---track0:削除点,2,16,2,1
---value@posDL:アンカー,{-70,-60,70,-60}
+---$track:削除点
+---min=2
+---max=16
+---step=1
+local rename_me_track0 = 2
+
+---$value:アンカー
+local posDL = { -70, -60, 70, -60 }
+
 RuledlineT = RuledlineT or {}
-local apnum = obj.track0
+local apnum = rename_me_track0
 obj.setanchor("posDL", apnum, "line")
 RuledlineT.ACX = RuledlineT.ACX or {}
 RuledlineT.ACY = RuledlineT.ACY or {}

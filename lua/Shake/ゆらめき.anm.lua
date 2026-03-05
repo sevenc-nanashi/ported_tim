@@ -1,17 +1,30 @@
 --label:tim2
---track0:サイズ,10,2000,50
---track1:形状変化,0,10000,0
---value@Rpat:ランダム形状,20
---value@seed1:形状乱数シード,0
+---$track:サイズ
+---min=10
+---max=2000
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:形状変化
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track1 = 0
+
+---$value:ランダム形状
+local Rpat = 20
+
+---$value:形状乱数シード
+local seed1 = 0
 
 local px = {}
 local py = {}
 
 local xl, yl = obj.getpixel()
 
-local size = obj.track0
+local size = rename_me_track0
 
-local tt = obj.track1 * 0.01
+local tt = rename_me_track1 * 0.01
 local ss = math.floor(tt)
 tt = tt - ss
 local tti = 1 - tt

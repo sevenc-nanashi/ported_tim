@@ -1,17 +1,42 @@
 --label:tim2\T_Color_Module.anm\トライトーン
---track0:飽和点1,0,255,0,1
---track1:中心点,0,255,128,1
---track2:飽和点2,0,255,255,1
---value@egm:ミッドトーン色無視/chk,0
---value@col3:シャドウ/col,0x000000
---value@col2: ミッドトーン/col,0xb5982c
---value@col1: ハイライト/col,0xffffff
---check0:新バージョン,1
+---$track:飽和点1
+---min=0
+---max=255
+---step=1
+local rename_me_track0 = 0
+
+---$track:中心点
+---min=0
+---max=255
+---step=1
+local rename_me_track1 = 128
+
+---$track:飽和点2
+---min=0
+---max=255
+---step=1
+local rename_me_track2 = 255
+
+---$value:ミッドトーン色無視/chk
+local egm = 0
+
+---$value:シャドウ/col
+local col3 = 0x000000
+
+---$value: ミッドトーン/col
+local col2 = 0xb5982c
+
+---$value: ハイライト/col
+local col1 = 0xffffff
+
+---$check:新バージョン
+local rename_me_check0 = true
+
 local p1, p2, p3
-if obj.check0 then
-    p3 = math.floor(obj.track0)
-    p2 = math.floor(obj.track1)
-    p1 = math.floor(obj.track2)
+if rename_me_check0 then
+    p3 = math.floor(rename_me_track0)
+    p2 = math.floor(rename_me_track1)
+    p1 = math.floor(rename_me_track2)
     p1, p3 = math.max(p1, p3), math.min(p1, p3)
 else
     p1, p2, p3 = 255, 128, 0

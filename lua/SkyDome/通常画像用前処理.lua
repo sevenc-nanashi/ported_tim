@@ -1,8 +1,21 @@
 --label:tim2\スカイドーム.anm\通常画像用前処理
---track0:H範囲,0,360,120
---track1:V範囲,0,180,60
---value@resize:領域調整/chk,1
---check0:HとVをリンク,1;
+---$track:H範囲
+---min=0
+---max=360
+---step=0.1
+local rename_me_track0 = 120
+
+---$track:V範囲
+---min=0
+---max=180
+---step=0.1
+local rename_me_track1 = 60
+
+---$value:領域調整/chk
+local resize = 1
+
+---$check:HとVをリンク
+local rename_me_check0 = true
 
 if resize == 1 then
     local w, h = obj.getpixel()
@@ -17,10 +30,10 @@ if resize == 1 then
     end
 end
 
-if obj.check0 then
-    T_skydoom_H = obj.track0 / 360
+if rename_me_check0 then
+    T_skydoom_H = rename_me_track0 / 360
     T_skydoom_V = T_skydoom_H
 else
-    T_skydoom_H = obj.track0 / 360
-    T_skydoom_V = obj.track1 / 180
+    T_skydoom_H = rename_me_track0 / 360
+    T_skydoom_V = rename_me_track1 / 180
 end

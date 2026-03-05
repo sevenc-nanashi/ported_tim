@@ -1,19 +1,48 @@
 --label:tim2
---track0:分割数,10,500,80
---track1:ﾗｲﾝ細％,0,100,10
---track2:ﾗｲﾝ太％,0,100,60
---track3:シフト,-10000,10000,0
---value@Lcol:ライン色/col,"0x000000"
---value@Bcol:背景色/col,"0xffffff"
---value@bkap:背景色非表示/chk,0
---value@bai:横分割倍率%,200
---value@rev:反転/chk,0
+---$track:分割数
+---min=10
+---max=500
+---step=0.1
+local rename_me_track0 = 80
 
-local spN = obj.track0
+---$track:ﾗｲﾝ細％
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 10
+
+---$track:ﾗｲﾝ太％
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 60
+
+---$track:シフト
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:ライン色/col
+local Lcol = "0x000000"
+
+---$value:背景色/col
+local Bcol = "0xffffff"
+
+---$value:背景色非表示/chk
+local bkap = 0
+
+---$value:横分割倍率%
+local bai = 200
+
+---$value:反転/chk
+local rev = 0
+
+local spN = rename_me_track0
 local spM = math.floor(spN * bai * 0.01)
-local tsi1 = obj.track1 * 0.01
-local tsi2 = math.max(obj.track2 - obj.track1, 0) * 0.01
-local sf = obj.track3
+local tsi1 = rename_me_track1 * 0.01
+local tsi2 = math.max(rename_me_track2 - rename_me_track1, 0) * 0.01
+local sf = rename_me_track3
 
 local w, h = obj.getpixel()
 local w2, h2 = w * 0.5, h * 0.5

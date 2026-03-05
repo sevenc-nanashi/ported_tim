@@ -1,24 +1,52 @@
 --label:tim2
---track0:振幅,0,1000,100
---track1:波数,0,5000,100
---track2:位相ｽﾞﾚX,-5000,5000,-100
---track3:位相ｽﾞﾚY,-5000,5000,0
---value@N:分割数,30
---value@SW:モード,1
---value@Yck:縦波数を別指定/chk,0
---value@HC:└縦波数,100
+---$track:振幅
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:波数
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:位相ｽﾞﾚX
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track2 = -100
+
+---$track:位相ｽﾞﾚY
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:分割数
+local N = 30
+
+---$value:モード
+local SW = 1
+
+---$value:縦波数を別指定/chk
+local Yck = 0
+
+---$value:└縦波数
+local HC = 100
+
 N = N or 30
 SW = (SW or 1) .. ""
 local w, h = obj.w, obj.h
 local w2, h2 = w / 2, h / 2
 local wN, hN = w / N, h / N
-local A = w / 30 * obj.track0 / 100
-local WC = obj.track1
+local A = w / 30 * rename_me_track0 / 100
+local WC = rename_me_track1
 HC = (Yck == 1) and (HC or 100) or WC
 WC = 2 * math.pi / w * WC / 100
 HC = 2 * math.pi / w * HC / 100
-local d1 = 2 * math.pi * obj.track2 / 100
-local d2 = 2 * math.pi * obj.track3 / 100
+local d1 = 2 * math.pi * rename_me_track2 / 100
+local d2 = 2 * math.pi * rename_me_track3 / 100
 obj.setoption("antialias", 1)
 for i = 0, N - 1 do
     local u1 = i * wN

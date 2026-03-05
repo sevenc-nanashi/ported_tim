@@ -1,19 +1,38 @@
 --label:tim2\T_Color_Module.anm\単色化(T2)
---track0:U,-500,500,5
---track1:V,-500,500,5
---track2:ガンマ,1,1000,100
---check0:参考表示,0
---value@POL:極座標指定/chk,0
+---$track:U
+---min=-500
+---max=500
+---step=0.1
+local rename_me_track0 = 5
+
+---$track:V
+---min=-500
+---max=500
+---step=0.1
+local rename_me_track1 = 5
+
+---$track:ガンマ
+---min=1
+---max=1000
+---step=0.1
+local rename_me_track2 = 100
+
+---$check:参考表示
+local rename_me_check0 = false
+
+---$value:極座標指定/chk
+local POL = 0
+
 require("T_Color_Module")
-local UU = obj.track0 * 0.01
-local VV = obj.track1 * 0.01
-local GM = obj.track2 * 0.01
+local UU = rename_me_track0 * 0.01
+local VV = rename_me_track1 * 0.01
+local GM = rename_me_track2 * 0.01
 local POL2 = POL or 0
 if POL2 == 1 then
-    VV = math.pi * obj.track1 / 360
+    VV = math.pi * rename_me_track1 / 360
     UU, VV = UU * math.cos(VV), UU * math.sin(VV)
 end
-if obj.check0 then
+if rename_me_check0 then
     obj.effect("リサイズ", "拡大率", 100 / 3)
     obj.copybuffer("cache:ORI", "obj")
     local w, h = obj.getpixel()

@@ -1,25 +1,63 @@
 --label:tim2\T_Color_Module.anm\最大/最小
---track0:MAX/MIN,1,2,1,1
---track1:ﾁｬﾝﾈﾙ,1,4,1,1
---track2:範囲,1,1000,10,1
---track3:角度,-3600,3600,0
---value@HC:水平/chk,1
---value@VC:垂直/chk,1
---value@asp:縦横比,100
---value@Sym:範囲対称/chk,1
---value@svC:色も保存/chk,0
---value@fig:形状[0..4],0
---value@lmt:限界範囲,50
---value@Aen:α拡張,0
---check0:結果を保存(同条件1度のみ),0
+---$track:MAX/MIN
+---min=1
+---max=2
+---step=1
+local rename_me_track0 = 1
+
+---$track:ﾁｬﾝﾈﾙ
+---min=1
+---max=4
+---step=1
+local rename_me_track1 = 1
+
+---$track:範囲
+---min=1
+---max=1000
+---step=1
+local rename_me_track2 = 10
+
+---$track:角度
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:水平/chk
+local HC = 1
+
+---$value:垂直/chk
+local VC = 1
+
+---$value:縦横比
+local asp = 100
+
+---$value:範囲対称/chk
+local Sym = 1
+
+---$value:色も保存/chk
+local svC = 0
+
+---$value:形状[0..4]
+local fig = 0
+
+---$value:限界範囲
+local lmt = 50
+
+---$value:α拡張
+local Aen = 0
+
+---$check:結果を保存(同条件1度のみ)
+local rename_me_check0 = false
+
 require("T_Color_Module")
-local Deg = -obj.track3 % 360
+local Deg = -rename_me_track3 % 360
 local Sym2 = Sym or 0
 local asp2 = (asp or 100) / 100
 local svC2 = svC or 0
 local fig2 = math.floor(fig or 0)
 local lmt2 = (lmt or 50)
-local Rng = obj.track2
+local Rng = rename_me_track2
 local Aen2 = Aen or 0
 if fig2 > 0 then
     if fig2 ~= 3 then
@@ -28,14 +66,14 @@ if fig2 > 0 then
 end
 Rng = math.max(1, Rng)
 local ckr = 0
-if obj.check0 then
+if rename_me_check0 then
     local userdata, w, h = obj.getpixeldata()
     ckr = T_Color_Module.MinimaxCheck(
         userdata,
         w,
         h,
-        math.floor(obj.track0),
-        math.floor(obj.track1),
+        math.floor(rename_me_track0),
+        math.floor(rename_me_track1),
         Rng,
         Deg,
         HC,
@@ -68,18 +106,32 @@ if ckr == 0 then
         end
         obj.effect("領域拡張", "右", w2 - wr, "下", h2 - hr)
         local userdata, w, h = obj.getpixeldata()
-        T_Color_Module.MinmaxRot(userdata, w, h, wr, hr, RR, RH, obj.track0)
+        T_Color_Module.MinmaxRot(userdata, w, h, wr, hr, RR, RH, rename_me_track0)
         obj.putpixeldata(userdata)
     end
     local userdata, w, h = obj.getpixeldata()
-    T_Color_Module.Minimax(userdata, w, h, obj.track0, Rng, obj.track1, HC, VC, Sym2, asp2, svC2, fig2, Aen2)
+    T_Color_Module.Minimax(
+        userdata,
+        w,
+        h,
+        rename_me_track0,
+        Rng,
+        rename_me_track1,
+        HC,
+        VC,
+        Sym2,
+        asp2,
+        svC2,
+        fig2,
+        Aen2
+    )
     obj.putpixeldata(userdata)
     if Deg ~= 0 then
         obj.setoption("drawtarget", "tempbuffer", w0, h0)
         obj.draw(0, 0, 0, 1, 1, 0, 0, -Deg)
         obj.copybuffer("obj", "tmp")
     end
-    if obj.check0 then
+    if rename_me_check0 then
         local userdata, w, h = obj.getpixeldata()
         T_Color_Module.MinimaxSave(userdata, w, h)
     end

@@ -1,11 +1,30 @@
 --label:tim2\ライトバースト.anm\ライトバースト(拡張機能)
---track0:発光中心X,-10000,10000,0
---track1:発光中心Y,-10000,10000,0
---track2:ｻｲｽﾞ補正X,0,5000,0,1
---track3:ｻｲｽﾞ補正Y,0,5000,0,1
+---$track:発光中心X
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:発光中心Y
+---min=-10000
+---max=10000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:ｻｲｽﾞ補正X
+---min=0
+---max=5000
+---step=1
+local rename_me_track2 = 0
+
+---$track:ｻｲｽﾞ補正Y
+---min=0
+---max=5000
+---step=1
+local rename_me_track3 = 0
 
 komorebikakutyou = 1
 obj.setanchor("track", 0, "line")
-Dpos = { obj.track0, obj.track1 }
-dw = obj.track2
-dh = obj.track3
+Dpos = { rename_me_track0, rename_me_track1 }
+dw = rename_me_track2
+dh = rename_me_track3

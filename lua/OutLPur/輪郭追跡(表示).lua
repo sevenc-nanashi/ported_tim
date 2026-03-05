@@ -1,14 +1,45 @@
 --label:tim2\輪郭追跡.anm\輪郭追跡(表示)
---track0:描画度,0,100,100
---track1:線幅,0,1000,10
---track2:開始点,0,100,0
---track3:閾値,0,255,128,1
---value@col:色/col,0xffffff
---value@rev:逆回転/chk,0
---value@rin:輪郭のみ/chk,0
---value@Rover:輪郭を下に/chk,0
---value@reC:中心補正/chk,1
---value@Scsp:ｽｷｬﾝ粗さ,1
+---$track:描画度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:線幅
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 10
+
+---$track:開始点
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:閾値
+---min=0
+---max=255
+---step=1
+local rename_me_track3 = 128
+
+---$value:色/col
+local col = 0xffffff
+
+---$value:逆回転/chk
+local rev = 0
+
+---$value:輪郭のみ/chk
+local rin = 0
+
+---$value:輪郭を下に/chk
+local Rover = 0
+
+---$value:中心補正/chk
+local reC = 1
+
+---$value:ｽｷｬﾝ粗さ
+local Scsp = 1
 
 local icx = obj.cx
 local icy = obj.cy
@@ -39,10 +70,10 @@ else
 end
 
 local r2 = math.sqrt(2)
-local hp = obj.track0 * 0.01
-local lw = obj.track1
-local zure = obj.track2 * 0.01
-local T = obj.track3
+local hp = rename_me_track0 * 0.01
+local lw = rename_me_track1
+local zure = rename_me_track2 * 0.01
+local T = rename_me_track3
 local dpx = { -1, 0, 1, 1, 1, 0, -1, -1 }
 local dpy = { 1, 1, 1, 0, -1, -1, -1, 0 }
 local dky = { r2, 1, r2, 1, r2, 1, r2, 1 }

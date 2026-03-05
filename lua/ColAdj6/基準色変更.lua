@@ -1,11 +1,42 @@
 --label:tim2\T_Color_Module.anm\基準色変更
---track0:変化,0,100,0
---track1:定数,-1000,1000,0
---track2:スケール,-1000,1000,100
---value@col1:指定色1/col,0x0
---value@col2:指定色2/col,0xffffff
---check0:指定色からの距離,0
+---$track:変化
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:定数
+---min=-1000
+---max=1000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:スケール
+---min=-1000
+---max=1000
+---step=0.1
+local rename_me_track2 = 100
+
+---$value:指定色1/col
+local col1 = 0x0
+
+---$value:指定色2/col
+local col2 = 0xffffff
+
+---$check:指定色からの距離
+local rename_me_check0 = false
+
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()
-T_Color_Module.StandardColor(userdata, w, h, col1, col2, obj.track0 / 100, obj.track1, obj.track2, obj.check0)
+T_Color_Module.StandardColor(
+    userdata,
+    w,
+    h,
+    col1,
+    col2,
+    rename_me_track0 / 100,
+    rename_me_track1,
+    rename_me_track2,
+    rename_me_check0
+)
 obj.putpixeldata(userdata)

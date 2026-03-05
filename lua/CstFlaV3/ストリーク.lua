@@ -1,14 +1,46 @@
 --label:tim2\カスタムフレア.anm\ストリーク
---track0:光芒長,0,2000,400
---track1:光芒高さ,0,2000,20
---track2:強度,0,100,50
---track3:回転,-3600,3600,0
---value@basechk:ベースカラー/chk,1
---value@col:光芒色/col,0x9999ff
---value@t:位置％,-100
---value@OFSET:位置オフセット％,{0,0,0}
---value@acr:ｱﾝｶｰに合わせる/chk,0
---value@blink:点滅,0.1
+---$track:光芒長
+---min=0
+---max=2000
+---step=0.1
+local rename_me_track0 = 400
+
+---$track:光芒高さ
+---min=0
+---max=2000
+---step=0.1
+local rename_me_track1 = 20
+
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 50
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:ベースカラー/chk
+local basechk = 1
+
+---$value:光芒色/col
+local col = 0x9999ff
+
+---$value:位置％
+local t = -100
+
+---$value:位置オフセット％
+local OFSET = { 0, 0, 0 }
+
+---$value:ｱﾝｶｰに合わせる/chk
+local acr = 0
+
+---$value:点滅
+local blink = 0.1
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)
@@ -19,10 +51,10 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * obj.track2 * 0.01
-local l = obj.track0 * 2
-local r = obj.track1 * 0.5
-local rot = -obj.track3 / 180 * math.pi
+alpha = alpha * rename_me_track2 * 0.01
+local l = rename_me_track0 * 2
+local r = rename_me_track1 * 0.5
+local rot = -rename_me_track3 / 180 * math.pi
 if acr == 1 then
     rot = rot - math.atan2(CustomFlaredY, CustomFlaredX)
 end

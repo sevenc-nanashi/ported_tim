@@ -1,16 +1,48 @@
 --label:tim2
---track0:変形1,-100,100,25
---track1:変形2,-100,100,25
---track2:個数,0,10000,0,1
---value@N:分割数,8
---value@ARX:領域サイズX,2000
---value@ARY:領域サイズY,2000
---value@ARZ:領域サイズZ,2000
---value@divV:移動速度,100
---value@dpos:移動方向誤差,12
---value@rotV:回転速度,10
---value@ANT:アンチエイリアス,0
---check0:重心を中心にする,0;
+---$track:変形1
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track0 = 25
+
+---$track:変形2
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track1 = 25
+
+---$track:個数
+---min=0
+---max=10000
+---step=1
+local rename_me_track2 = 0
+
+---$value:分割数
+local N = 8
+
+---$value:領域サイズX
+local ARX = 2000
+
+---$value:領域サイズY
+local ARY = 2000
+
+---$value:領域サイズZ
+local ARZ = 2000
+
+---$value:移動速度
+local divV = 100
+
+---$value:移動方向誤差
+local dpos = 12
+
+---$value:回転速度
+local rotV = 10
+
+---$value:アンチエイリアス
+local ANT = 0
+
+---$check:重心を中心にする
+local rename_me_check0 = true
 
 local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
     local ROTxyz = function(x, y, z, rx, ry, rz)
@@ -104,7 +136,7 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
         end
     end
 
-    if obj.check0 then
+    if rename_me_check0 then
         gz = gz / ((Nh + 1) * (N + 1))
     else
         gz = 0
@@ -154,9 +186,9 @@ local w, h = obj.getpixel()
 w = w * obj.getvalue("zoom") * 0.01
 h = h * obj.getvalue("zoom") * 0.01
 dpos = math.max(100 - dpos, 10)
-local thx_max = math.pi * obj.track0 * 0.01
-local thy_max = math.pi * obj.track1 * 0.01
-local M = obj.track2
+local thx_max = math.pi * rename_me_track0 * 0.01
+local thy_max = math.pi * rename_me_track1 * 0.01
+local M = rename_me_track2
 
 local T = obj.time
 

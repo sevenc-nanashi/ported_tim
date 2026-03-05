@@ -1,19 +1,61 @@
 --label:tim2\カスタムフレア.anm\スパーク
---track0:サイズ,0,5000,400
---track1:長さ,0,1000,60
---track2:強度,0,100,20
---track3:回転,-3600,3600,0
---value@n:数,150
---value@basechk:ベースカラー/chk,1
---value@col:光芒色/col,0x9999ff
---value@dH:幅比率％,10
---value@blur:ぼかし,5
---value@rblur:放射ブラー,50
---value@t:位置％,-100
---value@OFSET:位置オフセット％,{0,0,0}
---value@drh:動径方向バラツキ％,100
---value@blink:点滅,0.2
---value@seed:乱数シード,0
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 400
+
+---$track:長さ
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 60
+
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 20
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:数
+local n = 150
+
+---$value:ベースカラー/chk
+local basechk = 1
+
+---$value:光芒色/col
+local col = 0x9999ff
+
+---$value:幅比率％
+local dH = 10
+
+---$value:ぼかし
+local blur = 5
+
+---$value:放射ブラー
+local rblur = 50
+
+---$value:位置％
+local t = -100
+
+---$value:位置オフセット％
+local OFSET = { 0, 0, 0 }
+
+---$value:動径方向バラツキ％
+local drh = 100
+
+---$value:点滅
+local blink = 0.2
+
+---$value:乱数シード
+local seed = 0
+
 obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存
 if basechk == 1 then
     col = CustomFlareColor
@@ -22,10 +64,10 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-local size = obj.track0 * 0.5
-local dL = obj.track1 * 0.5
-alpha = alpha * obj.track2 * 0.01
-local rot = obj.track3
+local size = rename_me_track0 * 0.5
+local dL = rename_me_track1 * 0.5
+alpha = alpha * rename_me_track2 * 0.01
+local rot = rename_me_track3
 dH = dL * dH * 0.01
 local dx = (t + OFSET[1]) * 0.01 * CustomFlaredX + CustomFlareCX
 local dy = (t + OFSET[2]) * 0.01 * CustomFlaredY + CustomFlareCY

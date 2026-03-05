@@ -1,19 +1,51 @@
 --label:tim2
---track0:強度,-200,200,50
---track1:サイズ,3,500,10,1
---track2:角度,-3600,3600,0
---track3:ぼかし%,0,500,100
---value@col1:色1/col,0xffffff
---value@ck:2色目指定/chk,0
---value@col2:└色2/col,0x0
---value@Lc:直線/chk,0
---value@Ap:網表示/chk,0
---check0:ブロック描画,0
-local L = obj.track0 / 100
-local S = math.floor(obj.track1)
+---$track:強度
+---min=-200
+---max=200
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:サイズ
+---min=3
+---max=500
+---step=1
+local rename_me_track1 = 10
+
+---$track:角度
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:ぼかし%
+---min=0
+---max=500
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:色1/col
+local col1 = 0xffffff
+
+---$value:2色目指定/chk
+local ck = 0
+
+---$value:└色2/col
+local col2 = 0x0
+
+---$value:直線/chk
+local Lc = 0
+
+---$value:網表示/chk
+local Ap = 0
+
+---$check:ブロック描画
+local rename_me_check0 = false
+
+local L = rename_me_track0 / 100
+local S = math.floor(rename_me_track1)
 local w0, h0 = obj.getpixel()
-local D = obj.track2
-local N = obj.track3 / 100
+local D = rename_me_track2
+local N = rename_me_track3 / 100
 local ty, tw
 if Lc == 0 then
     ty, tw = 1, 100
@@ -37,7 +69,7 @@ end
 w, h = obj.getpixel()
 local nx2 = 2 * math.ceil(0.5 * w / S)
 local ny2 = 2 * math.ceil(0.5 * h / S)
-if obj.check0 then
+if rename_me_check0 then
     local ws, hs = nx2 * S, ny2 * S
     local dx, dy = (ws - w) / 2, (hs - h) / 2
     obj.effect("領域拡張", "上", dy, "下", dy, "左", dx, "右", dx, "塗りつぶし", 1)

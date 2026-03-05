@@ -1,39 +1,85 @@
 --label:tim2\カスタムフレア.anm\虹輪
---track0:大きさ,1,5000,250
---track1:長さ％,1,100,20
---track2:強度％,1,100,50
---track3:回転,-3600,3600,0
---value@t:位置％,50
---value@ds:虹輪開％,20
---value@spt:裁ち落とし％,0
---value@OFSET:位置オフセット％,{0,0,0}
---value@aubg:自動拡大/chk,0
---value@Rmax:基準距離,400
---value@asp:偏平率％,100
---value@blur:ぼかし,1
---value@fig:パターン[1-4],1
---value@ovchk:色上書き/chk,0
---value@ovcol:上書き色/col,0xccccff
---value@blink:点滅,0.2
---value@lt:発光,{0,250,80,0}
+---$track:大きさ
+---min=1
+---max=5000
+---step=0.1
+local rename_me_track0 = 250
+
+---$track:長さ％
+---min=1
+---max=100
+---step=0.1
+local rename_me_track1 = 20
+
+---$track:強度％
+---min=1
+---max=100
+---step=0.1
+local rename_me_track2 = 50
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:位置％
+local t = 50
+
+---$value:虹輪開％
+local ds = 20
+
+---$value:裁ち落とし％
+local spt = 0
+
+---$value:位置オフセット％
+local OFSET = { 0, 0, 0 }
+
+---$value:自動拡大/chk
+local aubg = 0
+
+---$value:基準距離
+local Rmax = 400
+
+---$value:偏平率％
+local asp = 100
+
+---$value:ぼかし
+local blur = 1
+
+---$value:パターン[1-4]
+local fig = 1
+
+---$value:色上書き/chk
+local ovchk = 0
+
+---$value:上書き色/col
+local ovcol = 0xccccff
+
+---$value:点滅
+local blink = 0.2
+
+---$value:発光
+local lt = { 0, 250, 80, 0 }
+
 local figmax = 4
 obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存
 local n = 10
-local r = obj.track0 * 0.5
+local r = rename_me_track0 * 0.5
 if aubg == 1 then
     r = r
         * math.sqrt(CustomFlaredX * CustomFlaredX + CustomFlaredY * CustomFlaredY + CustomFlaredZ * CustomFlaredZ)
         / Rmax
 end
-local dr = r * obj.track1 * 0.01
+local dr = r * rename_me_track1 * 0.01
 local wh = 2 * (r + dr)
 obj.setoption("drawtarget", "tempbuffer", wh, wh)
 obj.setoption("blend", 0)
 local pi = math.pi
 local cos = math.cos
 local sin = math.sin
-local alpha = obj.track2 * 0.01
-local rot = obj.track3 / 180 * pi
+local alpha = rename_me_track2 * 0.01
+local rot = rename_me_track3 / 180 * pi
 ds = ds * 0.01
 spt = spt * 0.01
 asp = asp * 0.01

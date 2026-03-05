@@ -1,21 +1,44 @@
 --label:tim2
---track0:割合,0,100,30
---track1:幅,5,2000,100
---track2:角度,-3600,3600,60
---track3:基準,-100,100,0
---value@TS:時間差[%],0
---value@chk:透明度反転/chk,0
+---$track:割合
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 30
 
-local t = 100 - obj.track0
+---$track:幅
+---min=5
+---max=2000
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:角度
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track2 = 60
+
+---$track:基準
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:時間差[%]
+local TS = 0
+
+---$value:透明度反転/chk
+local chk = 0
+
+local t = 100 - rename_me_track0
 TS = TS * 0.01
 local ATS = math.abs(TS)
 
 if t > 0 then
     t = t * 0.01
-    local spw = obj.track1
-    local deg = obj.track2
+    local spw = rename_me_track1
+    local deg = rename_me_track2
     local rad = math.rad(deg)
-    local bas = obj.track3 * 0.005
+    local bas = rename_me_track3 * 0.005
 
     local w, h = obj.getpixel()
     local L = math.sqrt(w * w + h * h)

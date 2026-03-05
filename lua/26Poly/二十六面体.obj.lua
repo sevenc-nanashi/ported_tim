@@ -1,20 +1,42 @@
 --label:tim2
---track0:サイズ,0,5000,200
---track1:切込量,0,5000,20
---track2:枠,0,5000,5000
---value@col1:色1/col,0xffffff
---value@col2:色2/col,0xccffcc
---value@col3:色3/col,0xffff00
---value@ANT:ｱﾝﾁｴｲﾘｱｽ/chk,1
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 200
+
+---$track:切込量
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track1 = 20
+
+---$track:枠
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track2 = 5000
+
+---$value:色1/col
+local col1 = 0xffffff
+
+---$value:色2/col
+local col2 = 0xccffcc
+
+---$value:色3/col
+local col3 = 0xffff00
+
+---$value:ｱﾝﾁｴｲﾘｱｽ/chk
+local ANT = 1
 
 local MDP = function(a, b, c, d)
     obj.drawpoly(a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z, d.x, d.y, d.z)
 end
 
 local zoom = obj.getvalue("zoom") * 0.01
-local L = obj.track0 * zoom
-local dL = obj.track1 * zoom
-local dw = obj.track2 * zoom
+local L = rename_me_track0 * zoom
+local dL = rename_me_track1 * zoom
+local dw = rename_me_track2 * zoom
 
 local Lh = L * 0.5
 local Lhw = Lh - dL

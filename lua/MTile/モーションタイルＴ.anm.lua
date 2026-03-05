@@ -1,17 +1,44 @@
 --label:tim2
---track0:中心位置,-20000,20000,0
---track1:出力幅％,0,5000,150
---track2:出力高％,0,5000,150
---track3:フェーズ,-5000,5000,0
---value@deg:速度方向(度),0
---value@reX:X反転配置/chk,0
---value@reY:Y反転配置/chk,0
---check0:水平シフト,1;
+---$track:中心位置
+---min=-20000
+---max=20000
+---step=0.1
+local rename_me_track0 = 0
 
-local CT = obj.track0
-local OW = obj.track1 * 0.01
-local OH = obj.track2 * 0.01
-local SF = -obj.track3 * 0.01
+---$track:出力幅％
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track1 = 150
+
+---$track:出力高％
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track2 = 150
+
+---$track:フェーズ
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:速度方向(度)
+local deg = 0
+
+---$value:X反転配置/chk
+local reX = 0
+
+---$value:Y反転配置/chk
+local reY = 0
+
+---$check:水平シフト
+local rename_me_check0 = true
+
+local CT = rename_me_track0
+local OW = rename_me_track1 * 0.01
+local OH = rename_me_track2 * 0.01
+local SF = -rename_me_track3 * 0.01
 
 local w, h = obj.getpixel()
 
@@ -32,7 +59,7 @@ local dy = 180 * reY
 local SW2 = SW * 0.5
 local SH2 = SH * 0.5
 
-if obj.check0 then
+if rename_me_check0 then
     local ny1 = math.ceil((-py - SH2) / h - 0.5)
     local ny2 = math.floor((-py + SH2) / h + 0.5)
     for j = ny1, ny2 do

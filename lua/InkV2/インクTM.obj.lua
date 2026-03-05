@@ -1,19 +1,60 @@
 --label:tim2
---track0:サイズ,0,2000,200,1
---track1:円形度合,0,100,60
---track2:形状,0,10000,3000,1
---track3:展開,0,100,100
---value@col:色/col,"0xffffff"
---value@Hzm:本体拡大率%,100
---value@wN:飛沫数1,5
---value@tN:飛沫数2,4
---value@zm1:飛散1幅拡大率%,100
---value@zm2:飛散2拡大率%,100
---value@H2as:飛散2歪み%,0
---value@Hseed0:本体変化乱数,0
---value@Hseed1:飛散変化乱数1,0
---value@Hseed2:飛散変化乱数2,0
---value@NewP:新描画法/chk,1
+---$track:サイズ
+---min=0
+---max=2000
+---step=1
+local rename_me_track0 = 200
+
+---$track:円形度合
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 60
+
+---$track:形状
+---min=0
+---max=10000
+---step=1
+local rename_me_track2 = 3000
+
+---$track:展開
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:色/col
+local col = "0xffffff"
+
+---$value:本体拡大率%
+local Hzm = 100
+
+---$value:飛沫数1
+local wN = 5
+
+---$value:飛沫数2
+local tN = 4
+
+---$value:飛散1幅拡大率%
+local zm1 = 100
+
+---$value:飛散2拡大率%
+local zm2 = 100
+
+---$value:飛散2歪み%
+local H2as = 0
+
+---$value:本体変化乱数
+local Hseed0 = 0
+
+---$value:飛散変化乱数1
+local Hseed1 = 0
+
+---$value:飛散変化乱数2
+local Hseed2 = 0
+
+---$value:新描画法/chk
+local NewP = 1
 
 NewP = NewP or 0
 
@@ -26,11 +67,11 @@ if NewP == 1 then
     zm2 = (zm2 or 100) * 0.01
     H2as = (H2as or 0) * 0.02
 
-    local L = obj.track0
-    local Cp = obj.track1 * 0.01
+    local L = rename_me_track0
+    local Cp = rename_me_track1 * 0.01
     local Lh = L * 0.5
-    local seed = obj.track2
-    local Dev = obj.track3 * 0.01
+    local seed = rename_me_track2
+    local Dev = rename_me_track3 * 0.01
     obj.load("figure", "四角形", col, 1)
     TH1 = {}
     TH2 = {}
@@ -251,10 +292,10 @@ if NewP == 1 then
 
     obj.load("tempbuffer")
 else --ここからOLD-------
-    local L = obj.track0
-    local Cp = obj.track1 * 0.01
+    local L = rename_me_track0
+    local Cp = rename_me_track1 * 0.01
     local Lh = L * 0.5
-    local seed = obj.track2
+    local seed = rename_me_track2
     local N = 30
     obj.load("figure", "四角形", col, 1)
     --飛散1

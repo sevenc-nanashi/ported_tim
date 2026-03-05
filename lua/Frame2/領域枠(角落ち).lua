@@ -1,14 +1,45 @@
 --label:tim2\領域枠.anm\領域枠(角落ち)
---track0:画線幅,0,5000,10
---track1:形状,1,4,1,1
---track2:切込量,0,5000,20
---track3:背景濃度,0,100,20
---value@col1:枠色/col,0xffffff
---value@col2:背景色/col,0xccccff
---value@pw:追加幅,0
---value@ph:追加高さ,0
---value@base:基準,{0,0}
---check0:楕円
+---$track:画線幅
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 10
+
+---$track:形状
+---min=1
+---max=4
+---step=1
+local rename_me_track1 = 1
+
+---$track:切込量
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track2 = 20
+
+---$track:背景濃度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 20
+
+---$value:枠色/col
+local col1 = 0xffffff
+
+---$value:背景色/col
+local col2 = 0xccccff
+
+---$value:追加幅
+local pw = 0
+
+---$value:追加高さ
+local ph = 0
+
+---$value:基準
+local base = { 0, 0 }
+
+---$check:楕円
+local rename_me_check0 = false
 
 local function make_edge_del(wh, w1, h1, s, lw, fig, basefig)
     obj.load("figure", basefig, 0xffffff, 1.5 * wh)
@@ -85,10 +116,10 @@ local function atoshori(wh, col1)
 end
 
 local w, h = obj.getpixel()
-local lw = obj.track0
-local pt = obj.track1
-local s = obj.track2
-local backC = obj.track3 * 0.01
+local lw = rename_me_track0
+local pt = rename_me_track1
+local s = rename_me_track2
+local backC = rename_me_track3 * 0.01
 base = base or { 0, 0 }
 if T_ryouikiwaku_w == nil then
     w, h = pw + w + 2 * lw, ph + h + 2 * lw
@@ -109,7 +140,7 @@ if pt == 4 then
 end
 
 local basefig
-if obj.check0 then
+if rename_me_check0 then
     basefig = "円"
 else
     basefig = "四角形"

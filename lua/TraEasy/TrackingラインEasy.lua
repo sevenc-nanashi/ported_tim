@@ -1,20 +1,63 @@
 --label:tim2\TrackingラインEasy.anm\TrackingラインEasy
---track0:開始/ｼﾌﾄ,0,100,50,0.01
---track1:終了/全長,0,100,0,0.01
---track2:頂点数,2,16,2,1
---track3:間隔,0.1,500,5
---value@dm:描画方法[0-2],1
---value@C:定数(方法2のみ),35
---value@ec:等速度_等間隔/chk,0
---value@Ac:精度,20
---value@cy:環状にする/chk,0
---value@ST:同時に出現/chk,0
---value@sp:全長指定表示/chk,0
---value@Lw:線幅,{100,100,100}
---value@col:変化色/col,""
---value@dSI:領域拡張,{0,0}
---value@pos:座標,{0,0,100,100}
---check0:頂点群を分離,0;
+---$track:開始/ｼﾌﾄ
+---min=0
+---max=100
+---step=0.01
+local rename_me_track0 = 50
+
+---$track:終了/全長
+---min=0
+---max=100
+---step=0.01
+local rename_me_track1 = 0
+
+---$track:頂点数
+---min=2
+---max=16
+---step=1
+local rename_me_track2 = 2
+
+---$track:間隔
+---min=0.1
+---max=500
+---step=0.1
+local rename_me_track3 = 5
+
+---$value:描画方法[0-2]
+local dm = 1
+
+---$value:定数(方法2のみ)
+local C = 35
+
+---$value:等速度_等間隔/chk
+local ec = 0
+
+---$value:精度
+local Ac = 20
+
+---$value:環状にする/chk
+local cy = 0
+
+---$value:同時に出現/chk
+local ST = 0
+
+---$value:全長指定表示/chk
+local sp = 0
+
+---$value:線幅
+local Lw = { 100, 100, 100 }
+
+---$value:変化色/col
+local col = ""
+
+---$value:領域拡張
+local dSI = { 0, 0 }
+
+---$value:座標
+local pos = { 0, 0, 100, 100 }
+
+---$check:頂点群を分離
+local rename_me_check0 = true
 
 Tracking = {}
 
@@ -356,11 +399,11 @@ Tracking.Lw = Lw or { 100, 100, 100 }
 Tracking.col = col or ""
 Tracking.dSI = dSI or { 0, 0 }
 
-Tracking.st = obj.track0 * 0.01
-Tracking.ed = obj.track1 * 0.01
-local num = obj.track2
-Tracking.iv = obj.track3
-Tracking.ck = obj.check0
+Tracking.st = rename_me_track0 * 0.01
+Tracking.ed = rename_me_track1 * 0.01
+local num = rename_me_track2
+Tracking.iv = rename_me_track3
+Tracking.ck = rename_me_check0
 
 obj.setanchor("pos", num, "line")
 

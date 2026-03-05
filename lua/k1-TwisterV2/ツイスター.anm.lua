@@ -1,14 +1,45 @@
 --label:tim2
---track0:ひねり量,0,100,50,0.01
---track1:回転,-3600,3600,0
---track2:中心ｽﾞﾚ,-5000,5000,0
---track3:切替映像,-1,100,0,1
---check0:レイヤー読込,1;
---value@N:分割,25
---value@dr:収束半径,0.1
---value@sdg:シェーディング[%],100
---value@srev:ｼｪｰﾃﾞｨﾝｸﾞを逆に/chk,0
---value@dwh:範囲拡張,{0,0}
+---$track:ひねり量
+---min=0
+---max=100
+---step=0.01
+local rename_me_track0 = 50
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:中心ｽﾞﾚ
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:切替映像
+---min=-1
+---max=100
+---step=1
+local rename_me_track3 = 0
+
+---$check:レイヤー読込
+local rename_me_check0 = true
+
+---$value:分割
+local N = 25
+
+---$value:収束半径
+local dr = 0.1
+
+---$value:シェーディング[%]
+local sdg = 100
+
+---$value:ｼｪｰﾃﾞｨﾝｸﾞを逆に/chk
+local srev = 0
+
+---$value:範囲拡張
+local dwh = { 0, 0 }
 
 local Twister = function(
     posx,
@@ -216,15 +247,15 @@ local MakeShading = function(cx, cy, wd, hd, sin, cos, Cw, sdg, srev)
     )
 end
 
-if obj.check0 == false then
+if rename_me_check0 == false then
     require("extbuffer")
 end
 
-local Tw = obj.track0 * 0.01 - 0.5
-local Do = obj.track1
+local Tw = rename_me_track0 * 0.01 - 0.5
+local Do = rename_me_track1
 local Rt = math.rad(180 - Do)
-local Cw = obj.track2
-local id = math.floor(obj.track3)
+local Cw = rename_me_track2
+local id = math.floor(rename_me_track3)
 
 N = math.floor(math.max(N, 5))
 dr = math.abs(dr or 0.1) --前Verとの互換
@@ -253,7 +284,7 @@ else
 end
 
 if id > 0 then
-    if obj.check0 == false then
+    if rename_me_check0 == false then
         extbuffer.read(id)
     else
         obj.load("layer", id, true)

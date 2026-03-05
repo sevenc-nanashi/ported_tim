@@ -1,12 +1,39 @@
 --label:tim2
---track0:ズレ量,0,100,2
---track1:放射ﾎﾞｶｼ,0,100,2
---track2:焦点ｽﾞﾚ,0,100,0
---track3:ｵﾘｼﾞﾅﾙ,0,100,0
---value@reC:位置ズレ補正/chk,1
---value@cpos:色配置[0〜2],0
---value@pbl:ピンボケ量,0
---check0:逆順,0;
+---$track:ズレ量
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 2
+
+---$track:放射ﾎﾞｶｼ
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 2
+
+---$track:焦点ｽﾞﾚ
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:ｵﾘｼﾞﾅﾙ
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:位置ズレ補正/chk
+local reC = 1
+
+---$value:色配置[0〜2]
+local cpos = 0
+
+---$value:ピンボケ量
+local pbl = 0
+
+---$check:逆順
+local rename_me_check0 = true
 
 local iox = obj.ox
 local ioy = obj.oy
@@ -14,16 +41,16 @@ local icx = obj.cx
 local icy = obj.cy
 local reC2 = reC or 0
 
-local mv = obj.track0 * 0.01
-local bl = obj.track1
-local Cnt = 2 * obj.track2 * 0.01
-local OrAlp = obj.track3 * 0.01
+local mv = rename_me_track0 * 0.01
+local bl = rename_me_track1
+local Cnt = 2 * rename_me_track2 * 0.01
+local OrAlp = rename_me_track3 * 0.01
 local cpos2 = cpos or 0
 local pbl2 = pbl or 0
 
 local mv_r, mv_g, mv_b
 local p_r, p_g, p_b
-if obj.check0 then
+if rename_me_check0 then
     mv_r = 1 + (2 - Cnt) * mv
     mv_g = 1 + (1 - Cnt) * mv
     mv_b = 1 + -Cnt * mv

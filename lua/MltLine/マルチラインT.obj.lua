@@ -1,16 +1,52 @@
 --label:tim2
---track0:ｱﾝｶｰ数,1,16,4,1
---track1:線幅,0,1000,20
---track2:矢尻幅％,0,1000,200
---track3:矢尻長％,0,1000,240
---value@line_col:線色/col,0xff0000
---value@po:表示指示,"10"
---value@roc:角丸/chk,0
---value@alc:結合/chk,0
---value@xsp:Xスナップ,0
---value@ysp:Yスナップ,0
---value@anc:座標,{-150,-100,150,-100,-150,100,150,100}
---check0:矢印位置反転,0;
+---$track:ｱﾝｶｰ数
+---min=1
+---max=16
+---step=1
+local rename_me_track0 = 4
+
+---$track:線幅
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 20
+
+---$track:矢尻幅％
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track2 = 200
+
+---$track:矢尻長％
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track3 = 240
+
+---$value:線色/col
+local line_col = 0xff0000
+
+---$value:表示指示
+local po = "10"
+
+---$value:角丸/chk
+local roc = 0
+
+---$value:結合/chk
+local alc = 0
+
+---$value:Xスナップ
+local xsp = 0
+
+---$value:Yスナップ
+local ysp = 0
+
+---$value:座標
+local anc = { -150, -100, 150, -100, -150, 100, 150, 100 }
+
+---$check:矢印位置反転
+local rename_me_check0 = true
+
 --ver1.1
 
 local line_col = line_col or 0xff0000
@@ -20,11 +56,11 @@ local alc = alc
 local xsp = math.abs(xsp or 0)
 local ysp = math.abs(ysp or 0)
 
-local acN = obj.track0
+local acN = rename_me_track0
 
-local Lw = obj.track1
-local Aw = Lw * obj.track2 * 0.01
-local Ah = Lw * obj.track3 * 0.01
+local Lw = rename_me_track1
+local Aw = Lw * rename_me_track2 * 0.01
+local Ah = Lw * rename_me_track3 * 0.01
 
 obj.setanchor("anc", acN, "line")
 
@@ -56,7 +92,7 @@ for i = 1, acN do
     mset[i] = mset[j]
 end
 
-if obj.check0 then
+if rename_me_check0 then
     for i = 1, acN / 2 do
         X[i], X[acN + 1 - i] = X[acN + 1 - i], X[i]
         Y[i], Y[acN + 1 - i] = Y[acN + 1 - i], Y[i]

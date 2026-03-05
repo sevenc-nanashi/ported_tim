@@ -1,12 +1,37 @@
 --label:tim2\罫線T.anm\罫線T(obj配置)
---track0:位置1,1,1000,1,1
---track1:位置2,0,1000,0,1
---track2:ｻｲｽﾞ補正,0,1000,100
---value@Rev:行列反転/chk,0
---value@AutoSet:自動配置/chk,0
---value@ord:└配置順[0..3],0
---value@Lastobj:└最終ｵﾌﾞｼﾞｪｸﾄ/chk,0
---check0:ｻｲｽﾞ自動調整,0;
+---$track:位置1
+---min=1
+---max=1000
+---step=1
+local rename_me_track0 = 1
+
+---$track:位置2
+---min=0
+---max=1000
+---step=1
+local rename_me_track1 = 0
+
+---$track:ｻｲｽﾞ補正
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track2 = 100
+
+---$value:行列反転/chk
+local Rev = 0
+
+---$value:自動配置/chk
+local AutoSet = 0
+
+---$value:└配置順[0..3]
+local ord = 0
+
+---$value:└最終ｵﾌﾞｼﾞｪｸﾄ/chk
+local Lastobj = 0
+
+---$check:ｻｲｽﾞ自動調整
+local rename_me_check0 = true
+
 local CalIJ = function(n, nx, ny, Rev)
     local i, j
     if Rev == 1 then
@@ -21,14 +46,14 @@ end
 local RT = RuledlineTcrd
 local nx = #RT.X - 1
 local ny = #RT.Y - 1
-local n1 = math.floor(obj.track0 - 1)
-local n2 = math.floor(obj.track1 - 1)
+local n1 = math.floor(rename_me_track0 - 1)
+local n2 = math.floor(rename_me_track1 - 1)
 local i1, j1, i2, j2
 if AutoSet == 0 then
     n1 = n1 % (nx * ny)
     n2 = n2 % (nx * ny)
     i1, j1 = CalIJ(n1, nx, ny, Rev)
-    if obj.track1 > 0 then
+    if rename_me_track1 > 0 then
         i2, j2 = CalIJ(n2, nx, ny, Rev)
         i1, i2 = math.min(i1, i2), math.max(i1, i2)
         j1, j2 = math.min(j1, j2), math.max(j1, j2)
@@ -53,8 +78,8 @@ else
 end
 local dx = (RT.X[i1] + RT.X[i2 + 1]) * 0.5
 local dy = (RT.Y[j1] + RT.Y[j2 + 1]) * 0.5
-local zm = obj.track2 * 0.01
-if obj.check0 then
+local zm = rename_me_track2 * 0.01
+if rename_me_check0 then
     local w, h = obj.getpixel()
     local tx = RT.X[i2 + 1] - RT.X[i1]
     local ty = RT.Y[j2 + 1] - RT.Y[j1]

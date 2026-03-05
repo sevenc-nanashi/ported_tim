@@ -1,21 +1,63 @@
 --label:tim2
---track0:パターン,0,1000,0
---track1:展開度,0,100,50,0.01
---track2:サイズ,1,100,6
---track3:コア間隔,2,100,3
+---$track:パターン
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track0 = 0
 
---value@pos:位置,{0,-150,0,150}
---value@c_col:コア色/col,0xffffff
---value@g_col:発光色/col,0x0000ff
---value@g_s:発光強さ,40
---value@g_k:発光拡散,300
---value@g_th:発光しきい値,0
---value@g_kv:発光拡散速度,10
---value@f_n:軌道フォーク数,8
---value@stl:軌道直進性,8
---value@gr:軌道設置範囲,30
---value@AS:領域サイズ,{-180,-180,180,180}
---value@chk:枠表示/chk,1
+---$track:展開度
+---min=0
+---max=100
+---step=0.01
+local rename_me_track1 = 50
+
+---$track:サイズ
+---min=1
+---max=100
+---step=0.1
+local rename_me_track2 = 6
+
+---$track:コア間隔
+---min=2
+---max=100
+---step=0.1
+local rename_me_track3 = 3
+
+---$value:位置
+local pos = { 0, -150, 0, 150 }
+
+---$value:コア色/col
+local c_col = 0xffffff
+
+---$value:発光色/col
+local g_col = 0x0000ff
+
+---$value:発光強さ
+local g_s = 40
+
+---$value:発光拡散
+local g_k = 300
+
+---$value:発光しきい値
+local g_th = 0
+
+---$value:発光拡散速度
+local g_kv = 10
+
+---$value:軌道フォーク数
+local f_n = 8
+
+---$value:軌道直進性
+local stl = 8
+
+---$value:軌道設置範囲
+local gr = 30
+
+---$value:領域サイズ
+local AS = { -180, -180, 180, 180 }
+
+---$value:枠表示/chk
+local chk = 1
 
 function Lightning(stx, sty, enx, eny, c_d, c_s)
     if c_d < 0.3 then
@@ -88,13 +130,13 @@ function Szdrawpoly(x1, y1, x2, y2)
     obj.drawpoly(x1, y1, 0, x2, y1, 0, x2, y2, 0, x1, y2, 0, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h)
 end
 
-frnd = math.floor(obj.track0)
-at = 100 - obj.track1
+frnd = math.floor(rename_me_track0)
+at = 100 - rename_me_track1
 at = (math.exp(0.10 * at) - 1) / 62
 
-Ac_s = obj.track2
+Ac_s = rename_me_track2
 
-c_d = obj.track3
+c_d = rename_me_track3
 
 obj.setanchor("pos", 2, "line")
 local stx, sty, enx, eny = unpack(pos)

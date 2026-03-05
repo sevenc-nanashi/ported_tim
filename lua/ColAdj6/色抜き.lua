@@ -1,15 +1,52 @@
 --label:tim2\T_Color_Module.anm\色抜き
---track0:色抜き量,0,100,100
---track1:色差範囲,0,500,50,1
---track2:エッジ,0,100,50
---track3:ﾏｯﾁﾝｸﾞ法,1,4,1,1
---value@col:抽出色/col,0xff0000
---value@Dchk:ﾏｯﾁﾝｸﾞ法表示/chk,0
---value@fs:フォントサイズ,34
+---$track:色抜き量
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:色差範囲
+---min=0
+---max=500
+---step=1
+local rename_me_track1 = 50
+
+---$track:エッジ
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 50
+
+---$track:ﾏｯﾁﾝｸﾞ法
+---min=1
+---max=4
+---step=1
+local rename_me_track3 = 1
+
+---$value:抽出色/col
+local col = 0xff0000
+
+---$value:ﾏｯﾁﾝｸﾞ法表示/chk
+local Dchk = 0
+
+---$value:フォントサイズ
+local fs = 34
+
 local r, g, b = RGB(col)
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()
-T_Color_Module.LeaveColor(userdata, w, h, r, g, b, obj.track0, obj.track1, obj.track2, obj.track3)
+T_Color_Module.LeaveColor(
+    userdata,
+    w,
+    h,
+    r,
+    g,
+    b,
+    rename_me_track0,
+    rename_me_track1,
+    rename_me_track2,
+    rename_me_track3
+)
 obj.putpixeldata(userdata)
 if obj.getinfo("saving") == false and Dchk == 1 then
     obj.setoption("drawtarget", "tempbuffer", w, h)

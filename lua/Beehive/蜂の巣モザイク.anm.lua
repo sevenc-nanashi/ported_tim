@@ -1,22 +1,52 @@
 --label:tim2
---track0:サイズ,2,1500,50,1
---track1:補正,0,1000,0,1
---track2:最小ｻｲｽﾞ,2,1500,10,1
---track3:ﾓｻﾞｲｸ回転,-3600,3600,0
+---$track:サイズ
+---min=2
+---max=1500
+---step=1
+local rename_me_track0 = 50
 
---value@backC:背景を透明/chk,0
---value@backS:背景をシャープ/chk,0
---value@totsuC:凸エッジ/chk,0
---value@totsu1:凸エッジ幅,2
---value@totsu2:凸エッジ高さ,1
---value@totsu3:凸エッジ角度,-45
+---$track:補正
+---min=0
+---max=1000
+---step=1
+local rename_me_track1 = 0
+
+---$track:最小ｻｲｽﾞ
+---min=2
+---max=1500
+---step=1
+local rename_me_track2 = 10
+
+---$track:ﾓｻﾞｲｸ回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:背景を透明/chk
+local backC = 0
+
+---$value:背景をシャープ/chk
+local backS = 0
+
+---$value:凸エッジ/chk
+local totsuC = 0
+
+---$value:凸エッジ幅
+local totsu1 = 2
+
+---$value:凸エッジ高さ
+local totsu2 = 1
+
+---$value:凸エッジ角度
+local totsu3 = -45
 
 local draw = obj.draw
 local effect = obj.effect
 
 local w, h = obj.getpixel()
 local w0, h0 = w, h
-local ROT = obj.track3 % 360
+local ROT = rename_me_track3 % 360
 
 if ROT ~= 0 then
     local rr = math.rad(ROT)
@@ -28,9 +58,9 @@ if ROT ~= 0 then
     obj.load("tempbuffer")
 end
 
-local size = obj.track0
-size = math.max(size, obj.track2)
-local R = math.max(size - obj.track1, 2)
+local size = rename_me_track0
+size = math.max(size, rename_me_track2)
+local R = math.max(size - rename_me_track1, 2)
 obj.copybuffer("cache:back", "obj")
 
 local L = 0.402963724433828 * size

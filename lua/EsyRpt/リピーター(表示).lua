@@ -1,14 +1,45 @@
 --label:tim2\簡易リピーター.anm\リピーター(表示)
---track0:透過率%,0,100,0
---track1:個数,2,100,5,1
---track2:基準回転,-3600,3600,0
---track3:基準拡大,0,5000,100
---value@AP:重なり順/chk,0
---value@cop:色の上書き/chk,0
---value@colo1:基準色/col,0xff0000
---value@colo2:最終色/col,0x0000ff
---value@adm:合成モード,0
---value@reC:位置ズレ補正/chk,1
+---$track:透過率%
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 0
+
+---$track:個数
+---min=2
+---max=100
+---step=1
+local rename_me_track1 = 5
+
+---$track:基準回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:基準拡大
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:重なり順/chk
+local AP = 0
+
+---$value:色の上書き/chk
+local cop = 0
+
+---$value:基準色/col
+local colo1 = 0xff0000
+
+---$value:最終色/col
+local colo2 = 0x0000ff
+
+---$value:合成モード
+local adm = 0
+
+---$value:位置ズレ補正/chk
+local reC = 1
 
 local repch = function(pr, hen)
     if hen > 0 then
@@ -24,10 +55,10 @@ local icx = obj.cx
 local icy = obj.cy
 reC = reC or 0
 
-local LAL = obj.track0 * 0.01
-local N = math.floor(obj.track1)
-local rz_ori = obj.track2
-local zoom_ori = obj.track3 * 0.01
+local LAL = rename_me_track0 * 0.01
+local N = math.floor(rename_me_track1)
+local rz_ori = rename_me_track2
+local zoom_ori = rename_me_track3 * 0.01
 
 local col1 = { RGB(colo1) }
 local col2 = { RGB(colo2) }

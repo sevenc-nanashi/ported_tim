@@ -1,20 +1,63 @@
 --label:tim2\集中線T.obj\集中線T1
---track0:発生確率,0,100,40
---track1:線幅,1,400,15
---track2:中心,0,100,15
---track3:局所性,0,100,0
---value@color:色/col,0xffffff
---value@CC:中心位置,{0,0}
---value@rnd:中心ランダム度,30
---value@Ljp:局所ジャンプ率％,15
---value@sp:変化速度,0
---value@blur:ぼかし,0
---value@maxN:最大本数,500
---value@seed:シード,0
---value@w:幅,nil
---value@h:高さ,nil
---value@ad:中心追尾,0
---check0:最大本数自動計算,0;
+---$track:発生確率
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 40
+
+---$track:線幅
+---min=1
+---max=400
+---step=0.1
+local rename_me_track1 = 15
+
+---$track:中心
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 15
+
+---$track:局所性
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:色/col
+local color = 0xffffff
+
+---$value:中心位置
+local CC = { 0, 0 }
+
+---$value:中心ランダム度
+local rnd = 30
+
+---$value:局所ジャンプ率％
+local Ljp = 15
+
+---$value:変化速度
+local sp = 0
+
+---$value:ぼかし
+local blur = 0
+
+---$value:最大本数
+local maxN = 500
+
+---$value:シード
+local seed = 0
+
+---$value:幅
+local w = nil
+
+---$value:高さ
+local h = nil
+
+---$value:中心追尾
+local ad = 0
+
+---$check:最大本数自動計算
+local rename_me_check0 = true
 
 local CalXY = function(x0, y0, x1, y1, a, b)
     local AA = ((x1 - x0) / a) ^ 2 + ((y1 - y0) / b) ^ 2
@@ -37,14 +80,14 @@ else
     Cy = obj.getvalue("layer" .. ad .. ".y")
 end
 
-local P = obj.track0
-local ws = obj.track1
-local Cen = obj.track2 * 0.01
-local Lt = 1 - math.log(obj.track3 + 1) / math.log(101)
+local P = rename_me_track0
+local ws = rename_me_track1
+local Cen = rename_me_track2 * 0.01
+local Lt = 1 - math.log(rename_me_track3 + 1) / math.log(101)
 local screen_w = w or obj.screen_w
 local screen_h = h or obj.screen_h
 local size = math.sqrt(screen_w * screen_w + screen_h * screen_h)
-if obj.check0 then
+if rename_me_check0 then
     maxN = math.floor(200 * math.pi / ws)
 end
 rnd = rnd * 0.01
@@ -54,7 +97,7 @@ seed = seed + math.floor(obj.time * obj.framerate * sp)
 obj.load("figure", "四角形", color, 1)
 obj.setoption("drawtarget", "tempbuffer", screen_w, screen_h)
 local calP = {}
-if obj.track3 == 0 or P == 100 then
+if rename_me_track3 == 0 or P == 100 then
     for i = 1, maxN do
         if P >= obj.rand(0, 100, -i, seed + 1000) then
             calP[i] = 1

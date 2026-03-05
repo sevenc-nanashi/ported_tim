@@ -1,20 +1,48 @@
 --label:tim2
---track0:強さ,0,400,10
---track1:拡散,0,200,100
---track2:しきい値,0,100,60
---track3:発光回転,-3600,3600,45
+---$track:強さ
+---min=0
+---max=400
+---step=0.1
+local rename_me_track0 = 10
 
---value@col:発光色/col,0xffffff
---value@chk:オリジナル色発光/chk,1
---value@Lonly:光のみ/chk,0
---value@fig:形状[1-5],1
---value@blur:ぼかし,1
+---$track:拡散
+---min=0
+---max=200
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:しきい値
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 60
+
+---$track:発光回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 45
+
+---$value:発光色/col
+local col = 0xffffff
+
+---$value:オリジナル色発光/chk
+local chk = 1
+
+---$value:光のみ/chk
+local Lonly = 0
+
+---$value:形状[1-5]
+local fig = 1
+
+---$value:ぼかし
+local blur = 1
 
 local w, h = obj.getpixel()
 
 obj.copybuffer("cache:ori_img", "obj")
 
-local deg = obj.track3
+local deg = rename_me_track3
 
 local sin = math.abs(math.sin(math.rad(deg)))
 local cos = math.abs(math.cos(math.rad(deg)))
@@ -29,11 +57,11 @@ obj.copybuffer("obj", "tmp")
 obj.effect(
     "グロー",
     "強さ",
-    obj.track0,
+    rename_me_track0,
     "拡散",
-    obj.track1,
+    rename_me_track1,
     "しきい値",
-    obj.track2,
+    rename_me_track2,
     "ぼかし",
     blur,
     "type",

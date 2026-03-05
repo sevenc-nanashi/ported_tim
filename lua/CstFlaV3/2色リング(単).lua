@@ -1,20 +1,64 @@
 --label:tim2\カスタムフレア.anm\2色リング(単)
---track0:サイズ,0,5000,200
---track1:幅,0,4000,20
---track2:強度,0,100,80
---track3:回転,-3600,3600,0
---value@basechk:ベースカラー/chk,0
---value@col1:色1/col,0xff0000
---value@col2:色2/col,0x22ff22
---value@grh:グラデ幅,40
---value@blur:ぼかし,5
---value@ew:開口量％,40
---value@bw:開口ぼかし％,20
---value@t:位置％,25
---value@OFSET:位置オフセット,{0,0,0}
---value@auba:自動消去/chk,0
---value@Rmax:基準距離,400
---value@blink:点滅,0.2
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 200
+
+---$track:幅
+---min=0
+---max=4000
+---step=0.1
+local rename_me_track1 = 20
+
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 80
+
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:ベースカラー/chk
+local basechk = 0
+
+---$value:色1/col
+local col1 = 0xff0000
+
+---$value:色2/col
+local col2 = 0x22ff22
+
+---$value:グラデ幅
+local grh = 40
+
+---$value:ぼかし
+local blur = 5
+
+---$value:開口量％
+local ew = 40
+
+---$value:開口ぼかし％
+local bw = 20
+
+---$value:位置％
+local t = 25
+
+---$value:位置オフセット
+local OFSET = { 0, 0, 0 }
+
+---$value:自動消去/chk
+local auba = 0
+
+---$value:基準距離
+local Rmax = 400
+
+---$value:点滅
+local blink = 0.2
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)
@@ -22,15 +66,15 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * obj.track2 * 0.01
+alpha = alpha * rename_me_track2 * 0.01
 if auba == 1 then
     alpha = alpha
         * math.sqrt(CustomFlaredX * CustomFlaredX + CustomFlaredY * CustomFlaredY + CustomFlaredZ * CustomFlaredZ)
         / Rmax
 end
-local l = obj.track0 * math.pi / 4
-local cy = (l - obj.track1 * math.pi) * 0.5
-local rot = obj.track3 + math.deg(math.atan2(CustomFlaredY, CustomFlaredX)) - 90
+local l = rename_me_track0 * math.pi / 4
+local cy = (l - rename_me_track1 * math.pi) * 0.5
+local rot = rename_me_track3 + math.deg(math.atan2(CustomFlaredY, CustomFlaredX)) - 90
 t = t * 0.01
 obj.load("figure", "四角形", CustomFlareColor, l)
 obj.effect("斜めクリッピング", "角度", -180, "中心Y", cy)

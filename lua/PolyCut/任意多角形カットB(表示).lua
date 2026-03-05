@@ -1,7 +1,15 @@
 --label:tim2\任意多角形カット.anm\任意多角形カットB(表示)
---track0:厚み,0,1000,0
---value@wcol:側面色/col,""
---value@ANT:アンチエイリアス,0
+---$track:厚み
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track0 = 0
+
+---$value:側面色/col
+local wcol = ""
+
+---$value:アンチエイリアス
+local ANT = 0
 
 function muki(ax, ay, bx, by)
     if ax * by - ay * bx > 0 then
@@ -101,7 +109,7 @@ function mydp(p1, p2, p3)
     end
 end
 
-TC = obj.track0 / 2
+TC = rename_me_track0 / 2
 zoom = obj.getvalue("zoom") * 0.01
 w, h = obj.getpixel()
 if TC == 0 then

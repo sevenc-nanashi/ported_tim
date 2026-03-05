@@ -1,27 +1,62 @@
 --label:tim2\カメレオン効果.anm\カメレオン効果(適応)
---track0:適応率,0,100,70
---track1:明度補正,0,300,100
---track2:逆光強度,0,300,0
---track3:逆光拡散,0,500,15
---check0:ﾌﾚｰﾑﾊﾞｯﾌｧを背景,0;
---value@CkV:輝度補正/chk,1
---value@CkS:彩度補正/chk,1
---value@col:逆光色/col,""
---value@BLA:逆光自動調整/chk,0
---value@BLL:逆光強度補正,100
---value@reC:事前無彩色補正/chk,0
---value@reH:└強度,30
+---$track:適応率
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 70
+
+---$track:明度補正
+---min=0
+---max=300
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:逆光強度
+---min=0
+---max=300
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:逆光拡散
+---min=0
+---max=500
+---step=0.1
+local rename_me_track3 = 15
+
+---$check:ﾌﾚｰﾑﾊﾞｯﾌｧを背景
+local rename_me_check0 = true
+
+---$value:輝度補正/chk
+local CkV = 1
+
+---$value:彩度補正/chk
+local CkS = 1
+
+---$value:逆光色/col
+local col = ""
+
+---$value:逆光自動調整/chk
+local BLA = 0
+
+---$value:逆光強度補正
+local BLL = 100
+
+---$value:事前無彩色補正/chk
+local reC = 0
+
+---$value:└強度
+local reH = 30
 
 require("T_Familiar_Module")
 
-local P = obj.track0 / 100
-local L = obj.track1 / 100
-local GL = obj.track2
-local GD = obj.track3
+local P = rename_me_track0 / 100
+local L = rename_me_track1 / 100
+local GL = rename_me_track2
+local GD = rename_me_track3
 
 BLL = (BLL or 100) / 100
 
-if obj.check0 then
+if rename_me_check0 then
     local Pr =
         { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
     obj.copybuffer("cache:org", "obj")
@@ -64,5 +99,5 @@ if GL > 0 and GD > 0 then
     g = math.max(math.min(g, 255), 0)
     b = math.max(math.min(b, 255), 0)
 
-    obj.effect("ライト", "強さ", obj.track2, "拡散", obj.track3, "逆光", 1, "color", RGB(r, g, b))
+    obj.effect("ライト", "強さ", rename_me_track2, "拡散", rename_me_track3, "逆光", 1, "color", RGB(r, g, b))
 end

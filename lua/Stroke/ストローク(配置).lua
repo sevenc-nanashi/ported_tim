@@ -1,24 +1,59 @@
 --label:tim2\ストロークT.anm\ストローク(配置)
---track0:進捗度1,0,100,100,0.01
---track1:進捗度2,0,100,0,0.01
---track2:区間個数,1,5000,10,1
---track3:ﾗﾝﾀﾞﾑ性,0,100,0
---value@apchk:重なり反転/chk,0
---value@CirObt:環状軌道/chk,0
---value@richk:軌道[0_2],1
---value@vecchk:進行方向/chk,0
---value@topOnly:先頭表示/chk,0
---value@Gosa:位置ランダム性,200
---value@dScr:領域拡大,0
---value@smN:精度,20
+---$track:進捗度1
+---min=0
+---max=100
+---step=0.01
+local rename_me_track0 = 100
 
-local t1 = obj.track0 * 0.01
-local t2 = obj.track1 * 0.01
+---$track:進捗度2
+---min=0
+---max=100
+---step=0.01
+local rename_me_track1 = 0
+
+---$track:区間個数
+---min=1
+---max=5000
+---step=1
+local rename_me_track2 = 10
+
+---$track:ﾗﾝﾀﾞﾑ性
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:重なり反転/chk
+local apchk = 0
+
+---$value:環状軌道/chk
+local CirObt = 0
+
+---$value:軌道[0_2]
+local richk = 1
+
+---$value:進行方向/chk
+local vecchk = 0
+
+---$value:先頭表示/chk
+local topOnly = 0
+
+---$value:位置ランダム性
+local Gosa = 200
+
+---$value:領域拡大
+local dScr = 0
+
+---$value:精度
+local smN = 20
+
+local t1 = rename_me_track0 * 0.01
+local t2 = rename_me_track1 * 0.01
 if t2 < t1 then
     t1, t2 = t2, t1
 end
-local posN = obj.track2
-local rnd = obj.track3 * 0.01
+local posN = rename_me_track2
+local rnd = rename_me_track3 * 0.01
 
 T_stroke_f = function()
     local t_To_D = function(Datat, posN)

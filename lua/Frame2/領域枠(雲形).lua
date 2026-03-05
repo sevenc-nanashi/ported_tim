@@ -1,20 +1,63 @@
 --label:tim2\領域枠.anm\領域枠(雲形)
---track0:画線幅％,0,100,10
---track1:密度,1,200,7,1
---track2:形状変化,1,5000,1,0.01
---track3:背景濃度,0,100,20
---value@col1:枠色/col,0xffffff
---value@col2:背景色/col,0xccccff
---value@pw:追加幅,0
---value@ph:追加高さ,0
---value@par:平滑度[%],20
---value@wpar:雲横位置[%],{50,100}
---value@xpar:雲横重なり[%],{10,40}
---value@hpar:雲高さ[%],{70,90}
---value@crot:回転,35
---value@hei:変形[1-5],1
---value@bai:精度,1
---value@base:基準,{0,0}
+---$track:画線幅％
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 10
+
+---$track:密度
+---min=1
+---max=200
+---step=1
+local rename_me_track1 = 7
+
+---$track:形状変化
+---min=1
+---max=5000
+---step=0.01
+local rename_me_track2 = 1
+
+---$track:背景濃度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 20
+
+---$value:枠色/col
+local col1 = 0xffffff
+
+---$value:背景色/col
+local col2 = 0xccccff
+
+---$value:追加幅
+local pw = 0
+
+---$value:追加高さ
+local ph = 0
+
+---$value:平滑度[%]
+local par = 20
+
+---$value:雲横位置[%]
+local wpar = { 50, 100 }
+
+---$value:雲横重なり[%]
+local xpar = { 10, 40 }
+
+---$value:雲高さ[%]
+local hpar = { 70, 90 }
+
+---$value:回転
+local crot = 35
+
+---$value:変形[1-5]
+local hei = 1
+
+---$value:精度
+local bai = 1
+
+---$value:基準
+local base = { 0, 0 }
 
 local function make_waku(wh, w, h, col1, lw)
     obj.setoption("drawtarget", "tempbuffer", w + 10, h + 10)
@@ -27,9 +70,9 @@ local function make_waku(wh, w, h, col1, lw)
 end
 
 local w, h = obj.getpixel()
-local lw = obj.track0 * 0.01
-local cou = math.floor(obj.track1)
-local pt = obj.track2
+local lw = rename_me_track0 * 0.01
+local cou = math.floor(rename_me_track1)
+local pt = rename_me_track2
 local pt1 = math.floor(pt)
 local pt2 = pt1 + 1
 pt = pt - pt1
@@ -44,7 +87,7 @@ else
 end
 pt = pt * 0.5
 
-local backC = obj.track3 * 0.01
+local backC = rename_me_track3 * 0.01
 
 if T_ryouikiwaku_w == nil then
     w, h = pw + w + 2 * lw, ph + h + 2 * lw

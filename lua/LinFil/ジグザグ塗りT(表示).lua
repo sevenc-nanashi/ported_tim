@@ -1,27 +1,75 @@
 --label:tim2\ジグザグ塗りT.anm\ジグザグ塗りT(表示)
---track0:進捗,0,100,100,0.01
---track1:サイズ,2,1000,20,1
---track2:線間隔,4,1000,10,1
---track3:領域調整,-500,500,0,1
---value@Md:表示モード[0..5],0
---value@K:角度,20
---value@col:線色/col,0xffffff
---value@OgA:本体α[0..100],100
---value@LnA:ﾗｲﾝα[0..100],100
---value@B:ぼかし,0
---value@RX:水平ランダム,0
---value@RY:垂直ランダム,0
---value@Sd:シード,0
---value@Cf:└変動ﾌﾚｰﾑ長,0
---value@T:αしきい値,127
---value@CV:距離∝時間ﾓｰﾄﾞ/chk,1
---value@EZ:イージング,0
---check0:角丸なし,0;
+---$track:進捗
+---min=0
+---max=100
+---step=0.01
+local rename_me_track0 = 100
+
+---$track:サイズ
+---min=2
+---max=1000
+---step=1
+local rename_me_track1 = 20
+
+---$track:線間隔
+---min=4
+---max=1000
+---step=1
+local rename_me_track2 = 10
+
+---$track:領域調整
+---min=-500
+---max=500
+---step=1
+local rename_me_track3 = 0
+
+---$value:表示モード[0..5]
+local Md = 0
+
+---$value:角度
+local K = 20
+
+---$value:線色/col
+local col = 0xffffff
+
+---$value:本体α[0..100]
+local OgA = 100
+
+---$value:ﾗｲﾝα[0..100]
+local LnA = 100
+
+---$value:ぼかし
+local B = 0
+
+---$value:水平ランダム
+local RX = 0
+
+---$value:垂直ランダム
+local RY = 0
+
+---$value:シード
+local Sd = 0
+
+---$value:└変動ﾌﾚｰﾑ長
+local Cf = 0
+
+---$value:αしきい値
+local T = 127
+
+---$value:距離∝時間ﾓｰﾄﾞ/chk
+local CV = 1
+
+---$value:イージング
+local EZ = 0
+
+---$check:角丸なし
+local rename_me_check0 = true
+
 require("T_LineFill_Module")
-local P = obj.track0 / 100
-local D = math.floor(obj.track1)
-local S = math.floor(obj.track2)
-local E = math.floor(obj.track3)
+local P = rename_me_track0 / 100
+local D = math.floor(rename_me_track1)
+local S = math.floor(rename_me_track2)
+local E = math.floor(rename_me_track3)
 TLF = T_LineFill or {}
 K = TLF.K or K
 local R = math.rad(K)
@@ -105,7 +153,7 @@ if P > 0 and N > 0 then
     _T_LineFill_last_x, _T_LineFill_last_y =
         q * PS[2 * Ne - 3] + (1 - q) * PS[2 * Ne - 1], q * PS[2 * Ne - 2] + (1 - q) * PS[2 * Ne]
     PS[2 * Ne - 1], PS[2 * Ne] = _T_LineFill_last_x, _T_LineFill_last_y
-    if not obj.check0 then
+    if not rename_me_check0 then
         obj.load("figure", "円", col, 2 * D)
         obj.effect("リサイズ", "拡大率", 50)
         for i = 1, Ne do

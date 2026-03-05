@@ -1,15 +1,45 @@
 --label:tim2
---track0:移動X,-50000,50000,0
---track1:移動Y,-50000,50000,0
---track2:浮上X,-20000,20000,0
---track3:浮上Y,-20000,20000,0
+---$track:移動X
+---min=-50000
+---max=50000
+---step=0.1
+local rename_me_track0 = 0
 
---value@ReI:反転[0..3],0
---value@tar:参照領域/chk,1
---value@ora:オリジナル表示/chk,1
---value@N:分割数,10
---value@ANT:アンチエイリアス/chk,1
---value@are:領域,{-80,-100,80,-105,100,105,-100,100}
+---$track:移動Y
+---min=-50000
+---max=50000
+---step=0.1
+local rename_me_track1 = 0
+
+---$track:浮上X
+---min=-20000
+---max=20000
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:浮上Y
+---min=-20000
+---max=20000
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:反転[0..3]
+local ReI = 0
+
+---$value:参照領域/chk
+local tar = 1
+
+---$value:オリジナル表示/chk
+local ora = 1
+
+---$value:分割数
+local N = 10
+
+---$value:アンチエイリアス/chk
+local ANT = 1
+
+---$value:領域
+local are = { -80, -100, 80, -105, 100, 105, -100, 100 }
 
 function cal_koten(a, b, c, d)
     local g
@@ -53,11 +83,11 @@ if muki(ps[1], ps[2], ps[2], ps[3]) == 1 then
     ps[3], ps[4] = ps[4], ps[3]
 end
 
-dx = obj.track0 / 100
-dy = obj.track1 / 100
+dx = rename_me_track0 / 100
+dy = rename_me_track1 / 100
 
-flx = obj.track2
-fly = obj.track3
+flx = rename_me_track2
+fly = rename_me_track3
 
 b = {}
 c = {}

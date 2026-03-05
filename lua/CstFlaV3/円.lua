@@ -1,12 +1,40 @@
 --label:tim2\カスタムフレア.anm\円
---track0:サイズ,0,5000,300
---track1:強度,0,100,50
---track2:ぼかし％,0,100,10
---track3:位置％,-5000,5000,0
---value@basechk:ベースカラー/chk,1
---value@col:色/col,0xccccff
---value@OFSET:位置ズレ％,{0,0,0}
---value@blink:点滅,0.2
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 300
+
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 50
+
+---$track:ぼかし％
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 10
+
+---$track:位置％
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:ベースカラー/chk
+local basechk = 1
+
+---$value:色/col
+local col = 0xccccff
+
+---$value:位置ズレ％
+local OFSET = { 0, 0, 0 }
+
+---$value:点滅
+local blink = 0.2
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)
@@ -17,10 +45,10 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * obj.track1 * 0.01
-local size = obj.track0
-local blur = obj.track2
-local t = obj.track3 * 0.01
+alpha = alpha * rename_me_track1 * 0.01
+local size = rename_me_track0
+local blur = rename_me_track2
+local t = rename_me_track3 * 0.01
 obj.load("figure", "円", col, 100)
 obj.effect("ぼかし", "範囲", blur)
 ox = CustomFlareCX + t * CustomFlaredX + OFSET[1] * CustomFlaredX * 0.01

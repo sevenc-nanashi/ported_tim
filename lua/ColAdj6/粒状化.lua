@@ -1,16 +1,42 @@
 --label:tim2\T_Color_Module.anm\粒状化
---track0:量,0,100,50
---track1:ｺﾝﾄﾗｽﾄ,-400,400,100
---track2:シード,1,10000,1,1
---track3:処理法,1,3,1,1
---value@col1:色1/col,0xffffff
---value@col2: 色2/col,0x0
---check0:時間変動,0;
-local N = obj.track2
-if obj.check0 then
+---$track:量
+---min=0
+---max=100
+---step=0.1
+local rename_me_track0 = 50
+
+---$track:ｺﾝﾄﾗｽﾄ
+---min=-400
+---max=400
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:シード
+---min=1
+---max=10000
+---step=1
+local rename_me_track2 = 1
+
+---$track:処理法
+---min=1
+---max=3
+---step=1
+local rename_me_track3 = 1
+
+---$value:色1/col
+local col1 = 0xffffff
+
+---$value: 色2/col
+local col2 = 0x0
+
+---$check:時間変動
+local rename_me_check0 = true
+
+local N = rename_me_track2
+if rename_me_check0 then
     N = obj.rand(0, 10000, -obj.time * obj.framerate, 1)
 end
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()
-T_Color_Module.grainy(userdata, w, h, obj.track0, obj.track1, obj.track3, N, col1, col2)
+T_Color_Module.grainy(userdata, w, h, rename_me_track0, rename_me_track1, rename_me_track3, N, col1, col2)
 obj.putpixeldata(userdata)

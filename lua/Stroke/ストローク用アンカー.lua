@@ -1,8 +1,15 @@
 --label:tim2\ストロークT.anm\ストローク用アンカー
---track0:ｱﾝｶｰ数,1,12,3,1
---value@anc:追加座標,{-100,0,0,0,100,0}
+---$track:ｱﾝｶｰ数
+---min=1
+---max=12
+---step=1
+local rename_me_track0 = 3
+
+---$value:追加座標
+local anc = { -100, 0, 0, 0, 100, 0 }
+
 --追加削除対策で#は使わない
-local k = obj.track0
+local k = rename_me_track0
 obj.setanchor("anc", k, "line")
 if T_strokeTM_ancB == nil then
     T_strokeTM_ancB = {}

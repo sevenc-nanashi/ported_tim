@@ -1,15 +1,39 @@
 --label:tim2
---track0:半径,0,1000,100
---track1:彩度,0,100,100
---track2:明度,0,100,100
---track3:幅％,0,100,25
---value@spN:分割,24
---value@wp:幅%(旧ﾊﾟﾗﾒｰﾀ),0
-local wp2 = (wp == 0 or obj.track3 > 0) and obj.track3 or wp
-local Ro = obj.track0
+---$track:半径
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:彩度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:明度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 100
+
+---$track:幅％
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 25
+
+---$value:分割
+local spN = 24
+
+---$value:幅%(旧ﾊﾟﾗﾒｰﾀ)
+local wp = 0
+
+local wp2 = (wp == 0 or rename_me_track3 > 0) and rename_me_track3 or wp
+local Ro = rename_me_track0
 local Ri = Ro * (100 - wp2) * 0.01
-local s = obj.track1
-local v = obj.track2
+local s = rename_me_track1
+local v = rename_me_track2
 obj.setoption("drawtarget", "tempbuffer", 2 * Ro, 2 * Ro)
 obj.setoption("blend", "alpha_add")
 local s2 = (-1 / spN + 2 / 3) * math.pi

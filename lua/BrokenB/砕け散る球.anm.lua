@@ -1,18 +1,58 @@
 --label:tim2
---track0:粉砕度,0,5000,100
---track1:時間差,0,1000,100
---track2:半径,10,10000,300
---track3:限界距離,0,10000,150
---value@dti:厚さ,20
---value@size:破片サイズ,40
---value@Rk:ランダム形状,100
---value@AA:中心,"0,0,0"
---value@speed:速度,100
---value@impact:距離影響,100
---value@vr:円周方向初速度,0
---value@grav:重力,"0,100,0"
---value@spin:ランダム回転,100
---value@diff:ランダム方向,100
+---$track:粉砕度
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 100
+
+---$track:時間差
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track1 = 100
+
+---$track:半径
+---min=10
+---max=10000
+---step=0.1
+local rename_me_track2 = 300
+
+---$track:限界距離
+---min=0
+---max=10000
+---step=0.1
+local rename_me_track3 = 150
+
+---$value:厚さ
+local dti = 20
+
+---$value:破片サイズ
+local size = 40
+
+---$value:ランダム形状
+local Rk = 100
+
+---$value:中心
+local AA = "0,0,0"
+
+---$value:速度
+local speed = 100
+
+---$value:距離影響
+local impact = 100
+
+---$value:円周方向初速度
+local vr = 0
+
+---$value:重力
+local grav = "0,100,0"
+
+---$value:ランダム回転
+local spin = 100
+
+---$value:ランダム方向
+local diff = 100
+
 local hxx = {}
 local hyy = {}
 local px = {}
@@ -29,10 +69,10 @@ local tt = {}
 obj.effect()
 
 mpi = math.pi
-tm = obj.track0 / 1000
-delay = obj.track1
-Rm = obj.track3
-RRq = obj.track2
+tm = rename_me_track0 / 1000
+delay = rename_me_track1
+Rm = rename_me_track3
+RRq = rename_me_track2
 delay = delay * 0.002
 impact = impact * 0.2
 spin = math.floor(spin * 10)

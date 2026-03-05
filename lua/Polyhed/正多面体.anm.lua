@@ -1,10 +1,30 @@
 --label:tim2
---track0:サイズ,0,5000,200
---track1:タイプ,1,5,1,1
---track2:枠％,0,100,0
---value@col:枠色/col,0xffffff
---value@aspchk:縮尺補正/chk,0
---value@rotchk:90度回転/chk,0
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 200
+
+---$track:タイプ
+---min=1
+---max=5
+---step=1
+local rename_me_track1 = 1
+
+---$track:枠％
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 0
+
+---$value:枠色/col
+local col = 0xffffff
+
+---$value:縮尺補正/chk
+local aspchk = 0
+
+---$value:90度回転/chk
+local rotchk = 0
 
 obj.setoption("blend", 0) --念のため
 
@@ -107,12 +127,12 @@ local create_DP = function(c72, c36, s72, s36, Stype)
     end
 end
 
-local size = obj.track0 --内接球の半径
-local Stype = math.floor(obj.track1)
+local size = rename_me_track0 --内接球の半径
+local Stype = math.floor(rename_me_track1)
 local N = { 4, 8, 6, 20, 12 }
 local c72, c36, s72, s36 = 0, 0, 0, 0
 local PT = {}
-local waku = obj.track2 * 0.01
+local waku = rename_me_track2 * 0.01
 
 --最初から規格化すれば良いのだけれど・・めんどくさいので＞＜
 if Stype == 1 then

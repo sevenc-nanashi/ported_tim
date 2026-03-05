@@ -1,20 +1,63 @@
 --label:tim2
---track0:揺れ角,0,360,30
---track1:揺れ周期,0.01,100,2,0.01
---track2:揺れズレ,-360,360,90
---track3:センター,-180,180,0
---value@N:分割,10
---value@dL:上固定長％,10
---value@dL2:下固定長％,10
---value@UB:下を基準/chk,0
---value@rndF:ランダム揺れ量/chk,0
---value@seed:ランダム揺れﾊﾟﾀｰﾝ,0
---value@sft:時間ずれ,0.1
---value@rep:横に繰り返す/chk,0
---value@repN:繰り返し個数,3
---value@stepX:間隔,50
---value@Frd:破綻軽減/chk,0
---check0:アルファ補正,1;
+---$track:揺れ角
+---min=0
+---max=360
+---step=0.1
+local rename_me_track0 = 30
+
+---$track:揺れ周期
+---min=0.01
+---max=100
+---step=0.01
+local rename_me_track1 = 2
+
+---$track:揺れズレ
+---min=-360
+---max=360
+---step=0.1
+local rename_me_track2 = 90
+
+---$track:センター
+---min=-180
+---max=180
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:分割
+local N = 10
+
+---$value:上固定長％
+local dL = 10
+
+---$value:下固定長％
+local dL2 = 10
+
+---$value:下を基準/chk
+local UB = 0
+
+---$value:ランダム揺れ量/chk
+local rndF = 0
+
+---$value:ランダム揺れﾊﾟﾀｰﾝ
+local seed = 0
+
+---$value:時間ずれ
+local sft = 0.1
+
+---$value:横に繰り返す/chk
+local rep = 0
+
+---$value:繰り返し個数
+local repN = 3
+
+---$value:間隔
+local stepX = 50
+
+---$value:破綻軽減/chk
+local Frd = 0
+
+---$check:アルファ補正
+local rename_me_check0 = true
 
 local w, h = obj.getpixel()
 local w2, h2 = w / 2, h / 2
@@ -35,12 +78,12 @@ end
 dL = dL * 0.01 * h
 dL2 = dL2 * 0.01 * h
 local L = h - dL - dL2 --長さ
-local F = math.pi * obj.track0 / 180 --揺れ幅
-local dt = obj.track1
+local F = math.pi * rename_me_track0 / 180 --揺れ幅
+local dt = rename_me_track1
 local c = 2 * math.pi / dt --揺れ速度
-local d = 2 * obj.track2 * math.pi / 180 --揺れズレ
-local CNT = obj.track3 * math.pi / 180 --センター
-local alp = obj.check0 and 1 or 0
+local d = 2 * rename_me_track2 * math.pi / 180 --揺れズレ
+local CNT = rename_me_track3 * math.pi / 180 --センター
+local alp = rename_me_check0 and 1 or 0
 seed = 10 + math.abs(seed)
 
 WindShakeT = function(n)

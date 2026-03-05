@@ -1,26 +1,69 @@
 --label:tim2
---track0:レイヤー,1,100,1,1
---track1:幅,100,1000,256,1
---track2:高さ,100,1000,200,1
---track3:縦倍率%,1,1000,100
---value@efR:エフェクト読込/chk,1
---value@Rap:R表示/chk,1
---value@Gap:G表示/chk,1
---value@Bap:B表示/chk,1
---check0:輝度表示,1;
+---$track:レイヤー
+---min=1
+---max=100
+---step=1
+local rename_me_track0 = 1
+
+---$track:幅
+---min=100
+---max=1000
+---step=1
+local rename_me_track1 = 256
+
+---$track:高さ
+---min=100
+---max=1000
+---step=1
+local rename_me_track2 = 200
+
+---$track:縦倍率%
+---min=1
+---max=1000
+---step=0.1
+local rename_me_track3 = 100
+
+---$value:エフェクト読込/chk
+local efR = 1
+
+---$value:R表示/chk
+local Rap = 1
+
+---$value:G表示/chk
+local Gap = 1
+
+---$value:B表示/chk
+local Bap = 1
+
+---$check:輝度表示
+local rename_me_check0 = true
+
 Lw = Lw or 3
-local w = obj.track1
-local h = obj.track2
+local w = rename_me_track1
+local h = rename_me_track2
 efR = efR or 1
 Rap = Rap or 1
 Gap = Gap or 1
 Bap = Bap or 1
 require("T_Color_Module")
-obj.load("layer", obj.track0, efR == 1)
+obj.load("layer", rename_me_track0, efR == 1)
 local w0, h0 = obj.getpixel()
 obj.effect("領域拡張", "右", 256 - w0, "下", h - h0)
 local userdata, w1, h1 = obj.getpixeldata()
-T_Color_Module.CreateHistogram(userdata, 256, h, w0, h0, w1, h1, obj.track3 / 100, obj.check0, Rap, Gap, Bap)
+T_Color_Module.CreateHistogram(
+    userdata,
+    256,
+    h,
+    w0,
+    h0,
+    w1,
+    h1,
+    rename_me_track3 / 100,
+    rename_me_check0,
+    Rap,
+    Gap,
+    Bap
+)
 obj.putpixeldata(userdata)
 obj.effect(
     "クリッピング",

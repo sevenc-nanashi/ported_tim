@@ -1,27 +1,75 @@
 --label:tim2
---track0:サイズ,0,3000,200,1
---track1:線幅,1,500,5,1
---track2:変動量,-500,500,10
---track3:変動長,2,5000,70,1
---value@_1:線色/col,0xffffff
---value@_2:形状/fig,"円"
---value@_3:延長%,10
---value@_4:縦横比[-100..100],0
---value@_5:点間隔,2
---value@_6:追加角度,0
---value@_7:└自動方向/chk,0
---value@_11:分割精度,10
---value@_12:重ね描き,1
---value@_13:└自動調整/chk,1
---value@_14:シード,0
---value@_15:└変化間隔,0
---value@_0: PI,nil
---check0:単一線,0;
+---$track:サイズ
+---min=0
+---max=3000
+---step=1
+local rename_me_track0 = 200
+
+---$track:線幅
+---min=1
+---max=500
+---step=1
+local rename_me_track1 = 5
+
+---$track:変動量
+---min=-500
+---max=500
+---step=0.1
+local rename_me_track2 = 10
+
+---$track:変動長
+---min=2
+---max=5000
+---step=1
+local rename_me_track3 = 70
+
+---$value:線色/col
+local _1 = 0xffffff
+
+---$value:形状/fig
+local _2 = "円"
+
+---$value:延長%
+local _3 = 10
+
+---$value:縦横比[-100..100]
+local _4 = 0
+
+---$value:点間隔
+local _5 = 2
+
+---$value:追加角度
+local _6 = 0
+
+---$value:└自動方向/chk
+local _7 = 0
+
+---$value:分割精度
+local _11 = 10
+
+---$value:重ね描き
+local _12 = 1
+
+---$value:└自動調整/chk
+local _13 = 1
+
+---$value:シード
+local _14 = 0
+
+---$value:└変化間隔
+local _15 = 0
+
+---$value: PI
+local _0 = nil
+
+---$check:単一線
+local rename_me_check0 = true
+
 _0 = _0 or {}
-local FgS = math.floor(_0[1] or obj.track0)
-local LnW = math.floor(_0[2] or obj.track1)
-local LnA = (_0[3] or obj.track2)
-local LnL = math.floor(_0[4] or obj.track3)
+local FgS = math.floor(_0[1] or rename_me_track0)
+local LnW = math.floor(_0[2] or rename_me_track1)
+local LnA = (_0[3] or rename_me_track2)
+local LnL = math.floor(_0[4] or rename_me_track3)
 local Col = _1 or 0xffffff
 local Fig = _2 or "円"
 local SmL = (_3 or 0) / 100
@@ -34,7 +82,7 @@ local Ju = math.floor(_12 or 1)
 local JA = _13 == 1
 local SeD = _14 or 0
 local ChI = _15 or 0
-local SL = _0[0] == nil and obj.check0 or _0[0]
+local SL = _0[0] == nil and rename_me_check0 or _0[0]
 _0 = nil
 _1 = nil
 _2 = nil

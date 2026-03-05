@@ -1,16 +1,39 @@
 --label:tim2
---track0:時間mS,1,10000,1000
---track1:ｻｲｽﾞ％,5,5000,450
---track2:ｻｲｽﾞ誤差,0,500,30
---track3:横ズレ量,0,1000,450
---value@cx:中心ズレ,70
---value@seed:乱数シード,0
+---$track:時間mS
+---min=1
+---max=10000
+---step=0.1
+local rename_me_track0 = 1000
+
+---$track:ｻｲｽﾞ％
+---min=5
+---max=5000
+---step=0.1
+local rename_me_track1 = 450
+
+---$track:ｻｲｽﾞ誤差
+---min=0
+---max=500
+---step=0.1
+local rename_me_track2 = 30
+
+---$track:横ズレ量
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track3 = 450
+
+---$value:中心ズレ
+local cx = 70
+
+---$value:乱数シード
+local seed = 0
 
 local T = obj.time
-local Mtime = obj.track0 * 0.001
-local maxsize = obj.track1 * 0.01
-local dsize = obj.track2
-local yz = obj.track3 * 0.01
+local Mtime = rename_me_track0 * 0.001
+local maxsize = rename_me_track1 * 0.01
+local dsize = rename_me_track2
+local yz = rename_me_track3 * 0.01
 
 local N = obj.num - 1
 local id = obj.index - 1

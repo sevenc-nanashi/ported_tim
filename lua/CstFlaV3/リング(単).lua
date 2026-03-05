@@ -1,13 +1,43 @@
 --label:tim2\カスタムフレア.anm\リング(単)
---track0:サイズ,0,5000,200
---track1:幅,0,4000,10
---track2:強度,0,100,50
---track3:ぼかし,0,1000,10
---value@basechk:ベースカラー/chk,1
---value@col:色/col,0xccccff
---value@dt:位置％,0
---value@OFSET:位置オフセット,{0,0,0}
---value@blink:点滅,0.2
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 200
+
+---$track:幅
+---min=0
+---max=4000
+---step=0.1
+local rename_me_track1 = 10
+
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 50
+
+---$track:ぼかし
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track3 = 10
+
+---$value:ベースカラー/chk
+local basechk = 1
+
+---$value:色/col
+local col = 0xccccff
+
+---$value:位置％
+local dt = 0
+
+---$value:位置オフセット
+local OFSET = { 0, 0, 0 }
+
+---$value:点滅
+local blink = 0.2
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)
@@ -18,10 +48,10 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * obj.track2 * 0.01
-local size = obj.track0
-local haba = obj.track1
-local blur = obj.track3
+alpha = alpha * rename_me_track2 * 0.01
+local size = rename_me_track0
+local haba = rename_me_track1
+local blur = rename_me_track3
 dt = dt * 0.01
 obj.load("figure", "円", col, size, haba)
 obj.effect("ぼかし", "範囲", blur)

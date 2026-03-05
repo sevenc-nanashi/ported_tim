@@ -1,21 +1,54 @@
 --label:tim2\T_RotBlur_Module.anm\方向ハードブラー
---track0:ブラー量,0,2000,100
---track1:凹凸ｻｲｽﾞ,1,1000,30,1
---track2:角度,-3600,3600,0
---track3:丸み,-100,100,0
---value@ck:サイズ保持/chk,1
---value@BasP:基準[-100〜100],0
---value@AmpR:幅ランダム%,50
---value@BM:簡易補正/chk,0
---value@BMC:└係数%,100
---value@rnds:パターン,1
---value@Sbai:表示限界倍率,3
+---$track:ブラー量
+---min=0
+---max=2000
+---step=0.1
+local rename_me_track0 = 100
 
-local Bx = obj.track0
+---$track:凹凸ｻｲｽﾞ
+---min=1
+---max=1000
+---step=1
+local rename_me_track1 = 30
+
+---$track:角度
+---min=-3600
+---max=3600
+---step=0.1
+local rename_me_track2 = 0
+
+---$track:丸み
+---min=-100
+---max=100
+---step=0.1
+local rename_me_track3 = 0
+
+---$value:サイズ保持/chk
+local ck = 1
+
+---$value:基準[-100〜100]
+local BasP = 0
+
+---$value:幅ランダム%
+local AmpR = 50
+
+---$value:簡易補正/chk
+local BM = 0
+
+---$value:└係数%
+local BMC = 100
+
+---$value:パターン
+local rnds = 1
+
+---$value:表示限界倍率
+local Sbai = 3
+
+local Bx = rename_me_track0
 if Bx ~= 0 then
-    local dS = obj.track1
-    local deg = obj.track2
-    local EG = obj.track3 * 0.01
+    local dS = rename_me_track1
+    local deg = rename_me_track2
+    local EG = rename_me_track3 * 0.01
     local rad = deg * math.pi / 180
     BasP = RotBlur_BasP or (BasP or 0)
     AmpR = RotBlur_AmpR or (AmpR or 100)

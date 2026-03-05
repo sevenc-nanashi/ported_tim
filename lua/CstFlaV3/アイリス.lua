@@ -1,32 +1,80 @@
 --label:tim2\カスタムフレア.anm\アイリス
---track0:形状,1,14,1,1
---track1:数,1,100,4,1
---track2:サイズ％,0,5000,30
---track3:強度,0,100,50
---value@dsize:サイズ幅％,50
---value@biger:順次拡大/chk,0
---value@dalp:強度幅％,5
---value@basechk:ベースカラー/chk,1
---value@col:色/col,0xccccff
---value@dcol:色幅％,5
---value@PP:位置％,{0,5}
---value@OFSET:位置オフセット,{0,0,0}
---value@SIG:散らばり％,{100,25}
---value@KAITEN:回転,{0,0}
---value@acr:ｱﾝｶｰに合わせる/chk,0
---value@blur:ぼかし,10
---value@blink:点滅,0.2
---value@seed:乱数シード,0
+---$track:形状
+---min=1
+---max=14
+---step=1
+local rename_me_track0 = 1
+
+---$track:数
+---min=1
+---max=100
+---step=1
+local rename_me_track1 = 4
+
+---$track:サイズ％
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track2 = 30
+
+---$track:強度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track3 = 50
+
+---$value:サイズ幅％
+local dsize = 50
+
+---$value:順次拡大/chk
+local biger = 0
+
+---$value:強度幅％
+local dalp = 5
+
+---$value:ベースカラー/chk
+local basechk = 1
+
+---$value:色/col
+local col = 0xccccff
+
+---$value:色幅％
+local dcol = 5
+
+---$value:位置％
+local PP = { 0, 5 }
+
+---$value:位置オフセット
+local OFSET = { 0, 0, 0 }
+
+---$value:散らばり％
+local SIG = { 100, 25 }
+
+---$value:回転
+local KAITEN = { 0, 0 }
+
+---$value:ｱﾝｶｰに合わせる/chk
+local acr = 0
+
+---$value:ぼかし
+local blur = 10
+
+---$value:点滅
+local blink = 0.2
+
+---$value:乱数シード
+local seed = 0
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)
 if basechk == 1 then
     col = CustomFlareColor
 end
-local fig = obj.track0
-local count = obj.track1
-local size = obj.track2 * 0.01
-local alp = obj.track3 * 0.01
+local fig = rename_me_track0
+local count = rename_me_track1
+local size = rename_me_track2 * 0.01
+local alp = rename_me_track3 * 0.01
 local t = PP[1] * 0.01
 local dt = PP[2]
 local sp = SIG[1] * 0.01

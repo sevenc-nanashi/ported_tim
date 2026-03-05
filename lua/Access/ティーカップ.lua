@@ -1,16 +1,51 @@
 --label:tim2\けいおんグッズ.obj\ティーカップ
---track0:サイズ,0,5000,200
---track1:水面高さ,0,100,80
---track2:透明度,0,100,20
---track3:ｶｯﾌﾟｿｰｻｰ間,-1000,1000,13
---value@N:分割数,40
---value@colc:カップ(色)/col,0xffffff
---value@cols:ソーサー(色)/col,0x02d2d2
---value@colt:ティー(色)/col,0xa14250
---value@hosei:ティー境界補正,5
---value@tw:取っ手幅,0.03
---value@tp:取っ手位置補正,1
---value@ANT:ｱﾝﾁｴｲﾘｱｽ[0/1/2],0
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local rename_me_track0 = 200
+
+---$track:水面高さ
+---min=0
+---max=100
+---step=0.1
+local rename_me_track1 = 80
+
+---$track:透明度
+---min=0
+---max=100
+---step=0.1
+local rename_me_track2 = 20
+
+---$track:ｶｯﾌﾟｿｰｻｰ間
+---min=-1000
+---max=1000
+---step=0.1
+local rename_me_track3 = 13
+
+---$value:分割数
+local N = 40
+
+---$value:カップ(色)/col
+local colc = 0xffffff
+
+---$value:ソーサー(色)/col
+local cols = 0x02d2d2
+
+---$value:ティー(色)/col
+local colt = 0xa14250
+
+---$value:ティー境界補正
+local hosei = 5
+
+---$value:取っ手幅
+local tw = 0.03
+
+---$value:取っ手位置補正
+local tp = 1
+
+---$value:ｱﾝﾁｴｲﾘｱｽ[0/1/2]
+local ANT = 0
 
 function CupLine(x)
     if x <= 0.9 then
@@ -25,8 +60,8 @@ function Rot(u, s)
     return u * math.cos(s), u * math.sin(s)
 end
 
-local size = obj.track0 / 2
-local ds = obj.track3 / 1000
+local size = rename_me_track0 / 2
+local ds = rename_me_track3 / 1000
 ANT = math.floor(ANT)
 mpi = math.pi
 
@@ -123,7 +158,7 @@ for j = 0, N - 1 do
 end
 
 --紅茶作成
-u1 = obj.track1 / 100
+u1 = rename_me_track1 / 100
 y1 = -size * CupLine(u1) - size * ds
 u1 = size * u1 - hosei
 obj.load("figure", "円", colt, 2 * u1)
@@ -131,5 +166,5 @@ if ANT > 1 then
     ANT = 1
 end
 obj.setoption("antialias", ANT)
-obj.alpha = 1 - obj.track2 / 100
+obj.alpha = 1 - rename_me_track2 / 100
 obj.drawpoly(-u1, y1, -u1, u1, y1, -u1, u1, y1, u1, -u1, y1, u1)

@@ -1,9 +1,17 @@
 --label:tim2\任意多角形.obj\任意多角形分離指定（座標)
---track0:ｶﾞｲﾄﾞｻｲｽﾞ,0,1000,50
---value@colG:ガイド色/col,0xff0000
---value@fig:図形/fig,"円"
+---$track:ｶﾞｲﾄﾞｻｲｽﾞ
+---min=0
+---max=1000
+---step=0.1
+local rename_me_track0 = 50
 
-obj.load("figure", fig, colG, obj.track0)
+---$value:ガイド色/col
+local colG = 0xff0000
+
+---$value:図形/fig
+local fig = "円"
+
+obj.load("figure", fig, colG, rename_me_track0)
 NTBS_N = obj.getoption("section_num") + 1
 NTBS_pos = {}
 for i = 1, NTBS_N - 1 do

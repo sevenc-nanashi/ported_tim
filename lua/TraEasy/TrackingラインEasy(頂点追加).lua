@@ -1,11 +1,21 @@
 --label:tim2\TrackingラインEasy.anm\TrackingラインEasy(頂点追加)
---track0:+頂点数,2,16,2,1
---value@cy:環状にする/chk,0
---value@pos:座標,{0,0,100,100}
---check0:頂点追加を無効にする,0;
+---$track:+頂点数
+---min=2
+---max=16
+---step=1
+local rename_me_track0 = 2
 
-if not obj.check0 then
-    local num = obj.track0
+---$value:環状にする/chk
+local cy = 0
+
+---$value:座標
+local pos = { 0, 0, 100, 100 }
+
+---$check:頂点追加を無効にする
+local rename_me_check0 = true
+
+if not rename_me_check0 then
+    local num = rename_me_track0
     obj.setanchor("pos", num, "line")
     local xnum = #Tracking.X + 1
     Tracking.cy[xnum] = cy or 0

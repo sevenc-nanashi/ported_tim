@@ -1,14 +1,34 @@
 --label:tim2
---track0:光中心(X),-5000,5000,-320
---track1:光中心(Y),-5000,5000,-180
---track2:ずれ(X),-5000,5000,640
---track3:ずれ(Y),-5000,5000,360
+---$track:光中心(X)
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track0 = -320
+
+---$track:光中心(Y)
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track1 = -180
+
+---$track:ずれ(X)
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track2 = 640
+
+---$track:ずれ(Y)
+---min=-5000
+---max=5000
+---step=0.1
+local rename_me_track3 = 360
+
 --param:bb=5;fh=0.1
 
-Cx = obj.track0
-Cy = obj.track1
-dx = obj.track2
-dy = obj.track3
+Cx = rename_me_track0
+Cy = rename_me_track1
+dx = rename_me_track2
+dy = rename_me_track3
 
 YR = 1 - fh + fh * obj.rand(0, 100) / 100
 
