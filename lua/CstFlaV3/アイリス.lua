@@ -26,16 +26,16 @@ local rename_me_track3 = 50
 ---$value:サイズ幅％
 local dsize = 50
 
----$value:順次拡大/chk
+---$check:順次拡大
 local biger = 0
 
 ---$value:強度幅％
 local dalp = 5
 
----$value:ベースカラー/chk
+---$check:ベースカラー
 local basechk = 1
 
----$value:色/col
+---$color:色
 local col = 0xccccff
 
 ---$value:色幅％
@@ -53,7 +53,7 @@ local SIG = { 100, 25 }
 ---$value:回転
 local KAITEN = { 0, 0 }
 
----$value:ｱﾝｶｰに合わせる/chk
+---$check:ｱﾝｶｰに合わせる
 local acr = 0
 
 ---$value:ぼかし

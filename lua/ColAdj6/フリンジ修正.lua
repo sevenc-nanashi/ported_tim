@@ -17,10 +17,10 @@ local rename_me_track1 = 255
 ---step=1
 local rename_me_track2 = 0
 
----$value:背景色/col
+---$color:背景色
 local col = 0xffffff
 
----$value:処理後α補正/chk
+---$check:処理後α補正
 local Af = 1
 
 require("T_Color_Module")

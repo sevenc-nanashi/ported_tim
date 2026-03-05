@@ -23,19 +23,19 @@ local rename_me_track2 = 10
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:重なり反転/chk
+---$check:重なり反転
 local apchk = 0
 
----$value:環状軌道/chk
+---$check:環状軌道
 local CirObt = 0
 
 ---$value:軌道[0_2]
 local richk = 1
 
----$value:進行方向/chk
+---$check:進行方向
 local vecchk = 0
 
----$value:先頭表示/chk
+---$check:先頭表示
 local topOnly = 0
 
 ---$value:位置ランダム性

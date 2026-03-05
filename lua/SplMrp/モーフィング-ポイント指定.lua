@@ -23,10 +23,10 @@ local rename_me_track2 = 30
 ---step=1
 local rename_me_track3 = 30
 
----$value:ポイント色/col
+---$color:ポイント色
 local pcol = 0xffffff
 
----$value:文字色/col
+---$color:文字色
 local fcol = 0x0
 
 ---$value:座標

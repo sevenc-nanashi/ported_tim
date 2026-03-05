@@ -26,10 +26,10 @@ local rename_me_track3 = 3
 ---$value:位置
 local pos = { 0, -150, 0, 150 }
 
----$value:コア色/col
+---$color:コア色
 local c_col = 0xffffff
 
----$value:発光色/col
+---$color:発光色
 local g_col = 0x0000ff
 
 ---$value:発光強さ
@@ -56,7 +56,7 @@ local gr = 30
 ---$value:領域サイズ
 local AS = { -180, -180, 180, 180 }
 
----$value:枠表示/chk
+---$check:枠表示
 local chk = 1
 
 function Lightning(stx, sty, enx, eny, c_d, c_s)

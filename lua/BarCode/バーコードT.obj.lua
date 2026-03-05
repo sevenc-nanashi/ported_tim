@@ -26,13 +26,13 @@ local rename_me_track3 = 20
 ---$value:データ
 local TXT = "AviUtl"
 
----$value:線色/col
+---$color:線色
 local col1 = 0x0
 
----$value:背景色/col
+---$color:背景色
 local col2 = 0xffffff
 
----$value:CodeCも併用/chk
+---$check:CodeCも併用
 local UseC = 0
 
 local PT = {

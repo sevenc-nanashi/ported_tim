@@ -23,10 +23,10 @@ local rename_me_track2 = 1
 ---step=0.1
 local rename_me_track3 = 20
 
----$value:枠色/col
+---$color:枠色
 local col1 = 0xffffff
 
----$value:背景色/col
+---$color:背景色
 local col2 = 0xccccff
 
 ---$value:追加幅

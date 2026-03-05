@@ -35,7 +35,7 @@ local dr = 0.1
 ---$value:シェーディング[%]
 local sdg = 100
 
----$value:ｼｪｰﾃﾞｨﾝｸﾞを逆に/chk
+---$check:ｼｪｰﾃﾞｨﾝｸﾞを逆に
 local srev = 0
 
 ---$value:範囲拡張

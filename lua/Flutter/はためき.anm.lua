@@ -29,7 +29,7 @@ local N = 30
 ---$value:モード
 local SW = 1
 
----$value:縦波数を別指定/chk
+---$check:縦波数を別指定
 local Yck = 0
 
 ---$value:└縦波数

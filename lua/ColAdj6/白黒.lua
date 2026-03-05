@@ -32,10 +32,10 @@ local M = 100
 ---$value:Y%
 local Y = 100
 
----$value:色付け/chk
+---$check:色付け
 local Ck = 0
 
----$value:└着色/col
+---$color:└着色
 local col = 0xff0000
 
 ---$value:ガンマ値

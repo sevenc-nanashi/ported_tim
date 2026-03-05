@@ -23,16 +23,16 @@ local rename_me_track2 = 0
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:形状/fig
+---$figure:形状
 local fig = "円"
 
----$value:進行方向/chk
+---$check:進行方向
 local td = 0
 
----$value:先端表示/chk
+---$check:先端表示
 local senp = 0
 
----$value:先端図形/fig
+---$figure:先端図形
 local senz = "三角形"
 
 ---$value:先端サイズ

@@ -23,10 +23,10 @@ local rename_me_track2 = 100
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:ベースカラー/chk
+---$check:ベースカラー
 local basechk = 1
 
----$value:光芒色/col
+---$color:光芒色
 local col = 0x9999ff
 
 ---$value:本数

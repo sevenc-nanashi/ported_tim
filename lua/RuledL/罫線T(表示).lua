@@ -23,10 +23,10 @@ local rename_me_track2 = 100
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:線色/col
+---$color:線色
 local wcl = 0xffffff
 
----$value:座標保存/chk
+---$check:座標保存
 local SvC = 1
 
 ---$check:エッジ調整

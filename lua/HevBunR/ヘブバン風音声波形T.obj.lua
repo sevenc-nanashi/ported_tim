@@ -23,19 +23,19 @@ local rename_me_track2 = 30
 ---step=1
 local rename_me_track3 = 30000
 
----$value:色W1/col
+---$color:色W1
 local _1 = 0xc19ec1
 
----$value:色W2/col
+---$color:色W2
 local _2 = 0x40acac
 
----$value:色W3/col
+---$color:色W3
 local _3 = 0x5a72ec
 
----$value:色C1/col
+---$color:色C1
 local _4 = 0x40acac
 
----$value:色C2/col
+---$color:色C2
 local _5 = 0xed7aff
 
 ---$value:音量下限
@@ -53,7 +53,7 @@ local _9 = { 100, 230, 180 }
 ---$value:速度配列
 local _10 = { 2, 2.8, 0 }
 
----$value: ｵﾘｼﾞﾅﾙ背景設定/chk
+---$check: ｵﾘｼﾞﾅﾙ背景設定
 local _11 = 0
 
 ---$value:└波形透明度％

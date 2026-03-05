@@ -29,7 +29,7 @@ local Md = 0
 ---$value:角度
 local K = 20
 
----$value:線色/col
+---$color:線色
 local col = 0xffffff
 
 ---$value:本体α[0..100]
@@ -56,7 +56,7 @@ local Cf = 0
 ---$value:αしきい値
 local T = 127
 
----$value:距離∝時間ﾓｰﾄﾞ/chk
+---$check:距離∝時間ﾓｰﾄﾞ
 local CV = 1
 
 ---$value:イージング

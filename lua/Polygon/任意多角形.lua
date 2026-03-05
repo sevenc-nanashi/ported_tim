@@ -17,13 +17,13 @@ local rename_me_track1 = 50
 ---step=0.1
 local rename_me_track2 = 0
 
----$value:色/col
+---$color:色
 local col = 0xffffff
 
----$value: ガイド色/col
+---$color: ガイド色
 local colG = 0xff0000
 
----$value:図形/fig
+---$figure:図形
 local fig = "円"
 
 function muki(ax, ay, bx, by)

@@ -2,7 +2,7 @@
 ---$check:赤カーブ全体統一
 local rename_me_check0 = true
 
----$value:データクリア/chk
+---$check:データクリア
 local DCL = 0
 
 --名前の後に全角スペースが入っている・・

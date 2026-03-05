@@ -41,7 +41,7 @@ local ofs = 0
 ---$value:時間範囲％
 local TM = { 0, 100 }
 
----$value:横基準/chk
+---$check:横基準
 local baseChk = 0
 
 ---$check:開始位置角度自動調整

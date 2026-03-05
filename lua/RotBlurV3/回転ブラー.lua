@@ -23,16 +23,16 @@ local rename_me_track2 = 30
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:サイズ保持/chk
+---$check:サイズ保持
 local ck = 1
 
 ---$value:角度解像度ダウン
 local sdw = 0
 
----$value:高精度表示/chk
+---$check:高精度表示
 local ap = 1
 
----$value:高精度出力/chk
+---$check:高精度出力
 local sp = 1
 
 local userdata, w, h

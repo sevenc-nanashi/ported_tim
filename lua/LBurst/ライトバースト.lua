@@ -23,10 +23,10 @@ local rename_me_track2 = 50
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:発光色/col
+---$color:発光色
 local col = 0xffffff
 
----$value:オリジナル色発光/chk
+---$check:オリジナル色発光
 local chk = 0
 
 ---$value:発光中心

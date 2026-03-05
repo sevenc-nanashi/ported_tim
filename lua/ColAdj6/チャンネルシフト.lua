@@ -23,7 +23,7 @@ local rename_me_track2 = 2
 ---step=1
 local rename_me_track3 = 3
 
----$value:チャンネル表示/chk
+---$check:チャンネル表示
 local Dchk = 0
 
 ---$value:フォントサイズ

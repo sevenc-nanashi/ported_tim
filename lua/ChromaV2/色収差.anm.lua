@@ -23,7 +23,7 @@ local rename_me_track2 = 0
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:位置ズレ補正/chk
+---$check:位置ズレ補正
 local reC = 1
 
 ---$value:色配置[0〜2]

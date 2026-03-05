@@ -23,16 +23,16 @@ local rename_me_track2 = 200
 ---step=0.1
 local rename_me_track3 = 100
 
----$value:エフェクト読込/chk
+---$check:エフェクト読込
 local efR = 1
 
----$value:R表示/chk
+---$check:R表示
 local Rap = 1
 
----$value:G表示/chk
+---$check:G表示
 local Gap = 1
 
----$value:B表示/chk
+---$check:B表示
 local Bap = 1
 
 ---$check:輝度表示

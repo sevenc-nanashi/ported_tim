@@ -23,13 +23,13 @@ local rename_me_track2 = 0
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:円形配置/chk
+---$check:円形配置
 local chk = 0
 
----$value:反転/chk
+---$check:反転
 local rev = 0
 
----$value:繰返し/chk
+---$check:繰返し
 local rep = 0
 
 ---$value:合成モード[0-9]
@@ -41,7 +41,7 @@ local S = 30
 ---$value:境界補正
 local dc = 0.055
 
----$value:位置ズレ補正/chk
+---$check:位置ズレ補正
 local reC = 1
 
 local iox = obj.ox

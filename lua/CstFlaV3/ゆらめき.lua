@@ -23,10 +23,10 @@ local rename_me_track2 = 60
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:ベースカラー/chk
+---$check:ベースカラー
 local basechk = 1
 
----$value:光芒色/col
+---$color:光芒色
 local col = 0x9999ff
 
 ---$value:位置％
@@ -47,7 +47,7 @@ local fig = 5
 ---$value:ｸﾘｯﾌﾟ位置幅ﾎﾞｶｼ
 local clp = { 0, 0, 0 }
 
----$value:ｸﾘｯﾌﾟ向き/chk
+---$check:ｸﾘｯﾌﾟ向き
 local aub = 0
 
 ---$value:点滅

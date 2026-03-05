@@ -23,7 +23,7 @@ local rename_me_track2 = 0
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:サイズ保持/chk
+---$check:サイズ保持
 local ck = 1
 
 ---$value:基準[-100〜100]
@@ -32,7 +32,7 @@ local BasP = 0
 ---$value:幅ランダム%
 local AmpR = 50
 
----$value:簡易補正/chk
+---$check:簡易補正
 local BM = 0
 
 ---$value:└係数%

@@ -23,7 +23,7 @@ local rename_me_track2 = 100
 ---step=1
 local rename_me_track3 = 0
 
----$value:サイズ保持/chk
+---$check:サイズ保持
 local ck = 1
 
 obj.setanchor("track", 0, "line")

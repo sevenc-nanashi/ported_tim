@@ -29,7 +29,7 @@ local ATp = 200
 ---$value:被影響範囲
 local DFp = 200
 
----$value:絶対/相対/chk
+---$check:絶対/相対
 local POS = 1
 
 if N then

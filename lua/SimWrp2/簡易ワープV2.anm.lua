@@ -29,28 +29,28 @@ local ATp = 200
 ---$value:被影響範囲
 local DFp = 200
 
----$value:絶対/相対/chk
+---$check:絶対/相対
 local POS = 1
 
 ---$value:分割数
 local M = 30
 
----$value:境界固定/chk
+---$check:境界固定
 local BS = 0
 
----$value:パス表示/chk
+---$check:パス表示
 local PSA = 0
 
----$value:移動色/col
+---$color:移動色
 local mcol = 0xff0000
 
----$value:影響範囲色/col
+---$color:影響範囲色
 local acol = 0x00ff00
 
----$value:被影響範囲色/col
+---$color:被影響範囲色
 local dcol = 0x0000ff
 
----$value:文字色/col
+---$color:文字色
 local fcol = 0xff00ff
 
 ---$value:表示サイズ

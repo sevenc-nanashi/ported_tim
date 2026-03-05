@@ -23,28 +23,28 @@ local rename_me_track2 = 150
 ---step=0.01
 local rename_me_track3 = 0
 
----$value:線色/col
+---$color:線色
 local color = 0xffffff
 
----$value:塗り/chk
+---$check:塗り
 local BR = 0
 
----$value:塗色/col
+---$color:塗色
 local colorF = 0x0000ff
 
----$value:アンチエイリアス/chk
+---$check:アンチエイリアス
 local ant = 1
 
----$value:高精度(線のみ)/chk
+---$check:高精度(線のみ)
 local PC = 0
 
 ---$value:高精度間隔
 local Pst = 2
 
----$value:高精度形状/fig
+---$figure:高精度形状
 local fig = "円"
 
----$value:高精度自動向き/chk
+---$check:高精度自動向き
 local adi = 1
 
 ---$value:縦横幅

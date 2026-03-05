@@ -5,7 +5,7 @@
 ---step=0.1
 local rename_me_track0 = 0
 
----$value:側面色/col
+---$color:側面色
 local wcol = ""
 
 ---$value:アンチエイリアス

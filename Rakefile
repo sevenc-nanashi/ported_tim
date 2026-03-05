@@ -81,7 +81,7 @@ task :seed do
                 }
                 current_script_lines = []
               end
-              current_script = line[1..-1]
+              current_script = line[1..-1].strip
               next
             end
             next unless current_script
@@ -101,6 +101,7 @@ task :seed do
           }
         end
       else
+        filename = "簡易トーンカーブ.obj" if filename == "簡易トーンカーブ.obj"
         content = File.read(file, encoding: "SHIFT_JIS").encode("UTF-8")
         FileUtils.mkdir_p(root)
         File.write(
@@ -155,74 +156,77 @@ task :flatten_dialog do
             local #{variable_name} = #{initial_value}
             LUA
           end
-        new_content = content.gsub(/--dialog:.*\n/, replacements.join("\n") + "\n")
+        new_content =
+          content.gsub(/--dialog:.*\n/, replacements.join("\n") + "\n")
         File.write(file, new_content)
       end
     end
 end
 
 task :rewrite_parameters do
-  Dir.glob("./lua/**/*.lua").each do |file|
-    content = File.read(file)
-    content.gsub!(/--track([0-3]):(.*)/) do |match|
-      # --track0:項目名,最小値,最大値,デフォルト値,移動単位
-      track_id = $1
-      track_name, min, max, default, step = $2.split(",")
-      step ||= "0.1"
-      default ||= min
-      raise "Invalid track format in #{file}: #{match}" unless track_name && min && max && default && step
+  Dir
+    .glob("./lua/**/*.lua")
+    .each do |file|
+      content = File.read(file)
+      content.gsub!(/--track([0-3]):(.*)/) do |match|
+        # --track0:項目名,最小値,最大値,デフォルト値,移動単位
+        track_id = $1
+        track_name, min, max, default, step = $2.split(",")
+        step ||= "0.1"
+        default ||= min
+        unless track_name && min && max && default && step
+          raise "Invalid track format in #{file}: #{match}"
+        end
 
-      <<~LUA
+        <<~LUA
       ---$track:#{track_name}
       ---min=#{min}
       ---max=#{max}
       ---step=#{step}
       local rename_me_track#{track_id} = #{default}
       LUA
-    end
-    content.gsub!(/--check0:(.*)/) do |match|
-      # --check0:項目名,デフォルト値（0か1）
-      check_name, default = $1.split(",")
-      default ||= "0"
-      raise "Invalid check format in #{file}: #{match}" unless check_name && default
+      end
+      content.gsub!(/--check0:(.*)/) do |match|
+        # --check0:項目名,デフォルト値（0か1）
+        check_name, default = $1.split(",")
+        default ||= "0"
+        unless check_name && default
+          raise "Invalid check format in #{file}: #{match}"
+        end
 
-      <<~LUA
+        <<~LUA
       ---$check:#{check_name}
       local rename_me_check0 = #{default == "0" ? "false" : "true"}
       LUA
-    end
-    content.gsub!(/--color:(.*)/) do |match|
-      # --color:デフォルト値
-      check_name, default = $1.split(",")
-      default ||= "0"
-      raise "Invalid check format in #{file}: #{match}" unless check_name && default
+      end
+      content.gsub!(/--color:(.*)/) do |match|
+        # --color:デフォルト値
+        check_name, default = $1.split(",")
+        default ||= "0"
+        unless check_name && default
+          raise "Invalid check format in #{file}: #{match}"
+        end
 
-      <<~LUA
+        <<~LUA
       ---$color:#{check_name}
       local rename_me_color = #{default == "0" ? "false" : "true"}
       color = rename_me_color
       LUA
-    end
-    content.gsub!(/--file:/) do |match|
-      <<~LUA
+      end
+      content.gsub!(/--file:/) { |match| <<~LUA }
       ---$file:ファイル
       local rename_me_file = ""
       file = rename_me_file
       LUA
-    end
-    content.gsub!(/obj.getvalue\(([0-4])/) do |match|
-      obj_id = $1
-      "obj.getvalue(\"track.rename_me_track#{obj_id}\""
-    end
-    content.gsub!(/obj.track([0-4])/) do |match|
-      "rename_me_track#{$1}"
-    end
-    content.gsub!(/obj.check0/) do |match|
-      "rename_me_check0"
-    end
+      content.gsub!(/obj.getvalue\(([0-4])/) do |match|
+        obj_id = $1
+        "obj.getvalue(\"track.rename_me_track#{obj_id}\""
+      end
+      content.gsub!(/obj.track([0-4])/) { |match| "rename_me_track#{$1}" }
+      content.gsub!(/obj.check0/) { |match| "rename_me_check0" }
 
-    File.write(file, content)
-  end
+      File.write(file, content)
+    end
 end
 
 task :format do

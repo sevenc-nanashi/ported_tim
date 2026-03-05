@@ -23,10 +23,10 @@ local rename_me_track2 = 50
 ---step=0.1
 local rename_me_track3 = 300
 
----$value:色1/col
+---$color:色1
 local col1 = 0xffff00
 
----$value:色2/col
+---$color:色2
 local col2 = 0xffffff
 
 ---$value:最終拡大率

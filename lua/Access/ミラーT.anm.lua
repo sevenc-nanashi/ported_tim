@@ -23,10 +23,10 @@ local rename_me_track2 = 10
 ---step=0.1
 local rename_me_track3 = 100
 
----$value:色1/col
+---$color:色1
 local col = 0x000000
 
----$value:単色化(T)/chk
+---$check:単色化(T)
 local chk = 0
 
 local AL = 1 - rename_me_track0 * 0.01

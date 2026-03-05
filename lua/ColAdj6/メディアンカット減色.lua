@@ -11,16 +11,16 @@ local rename_me_track0 = 16
 ---step=1
 local rename_me_track1 = 0
 
----$value:指定色1/col
+---$color:指定色1
 local col1 = ""
 
----$value:指定色2/col
+---$color:指定色2
 local col2 = ""
 
----$value:指定色3/col
+---$color:指定色3
 local col3 = ""
 
----$value:指定色4/col
+---$color:指定色4
 local col4 = ""
 
 ---$value:指定色5
@@ -41,7 +41,7 @@ local col9 = ""
 ---$value:指定色10
 local col10 = ""
 
----$value:色表示/chk
+---$check:色表示
 local Cap = 0
 
 ---$check:指定色を有効にする

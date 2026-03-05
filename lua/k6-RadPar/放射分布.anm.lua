@@ -26,10 +26,10 @@ local rename_me_track3 = 30
 ---$value:速度誤差
 local dv = 1.5
 
----$value:均等動径配置/chk
+---$check:均等動径配置
 local reg = 0
 
----$value:均等角配置/chk
+---$check:均等角配置
 local deg = 0
 
 ---$value:初期回転角誤差

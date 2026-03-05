@@ -23,10 +23,10 @@ local rename_me_track2 = 100
 ---step=1
 local rename_me_track3 = 3
 
----$value:シャドウ/col
+---$color:シャドウ
 local col1 = 0x0
 
----$value:ハイライト/col
+---$color:ハイライト
 local col2 = 0xffffff
 
 require("T_Filter_Module")

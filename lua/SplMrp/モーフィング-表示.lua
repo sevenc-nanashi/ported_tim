@@ -17,28 +17,28 @@ local rename_me_track2 = 30
 ---step=1
 local rename_me_track3 = 30
 
----$value:ﾚｲﾔｰｽｸﾘﾌﾟﾄ1/chk
+---$check:ﾚｲﾔｰｽｸﾘﾌﾟﾄ1
 local Lsc1 = 1
 
----$value:ﾚｲﾔｰｽｸﾘﾌﾟﾄ2/chk
+---$check:ﾚｲﾔｰｽｸﾘﾌﾟﾄ2
 local Lsc2 = 1
 
----$value:ライン表示/chk
+---$check:ライン表示
 local lchk = 1
 
----$value:線色/col
+---$color:線色
 local Lcol = 0xffffff
 
 ---$value:線幅
 local Lw = 3
 
----$value:ポイント表示/chk
+---$check:ポイント表示
 local pchk = 1
 
----$value:ポイント色/col
+---$color:ポイント色
 local pcol = 0xffffff
 
----$value:文字色/col
+---$color:文字色
 local fcol = 0x0
 
 ---$check:ガイド表示

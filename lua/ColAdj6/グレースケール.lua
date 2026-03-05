@@ -11,10 +11,10 @@ local rename_me_track0 = 1
 ---step=0.1
 local rename_me_track1 = 100
 
----$value:明部色/col
+---$color:明部色
 local col1 = 0xffffff
 
----$value:暗部色/col
+---$color:暗部色
 local col2 = 0x0
 
 col1 = col1 or 0xffffff

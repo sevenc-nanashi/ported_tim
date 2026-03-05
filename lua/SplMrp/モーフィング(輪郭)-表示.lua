@@ -26,19 +26,19 @@ local rename_me_track3 = 0
 ---$value:変形前画像ﾚｲﾔｰ
 local inum = 0
 
----$value:ｴﾌｪｸﾄ取得/chk
+---$check:ｴﾌｪｸﾄ取得
 local GE = 1
 
----$value:形状/fig
+---$figure:形状
 local fig = "円"
 
----$value:ドット色/col
+---$color:ドット色
 local col = 0xffffff
 
----$value:自動方向/chk
+---$check:自動方向
 local td = 0
 
----$value:一時保存EXT/chk
+---$check:一時保存EXT
 local IE = 0
 
 Outlinemorphing_T = function(OT)

@@ -23,7 +23,7 @@ local rename_me_track2 = 15
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:色/col
+---$color:色
 local color = 0xffffff
 
 ---$value:中心位置

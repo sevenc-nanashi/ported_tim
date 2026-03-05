@@ -23,7 +23,7 @@ local rename_me_track2 = 120
 ---step=1
 local rename_me_track3 = 50
 
----$value:形状/fig
+---$figure:形状
 local fig = "円"
 
 ---$value:網点角度C
@@ -35,7 +35,7 @@ local deg2 = 75
 ---$value:網点角度Y
 local deg3 = 30
 
----$value:網点も回転/chk
+---$check:網点も回転
 local Drt = 0
 
 ---$value:公転速度
@@ -44,7 +44,7 @@ local rV = 0
 ---$value:自転速度
 local mV = 0
 
----$value:背景色/col
+---$color:背景色
 local Bcol = 0xffffff
 
 ---$value:型抜法[0/1/2]

@@ -65,8 +65,8 @@ scripts:
     label: 拡張コントラスト
   - path: "./lua/ColAdj6/画像トーンカーブ.lua"
     label: 画像トーンカーブ
-  - path: "./lua/ColAdj6/簡易トーンカーブ .lua"
-    label: '簡易トーンカーブ '
+  - path: "./lua/ColAdj6/簡易トーンカーブ.lua"
+    label: 簡易トーンカーブ
   - path: "./lua/ColAdj6/イコライズ.lua"
     label: イコライズ
   - path: "./lua/ColAdj6/シャドウ・ハイライト.lua"

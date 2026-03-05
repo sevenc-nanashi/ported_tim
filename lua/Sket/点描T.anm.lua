@@ -23,16 +23,16 @@ local rename_me_track2 = 75
 ---step=1
 local rename_me_track3 = 32
 
----$value:背景に着色/chk
+---$check:背景に着色
 local _1 = 0
 
----$value:└背景色/col
+---$color:└背景色
 local _2 = 0xffffff
 
----$value:└背景を元絵に/chk
+---$check:└背景を元絵に
 local _3 = 0
 
----$value:3D的表示/chk
+---$check:3D的表示
 local _4 = 0
 
 ---$value:└環境光

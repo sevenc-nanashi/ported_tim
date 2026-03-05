@@ -11,7 +11,7 @@ local rename_me_track0 = 120
 ---step=0.1
 local rename_me_track1 = 60
 
----$value:領域調整/chk
+---$check:領域調整
 local resize = 1
 
 ---$check:HとVをリンク

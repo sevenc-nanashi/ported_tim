@@ -26,10 +26,10 @@ local rename_me_track3 = 100
 ---$value:ガラス画像
 local GIL = 1
 
----$value:境界を透過/chk
+---$check:境界を透過
 local Edg = 0
 
----$value:マップ背景色/col
+---$color:マップ背景色
 local Bcol = 0x0
 
 ---$value:パターン

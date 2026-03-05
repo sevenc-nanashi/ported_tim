@@ -23,22 +23,22 @@ local rename_me_track2 = 100
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:シャドウ色/col
+---$color:シャドウ色
 local col2 = "0x0"
 
----$value:ハイライト色/col
+---$color:ハイライト色
 local col1 = "0xffffff"
 
----$value:トーン形状/fig
+---$figure:トーン形状
 local fig = "円"
 
----$value:段違い/chk
+---$check:段違い
 local fzs = 1
 
----$value:背景色非表示/chk
+---$check:背景色非表示
 local bkap = 0
 
----$value:トーン反転/chk
+---$check:トーン反転
 local tnrep = 0
 
 ---$check:自分自身で型抜き

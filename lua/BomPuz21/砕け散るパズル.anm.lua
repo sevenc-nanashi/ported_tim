@@ -26,10 +26,10 @@ local rename_me_track3 = 120
 ---$value:P形状[1〜22]
 local Pfig = 1
 
----$value:読込画像表示/chk
+---$check:読込画像表示
 local LayAp = 0
 
----$value:配置ズレ/chk
+---$check:配置ズレ
 local Csht = 0
 
 ---$value:飛散中心
@@ -41,7 +41,7 @@ local rv = 100
 ---$value:重力
 local Gr = { 0, 100, 0 }
 
----$value:マップ画像読込/chk
+---$check:マップ画像読込
 local loadmap = 0
 
 ---$value:MAP番号[1〜6]
@@ -62,7 +62,7 @@ local spt = 0
 ---$value:乱数シード
 local seed = 0
 
----$value:表裏反転/chk
+---$check:表裏反転
 local FBR = 0
 
 ---$check:マップ反転

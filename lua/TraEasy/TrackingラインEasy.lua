@@ -29,25 +29,25 @@ local dm = 1
 ---$value:定数(方法2のみ)
 local C = 35
 
----$value:等速度_等間隔/chk
+---$check:等速度_等間隔
 local ec = 0
 
 ---$value:精度
 local Ac = 20
 
----$value:環状にする/chk
+---$check:環状にする
 local cy = 0
 
----$value:同時に出現/chk
+---$check:同時に出現
 local ST = 0
 
----$value:全長指定表示/chk
+---$check:全長指定表示
 local sp = 0
 
 ---$value:線幅
 local Lw = { 100, 100, 100 }
 
----$value:変化色/col
+---$color:変化色
 local col = ""
 
 ---$value:領域拡張

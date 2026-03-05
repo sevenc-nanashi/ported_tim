@@ -17,10 +17,10 @@ local rename_me_track1 = 0
 ---step=0.1
 local rename_me_track2 = 100
 
----$value:指定色1/col
+---$color:指定色1
 local col1 = 0x0
 
----$value:指定色2/col
+---$color:指定色2
 local col2 = 0xffffff
 
 ---$check:指定色からの距離

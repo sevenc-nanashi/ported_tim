@@ -26,7 +26,7 @@ local rename_me_track3 = 1
 ---$check:全体をRで調整
 local rename_me_check0 = false
 
----$value:誤差拡散/chk
+---$check:誤差拡散
 local ED = 0
 
 local ED2 = ED or 0 --追加のため

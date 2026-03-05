@@ -20,7 +20,7 @@ local rename_me_track2 = 100
 ---$check:参考表示
 local rename_me_check0 = false
 
----$value:極座標指定/chk
+---$check:極座標指定
 local POL = 0
 
 require("T_Color_Module")

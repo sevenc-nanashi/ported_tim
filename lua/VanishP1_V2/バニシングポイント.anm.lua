@@ -26,16 +26,16 @@ local rename_me_track3 = 0
 ---$value:反転[0..3]
 local ReI = 0
 
----$value:参照領域/chk
+---$check:参照領域
 local tar = 1
 
----$value:オリジナル表示/chk
+---$check:オリジナル表示
 local ora = 1
 
 ---$value:分割数
 local N = 10
 
----$value:アンチエイリアス/chk
+---$check:アンチエイリアス
 local ANT = 1
 
 ---$value:領域

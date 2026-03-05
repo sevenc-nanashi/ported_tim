@@ -23,7 +23,7 @@ local rename_me_track2 = 255
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:塗り潰し色/col
+---$color:塗り潰し色
 local col = 0xffcccc
 
 ---$check:改良計算

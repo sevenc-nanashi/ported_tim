@@ -26,13 +26,13 @@ local rename_me_track3 = 8
 ---$value:向き[0..3]
 local Vec = 2
 
----$value:シャドウ/col
+---$color:シャドウ
 local col1 = 0x0
 
----$value:ハイライト/col
+---$color:ハイライト
 local col2 = 0xffffff
 
----$value:シード固定/chk
+---$check:シード固定
 local sechk = 1
 
 ---$value:シード

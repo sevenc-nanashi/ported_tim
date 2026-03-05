@@ -26,10 +26,10 @@ local rename_me_track3 = 0
 ---$value:速度方向(度)
 local deg = 0
 
----$value:X反転配置/chk
+---$check:X反転配置
 local reX = 0
 
----$value:Y反転配置/chk
+---$check:Y反転配置
 local reY = 0
 
 ---$check:水平シフト

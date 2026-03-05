@@ -17,16 +17,16 @@ local rename_me_track1 = 0
 ---step=0.1
 local rename_me_track2 = 100
 
----$value:行列反転/chk
+---$check:行列反転
 local Rev = 0
 
----$value:自動配置/chk
+---$check:自動配置
 local AutoSet = 0
 
 ---$value:└配置順[0..3]
 local ord = 0
 
----$value:└最終ｵﾌﾞｼﾞｪｸﾄ/chk
+---$check:└最終ｵﾌﾞｼﾞｪｸﾄ
 local Lastobj = 0
 
 ---$check:ｻｲｽﾞ自動調整

@@ -23,7 +23,7 @@ local rename_me_track2 = 4
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:側面色/col
+---$color:側面色
 local wcol = ""
 
 ---$value:領域

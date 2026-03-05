@@ -23,16 +23,16 @@ local rename_me_track2 = 200
 ---step=0.1
 local rename_me_track3 = 240
 
----$value:線色/col
+---$color:線色
 local line_col = 0xff0000
 
 ---$value:表示指示
 local po = "10"
 
----$value:角丸/chk
+---$check:角丸
 local roc = 0
 
----$value:結合/chk
+---$check:結合
 local alc = 0
 
 ---$value:Xスナップ

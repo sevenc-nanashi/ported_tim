@@ -23,7 +23,7 @@ local rename_me_track2 = 10
 ---step=0.1
 local rename_me_track3 = 40
 
----$value:色/col
+---$color:色
 local col = "0xffffff"
 
 ---$value:分割
@@ -32,7 +32,7 @@ local N = 30
 ---$value:繰り返し
 local rpN = 1
 
----$value:高精度/chk
+---$check:高精度
 local HA = 0
 
 HA = HA or 0

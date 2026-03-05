@@ -26,16 +26,16 @@ local rename_me_track3 = 100
 ---$check:高精度
 local rename_me_check0 = false
 
----$value:色1/col
+---$color:色1
 local col1 = 0xffffff
 
----$value:色2/col
+---$color:色2
 local col2 = 0x0
 
----$value:距離グラデ/chk
+---$check:距離グラデ
 local Lgr = 0
 
----$value:錯覚補正/chk
+---$check:錯覚補正
 local Mis = 0
 
 ---$value:└色ぼかし量%

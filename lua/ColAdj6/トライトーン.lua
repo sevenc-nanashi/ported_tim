@@ -17,16 +17,16 @@ local rename_me_track1 = 128
 ---step=1
 local rename_me_track2 = 255
 
----$value:ミッドトーン色無視/chk
+---$check:ミッドトーン色無視
 local egm = 0
 
----$value:シャドウ/col
+---$color:シャドウ
 local col3 = 0x000000
 
----$value: ミッドトーン/col
+---$color: ミッドトーン
 local col2 = 0xb5982c
 
----$value: ハイライト/col
+---$color: ハイライト
 local col1 = 0xffffff
 
 ---$check:新バージョン

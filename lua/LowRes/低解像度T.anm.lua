@@ -23,19 +23,19 @@ local rename_me_track2 = 0
 ---step=0.1
 local rename_me_track3 = 100
 
----$value:色1/col
+---$color:色1
 local col1 = 0xffffff
 
----$value:2色目指定/chk
+---$check:2色目指定
 local ck = 0
 
----$value:└色2/col
+---$color:└色2
 local col2 = 0x0
 
----$value:直線/chk
+---$check:直線
 local Lc = 0
 
----$value:網表示/chk
+---$check:網表示
 local Ap = 0
 
 ---$check:ブロック描画

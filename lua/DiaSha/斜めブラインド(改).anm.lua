@@ -26,7 +26,7 @@ local rename_me_track3 = 0
 ---$value:時間差[%]
 local TS = 0
 
----$value:透明度反転/chk
+---$check:透明度反転
 local chk = 0
 
 local t = 100 - rename_me_track0

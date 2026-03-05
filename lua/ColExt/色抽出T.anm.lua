@@ -17,7 +17,7 @@ local rename_me_track1 = 300
 ---step=1
 local rename_me_track2 = 0
 
----$value:抽出色/col
+---$color:抽出色
 local col = ""
 
 ---$check:簡易処理

@@ -23,19 +23,19 @@ local rename_me_track2 = 10
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:水平/chk
+---$check:水平
 local HC = 1
 
----$value:垂直/chk
+---$check:垂直
 local VC = 1
 
 ---$value:縦横比
 local asp = 100
 
----$value:範囲対称/chk
+---$check:範囲対称
 local Sym = 1
 
----$value:色も保存/chk
+---$check:色も保存
 local svC = 0
 
 ---$value:形状[0..4]

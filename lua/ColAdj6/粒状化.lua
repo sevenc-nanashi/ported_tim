@@ -23,10 +23,10 @@ local rename_me_track2 = 1
 ---step=1
 local rename_me_track3 = 1
 
----$value:色1/col
+---$color:色1
 local col1 = 0xffffff
 
----$value: 色2/col
+---$color: 色2
 local col2 = 0x0
 
 ---$check:時間変動

@@ -26,10 +26,10 @@ local rename_me_track3 = 100
 ---$value:中心
 local CC = { 0, 0 }
 
----$value:線色/col
+---$color:線色
 local col = 0xff0000
 
----$value:線を非表示/chk
+---$check:線を非表示
 local Lck = 0
 
 ---$check:極座標移動

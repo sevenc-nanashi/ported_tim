@@ -26,7 +26,7 @@ local rename_me_track3 = 5000
 ---$check:範囲を表示
 local rename_me_check0 = true
 
----$value:枠色/col
+---$color:枠色
 local col = oxffffff
 
 ---$value:枠幅

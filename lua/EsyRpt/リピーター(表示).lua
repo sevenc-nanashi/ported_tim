@@ -23,22 +23,22 @@ local rename_me_track2 = 0
 ---step=0.1
 local rename_me_track3 = 100
 
----$value:重なり順/chk
+---$check:重なり順
 local AP = 0
 
----$value:色の上書き/chk
+---$check:色の上書き
 local cop = 0
 
----$value:基準色/col
+---$color:基準色
 local colo1 = 0xff0000
 
----$value:最終色/col
+---$color:最終色
 local colo2 = 0x0000ff
 
 ---$value:合成モード
 local adm = 0
 
----$value:位置ズレ補正/chk
+---$check:位置ズレ補正
 local reC = 1
 
 local repch = function(pr, hen)

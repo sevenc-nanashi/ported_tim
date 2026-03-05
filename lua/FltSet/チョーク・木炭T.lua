@@ -29,13 +29,13 @@ local len = 7
 ---$value:ノイズ強度
 local np = 30
 
----$value:シャドウ/col
+---$color:シャドウ
 local col1 = 0x0
 
----$value:ハイライト/col
+---$color:ハイライト
 local col2 = 0xffffff
 
----$value:シード固定/chk
+---$check:シード固定
 local sechk = 1
 
 ---$value:シード

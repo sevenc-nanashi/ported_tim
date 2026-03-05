@@ -5,10 +5,10 @@
 ---step=0.1
 local rename_me_track0 = 50
 
----$value:ガイド色/col
+---$color:ガイド色
 local colG = 0xff0000
 
----$value:図形/fig
+---$figure:図形
 local fig = "円"
 
 obj.load("figure", fig, colG, rename_me_track0)

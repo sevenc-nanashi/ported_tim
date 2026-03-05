@@ -29,13 +29,13 @@ local g3 = 0
 ---$value:青凹凸
 local b3 = 0
 
----$value:Rのみ設定/chk
+---$check:Rのみ設定
 local Rset = 0
 
----$value:Gのみ設定/chk
+---$check:Gのみ設定
 local Gset = 0
 
----$value:Bのみ設定/chk
+---$check:Bのみ設定
 local Bset = 0
 
 ---$value:カーブ

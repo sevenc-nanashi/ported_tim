@@ -26,7 +26,7 @@ local rename_me_track3 = 5
 ---$value:ﾜｲﾌﾟﾀｲﾌﾟ[0-8]
 local wtp = 0
 
----$value:反転/chk
+---$check:反転
 local rev = 0
 
 ---$value:中心座標

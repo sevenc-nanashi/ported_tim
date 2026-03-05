@@ -23,19 +23,19 @@ local rename_me_track2 = 0
 ---step=1
 local rename_me_track3 = 128
 
----$value:色/col
+---$color:色
 local col = 0xffffff
 
----$value:逆回転/chk
+---$check:逆回転
 local rev = 0
 
----$value:輪郭のみ/chk
+---$check:輪郭のみ
 local rin = 0
 
----$value:輪郭を下に/chk
+---$check:輪郭を下に
 local Rover = 0
 
----$value:中心補正/chk
+---$check:中心補正
 local reC = 1
 
 ---$value:ｽｷｬﾝ粗さ

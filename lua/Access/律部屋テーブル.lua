@@ -17,10 +17,10 @@ local rename_me_track1 = 100
 ---step=0.1
 local rename_me_track2 = 100
 
----$value:テーブル色/col
+---$color:テーブル色
 local tablecol = 0xc0c0a0
 
----$value:脚の色/col
+---$color:脚の色
 local legcol = 0xffffff
 
 function MkSq(x1, y1, z1, x2, y2, z2) -- 数値は対角線指定(1<2)で表裏が正確に

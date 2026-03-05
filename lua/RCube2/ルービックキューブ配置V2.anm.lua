@@ -29,7 +29,7 @@ local POS = "1251"
 ---$value:回転方向
 local ROT = "0010"
 
----$value:内部表示/chk
+---$check:内部表示
 local SHO = 1
 
 function p_rot(p1, p2, rs, rc)

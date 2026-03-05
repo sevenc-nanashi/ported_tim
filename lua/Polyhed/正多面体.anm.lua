@@ -17,13 +17,13 @@ local rename_me_track1 = 1
 ---step=0.1
 local rename_me_track2 = 0
 
----$value:枠色/col
+---$color:枠色
 local col = 0xffffff
 
----$value:縮尺補正/chk
+---$check:縮尺補正
 local aspchk = 0
 
----$value:90度回転/chk
+---$check:90度回転
 local rotchk = 0
 
 obj.setoption("blend", 0) --念のため

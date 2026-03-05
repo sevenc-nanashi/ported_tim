@@ -26,22 +26,22 @@ local rename_me_track3 = 15
 ---$check:ﾌﾚｰﾑﾊﾞｯﾌｧを背景
 local rename_me_check0 = true
 
----$value:輝度補正/chk
+---$check:輝度補正
 local CkV = 1
 
----$value:彩度補正/chk
+---$check:彩度補正
 local CkS = 1
 
----$value:逆光色/col
+---$color:逆光色
 local col = ""
 
----$value:逆光自動調整/chk
+---$check:逆光自動調整
 local BLA = 0
 
 ---$value:逆光強度補正
 local BLL = 100
 
----$value:事前無彩色補正/chk
+---$check:事前無彩色補正
 local reC = 0
 
 ---$value:└強度

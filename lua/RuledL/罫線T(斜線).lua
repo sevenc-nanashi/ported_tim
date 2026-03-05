@@ -23,7 +23,7 @@ local rename_me_track2 = 100
 ---step=1
 local rename_me_track3 = 0
 
----$value:線色/col
+---$color:線色
 local Scl = 0xffffff
 
 ---$value:アンカー

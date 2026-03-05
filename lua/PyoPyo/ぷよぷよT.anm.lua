@@ -35,10 +35,10 @@ local RgRnd = 30
 ---$value:中心＆ﾏｽｸ座標
 local Cen = { 0, 0, 50, 0 }
 
----$value:マスク形状/fig
+---$figure:マスク形状
 local Mfg = "円"
 
----$value:マスク色/col
+---$color:マスク色
 local Mcl = 0xff0000
 
 ---$value:マスクサイズ
@@ -62,7 +62,7 @@ local BL = 1
 ---$value:乱数シード
 local seed = 0
 
----$value:マップ表示/chk
+---$check:マップ表示
 local MapAP = 0
 
 ---$check:マスク表示

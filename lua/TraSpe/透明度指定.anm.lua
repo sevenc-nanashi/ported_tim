@@ -11,10 +11,10 @@ local rename_me_track0 = 1
 ---step=1
 local rename_me_track1 = 0
 
----$value:ｴﾌｪｸﾄ適用/chk
+---$check:ｴﾌｪｸﾄ適用
 local effect = 1
 
----$value:ｻｲｽﾞを揃える/chk
+---$check:ｻｲｽﾞを揃える
 local cksize = 1
 
 ---$check:透明度反転

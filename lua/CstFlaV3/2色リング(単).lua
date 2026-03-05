@@ -23,13 +23,13 @@ local rename_me_track2 = 80
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:ベースカラー/chk
+---$check:ベースカラー
 local basechk = 0
 
----$value:色1/col
+---$color:色1
 local col1 = 0xff0000
 
----$value:色2/col
+---$color:色2
 local col2 = 0x22ff22
 
 ---$value:グラデ幅
@@ -50,7 +50,7 @@ local t = 25
 ---$value:位置オフセット
 local OFSET = { 0, 0, 0 }
 
----$value:自動消去/chk
+---$check:自動消去
 local auba = 0
 
 ---$value:基準距離

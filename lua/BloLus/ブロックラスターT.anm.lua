@@ -35,7 +35,7 @@ local sfh = 0
 ---$value:振幅単位
 local aut = 0
 
----$value:画像もシフト(px)/chk
+---$check:画像もシフト(px)
 local ick = 0
 
 ---$value:開始振幅%

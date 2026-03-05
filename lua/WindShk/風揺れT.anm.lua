@@ -32,10 +32,10 @@ local dL = 10
 ---$value:下固定長％
 local dL2 = 10
 
----$value:下を基準/chk
+---$check:下を基準
 local UB = 0
 
----$value:ランダム揺れ量/chk
+---$check:ランダム揺れ量
 local rndF = 0
 
 ---$value:ランダム揺れﾊﾟﾀｰﾝ
@@ -44,7 +44,7 @@ local seed = 0
 ---$value:時間ずれ
 local sft = 0.1
 
----$value:横に繰り返す/chk
+---$check:横に繰り返す
 local rep = 0
 
 ---$value:繰り返し個数
@@ -53,7 +53,7 @@ local repN = 3
 ---$value:間隔
 local stepX = 50
 
----$value:破綻軽減/chk
+---$check:破綻軽減
 local Frd = 0
 
 ---$check:アルファ補正

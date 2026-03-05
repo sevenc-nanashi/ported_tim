@@ -23,7 +23,7 @@ local rename_me_track2 = 128
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:ライン色/col
+---$color:ライン色
 local col2 = 0xffffff
 
 Out_morph_T = Out_morph_T or {}

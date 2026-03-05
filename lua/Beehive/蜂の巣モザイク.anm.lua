@@ -23,13 +23,13 @@ local rename_me_track2 = 10
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:背景を透明/chk
+---$check:背景を透明
 local backC = 0
 
----$value:背景をシャープ/chk
+---$check:背景をシャープ
 local backS = 0
 
----$value:凸エッジ/chk
+---$check:凸エッジ
 local totsuC = 0
 
 ---$value:凸エッジ幅

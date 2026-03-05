@@ -23,7 +23,7 @@ local rename_me_track2 = 15
 ---step=0.1
 local rename_me_track3 = 40
 
----$value:形状/fig
+---$figure:形状
 local fig = "円"
 
 ---$value:サイズ幅％
@@ -32,10 +32,10 @@ local dsize = 10
 ---$value:強度幅％
 local dalp = 0
 
----$value:ベースカラー/chk
+---$check:ベースカラー
 local basechk = 1
 
----$value:色/col
+---$color:色
 local col = 0xccccff
 
 ---$value:色幅％

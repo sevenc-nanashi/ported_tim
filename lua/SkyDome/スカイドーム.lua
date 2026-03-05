@@ -27,7 +27,7 @@ local rename_me_track3 = 30
 ---$value:分割数
 local N = 30
 
----$value:描画処理/chk
+---$check:描画処理
 local chk = 1
 
 ---$check:親カメラデータを取得

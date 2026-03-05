@@ -23,10 +23,10 @@ local rename_me_track2 = 0
 ---step=1
 local rename_me_track3 = 0
 
----$value:ライン色/col
+---$color:ライン色
 local col1 = 0xff0000
 
----$value:背景色/col
+---$color:背景色
 local col2 = 0xffffff
 
 ---$value:背景透明度
@@ -35,16 +35,16 @@ local Bal = 0
 ---$value:ｵﾘｼﾞﾅﾙ透明度
 local Oal = 100
 
----$value:輝度反転/chk
+---$check:輝度反転
 local Lr = 0
 
----$value:粒子[移動/参照]/chk
+---$check:粒子[移動/参照]
 local par = 0
 
 ---$value:└飛散方向
 local dir = { 0, 360 }
 
----$value:└飛散ループ/chk
+---$check:└飛散ループ
 local dck = 1
 
 ---$value:追加領域サイズ

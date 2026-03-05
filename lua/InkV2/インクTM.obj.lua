@@ -23,7 +23,7 @@ local rename_me_track2 = 3000
 ---step=0.1
 local rename_me_track3 = 100
 
----$value:色/col
+---$color:色
 local col = "0xffffff"
 
 ---$value:本体拡大率%
@@ -53,7 +53,7 @@ local Hseed1 = 0
 ---$value:飛散変化乱数2
 local Hseed2 = 0
 
----$value:新描画法/chk
+---$check:新描画法
 local NewP = 1
 
 NewP = NewP or 0

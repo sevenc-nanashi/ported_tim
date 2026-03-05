@@ -26,13 +26,13 @@ local rename_me_track3 = 13
 ---$value:分割数
 local N = 40
 
----$value:カップ(色)/col
+---$color:カップ(色)
 local colc = 0xffffff
 
----$value:ソーサー(色)/col
+---$color:ソーサー(色)
 local cols = 0x02d2d2
 
----$value:ティー(色)/col
+---$color:ティー(色)
 local colt = 0xa14250
 
 ---$value:ティー境界補正

@@ -35,7 +35,7 @@ local spt = 0
 ---$value:位置オフセット％
 local OFSET = { 0, 0, 0 }
 
----$value:自動拡大/chk
+---$check:自動拡大
 local aubg = 0
 
 ---$value:基準距離
@@ -50,10 +50,10 @@ local blur = 1
 ---$value:パターン[1-4]
 local fig = 1
 
----$value:色上書き/chk
+---$check:色上書き
 local ovchk = 0
 
----$value:上書き色/col
+---$color:上書き色
 local ovcol = 0xccccff
 
 ---$value:点滅

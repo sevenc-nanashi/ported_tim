@@ -23,10 +23,10 @@ local rename_me_track2 = 100
 ---step=0.1
 local rename_me_track3 = 1
 
----$value:透明度エッジ/chk
+---$check:透明度エッジ
 local Edchk = 0
 
----$value:ｵﾘｼﾞﾅﾙ表示/chk
+---$check:ｵﾘｼﾞﾅﾙ表示
 local orichk = 0
 
 ---$value:エッジ強さ

@@ -23,16 +23,16 @@ local rename_me_track2 = 170
 ---step=1
 local rename_me_track3 = 255
 
----$value:シャドウ/col
+---$color:シャドウ
 local col1 = 0x000000
 
----$value:ミッドトーン1/col
+---$color:ミッドトーン1
 local col2 = 0xff0000
 
----$value: ミッドトーン2/col
+---$color: ミッドトーン2
 local col3 = 0xffff00
 
----$value: ハイライト/col
+---$color: ハイライト
 local col4 = 0xffffff
 
 local p = { rename_me_track0, rename_me_track1, rename_me_track2, rename_me_track3 }

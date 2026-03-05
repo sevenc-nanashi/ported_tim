@@ -26,13 +26,13 @@ local rename_me_track3 = 1
 ---$value:軌道精度
 local smN = 30
 
----$value:環状軌道/chk
+---$check:環状軌道
 local CirObt = 0
 
 ---$value:軌道[0-1]
 local richk = 1
 
----$value:先頭調整/chk
+---$check:先頭調整
 local topadj = 0
 
 ---$value:幅変動[%]
@@ -47,7 +47,7 @@ local RnD = 50
 ---$value:乱数シード
 local seed = 0
 
----$value:ﾌﾚｰﾑﾊﾞｯﾌｧ表示/chk
+---$check:ﾌﾚｰﾑﾊﾞｯﾌｧ表示
 local fbapp = 0
 
 local sp1 = rename_me_track1

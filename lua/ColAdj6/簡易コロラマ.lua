@@ -17,13 +17,13 @@ local rename_me_track1 = 1
 ---step=1
 local rename_me_track2 = 6
 
----$value:色1/col
+---$color:色1
 local col1 = 0xffffff
 
----$value:色2/col
+---$color:色2
 local col2 = 0xffff00
 
----$value:色3/col
+---$color:色3
 local col3 = 0x00ff00
 
 ---$value:色4
@@ -35,7 +35,7 @@ local col5 = 0x0000ff
 ---$value:色6
 local col6 = 0xff00ff
 
----$value:取得用/col
+---$color:取得用
 local col7 = 0x000000
 
 local maxN = math.floor(rename_me_track2)

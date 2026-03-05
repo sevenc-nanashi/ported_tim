@@ -23,10 +23,10 @@ local rename_me_track2 = 50
 ---step=1
 local rename_me_track3 = 1
 
----$value:抽出色/col
+---$color:抽出色
 local col = 0xff0000
 
----$value:ﾏｯﾁﾝｸﾞ法表示/chk
+---$check:ﾏｯﾁﾝｸﾞ法表示
 local Dchk = 0
 
 ---$value:フォントサイズ

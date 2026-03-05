@@ -23,7 +23,7 @@ local rename_me_track2 = 0
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:置換色/col
+---$color:置換色
 local col = 0x0
 
 ---$check:範囲を反転

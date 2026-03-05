@@ -23,19 +23,19 @@ local rename_me_track2 = 60
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:ライン色/col
+---$color:ライン色
 local Lcol = "0x000000"
 
----$value:背景色/col
+---$color:背景色
 local Bcol = "0xffffff"
 
----$value:背景色非表示/chk
+---$check:背景色非表示
 local bkap = 0
 
 ---$value:横分割倍率%
 local bai = 200
 
----$value:反転/chk
+---$check:反転
 local rev = 0
 
 local spN = rename_me_track0

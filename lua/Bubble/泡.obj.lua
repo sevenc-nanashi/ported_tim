@@ -26,7 +26,7 @@ local rename_me_track3 = 50
 ---$value:サイズ
 local size = 100
 
----$value:色/col
+---$color:色
 local col = 0xffffff
 
 ---$value:ゆらぎ幅

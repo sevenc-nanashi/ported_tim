@@ -17,16 +17,16 @@ local rename_me_track1 = 20
 ---step=0.1
 local rename_me_track2 = 5000
 
----$value:色1/col
+---$color:色1
 local col1 = 0xffffff
 
----$value:色2/col
+---$color:色2
 local col2 = 0xccffcc
 
----$value:色3/col
+---$color:色3
 local col3 = 0xffff00
 
----$value:ｱﾝﾁｴｲﾘｱｽ/chk
+---$check:ｱﾝﾁｴｲﾘｱｽ
 local ANT = 1
 
 local MDP = function(a, b, c, d)

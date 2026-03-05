@@ -26,7 +26,7 @@ local rename_me_track3 = 0
 ---$value:発火点集中
 local kei = 50
 
----$value:燃焼色/col
+---$color:燃焼色
 local col = 0x000000
 
 ---$value:燃焼ぼかし(%)

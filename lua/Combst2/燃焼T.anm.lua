@@ -23,16 +23,16 @@ local rename_me_track2 = 100
 ---step=0.1
 local rename_me_track3 = 100
 
----$value:燃焼色1/col
+---$color:燃焼色1
 local col1 = 0xff4747
 
----$value:燃焼色2/col
+---$color:燃焼色2
 local col2 = 0xffce5b
 
----$value:画像表示/chk
+---$check:画像表示
 local orAP = 1
 
----$value:炎表示/chk
+---$check:炎表示
 local fiAP = 1
 
 ---$value:シード
@@ -44,10 +44,10 @@ local mode = 1
 ---$value:レイヤー指定
 local map = 0
 
----$value:ｴﾌｪｸﾄ取得/chk
+---$check:ｴﾌｪｸﾄ取得
 local GE = 1
 
----$value:一時保存EXT/chk
+---$check:一時保存EXT
 local IE = 0
 
 ---$check:展開を調整

@@ -23,7 +23,7 @@ local rename_me_track2 = 200
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:サイズ保持/chk
+---$check:サイズ保持
 local ck = 1
 
 ---$value:変化固定

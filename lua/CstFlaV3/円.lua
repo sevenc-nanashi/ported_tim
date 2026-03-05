@@ -23,10 +23,10 @@ local rename_me_track2 = 10
 ---step=0.1
 local rename_me_track3 = 0
 
----$value:ベースカラー/chk
+---$check:ベースカラー
 local basechk = 1
 
----$value:色/col
+---$color:色
 local col = 0xccccff
 
 ---$value:位置ズレ％

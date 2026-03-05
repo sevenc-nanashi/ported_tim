@@ -23,10 +23,10 @@ local rename_me_track2 = 100
 ---step=0.1
 local rename_me_track3 = 2
 
----$value:変更前/col
+---$color:変更前
 local col1 = 0x0000ff
 
----$value: 変更後/col
+---$color: 変更後
 local col2 = 0xff0000
 
 ---$value:彩度調整

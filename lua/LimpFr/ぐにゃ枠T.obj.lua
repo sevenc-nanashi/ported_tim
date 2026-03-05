@@ -23,10 +23,10 @@ local rename_me_track2 = 10
 ---step=1
 local rename_me_track3 = 70
 
----$value:線色/col
+---$color:線色
 local _1 = 0xffffff
 
----$value:形状/fig
+---$figure:形状
 local _2 = "円"
 
 ---$value:延長%
@@ -41,7 +41,7 @@ local _5 = 2
 ---$value:追加角度
 local _6 = 0
 
----$value:└自動方向/chk
+---$check:└自動方向
 local _7 = 0
 
 ---$value:分割精度
@@ -50,7 +50,7 @@ local _11 = 10
 ---$value:重ね描き
 local _12 = 1
 
----$value:└自動調整/chk
+---$check:└自動調整
 local _13 = 1
 
 ---$value:シード

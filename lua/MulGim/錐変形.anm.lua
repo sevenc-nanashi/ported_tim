@@ -23,16 +23,16 @@ local rename_me_track2 = 100
 ---step=0.1
 local rename_me_track3 = 300
 
----$value:蓋/chk
+---$check:蓋
 local Futa = 0
 
----$value:中心基準/chk
+---$check:中心基準
 local cchk = 1
 
----$value:両面化/chk
+---$check:両面化
 local rev = 0
 
----$value:星型化/chk
+---$check:星型化
 local star = 0
 
 ---$value:くびれ率

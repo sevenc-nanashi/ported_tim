@@ -23,7 +23,7 @@ local rename_me_track2 = 25
 ---step=0.1
 local rename_me_track3 = 10
 
----$value:オリジナル表示/chk
+---$check:オリジナル表示
 local chk = 0
 
 ---$value:回転速度

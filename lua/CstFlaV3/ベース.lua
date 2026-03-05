@@ -11,10 +11,10 @@ local rename_me_track0 = 0
 ---step=1
 local rename_me_track1 = 0
 
----$value:ベースカラー/col
+---$color:ベースカラー
 local col = 0x5588ff
 
----$value:位置移動/chk
+---$check:位置移動
 local mv = 0
 
 ---$value:座標

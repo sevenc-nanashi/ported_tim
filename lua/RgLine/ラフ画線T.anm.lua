@@ -23,10 +23,10 @@ local rename_me_track2 = 0
 ---step=1
 local rename_me_track3 = 0
 
----$value:線色/col
+---$color:線色
 local _1 = 0x0
 
----$value:背景−色/col
+---$color:背景−色
 local _2 = 0xffffff
 
 ---$value:└元絵比率%
@@ -38,13 +38,13 @@ local _4 = 0
 ---$value:画線ガンマ
 local _5 = 100
 
----$value:スクリーン合成/chk
+---$check:スクリーン合成
 local _6 = 1
 
----$value:境界補正/chk
+---$check:境界補正
 local _7 = 0
 
----$value:└追加色/col
+---$color:└追加色
 local _8 = 0xffffff
 
 ---$value:方向表示指定

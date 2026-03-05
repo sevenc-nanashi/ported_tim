@@ -26,7 +26,7 @@ local rename_me_track3 = 100
 ---$value:波─α
 local Ta = 100
 
----$value:└色/col
+---$color:└色
 local col = 0x80ffff
 
 ---$value:└振動速度
@@ -38,13 +38,13 @@ local D = 0
 ---$value:└位相速度
 local V = 0
 
----$value:反転波─表示/chk
+---$check:反転波─表示
 local Rw = 0
 
----$value:└色/col
+---$color:└色
 local colr = 0x53c9c9
 
----$value:枠─色/col
+---$color:枠─色
 local colw = 0xffffff
 
 ---$value:└幅

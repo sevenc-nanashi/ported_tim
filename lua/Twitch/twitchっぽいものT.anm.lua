@@ -38,7 +38,7 @@ local zoom = { 20, 20 }
 ---$value:スライド{量，%}
 local slide = { 10, 20 }
 
----$value:方向指定/chk
+---$check:方向指定
 local dirchk = 0
 
 ---$value:指定方向(度)
@@ -50,7 +50,7 @@ local Cdir = 0
 ---$value:シード
 local seed = 0
 
----$value:└ﾚｲﾔｰ依存なし/chk
+---$check:└ﾚｲﾔｰ依存なし
 local Lset = 1
 
 local Cal = (function(LS)

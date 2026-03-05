@@ -26,7 +26,7 @@ local rename_me_track3 = 5
 ---$check:時間展開
 local rename_me_check0 = true
 
----$value:色/col
+---$color:色
 local _1 = 0xff0000
 
 ---$value:間隔

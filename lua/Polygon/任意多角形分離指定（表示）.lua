@@ -5,7 +5,7 @@
 ---step=0.1
 local rename_me_track0 = 0
 
----$value:色/col
+---$color:色
 local col = 0xffffff
 
 function muki(ax, ay, bx, by)

@@ -23,10 +23,10 @@ local rename_me_track2 = 30
 ---step=0.1
 local rename_me_track3 = 100
 
----$value:ベースカラー/chk
+---$check:ベースカラー
 local basechk = 1
 
----$value:色/col
+---$color:色
 local col = 0xccccff
 
 ---$value:位置％
@@ -38,7 +38,7 @@ local OFSET = { 0, 0, 0 }
 ---$value:発光中心サイズ％
 local hs = 80
 
----$value:自動拡大/chk
+---$check:自動拡大
 local aubg = 0
 
 ---$value:基準距離

@@ -5,7 +5,7 @@
 ---step=1
 local rename_me_track0 = 2
 
----$value:環状にする/chk
+---$check:環状にする
 local cy = 0
 
 ---$value:座標

@@ -23,10 +23,10 @@ local rename_me_track2 = 100
 ---step=0.1
 local rename_me_track3 = 100
 
----$value:上下を揃える/chk
+---$check:上下を揃える
 local spC = 0
 
----$value:穴だけ開ける/chk
+---$check:穴だけ開ける
 local hoC = 0
 
 ---$value:横分割数
