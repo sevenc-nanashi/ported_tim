@@ -1,6 +1,7 @@
 use aviutl2::{anyhow, module::ScriptModuleFunctions};
 use std::ptr::NonNull;
 
+mod enh_grayscale;
 mod grayscale;
 mod metal;
 mod pastel;
@@ -100,6 +101,44 @@ impl PortedTimMod2 {
             dark_color,
             gamma_scale,
         );
+        Ok(())
+    }
+
+    fn enh_grayscale(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        red: f64,
+        green: f64,
+        blue: f64,
+        cyan: f64,
+        magenta: f64,
+        yellow: f64,
+        white: f64,
+        gamma_exp: f64,
+        col: Option<u32>,
+    ) -> anyhow::Result<()> {
+        let buffer_size = (width as usize)
+            .checked_mul(height as usize)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        enh_grayscale::enh_grayscale(
+            image_buffer,
+            width,
+            height,
+            red,
+            green,
+            blue,
+            cyan,
+            magenta,
+            yellow,
+            white,
+            gamma_exp,
+            col,
+        )
+        .map_err(|e| anyhow::anyhow!(e))?;
         Ok(())
     }
 }

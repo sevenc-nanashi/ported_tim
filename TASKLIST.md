@@ -39,7 +39,7 @@
 | T_Color_Module.anm      | パステル調                      | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm      | ネオン                          | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm      | グレースケール                  | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm      | 白黒                            | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm      | 白黒                            | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm      | ２値化                          | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm      | ２値化RGB                       | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm      | バイアス消去                    | ？       | :x: | :x:              | ？           |
@@ -61,7 +61,7 @@
 | T_Color_Module.anm      | テトラトーン                    | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm      | 簡易コロラマ                    | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm      | ポスタリゼーション              | ？       | :x: | :x:              | ？           |
-| T_Color_Module.anm      | 最大\_\_最小                    | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm      | 最大/最小                       | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm      | しきい値                        | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm      | チャンネルミキサー(SetR)        | ？       | -   | :x:              | ？           |
 | T_Color_Module.anm      | チャンネルミキサー(SetG)        | ？       | -   | :x:              | ？           |

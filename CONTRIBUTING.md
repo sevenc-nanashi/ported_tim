@@ -13,3 +13,22 @@
   - 最低限動作する（その過程でトラックバーなどの変数名を改善する）
   - パラメーター定義を改善する
   - シェーダーによる実装に置き換える
+
+## デコンパイルのメモ
+
+プロンプト：
+
+---
+
+port this to rust function that takes the same parameter as lua, with single thread.
+Abort when there are undefined variables or functions.
+
+Callee:
+```lua
+```
+
+C:
+```c
+```
+
+---

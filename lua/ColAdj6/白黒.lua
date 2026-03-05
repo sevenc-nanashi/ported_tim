@@ -3,58 +3,62 @@
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track0 = 100
+local red = 100
 
 ---$track:G%
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track1 = 100
+local green = 100
 
 ---$track:B%
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track2 = 100
+local blue = 100
 
 ---$track:W%
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track3 = 100
+local white = 100
 
----$value:C%
-local C = 100
+---$track:C%
+---min=-500
+---max=500
+---step=0.1
+local cyan = 100
 
----$value:M%
-local M = 100
+---$track:M%
+---min=-500
+---max=500
+---step=0.1
+local magenta = 100
 
----$value:Y%
-local Y = 100
+---$track:Y%
+---min=-500
+---max=500
+---step=0.1
+local yellow = 100
 
----$check:色付け
-local Ck = 0
+---$color:色付け
+local col = nil
 
----$color:└着色
-local col = 0xff0000
+---$track:ガンマ値
+---min=1
+---max=1000
+---step=0.1
+local gamma = 100
 
----$value:ガンマ値
-local gm = 100
-
-local R = rename_me_track0 * 0.01
-local G = rename_me_track1 * 0.01
-local B = rename_me_track2 * 0.01
-local W = rename_me_track3 * 0.01
-C = (C or 100) * 0.01
-M = (M or 100) * 0.01
-Y = (Y or 100) * 0.01
-Ck = Ck or 0
-col = col or 0xffffff
-gm = gm or 100
-if gm < 1 then
-    gm = 1
-end
-require("T_Color_Module")
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.EnhGrayScale(userdata, w, h, R, G, B, C, M, Y, W, 100 / gm, Ck, col)
-obj.putpixeldata(userdata)
+red = red * 0.01
+green = green * 0.01
+blue = blue * 0.01
+white = white * 0.01
+cyan = (cyan or 100) * 0.01
+magenta = (magenta or 100) * 0.01
+yellow = (yellow or 100) * 0.01
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.enh_grayscale(userdata, w, h, red, green, blue, cyan, magenta, yellow, white, 100 / gamma, col)
+obj.putpixeldata("object", userdata, w, h)
