@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 200
+local track_size = 200
 
 ---$track:幅
 ---min=0
 ---max=4000
 ---step=0.1
-local rename_me_track1 = 10
+local track_width = 10
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 50
+local track_intensity = 50
 
 ---$track:ぼかし
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 10
+local track_blur = 10
 
 ---$check:ベースカラー
 local basechk = 1
@@ -48,10 +48,10 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * rename_me_track2 * 0.01
-local size = rename_me_track0
-local haba = rename_me_track1
-local blur = rename_me_track3
+alpha = alpha * track_intensity * 0.01
+local size = track_size
+local haba = track_width
+local blur = track_blur
 dt = dt * 0.01
 obj.load("figure", "円", col, size, haba)
 obj.effect("ぼかし", "範囲", blur)

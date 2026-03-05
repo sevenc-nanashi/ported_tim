@@ -3,13 +3,13 @@
 ---min=0
 ---max=500
 ---step=1
-local rename_me_track0 = 16
+local track_mc_color_count = 16
 
 ---$track:CL色数
 ---min=0
 ---max=500
 ---step=1
-local rename_me_track1 = 0
+local track_cl_color_count = 0
 
 ---$color:指定色1
 local col1 = ""
@@ -45,7 +45,7 @@ local col10 = ""
 local Cap = 0
 
 ---$check:指定色を有効にする
-local rename_me_check0 = true
+local check0 = true
 
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()
@@ -53,11 +53,11 @@ if ClusterReductionIdxC_T then
     T_Color_Module.DispReduction(userdata, w, h, ClusterReductionIdxC_T.N, ClusterReductionIdxC_T.T)
     ClusterReductionIdxC_T = nil
 else
-    local mN = rename_me_track0
-    local cN = rename_me_track1
+    local mN = track_mc_color_count
+    local cN = track_cl_color_count
     local col = {}
     local colN = 0
-    if rename_me_check0 then
+    if check0 then
         local cc = { col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 }
         for i = 1, 10 do
             if cc[i] ~= nil and cc[i] ~= "" then

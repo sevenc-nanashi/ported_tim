@@ -3,13 +3,13 @@
 ---min=2
 ---max=16
 ---step=1
-local rename_me_track0 = 2
+local track_delete_point = 2
 
 ---$value:アンカー
 local posDL = { -70, -60, 70, -60 }
 
 RuledlineT = RuledlineT or {}
-local apnum = rename_me_track0
+local apnum = track_delete_point
 obj.setanchor("posDL", apnum, "line")
 RuledlineT.ACX = RuledlineT.ACX or {}
 RuledlineT.ACY = RuledlineT.ACY or {}

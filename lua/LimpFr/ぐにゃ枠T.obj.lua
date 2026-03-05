@@ -3,25 +3,25 @@
 ---min=0
 ---max=3000
 ---step=1
-local rename_me_track0 = 200
+local track_size = 200
 
 ---$track:線幅
 ---min=1
 ---max=500
 ---step=1
-local rename_me_track1 = 5
+local track_line_width = 5
 
 ---$track:変動量
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track2 = 10
+local track_fluctuation_amount = 10
 
 ---$track:変動長
 ---min=2
 ---max=5000
 ---step=1
-local rename_me_track3 = 70
+local track_fluctuation_length = 70
 
 ---$color:線色
 local _1 = 0xffffff
@@ -63,13 +63,13 @@ local _15 = 0
 local _0 = nil
 
 ---$check:単一線
-local rename_me_check0 = true
+local check0 = true
 
 _0 = _0 or {}
-local FgS = math.floor(_0[1] or rename_me_track0)
-local LnW = math.floor(_0[2] or rename_me_track1)
-local LnA = (_0[3] or rename_me_track2)
-local LnL = math.floor(_0[4] or rename_me_track3)
+local FgS = math.floor(_0[1] or track_size)
+local LnW = math.floor(_0[2] or track_line_width)
+local LnA = (_0[3] or track_fluctuation_amount)
+local LnL = math.floor(_0[4] or track_fluctuation_length)
 local Col = _1 or 0xffffff
 local Fig = _2 or "円"
 local SmL = (_3 or 0) / 100
@@ -82,7 +82,7 @@ local Ju = math.floor(_12 or 1)
 local JA = _13 == 1
 local SeD = _14 or 0
 local ChI = _15 or 0
-local SL = _0[0] == nil and rename_me_check0 or _0[0]
+local SL = _0[0] == nil and check0 or _0[0]
 _0 = nil
 _1 = nil
 _2 = nil

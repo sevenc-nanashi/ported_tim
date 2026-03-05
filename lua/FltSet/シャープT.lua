@@ -3,24 +3,24 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 100
+local track_strength = 100
 
 ---$track:半径
 ---min=1
 ---max=100
 ---step=1
-local rename_me_track1 = 1
+local track_radius = 1
 
 ---$check:アンシャープマスク
-local rename_me_check0 = true
+local check0 = true
 
 require("T_Filter_Module")
-local St = rename_me_track0 * 0.01
+local St = track_strength * 0.01
 
-if rename_me_check0 then
+if check0 then
     local userdata, w, h = obj.getpixeldata()
     T_Filter_Module.SetPublicImage(userdata, w, h)
-    obj.effect("ぼかし", "範囲", rename_me_track1, "サイズ固定", 1)
+    obj.effect("ぼかし", "範囲", track_radius, "サイズ固定", 1)
     userdata, w, h = obj.getpixeldata()
     T_Filter_Module.UnSharpMask(userdata, w, h, St)
     obj.putpixeldata(userdata)

@@ -3,25 +3,25 @@
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track0 = 30
+local track_speed = 30
 
 ---$track:放射度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 100
+local track_radial_amount = 100
 
 ---$track:初期半径
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track2 = 100
+local track_radius = 100
 
 ---$track:個数
 ---min=1
 ---max=10000
 ---step=1
-local rename_me_track3 = 30
+local track_count = 30
 
 ---$value:速度誤差
 local dv = 1.5
@@ -50,10 +50,10 @@ local cp = { 0, 0 }
 ---$value:乱数シード
 local seed = 200
 
-local v = rename_me_track0
-local dr = rename_me_track1 * 0.01
-local r1 = rename_me_track2
-local N = math.floor(rename_me_track3)
+local v = track_speed
+local dr = track_radial_amount * 0.01
+local r1 = track_radius
+local N = math.floor(track_count)
 fv = 10 * (fv or 360) -- 旧Ver対策
 reg = reg or 0 -- 旧Ver対策
 deg = deg or 0 -- 旧Ver対策

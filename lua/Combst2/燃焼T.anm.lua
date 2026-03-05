@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 50
+local track_unfold = 50
 
 ---$track:強度
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track1 = 100
+local track_intensity = 100
 
 ---$track:しきい値
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track2 = 100
+local track_threshold = 100
 
 ---$track:周期/燃幅
 ---min=10
 ---max=200
 ---step=0.1
-local rename_me_track3 = 100
+local track_period_width = 100
 
 ---$color:燃焼色1
 local col1 = 0xff4747
@@ -51,29 +51,29 @@ local GE = 1
 local IE = 0
 
 ---$check:展開を調整
-local rename_me_check0 = true
+local check0 = true
 
 if orAP == 1 or fiAP == 1 then
     require("T_burning_Module")
     local userdata, w, h
-    local T = (rename_me_track0 * 0.02 - 1) * 128
-    local Si = rename_me_track3 * 0.01
+    local T = (track_unfold * 0.02 - 1) * 128
+    local Si = track_period_width * 0.01
     local ST, Sh
 
     seed = seed or 0
     map = map or 0
 
-    if rename_me_check0 then
+    if check0 then
         ST = 60
         if Si < 1 then
             ST = 60 / Si
         end
         Sh = 30 * Si + 30
-        ST = (ST + 2 * rename_me_track1 - 200) * 0.01
-        Sh = Sh * rename_me_track2 * 0.01 * 0.01
+        ST = (ST + 2 * track_intensity - 200) * 0.01
+        Sh = Sh * track_threshold * 0.01 * 0.01
     else
-        ST = rename_me_track1 * 0.006
-        Sh = rename_me_track2 * 0.006
+        ST = track_intensity * 0.006
+        Sh = track_threshold * 0.006
     end
 
     obj.copybuffer("cache:ori", "obj")
@@ -99,7 +99,7 @@ if orAP == 1 or fiAP == 1 then
         ECW = 200 - Si * 20
     end
 
-    if rename_me_check0 then
+    if check0 then
         local kaku = math.tan(math.pi * ECW * 0.0025)
         T = (1 + 1 / kaku) * T
     end

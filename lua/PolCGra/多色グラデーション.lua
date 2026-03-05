@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 100
+local track_width = 100
 
 ---$track:中心X
 ---min=-20000
 ---max=20000
 ---step=0.1
-local rename_me_track1 = 0
+local track_center_x = 0
 
 ---$track:中心Y
 ---min=-20000
 ---max=20000
 ---step=0.1
-local rename_me_track2 = 0
+local track_center_y = 0
 
 ---$track:表示
 ---min=0
 ---max=1
 ---step=0.1
-local rename_me_track3 = 0
+local track_display = 0
 
 ---$value:色1
 local col1 = "0x00ff00"
@@ -53,7 +53,7 @@ local size = 100
 ---$value: ガイド色
 local colG = "0xffffff"
 
-if rename_me_track3 == 1 then
+if track_display == 1 then
     obj.load("figure", "円", colG, size)
     obj.effect("縁取り")
 
@@ -116,9 +116,9 @@ else
     cenX = {}
     cenY = {}
     cc = { col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 }
-    haba = rename_me_track0
-    sox = rename_me_track1
-    soy = rename_me_track2
+    haba = track_width
+    sox = track_center_x
+    soy = track_center_y
     N = obj.getoption("section_num") + 1
     if N > 8 then
         N = 8

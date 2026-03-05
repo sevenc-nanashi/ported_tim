@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 200
+local track_size = 200
 
 ---$track:幅
 ---min=0
 ---max=4000
 ---step=0.1
-local rename_me_track1 = 20
+local track_width = 20
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 80
+local track_intensity = 80
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_rotation = 0
 
 ---$check:ベースカラー
 local basechk = 0
@@ -66,15 +66,15 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * rename_me_track2 * 0.01
+alpha = alpha * track_intensity * 0.01
 if auba == 1 then
     alpha = alpha
         * math.sqrt(CustomFlaredX * CustomFlaredX + CustomFlaredY * CustomFlaredY + CustomFlaredZ * CustomFlaredZ)
         / Rmax
 end
-local l = rename_me_track0 * math.pi / 4
-local cy = (l - rename_me_track1 * math.pi) * 0.5
-local rot = rename_me_track3 + math.deg(math.atan2(CustomFlaredY, CustomFlaredX)) - 90
+local l = track_size * math.pi / 4
+local cy = (l - track_width * math.pi) * 0.5
+local rot = track_rotation + math.deg(math.atan2(CustomFlaredY, CustomFlaredX)) - 90
 t = t * 0.01
 obj.load("figure", "四角形", CustomFlareColor, l)
 obj.effect("斜めクリッピング", "角度", -180, "中心Y", cy)

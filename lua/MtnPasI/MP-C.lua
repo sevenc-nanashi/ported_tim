@@ -3,25 +3,25 @@
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track0 = 0
+local track_x_coord = 0
 
 ---$track:Y座標
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track1 = -100
+local track_y_coord = -100
 
 ---$track:Z座標
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track2 = 0
+local track_z_coord = 0
 
 ---$track:ねじれ
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_twist = 0
 
 ---$value:分割数
 local BN = 20
@@ -113,16 +113,16 @@ TW = {}
 NN = obj.getoption("section_num")
 
 for i = 0, NN - 1 do
-    XX[i] = obj.getvalue("track.rename_me_track0", 0, i)
-    YY[i] = obj.getvalue("track.rename_me_track1", 0, i)
-    ZZ[i] = obj.getvalue("track.rename_me_track2", 0, i)
-    TW[i] = obj.getvalue("track.rename_me_track3", 0, i)
+    XX[i] = obj.getvalue("track.track_x_coord", 0, i)
+    YY[i] = obj.getvalue("track.track_y_coord", 0, i)
+    ZZ[i] = obj.getvalue("track.track_z_coord", 0, i)
+    TW[i] = obj.getvalue("track.track_twist", 0, i)
 end
 
-XX[NN] = obj.getvalue("track.rename_me_track0", 0, -1)
-YY[NN] = obj.getvalue("track.rename_me_track1", 0, -1)
-ZZ[NN] = obj.getvalue("track.rename_me_track2", 0, -1)
-TW[NN] = obj.getvalue("track.rename_me_track3", 0, -1)
+XX[NN] = obj.getvalue("track.track_x_coord", 0, -1)
+YY[NN] = obj.getvalue("track.track_y_coord", 0, -1)
+ZZ[NN] = obj.getvalue("track.track_z_coord", 0, -1)
+TW[NN] = obj.getvalue("track.track_twist", 0, -1)
 
 if SEC == 1 and CHA < 3 then
     for i = 0, NN do

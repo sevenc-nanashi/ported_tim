@@ -3,25 +3,25 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 100
+local track_width = 100
 
 ---$track:波数
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 100
+local track_count = 100
 
 ---$track:位相ｽﾞﾚX
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track2 = -100
+local track_offset_x = -100
 
 ---$track:位相ｽﾞﾚY
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track3 = 0
+local track_offset_y = 0
 
 ---$value:分割数
 local N = 30
@@ -40,13 +40,13 @@ SW = (SW or 1) .. ""
 local w, h = obj.w, obj.h
 local w2, h2 = w / 2, h / 2
 local wN, hN = w / N, h / N
-local A = w / 30 * rename_me_track0 / 100
-local WC = rename_me_track1
+local A = w / 30 * track_width / 100
+local WC = track_count
 HC = (Yck == 1) and (HC or 100) or WC
 WC = 2 * math.pi / w * WC / 100
 HC = 2 * math.pi / w * HC / 100
-local d1 = 2 * math.pi * rename_me_track2 / 100
-local d2 = 2 * math.pi * rename_me_track3 / 100
+local d1 = 2 * math.pi * track_offset_x / 100
+local d2 = 2 * math.pi * track_offset_y / 100
 obj.setoption("antialias", 1)
 for i = 0, N - 1 do
     local u1 = i * wN

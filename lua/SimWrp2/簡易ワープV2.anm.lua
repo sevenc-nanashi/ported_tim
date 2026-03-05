@@ -3,25 +3,25 @@
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track0 = 0
+local track_base_x = 0
 
 ---$track:基準Y
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track1 = 0
+local track_base_y = 0
 
 ---$track:移動X
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track2 = 100
+local track_move_x = 100
 
 ---$track:移動Y
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track3 = 100
+local track_move_y = 100
 
 ---$value:影響範囲
 local ATp = 200
@@ -60,7 +60,7 @@ local sz = 50
 local lw = 3
 
 ---$check:中心XY基準
-local rename_me_check0 = true
+local check0 = true
 
 local TK = function(Z)
     if Z >= 1 then
@@ -82,10 +82,10 @@ else
     SwarpT_DF = {}
 end
 
-SwarpT_X0[SwarpT_N] = rename_me_track0
-SwarpT_Y0[SwarpT_N] = rename_me_track1
-SwarpT_X1[SwarpT_N] = rename_me_track2
-SwarpT_Y1[SwarpT_N] = rename_me_track3
+SwarpT_X0[SwarpT_N] = track_base_x
+SwarpT_Y0[SwarpT_N] = track_base_y
+SwarpT_X1[SwarpT_N] = track_move_x
+SwarpT_Y1[SwarpT_N] = track_move_y
 if POS == 1 then
     SwarpT_X1[SwarpT_N] = SwarpT_X1[SwarpT_N] + SwarpT_X0[SwarpT_N]
     SwarpT_Y1[SwarpT_N] = SwarpT_Y1[SwarpT_N] + SwarpT_Y0[SwarpT_N]
@@ -105,7 +105,7 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
     local w2 = w / 2
     local h2 = h / 2
 
-    if rename_me_check0 then
+    if check0 then
         for k = 1, SwarpT_N do
             SwarpT_X0[k] = SwarpT_X0[k] + cx
             SwarpT_Y0[k] = SwarpT_Y0[k] + cy

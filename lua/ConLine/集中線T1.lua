@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 40
+local track_spawn_probability = 40
 
 ---$track:線幅
 ---min=1
 ---max=400
 ---step=0.1
-local rename_me_track1 = 15
+local track_line_width = 15
 
 ---$track:中心
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 15
+local track_center = 15
 
 ---$track:局所性
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_locality = 0
 
 ---$color:色
 local color = 0xffffff
@@ -57,7 +57,7 @@ local h = nil
 local ad = 0
 
 ---$check:最大本数自動計算
-local rename_me_check0 = true
+local check0 = true
 
 local CalXY = function(x0, y0, x1, y1, a, b)
     local AA = ((x1 - x0) / a) ^ 2 + ((y1 - y0) / b) ^ 2
@@ -80,14 +80,14 @@ else
     Cy = obj.getvalue("layer" .. ad .. ".y")
 end
 
-local P = rename_me_track0
-local ws = rename_me_track1
-local Cen = rename_me_track2 * 0.01
-local Lt = 1 - math.log(rename_me_track3 + 1) / math.log(101)
+local P = track_spawn_probability
+local ws = track_line_width
+local Cen = track_center * 0.01
+local Lt = 1 - math.log(track_locality + 1) / math.log(101)
 local screen_w = w or obj.screen_w
 local screen_h = h or obj.screen_h
 local size = math.sqrt(screen_w * screen_w + screen_h * screen_h)
-if rename_me_check0 then
+if check0 then
     maxN = math.floor(200 * math.pi / ws)
 end
 rnd = rnd * 0.01
@@ -97,7 +97,7 @@ seed = seed + math.floor(obj.time * obj.framerate * sp)
 obj.load("figure", "四角形", color, 1)
 obj.setoption("drawtarget", "tempbuffer", screen_w, screen_h)
 local calP = {}
-if rename_me_track3 == 0 or P == 100 then
+if track_locality == 0 or P == 100 then
     for i = 1, maxN do
         if P >= obj.rand(0, 100, -i, seed + 1000) then
             calP[i] = 1

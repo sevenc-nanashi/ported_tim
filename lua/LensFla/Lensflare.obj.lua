@@ -3,32 +3,32 @@
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track0 = -320
+local track_light_center_x = -320
 
 ---$track:光中心(Y)
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = -180
+local track_light_center_y = -180
 
 ---$track:ずれ(X)
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 640
+local track_offset_x = 640
 
 ---$track:ずれ(Y)
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track3 = 360
+local track_offset_y = 360
 
 --param:bb=5;fh=0.1
 
-Cx = rename_me_track0
-Cy = rename_me_track1
-dx = rename_me_track2
-dy = rename_me_track3
+Cx = track_light_center_x
+Cy = track_light_center_y
+dx = track_offset_x
+dy = track_offset_y
 
 YR = 1 - fh + fh * obj.rand(0, 100) / 100
 

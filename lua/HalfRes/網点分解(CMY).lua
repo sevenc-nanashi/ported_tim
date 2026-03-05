@@ -3,25 +3,25 @@
 ---min=5
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 10
+local track_size = 10
 
 ---$track:最小
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track1 = 0
+local track_min = 0
 
 ---$track:最大
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track2 = 120
+local track_max = 120
 
 ---$track:ﾎﾞｶｼ補正
 ---min=0
 ---max=500
 ---step=1
-local rename_me_track3 = 50
+local track_adjust = 50
 
 ---$figure:形状
 local fig = "円"
@@ -51,17 +51,17 @@ local Bcol = 0xffffff
 local Dcut = 2
 
 ---$check:簡易表示
-local rename_me_check0 = false
+local check0 = false
 
 local EAP = 0
-if rename_me_check0 and obj.getinfo("saving") == false then
+if check0 and obj.getinfo("saving") == false then
     EAP = 1
 end
 
-local siz = rename_me_track0
-local tsi1 = rename_me_track1 * 0.01
-local tsi2 = rename_me_track2 * 0.01
-local BS = rename_me_track3 * 0.01 * siz
+local siz = track_size
+local tsi1 = track_min * 0.01
+local tsi2 = track_max * 0.01
+local BS = track_adjust * 0.01 * siz
 
 if EAP == 1 then
     siz = siz / 4

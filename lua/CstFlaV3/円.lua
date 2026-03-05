@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 300
+local track_size = 300
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 50
+local track_intensity = 50
 
 ---$track:ぼかし％
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 10
+local track_percent = 10
 
 ---$track:位置％
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track3 = 0
+local track_position_percent = 0
 
 ---$check:ベースカラー
 local basechk = 1
@@ -45,10 +45,10 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * rename_me_track1 * 0.01
-local size = rename_me_track0
-local blur = rename_me_track2
-local t = rename_me_track3 * 0.01
+alpha = alpha * track_intensity * 0.01
+local size = track_size
+local blur = track_percent
+local t = track_position_percent * 0.01
 obj.load("figure", "円", col, 100)
 obj.effect("ぼかし", "範囲", blur)
 ox = CustomFlareCX + t * CustomFlaredX + OFSET[1] * CustomFlaredX * 0.01

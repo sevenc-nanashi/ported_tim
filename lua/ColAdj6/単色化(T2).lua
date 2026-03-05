@@ -3,36 +3,36 @@
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track0 = 5
+local track_u = 5
 
 ---$track:V
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track1 = 5
+local track_v = 5
 
 ---$track:ガンマ
 ---min=1
 ---max=1000
 ---step=0.1
-local rename_me_track2 = 100
+local track_gamma = 100
 
 ---$check:参考表示
-local rename_me_check0 = false
+local check0 = false
 
 ---$check:極座標指定
 local POL = 0
 
 require("T_Color_Module")
-local UU = rename_me_track0 * 0.01
-local VV = rename_me_track1 * 0.01
-local GM = rename_me_track2 * 0.01
+local UU = track_u * 0.01
+local VV = track_v * 0.01
+local GM = track_gamma * 0.01
 local POL2 = POL or 0
 if POL2 == 1 then
-    VV = math.pi * rename_me_track1 / 360
+    VV = math.pi * track_v / 360
     UU, VV = UU * math.cos(VV), UU * math.sin(VV)
 end
-if rename_me_check0 then
+if check0 then
     obj.effect("リサイズ", "拡大率", 100 / 3)
     obj.copybuffer("cache:ORI", "obj")
     local w, h = obj.getpixel()

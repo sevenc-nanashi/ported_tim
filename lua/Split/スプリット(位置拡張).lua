@@ -3,27 +3,27 @@
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 0
+local track_center_x = 0
 
 ---$track:中心Y
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 0
+local track_center_y = 0
 
 ---$track:幅
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 200
+local track_width = 200
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_rotation = 0
 
-T_split_CX = rename_me_track0
-T_split_CY = rename_me_track1
-T_split_W = rename_me_track2
-T_split_ROT = math.rad(rename_me_track3)
+T_split_CX = track_center_x
+T_split_CY = track_center_y
+T_split_W = track_width
+T_split_ROT = math.rad(track_rotation)

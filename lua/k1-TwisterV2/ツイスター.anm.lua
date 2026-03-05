@@ -3,28 +3,28 @@
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track0 = 50
+local track_twist_amount = 50
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track1 = 0
+local track_rotation = 0
 
 ---$track:中心ｽﾞﾚ
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 0
+local track_center_offset = 0
 
 ---$track:切替映像
 ---min=-1
 ---max=100
 ---step=1
-local rename_me_track3 = 0
+local track_switch_video = 0
 
 ---$check:レイヤー読込
-local rename_me_check0 = true
+local check0 = true
 
 ---$value:分割
 local N = 25
@@ -247,15 +247,15 @@ local MakeShading = function(cx, cy, wd, hd, sin, cos, Cw, sdg, srev)
     )
 end
 
-if rename_me_check0 == false then
+if check0 == false then
     require("extbuffer")
 end
 
-local Tw = rename_me_track0 * 0.01 - 0.5
-local Do = rename_me_track1
+local Tw = track_twist_amount * 0.01 - 0.5
+local Do = track_rotation
 local Rt = math.rad(180 - Do)
-local Cw = rename_me_track2
-local id = math.floor(rename_me_track3)
+local Cw = track_center_offset
+local id = math.floor(track_switch_video)
 
 N = math.floor(math.max(N, 5))
 dr = math.abs(dr or 0.1) --前Verとの互換
@@ -284,7 +284,7 @@ else
 end
 
 if id > 0 then
-    if rename_me_check0 == false then
+    if check0 == false then
         extbuffer.read(id)
     else
         obj.load("layer", id, true)

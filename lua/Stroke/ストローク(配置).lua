@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track0 = 100
+local track_progress_1 = 100
 
 ---$track:進捗度2
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track1 = 0
+local track_progress_2 = 0
 
 ---$track:区間個数
 ---min=1
 ---max=5000
 ---step=1
-local rename_me_track2 = 10
+local track_count = 10
 
 ---$track:ﾗﾝﾀﾞﾑ性
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_randomness = 0
 
 ---$check:重なり反転
 local apchk = 0
@@ -47,13 +47,13 @@ local dScr = 0
 ---$value:精度
 local smN = 20
 
-local t1 = rename_me_track0 * 0.01
-local t2 = rename_me_track1 * 0.01
+local t1 = track_progress_1 * 0.01
+local t2 = track_progress_2 * 0.01
 if t2 < t1 then
     t1, t2 = t2, t1
 end
-local posN = rename_me_track2
-local rnd = rename_me_track3 * 0.01
+local posN = track_count
+local rnd = track_randomness * 0.01
 
 T_stroke_f = function()
     local t_To_D = function(Datat, posN)

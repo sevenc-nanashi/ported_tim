@@ -3,25 +3,25 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 100
+local track_radius = 100
 
 ---$track:彩度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 100
+local track_saturation = 100
 
 ---$track:明度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 100
+local track_lightness = 100
 
 ---$track:幅％
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 25
+local track_width_percent = 25
 
 ---$value:分割
 local spN = 24
@@ -29,11 +29,11 @@ local spN = 24
 ---$value:幅%(旧ﾊﾟﾗﾒｰﾀ)
 local wp = 0
 
-local wp2 = (wp == 0 or rename_me_track3 > 0) and rename_me_track3 or wp
-local Ro = rename_me_track0
+local wp2 = (wp == 0 or track_width_percent > 0) and track_width_percent or wp
+local Ro = track_radius
 local Ri = Ro * (100 - wp2) * 0.01
-local s = rename_me_track1
-local v = rename_me_track2
+local s = track_saturation
+local v = track_lightness
 obj.setoption("drawtarget", "tempbuffer", 2 * Ro, 2 * Ro)
 obj.setoption("blend", "alpha_add")
 local s2 = (-1 / spN + 2 / 3) * math.pi

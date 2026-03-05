@@ -3,25 +3,25 @@
 ---min=1
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 250
+local track_size = 250
 
 ---$track:長さ％
 ---min=1
 ---max=100
 ---step=0.1
-local rename_me_track1 = 20
+local track_length_percent = 20
 
 ---$track:強度％
 ---min=1
 ---max=100
 ---step=0.1
-local rename_me_track2 = 50
+local track_intensity_percent = 50
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_rotation = 0
 
 ---$value:位置％
 local t = 50
@@ -65,21 +65,21 @@ local lt = { 0, 250, 80, 0 }
 local figmax = 4
 obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存
 local n = 10
-local r = rename_me_track0 * 0.5
+local r = track_size * 0.5
 if aubg == 1 then
     r = r
         * math.sqrt(CustomFlaredX * CustomFlaredX + CustomFlaredY * CustomFlaredY + CustomFlaredZ * CustomFlaredZ)
         / Rmax
 end
-local dr = r * rename_me_track1 * 0.01
+local dr = r * track_length_percent * 0.01
 local wh = 2 * (r + dr)
 obj.setoption("drawtarget", "tempbuffer", wh, wh)
 obj.setoption("blend", 0)
 local pi = math.pi
 local cos = math.cos
 local sin = math.sin
-local alpha = rename_me_track2 * 0.01
-local rot = rename_me_track3 / 180 * pi
+local alpha = track_intensity_percent * 0.01
+local rot = track_rotation / 180 * pi
 ds = ds * 0.01
 spt = spt * 0.01
 asp = asp * 0.01

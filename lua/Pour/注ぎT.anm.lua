@@ -3,25 +3,25 @@
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 0
+local track_water_level = 0
 
 ---$track:振幅
 ---min=-1000
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 10
+local track_width = 10
 
 ---$track:波長
 ---min=2
 ---max=5000
 ---step=1
-local rename_me_track2 = 100
+local track_wavelength = 100
 
 ---$track:本体α
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 100
+local track_alpha = 100
 
 ---$value:波─α
 local Ta = 100
@@ -55,10 +55,10 @@ local wb = 4
 
 local pi = math.pi
 local Pr = { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
-local Z = -rename_me_track0
-local A = rename_me_track1
-local L = math.floor(rename_me_track2)
-local T = rename_me_track3 / 100
+local Z = -track_water_level
+local A = track_width
+local L = math.floor(track_wavelength)
+local T = track_alpha / 100
 local SG = 1
 A = A * math.cos(obj.time * 2 * pi * S)
 if A < 0 then

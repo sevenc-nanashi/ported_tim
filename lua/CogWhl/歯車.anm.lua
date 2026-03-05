@@ -3,25 +3,25 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 100
+local track_thickness = 100
 
 ---$track:幅比補正
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track1 = 0
+local track_width_ratio_adjust = 0
 
 ---$track:段差補正
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track2 = 100
+local track_adjust = 100
 
 ---$track:厚さ補正
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track3 = 50
+local track_adjust_2 = 50
 
 ---$value:歯数
 local N = 20
@@ -29,10 +29,10 @@ local N = 20
 ---$value:内輪半径補正
 local R_ER = 100
 
-Lou = rename_me_track0
-ds = rename_me_track1 / 100
-D_ER = rename_me_track2
-L_ER = rename_me_track3
+Lou = track_thickness
+ds = track_width_ratio_adjust / 100
+D_ER = track_adjust
+L_ER = track_adjust_2
 
 R1 = obj.h / 2
 R2 = R1 * (1 - D_ER * math.pi / N / 200)

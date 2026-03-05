@@ -3,28 +3,28 @@
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track0 = 50
+local track_size = 50
 
 ---$track:境界ﾎﾞｶｼ
 ---min=0.1
 ---max=500
 ---step=0.1
-local rename_me_track1 = 2
+local track_boundary_blur = 2
 
 ---$track:α基準
 ---min=0
 ---max=254
 ---step=1
-local rename_me_track2 = 128
+local track_alpha_base = 128
 
 ---$track:合成量
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track3 = 100
+local track_blend_amount = 100
 
 ---$check:高精度
-local rename_me_check0 = false
+local check0 = false
 
 ---$color:色1
 local col1 = 0xffffff
@@ -47,10 +47,10 @@ local MiA = 25
 ---$value:ﾓｰﾄﾞ[0〜2]
 local mode = 0
 
-local Sz = rename_me_track0
-local bl = rename_me_track1
-local sh = rename_me_track2
-local Gal = rename_me_track3 / 100
+local Sz = track_size
+local bl = track_boundary_blur
+local sh = track_alpha_base
+local Gal = track_blend_amount / 100
 local col1 = col1 or 0xffffff
 local col2 = col2 or 0x0
 local Lgr = Lgr or 0
@@ -72,7 +72,7 @@ end
 require("T_Framing_Module")
 local userdata, w, h = obj.getpixeldata()
 
-if rename_me_check0 then
+if check0 then
     T_Framing_Module.FramingHi(userdata, w, h, Sz, bl, sh, col1, col2, Lgr)
 else
     T_Framing_Module.Framing(userdata, w, h, Sz, bl, sh, col1, col2, Lgr)

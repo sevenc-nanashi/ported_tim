@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track0 = 5
+local track_line_period = 5
 
 ---$track:破線間隔
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track1 = 2.5
+local track_line_spacing = 2.5
 
 ---$track:滑らかさ
 ---min=0
 ---max=1000
 ---step=1
-local rename_me_track2 = 0
+local track_smoothness = 0
 
 ---$track:本体透明度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_opacity = 0
 
 ---$figure:形状
 local fig = "円"
@@ -39,10 +39,10 @@ local senz = "三角形"
 local sens = 50
 
 Trin_ehn = {}
-Trin_ehn.ivf = rename_me_track0 * 0.01
-Trin_ehn.ivl = rename_me_track1 * 0.01
-Trin_ehn.sm = math.floor(rename_me_track2)
-Trin_ehn.halp = 1 - rename_me_track3 * 0.01
+Trin_ehn.ivf = track_line_period * 0.01
+Trin_ehn.ivl = track_line_spacing * 0.01
+Trin_ehn.sm = math.floor(track_smoothness)
+Trin_ehn.halp = 1 - track_opacity * 0.01
 Trin_ehn.fig = fig
 Trin_ehn.td = td
 Trin_ehn.senp = senp

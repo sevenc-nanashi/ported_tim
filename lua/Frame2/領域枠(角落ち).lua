@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 10
+local track_stroke_width = 10
 
 ---$track:形状
 ---min=1
 ---max=4
 ---step=1
-local rename_me_track1 = 1
+local track_shape = 1
 
 ---$track:切込量
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 20
+local track_notch_amount = 20
 
 ---$track:背景濃度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 20
+local track_density = 20
 
 ---$color:枠色
 local col1 = 0xffffff
@@ -39,7 +39,7 @@ local ph = 0
 local base = { 0, 0 }
 
 ---$check:楕円
-local rename_me_check0 = false
+local check0 = false
 
 local function make_edge_del(wh, w1, h1, s, lw, fig, basefig)
     obj.load("figure", basefig, 0xffffff, 1.5 * wh)
@@ -116,10 +116,10 @@ local function atoshori(wh, col1)
 end
 
 local w, h = obj.getpixel()
-local lw = rename_me_track0
-local pt = rename_me_track1
-local s = rename_me_track2
-local backC = rename_me_track3 * 0.01
+local lw = track_stroke_width
+local pt = track_shape
+local s = track_notch_amount
+local backC = track_density * 0.01
 base = base or { 0, 0 }
 if T_ryouikiwaku_w == nil then
     w, h = pw + w + 2 * lw, ph + h + 2 * lw
@@ -140,7 +140,7 @@ if pt == 4 then
 end
 
 local basefig
-if rename_me_check0 then
+if check0 then
     basefig = "円"
 else
     basefig = "四角形"

@@ -3,25 +3,25 @@
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track0 = 50
+local track_distortion_amount = 50
 
 ---$track:滑らか
 ---min=0
 ---max=200
 ---step=1
-local rename_me_track1 = 5
+local track_smooth = 5
 
 ---$track:周期/ｻｲｽﾞ
 ---min=1
 ---max=100
 ---step=0.1
-local rename_me_track2 = 20
+local track_period_size = 20
 
 ---$track:分断
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_divide = 0
 
 ---$value:形状[1..3]
 local fig = 1
@@ -33,8 +33,8 @@ local nv = 0
 local seed = 0
 
 require("T_Filter_Module")
-local size = rename_me_track0
-local per = rename_me_track2
+local size = track_distortion_amount
+local per = track_period_size
 fig = ((fig or 1) - 1) % 3 + 1
 obj.effect("領域拡張", "塗りつぶし", 1, "上", size, "下", size, "左", size, "右", size)
 obj.copybuffer("cache:ori", "obj")
@@ -111,7 +111,7 @@ end
 obj.setoption("drawtarget", "tempbuffer", w, h)
 
 local userdata, w, h = obj.getpixeldata()
-T_Filter_Module.Flattening(userdata, w, h, rename_me_track3 * 0.01)
+T_Filter_Module.Flattening(userdata, w, h, track_divide * 0.01)
 obj.putpixeldata(userdata)
 obj.draw()
 
@@ -129,6 +129,6 @@ obj.effect(
     "param1",
     size,
     "ぼかし",
-    rename_me_track1
+    track_smooth
 )
 obj.effect("クリッピング", "上", size, "下", size, "左", size, "右", size)

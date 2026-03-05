@@ -3,25 +3,25 @@
 ---min=2
 ---max=200
 ---step=1
-local rename_me_track0 = 40
+local track_line_length = 40
 
 ---$track:しきい値
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track1 = 128
+local track_threshold = 128
 
 ---$track:白線量
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 8
+local track_white_line_amount = 8
 
 ---$track:黒線量
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 8
+local track_black_line_amount = 8
 
 ---$value:向き[0..3]
 local Vec = 2
@@ -39,10 +39,10 @@ local sechk = 1
 local seed = 0
 
 ---$check:しきい値を自動計算
-local rename_me_check0 = true
+local check0 = true
 
 require("T_Filter_Module")
-local Lng = rename_me_track0
+local Lng = track_line_length
 obj.effect("単色化")
 obj.effect("領域拡張", "塗りつぶし", 1, "上", Lng, "下", Lng, "左", Lng, "右", Lng)
 
@@ -56,12 +56,12 @@ T_Filter_Module.Graphicpen(
     w,
     h,
     Lng,
-    rename_me_track1,
-    rename_me_track2 * 0.01,
-    rename_me_track3 * 0.01,
+    track_threshold,
+    track_white_line_amount * 0.01,
+    track_black_line_amount * 0.01,
     Vec,
     seed,
-    rename_me_check0
+    check0
 )
 obj.putpixeldata(userdata)
 

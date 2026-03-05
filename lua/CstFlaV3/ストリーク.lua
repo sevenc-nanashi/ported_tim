@@ -3,25 +3,25 @@
 ---min=0
 ---max=2000
 ---step=0.1
-local rename_me_track0 = 400
+local track_ray_length = 400
 
 ---$track:光芒高さ
 ---min=0
 ---max=2000
 ---step=0.1
-local rename_me_track1 = 20
+local track_ray_height = 20
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 50
+local track_intensity = 50
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_rotation = 0
 
 ---$check:ベースカラー
 local basechk = 1
@@ -51,10 +51,10 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * rename_me_track2 * 0.01
-local l = rename_me_track0 * 2
-local r = rename_me_track1 * 0.5
-local rot = -rename_me_track3 / 180 * math.pi
+alpha = alpha * track_intensity * 0.01
+local l = track_ray_length * 2
+local r = track_ray_height * 0.5
+local rot = -track_rotation / 180 * math.pi
 if acr == 1 then
     rot = rot - math.atan2(CustomFlaredY, CustomFlaredX)
 end

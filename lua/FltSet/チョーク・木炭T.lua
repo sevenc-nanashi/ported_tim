@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 0
+local track_charcoal_apply = 0
 
 ---$track:ﾁｭｰｸ適用
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 0
+local track_chalk_apply = 0
 
 ---$track:筆圧
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 50
+local track_pen_pressure = 50
 
 ---$track:しきい値
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track3 = 0
+local track_threshold = 0
 
 ---$value:長さ[1-10]
 local len = 7
@@ -42,7 +42,7 @@ local sechk = 1
 local seed = 0
 
 ---$check:しきい値を自動計算
-local rename_me_check0 = true
+local check0 = true
 
 require("T_Filter_Module")
 if sechk == 0 then
@@ -59,11 +59,11 @@ T_Filter_Module.Preprocessing(
     userdata,
     w,
     h,
-    rename_me_track0 * 0.01,
-    rename_me_track1 * 0.01,
-    rename_me_track2 * 0.01,
-    rename_me_track3,
-    rename_me_check0
+    track_charcoal_apply * 0.01,
+    track_chalk_apply * 0.01,
+    track_pen_pressure * 0.01,
+    track_threshold,
+    check0
 )
 obj.putpixeldata(userdata)
 obj.setoption("drawtarget", "tempbuffer", w, h)

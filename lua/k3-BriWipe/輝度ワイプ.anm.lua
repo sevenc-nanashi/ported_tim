@@ -3,28 +3,28 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 50
+local track_wipe_amount = 50
 
 ---$track:ぼかし
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track1 = 0
+local track_blur = 0
 
 ---$track:読込先
 ---min=0
 ---max=100
 ---step=1
-local rename_me_track2 = 0
+local track_load_target = 0
 
 ---$check:暗い所から透過
-local rename_me_check0 = true
+local check0 = true
 
 require("T_Color_Module")
 
-local T = rename_me_track0
-local bl = rename_me_track1
-local id = rename_me_track2
+local T = track_wipe_amount
+local bl = track_blur
+local id = track_load_target
 local w, h = obj.getpixel()
 
 obj.setoption("drawtarget", "tempbuffer", w, h)
@@ -38,7 +38,7 @@ end
 obj.effect("色調補正", "ｺﾝﾄﾗｽﾄ", 100 + T, "彩度", 100 - T)
 obj.effect("単色化", "color", 0xffffff, "輝度を保持する", 1)
 
-if rename_me_check0 then
+if check0 then
     obj.effect("反転", "輝度反転", 1)
 end
 

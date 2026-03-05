@@ -3,25 +3,25 @@
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track0 = 500
+local track_horizontal_size = 500
 
 ---$track:縦サイズ
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track1 = 500
+local track_vertical_size = 500
 
 ---$track:高さ
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 150
+local track_height = 150
 
 ---$track:高さ基準
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track3 = 0
+local track_height_base = 0
 
 ---$color:線色
 local color = 0xffffff
@@ -51,7 +51,7 @@ local adi = 1
 local cc = { 10, 10, 2 }
 
 ---$check:YZ反転
-local rename_me_check0 = true
+local check0 = true
 
 if WireT_c_nw == nil then
     WireT_c_nw = cc[1] or 10
@@ -70,10 +70,10 @@ if WireT_c_nw == nil then
     end
 end
 
-local c_w = rename_me_track0
-local c_h = rename_me_track1
-local c_d = -rename_me_track2
-local c_bp = rename_me_track3 * 0.01
+local c_w = track_horizontal_size
+local c_h = track_vertical_size
+local c_d = -track_height
+local c_bp = track_height_base * 0.01
 
 local c_nw = WireT_c_nw
 local c_nh = WireT_c_nh
@@ -107,7 +107,7 @@ if PC == 0 then
 
     if BR == 0 then
         obj.load("figure", "四角形", color, math.max(pw, ph), line)
-        if rename_me_check0 then
+        if check0 then
             o_drawpoly = function(cx, x0, x1, y0, y1, y2, y3, cz, hph)
                 local z0 = cz + hph
                 local z1 = cz - hph
@@ -130,7 +130,7 @@ if PC == 0 then
         obj.load("tempbuffer")
         obj.setoption("drawtarget", "framebuffer")
 
-        if rename_me_check0 then
+        if check0 then
             o_drawpoly = function(cx, x0, x1, y0, y1, y2, y3, cz, hph)
                 local cy = (y0 + y1 + y2 + y3) * 0.25
                 local z0 = cz + hph
@@ -168,7 +168,7 @@ if PC == 0 then
     end
 else
     local setCx, setCz
-    if rename_me_check0 then
+    if check0 then
         setCx = function(x, y0, y1, z0, dz, Pst)
             local dy = y1 - y0
             local r = math.sqrt(dy * dy + dz * dz)
@@ -234,7 +234,7 @@ else
         end
     end
 
-    if rename_me_check0 then
+    if check0 then
         for i = 0, c_nw do
             for j = 0, c_nh do
                 obj.draw(x[i], data[i][j], z[j])

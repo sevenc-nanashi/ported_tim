@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 50
+local track_unfold = 50
 
 ---$track:速度
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 100
+local track_speed = 100
 
 ---$track:向き
 ---min=-180
 ---max=180
 ---step=0.1
-local rename_me_track2 = 30
+local track_direction = 30
 
 ---$track:サイズ
 ---min=4
 ---max=1000
 ---step=1
-local rename_me_track3 = 120
+local track_size = 120
 
 ---$value:P形状[1〜22]
 local Pfig = 1
@@ -66,17 +66,17 @@ local seed = 0
 local FBR = 0
 
 ---$check:マップ反転
-local rename_me_check0 = true
+local check0 = true
 
 Pfig = Pfig or 0
 if Pfig == 0 then
     require("砕け散るパズル-old")
     OldScript(
-        rename_me_track0,
-        rename_me_track1,
-        rename_me_track2,
-        rename_me_track3,
-        rename_me_check0,
+        track_unfold,
+        track_speed,
+        track_direction,
+        track_size,
+        check0,
         Ct,
         rv,
         Gr,
@@ -380,9 +380,9 @@ else
     end
     --メイン----------
     local zoom = obj.getvalue("zoom") * 0.01
-    local apt = rename_me_track0 * 0.01
-    local Vs = rename_me_track1 * 7.5
-    local dir = -math.rad(rename_me_track2)
+    local apt = track_unfold * 0.01
+    local Vs = track_speed * 7.5
+    local dir = -math.rad(track_direction)
     Csht = Csht or 0
     LayAp = LayAp or 0
     Cmap = Cmap or { 0, 0 }
@@ -398,7 +398,7 @@ else
     Gr[2] = Gr[2] * 30 * zoom
     Gr[3] = Gr[3] * 30 * zoom
     limap = limap * 0.01
-    local SI = math.floor(rename_me_track3)
+    local SI = math.floor(track_size)
     local w, h = obj.getpixel()
     local nxd = (w - SI) / SI * 0.5
     local nyd = (h - SI) / SI * 0.5
@@ -437,7 +437,7 @@ else
     --ピース作成
     MakeSpl(SI, spt, Pfig)
     --時間（マップ）作成
-    local T = MakeMap(SI, mapnum, mapdeg, nx, ny, nxd, nyd, Cmap, loadmap, rename_me_check0, apt, limap)
+    local T = MakeMap(SI, mapnum, mapdeg, nx, ny, nxd, nyd, Cmap, loadmap, check0, apt, limap)
     --表示
     obj.setoption("drawtarget", "tempbuffer")
     DrawPoly = ({

@@ -3,9 +3,9 @@
 ---min=0
 ---max=2
 ---step=1
-local rename_me_track0 = 0
+local track_calc_method = 0
 
-local CType = rename_me_track0
+local CType = track_calc_method
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()
 if CType < 2 then

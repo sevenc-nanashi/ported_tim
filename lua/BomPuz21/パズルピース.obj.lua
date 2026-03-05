@@ -3,26 +3,26 @@
 ---min=4
 ---max=1000
 ---step=1
-local rename_me_track0 = 120
+local track_size = 120
 
 ---$track:P形状
 ---min=1
 ---max=22
 ---step=1
-local rename_me_track1 = 1
+local track_p = 1
 
 ---$track:凹凸
 ---min=1
 ---max=2
 ---step=1
-local rename_me_track2 = 1
+local track_bump = 1
 
 ---$color:0xffffff
-local rename_me_color = false
-color = rename_me_color
+local color = false
+color = color
 
-local Pfig = rename_me_track1
-local SI = math.floor(rename_me_track0)
+local Pfig = track_p
+local SI = math.floor(track_size)
 
 local DrawUnitBase = function(SI2, ROT, ...)
     if arg[1] == 1 then
@@ -186,7 +186,7 @@ elseif Pfig >= 9 and Pfig <= 22 then
 end
 
 if
-    rename_me_track2 == 2
+    track_bump == 2
     and Pfig ~= 2
     and Pfig ~= 6
     and Pfig ~= 10

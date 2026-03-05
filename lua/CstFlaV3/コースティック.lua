@@ -3,19 +3,19 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 200
+local track_size = 200
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 20
+local track_intensity = 20
 
 ---$track:ぼかし
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track2 = 5
+local track_blur = 5
 
 ---$check:ベースカラー
 local basechk = 1
@@ -41,13 +41,13 @@ obj.setoption("blend", CustomFlareMode)
 if basechk == 1 then
     col = CustomFlareColor
 end
-local size = rename_me_track0
+local size = track_size
 local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * rename_me_track1 * 0.01
-local blur = rename_me_track2
+alpha = alpha * track_intensity * 0.01
+local blur = track_blur
 obj.load("image", obj.getinfo("script_path") .. "CF-image\\ctc1.png")
 obj.effect("グラデーション", "color", col, "color2", col, "blend", 5)
 obj.effect("ぼかし", "範囲", blur)

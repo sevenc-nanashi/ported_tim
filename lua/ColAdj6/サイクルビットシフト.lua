@@ -3,36 +3,36 @@
 ---min=-100
 ---max=100
 ---step=1
-local rename_me_track0 = 0
+local track_r8bit = 0
 
 ---$track:G8bit
 ---min=-100
 ---max=100
 ---step=1
-local rename_me_track1 = 0
+local track_g8bit = 0
 
 ---$track:B8bit
 ---min=-100
 ---max=100
 ---step=1
-local rename_me_track2 = 0
+local track_b8bit = 0
 
 ---$track:24bit
 ---min=-100
 ---max=100
 ---step=1
-local rename_me_track3 = 0
+local track_n_24bit = 0
 
 ---$check:24ビットでシフト
-local rename_me_check0 = false
+local check0 = false
 
 require("T_Color_Module")
-local r = math.floor(rename_me_track0)
-local g = math.floor(rename_me_track1)
-local b = math.floor(rename_me_track2)
-if rename_me_check0 then
-    r = math.floor(rename_me_track3)
+local r = math.floor(track_r8bit)
+local g = math.floor(track_g8bit)
+local b = math.floor(track_b8bit)
+if check0 then
+    r = math.floor(track_n_24bit)
 end
 local userdata, w, h = obj.getpixeldata()
-T_Color_Module.CycleBitShift(userdata, w, h, r, g, b, rename_me_check0)
+T_Color_Module.CycleBitShift(userdata, w, h, r, g, b, check0)
 obj.putpixeldata(userdata)

@@ -3,25 +3,25 @@
 ---min=3
 ---max=300
 ---step=1
-local rename_me_track0 = 10
+local track_size = 10
 
 ---$track:位置ｽﾞﾚ%
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 50
+local track_position_offset_percent = 50
 
 ---$track:ピッチ%
 ---min=50
 ---max=100
 ---step=0.1
-local rename_me_track2 = 75
+local track_percent = 75
 
 ---$track:色幅
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track3 = 32
+local track_color_width = 32
 
 ---$check:背景に着色
 local _1 = 0
@@ -57,15 +57,15 @@ local _10 = 0
 local _0 = nil
 
 ---$check:色参照位置固定
-local rename_me_check0 = true
+local check0 = true
 
 require("T_Sketch_Module")
 _0 = _0 or {}
-local Sz = _0[1] or rename_me_track0
-local Dx = _0[2] or rename_me_track1
-local Pt = _0[3] or rename_me_track2
-local Cw = _0[4] or rename_me_track3
-local Oc = _0[0] == nil and rename_me_check0 or _0[0]
+local Sz = _0[1] or track_size
+local Dx = _0[2] or track_position_offset_percent
+local Pt = _0[3] or track_percent
+local Cw = _0[4] or track_color_width
+local Oc = _0[0] == nil and check0 or _0[0]
 _0 = nil
 local ck1 = _1 or 0
 local Bol = _2 or 0xffffff

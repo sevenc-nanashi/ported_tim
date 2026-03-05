@@ -3,19 +3,19 @@
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track0 = 25
+local track_deform_1 = 25
 
 ---$track:変形2
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track1 = 25
+local track_deform_2 = 25
 
 ---$track:個数
 ---min=0
 ---max=10000
 ---step=1
-local rename_me_track2 = 0
+local track_count = 0
 
 ---$value:分割数
 local N = 8
@@ -42,7 +42,7 @@ local rotV = 10
 local ANT = 0
 
 ---$check:重心を中心にする
-local rename_me_check0 = true
+local check0 = true
 
 local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
     local ROTxyz = function(x, y, z, rx, ry, rz)
@@ -136,7 +136,7 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
         end
     end
 
-    if rename_me_check0 then
+    if check0 then
         gz = gz / ((Nh + 1) * (N + 1))
     else
         gz = 0
@@ -186,9 +186,9 @@ local w, h = obj.getpixel()
 w = w * obj.getvalue("zoom") * 0.01
 h = h * obj.getvalue("zoom") * 0.01
 dpos = math.max(100 - dpos, 10)
-local thx_max = math.pi * rename_me_track0 * 0.01
-local thy_max = math.pi * rename_me_track1 * 0.01
-local M = rename_me_track2
+local thx_max = math.pi * track_deform_1 * 0.01
+local thy_max = math.pi * track_deform_2 * 0.01
+local M = track_count
 
 local T = obj.time
 

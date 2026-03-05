@@ -3,25 +3,25 @@
 ---min=10
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 250
+local track_size = 250
 
 ---$track:光芒量
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 55
+local track_ray_amount = 55
 
 ---$track:強度
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track2 = 60
+local track_intensity = 60
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_rotation = 0
 
 ---$check:ベースカラー
 local basechk = 1
@@ -63,9 +63,9 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-local w = rename_me_track0
-local c_num = rename_me_track1
-local c_alp = rename_me_track2 * 0.01
+local w = track_size
+local c_num = track_ray_amount
+local c_alp = track_intensity * 0.01
 fig = math.floor(fig)
 if fig > 8 then
     fig = 8
@@ -97,7 +97,7 @@ if clp[2] > 0 then
 end
 r = r / 2.5
 obj.effect("クリッピング", "上", r)
-obj.effect("極座標変換", "回転", rename_me_track3)
+obj.effect("極座標変換", "回転", track_rotation)
 local x0 = -r + dx
 local y0 = -r + dy
 local x1 = r + dx

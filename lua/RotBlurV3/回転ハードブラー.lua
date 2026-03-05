@@ -3,25 +3,25 @@
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 0
+local track_center_x = 0
 
 ---$track:中心Y
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 0
+local track_center_y = 0
 
 ---$track:ブラー量
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track2 = 20
+local track_blur_amount = 20
 
 ---$track:凹凸量
 ---min=1
 ---max=1000
 ---step=1
-local rename_me_track3 = 40
+local track_bump_amount = 40
 
 ---$check:サイズ保持
 local ck = 1
@@ -44,11 +44,11 @@ local BMC = 100
 ---$value:パターン
 local rnds = 1
 
-local Br = rename_me_track2
+local Br = track_blur_amount
 if Bx ~= 0 then
-    local dx = rename_me_track0
-    local dy = rename_me_track1
-    local NN = rename_me_track3
+    local dx = track_center_x
+    local dy = track_center_y
+    local NN = track_bump_amount
     local BasP = RotBlur_BasP or (BasP or 0)
     local AmpR = RotBlur_AmpR or (AmpR or 100)
     local EG = RotBlur_EG or (EG or 0)

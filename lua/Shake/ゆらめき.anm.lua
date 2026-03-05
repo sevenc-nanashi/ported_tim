@@ -3,13 +3,13 @@
 ---min=10
 ---max=2000
 ---step=0.1
-local rename_me_track0 = 50
+local track_size = 50
 
 ---$track:形状変化
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track1 = 0
+local track_change = 0
 
 ---$value:ランダム形状
 local Rpat = 20
@@ -22,9 +22,9 @@ local py = {}
 
 local xl, yl = obj.getpixel()
 
-local size = rename_me_track0
+local size = track_size
 
-local tt = rename_me_track1 * 0.01
+local tt = track_change * 0.01
 local ss = math.floor(tt)
 tt = tt - ss
 local tti = 1 - tt

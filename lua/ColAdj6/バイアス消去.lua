@@ -3,28 +3,28 @@
 ---min=0
 ---max=500
 ---step=1
-local rename_me_track0 = 30
+local track_range = 30
 
 ---$track:補正量
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track1 = 100
+local track_adjust_amount = 100
 
 ---$track:ｵﾌｾｯﾄ
 ---min=-300
 ---max=300
 ---step=0.1
-local rename_me_track2 = 0
+local track_offset = 0
 
 ---$track:偏差閾値
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 0
+local track_threshold = 0
 
 ---$check:偏差補正
-local rename_me_check0 = true
+local check0 = true
 
 require("T_Color_Module")
 userdata, w, h = obj.getpixeldata()
@@ -32,10 +32,10 @@ T_Color_Module.BiasDeletion(
     userdata,
     w,
     h,
-    rename_me_track0,
-    rename_me_track1,
-    rename_me_track2,
-    rename_me_track3,
-    rename_me_check0
+    track_range,
+    track_adjust_amount,
+    track_offset,
+    track_threshold,
+    check0
 )
 obj.putpixeldata(userdata)

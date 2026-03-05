@@ -3,25 +3,25 @@
 ---min=1
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 80
+local track_size = 80
 
 ---$track:ぼかし％
 ---min=1
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 10
+local track_percent = 10
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 30
+local track_intensity = 30
 
 ---$track:中心強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 100
+local track_center_intensity = 100
 
 ---$check:ベースカラー
 local basechk = 1
@@ -50,8 +50,8 @@ obj.setoption("blend", CustomFlareMode)
 if basechk == 1 then
     col = CustomFlareColor
 end
-local size = rename_me_track0
-local alp = rename_me_track2 * 0.01
+local size = track_size
+local alp = track_intensity * 0.01
 hs = hs * 0.01
 if aubg == 1 then
     size = size
@@ -66,7 +66,7 @@ if aubg == 1 then
         size = 0
     end
 end
-local blur = size * rename_me_track1 * 0.01
+local blur = size * track_percent * 0.01
 local dx = (t + OFSET[1]) * 0.01 * CustomFlaredX + CustomFlareCX
 local dy = (t + OFSET[2]) * 0.01 * CustomFlaredY + CustomFlareCY
 local dz = (t + OFSET[3]) * 0.01 * CustomFlaredZ + CustomFlareCZ
@@ -75,6 +75,6 @@ obj.effect("ぼかし", "範囲", blur)
 obj.draw(dx, dy, dz, 1, alp)
 obj.load("figure", "円", 0xffffff, size * hs)
 obj.effect("ぼかし", "範囲", blur * hs)
-obj.draw(dx, dy, dz, 1, alp * rename_me_track3 * 0.01)
+obj.draw(dx, dy, dz, 1, alp * track_center_intensity * 0.01)
 obj.load("tempbuffer")
 obj.setoption("blend", 0)

@@ -3,25 +3,25 @@
 ---min=3
 ---max=100
 ---step=1
-local rename_me_track0 = 6
+local track_sides = 6
 
 ---$track:高さ
 ---min=0
 ---max=20000
 ---step=0.1
-local rename_me_track1 = 200
+local track_height = 200
 
 ---$track:上半径
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track2 = 100
+local track_upper_radius = 100
 
 ---$track:下半径
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track3 = 300
+local track_lower_radius = 300
 
 ---$check:蓋
 local Futa = 0
@@ -45,10 +45,10 @@ local int = 0
 local ant = 0
 
 local zoom = obj.getvalue("zoom") * 0.01
-local N = rename_me_track0
-local H = rename_me_track1 * zoom
-local R1 = rename_me_track2 * zoom
-local R2 = rename_me_track3 * zoom
+local N = track_sides
+local H = track_height * zoom
+local R1 = track_upper_radius * zoom
+local R2 = track_lower_radius * zoom
 local obh = obj.h
 local iso = Futa and math.pi * 0.5 or 0
 ant = ant or 1

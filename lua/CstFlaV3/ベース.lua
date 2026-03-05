@@ -3,13 +3,13 @@
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track0 = 0
+local track_move_amount = 0
 
 ---$track:合成モード
 ---min=0
 ---max=1
 ---step=1
-local rename_me_track1 = 0
+local track_blend_mode = 0
 
 ---$color:ベースカラー
 local col = 0x5588ff
@@ -30,7 +30,7 @@ if mv == 0 then
     CustomFlareCZ = pos[6]
 else
     obj.setanchor("pos", 4, "line", "xyz", "inout")
-    local s = rename_me_track0 * 0.01
+    local s = track_move_amount * 0.01
     CustomFlareXX = (1 - s) * pos[1] + s * pos[7]
     CustomFlareYY = (1 - s) * pos[2] + s * pos[8]
     CustomFlareZZ = (1 - s) * pos[3] + s * pos[9]
@@ -43,4 +43,4 @@ CustomFlaredY = CustomFlareCY - CustomFlareYY
 CustomFlaredZ = CustomFlareCZ - CustomFlareZZ
 CustomFlareColor = col
 CustomFlareW, CustomFlareH = obj.getpixel()
-CustomFlareMode = 1 + 3 * rename_me_track1
+CustomFlareMode = 1 + 3 * track_blend_mode

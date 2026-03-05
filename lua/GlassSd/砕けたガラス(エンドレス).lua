@@ -3,25 +3,25 @@
 ---min=-1000
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 100
+local track_size = 100
 
 ---$track:ガラス量
 ---min=0
 ---max=5000
 ---step=1
-local rename_me_track1 = 20
+local track_glass_amount = 20
 
 ---$track:屈折率
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 25
+local track_refractive_index = 25
 
 ---$track:移動速度
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track3 = 10
+local track_move_speed = 10
 
 ---$check:オリジナル表示
 local chk = 0
@@ -69,12 +69,12 @@ end
 
 alpha = 1 - alpha / 100
 
-local NN = rename_me_track1
-local v = rename_me_track3
+local NN = track_glass_amount
+local v = track_move_speed
 local of = obj.time * obj.framerate
 
 local sgn = 1
-local gsize = rename_me_track0
+local gsize = track_size
 if gsize < 0 then
     gsize = -gsize
     sgn = 0
@@ -84,7 +84,7 @@ if gsize < 10 then
 end
 
 local gsize_h = gsize / 2
-local nk = rename_me_track2
+local nk = track_refractive_index
 local apsz_w = w + gsize
 local apsz_h = h + gsize
 

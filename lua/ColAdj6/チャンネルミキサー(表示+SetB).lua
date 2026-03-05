@@ -3,25 +3,25 @@
 ---min=-300
 ---max=300
 ---step=0.1
-local rename_me_track0 = 0
+local track_blue_red_percent = 0
 
 ---$track:青←緑％
 ---min=-300
 ---max=300
 ---step=0.1
-local rename_me_track1 = 0
+local track_blue_green_percent = 0
 
 ---$track:青←青％
 ---min=-300
 ---max=300
 ---step=0.1
-local rename_me_track2 = 100
+local track_blue_blue_percent = 100
 
 ---$track:青←定数
 ---min=-300
 ---max=300
 ---step=0.1
-local rename_me_track3 = 0
+local track_blue_count = 0
 
 ---$value:赤←赤％
 local RR = 100
@@ -60,10 +60,10 @@ local BB = 100
 local BC = 0
 
 if ChannelMixerRate then
-    ChannelMixerRate[9] = rename_me_track0
-    ChannelMixerRate[10] = rename_me_track1
-    ChannelMixerRate[11] = rename_me_track2
-    ChannelMixerRate[12] = rename_me_track3
+    ChannelMixerRate[9] = track_blue_red_percent
+    ChannelMixerRate[10] = track_blue_green_percent
+    ChannelMixerRate[11] = track_blue_blue_percent
+    ChannelMixerRate[12] = track_blue_count
 else
     ChannelMixerRate = { RR, RG, RB, RC, GR, GG, GB, GC, BR, BG, BB, BC }
 end

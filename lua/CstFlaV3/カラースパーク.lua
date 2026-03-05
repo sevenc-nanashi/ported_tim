@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 400
+local track_size = 400
 
 ---$track:長さ
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 100
+local track_length = 100
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 60
+local track_intensity = 60
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_rotation = 0
 
 ---$value:数
 local n = 100
@@ -59,10 +59,10 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-local size = rename_me_track0 * 0.5
-local dL = rename_me_track1 * 0.5
-alpha = alpha * rename_me_track2 * 0.01
-local rot = rename_me_track3
+local size = track_size * 0.5
+local dL = track_length * 0.5
+alpha = alpha * track_intensity * 0.01
+local rot = track_rotation
 drh = drh * 0.01
 fig = math.floor(fig)
 if fig > figmax then

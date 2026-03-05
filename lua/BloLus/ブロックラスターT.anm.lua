@@ -3,28 +3,28 @@
 ---min=1
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 30
+local track_height = 30
 
 ---$track:振幅
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 100
+local track_width = 100
 
 ---$track:波長
 ---min=1
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 600
+local track_wavelength = 600
 
 ---$track:ﾗﾝﾀﾞﾑ性
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_randomness = 0
 
 ---$check:縦方向
-local rename_me_check0 = true
+local check0 = true
 
 ---$value:速度(px/s)
 local rtv = 100
@@ -47,17 +47,17 @@ local dw2 = 100
 ---$value:シード
 local seed = 0
 
-local A = rename_me_track1
+local A = track_width
 if A ~= 0 then
-    if rename_me_check0 then
+    if check0 then
         obj.effect("ローテーション", "90度回転", 1)
     end
 
     local pi = math.pi
     local sin = math.sin
-    local L = rename_me_track0
-    local D = rename_me_track2
-    local R = rename_me_track3 / 100
+    local L = track_height
+    local D = track_wavelength
+    local R = track_randomness / 100
     local w, h = obj.getpixel()
     rtv = rtv or 0
     sfh = sfh or 0
@@ -125,7 +125,7 @@ if A ~= 0 then
         s = s + 1
     end
     obj.load("tempbuffer")
-    if rename_me_check0 then
+    if check0 then
         obj.effect("ローテーション", "90度回転", -1)
     end
 end

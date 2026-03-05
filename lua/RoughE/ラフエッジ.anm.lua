@@ -3,25 +3,25 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 20
+local track_deform_amount = 20
 
 ---$track:周期
 ---min=0
 ---max=200
 ---step=0.01
-local rename_me_track1 = 2
+local track_period = 2
 
 ---$track:変化速度
 ---min=0
 ---max=50
 ---step=0.1
-local rename_me_track2 = 0
+local track_change_speed = 0
 
 ---$track:形状
 ---min=1
 ---max=6
 ---step=1
-local rename_me_track3 = 1
+local track_shape = 1
 
 ---$value:シード
 local seed = 0
@@ -30,13 +30,13 @@ local seed = 0
 local fry = nil
 
 ---$check:周囲を少し残す
-local rename_me_check0 = true
+local check0 = true
 
-local Rf = rename_me_track0
-local frx = rename_me_track1
+local Rf = track_deform_amount
+local frx = track_period
 fry = fry or frx
-local sp = rename_me_track2
-local kata = rename_me_track3 - 1
+local sp = track_change_speed
+local kata = track_shape - 1
 local w, h = obj.getpixel()
 obj.copybuffer("cache:ORI", "obj")
 
@@ -67,7 +67,7 @@ obj.effect("グラデーション", "color", 0x00ff00, "color2", 0x00ff00, "blen
 obj.setoption("blend", 1)
 obj.draw()
 
-if not rename_me_check0 then
+if not check0 then
     obj.copybuffer("obj", "cache:ORI")
     obj.effect(
         "ディスプレイスメントマップ",
@@ -106,7 +106,7 @@ obj.copybuffer("tmp", "cache:ORI")
 obj.setoption("blend", "alpha_sub")
 obj.draw()
 
-if not rename_me_check0 then
+if not check0 then
     obj.copybuffer("obj", "cache:MAP")
     obj.setoption("blend", "alpha_sub")
     obj.draw()

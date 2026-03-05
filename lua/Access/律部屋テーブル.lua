@@ -3,19 +3,19 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 250
+local track_size = 250
 
 ---$track:厚さ補正
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 100
+local track_adjust = 100
 
 ---$track:脚長補正
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 100
+local track_adjust_2 = 100
 
 ---$color:テーブル色
 local tablecol = 0xc0c0a0
@@ -62,10 +62,10 @@ function pole(x1, y1, z1, x2, y2, z2, size)
 end
 
 local zoom = obj.getvalue("zoom") * 0.01
-local sc0 = rename_me_track0 * zoom
+local sc0 = track_size * zoom
 local scl = sc0 / 250
-local td = rename_me_track1 * 0.01
-local hd = rename_me_track2 * 0.01
+local td = track_adjust * 0.01
+local hd = track_adjust_2 * 0.01
 
 local y1 = -150 * scl * hd
 local ty = 150 * scl * (1 - hd)

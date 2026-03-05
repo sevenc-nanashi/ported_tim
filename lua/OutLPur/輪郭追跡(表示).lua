@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 100
+local track_draw_amount = 100
 
 ---$track:線幅
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 10
+local track_line_width = 10
 
 ---$track:開始点
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 0
+local track_start_point = 0
 
 ---$track:閾値
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track3 = 128
+local track_threshold = 128
 
 ---$color:色
 local col = 0xffffff
@@ -70,10 +70,10 @@ else
 end
 
 local r2 = math.sqrt(2)
-local hp = rename_me_track0 * 0.01
-local lw = rename_me_track1
-local zure = rename_me_track2 * 0.01
-local T = rename_me_track3
+local hp = track_draw_amount * 0.01
+local lw = track_line_width
+local zure = track_start_point * 0.01
+local T = track_threshold
 local dpx = { -1, 0, 1, 1, 1, 0, -1, -1 }
 local dpy = { 1, 1, 1, 0, -1, -1, -1, 0 }
 local dky = { r2, 1, r2, 1, r2, 1, r2, 1 }

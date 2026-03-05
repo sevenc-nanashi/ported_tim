@@ -3,27 +3,27 @@
 ---min=-20000
 ---max=20000
 ---step=0.1
-local rename_me_track0 = 0
+local track_x = 0
 
 ---$track:Y
 ---min=-20000
 ---max=20000
 ---step=0.1
-local rename_me_track1 = 0
+local track_y = 0
 
 ---$track:Z
 ---min=-20000
 ---max=20000
 ---step=0.1
-local rename_me_track2 = 0
+local track_z = 0
 
 ---$track:拡大率
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track3 = 100
+local track_scale = 100
 
-obj.ox = obj.ox + rename_me_track0
-obj.oy = obj.oy + rename_me_track1
-obj.oz = obj.oz + rename_me_track2
-obj.zoom = obj.zoom * rename_me_track3 * 0.01
+obj.ox = obj.ox + track_x
+obj.oy = obj.oy + track_y
+obj.oz = obj.oz + track_z
+obj.zoom = obj.zoom * track_scale * 0.01

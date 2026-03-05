@@ -3,19 +3,19 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 0
+local track_f_shift = 0
 
 ---$track:ｻｲｸﾙ数
 ---min=0
 ---max=20
 ---step=0.01
-local rename_me_track1 = 1
+local track_cycle_count = 1
 
 ---$track:最大色数
 ---min=1
 ---max=6
 ---step=1
-local rename_me_track2 = 6
+local track_max_colors = 6
 
 ---$color:色1
 local col1 = 0xffffff
@@ -38,7 +38,7 @@ local col6 = 0xff00ff
 ---$color:取得用
 local col7 = 0x000000
 
-local maxN = math.floor(rename_me_track2)
+local maxN = math.floor(track_max_colors)
 if maxN < 1 then
     maxN = 6
 end
@@ -48,8 +48,8 @@ T_Color_Module.Colorama(
     userdata,
     w,
     h,
-    rename_me_track0 / 100,
-    rename_me_track1,
+    track_f_shift / 100,
+    track_cycle_count,
     maxN,
     col1,
     col2,

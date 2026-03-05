@@ -3,20 +3,20 @@
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track0 = 0
+local track_base_position = 0
 
 ---$track:幅ﾗﾝﾀﾞﾑ%
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 50
+local track_width_random_percent = 50
 
 ---$track:丸み
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track2 = 0
+local track_roundness = 0
 
-RotBlur_BasP = rename_me_track0
-RotBlur_AmpR = rename_me_track1
-RotBlur_EG = rename_me_track2
+RotBlur_BasP = track_base_position
+RotBlur_AmpR = track_width_random_percent
+RotBlur_EG = track_roundness

@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 100
+local track_shatter_amount = 100
 
 ---$track:時間差
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 100
+local track_time_offset = 100
 
 ---$track:半径
 ---min=10
 ---max=10000
 ---step=0.1
-local rename_me_track2 = 300
+local track_radius = 300
 
 ---$track:限界距離
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track3 = 150
+local track_limit_distance = 150
 
 ---$value:厚さ
 local dti = 20
@@ -69,10 +69,10 @@ local tt = {}
 obj.effect()
 
 mpi = math.pi
-tm = rename_me_track0 / 1000
-delay = rename_me_track1
-Rm = rename_me_track3
-RRq = rename_me_track2
+tm = track_shatter_amount / 1000
+delay = track_time_offset
+Rm = track_limit_distance
+RRq = track_radius
 delay = delay * 0.002
 impact = impact * 0.2
 spin = math.floor(spin * 10)

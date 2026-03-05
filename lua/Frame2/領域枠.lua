@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 10
+local track_stroke_width = 10
 
 ---$track:追加幅
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 0
+local track_extra_width = 0
 
 ---$track:追加高さ
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 0
+local track_extra_height = 0
 
 ---$track:背景濃度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 20
+local track_density = 20
 
 ---$color:枠色
 local col1 = 0xffffff
@@ -34,10 +34,10 @@ local base = { 0, 0 }
 
 obj.copybuffer("cache:cache1", "obj")
 local w, h = obj.getpixel()
-local lw = rename_me_track0
-local pw = rename_me_track1
-local ph = rename_me_track2
-local backC = rename_me_track3 * 0.01
+local lw = track_stroke_width
+local pw = track_extra_width
+local ph = track_extra_height
+local backC = track_density * 0.01
 local w, h = pw + w + 2 * lw, ph + h + 2 * lw
 w = ((w > 1) and w) or 1
 h = ((h > 1) and h) or 1

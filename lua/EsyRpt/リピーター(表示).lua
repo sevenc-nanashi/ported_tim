@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 0
+local track_transparency_percent = 0
 
 ---$track:個数
 ---min=2
 ---max=100
 ---step=1
-local rename_me_track1 = 5
+local track_count = 5
 
 ---$track:基準回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track2 = 0
+local track_base_rotation = 0
 
 ---$track:基準拡大
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track3 = 100
+local track_base_scale = 100
 
 ---$check:重なり順
 local AP = 0
@@ -55,10 +55,10 @@ local icx = obj.cx
 local icy = obj.cy
 reC = reC or 0
 
-local LAL = rename_me_track0 * 0.01
-local N = math.floor(rename_me_track1)
-local rz_ori = rename_me_track2
-local zoom_ori = rename_me_track3 * 0.01
+local LAL = track_transparency_percent * 0.01
+local N = math.floor(track_count)
+local rz_ori = track_base_rotation
+local zoom_ori = track_base_scale * 0.01
 
 local col1 = { RGB(colo1) }
 local col2 = { RGB(colo2) }

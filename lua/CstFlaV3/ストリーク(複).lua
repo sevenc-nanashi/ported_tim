@@ -3,25 +3,25 @@
 ---min=0
 ---max=2000
 ---step=0.1
-local rename_me_track0 = 400
+local track_ray_length = 400
 
 ---$track:光芒高さ
 ---min=0
 ---max=2000
 ---step=0.1
-local rename_me_track1 = 5
+local track_ray_height = 5
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 100
+local track_intensity = 100
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_rotation = 0
 
 ---$check:ベースカラー
 local basechk = 1
@@ -57,9 +57,9 @@ obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存
 if basechk == 1 then
     col = CustomFlareColor
 end
-local l = rename_me_track0 * 2
-local r = rename_me_track1 * 0.5
-local rot = rename_me_track3
+local l = track_ray_length * 2
+local r = track_ray_height * 0.5
+local rot = track_rotation
 exp = exp * 0.01
 obj.load("figure", "円", col, r)
 obj.effect("ぼかし", "範囲", r / 2.5)
@@ -86,7 +86,7 @@ for i = 0, n - 1 do
     if alpha > 1 then
         alpha = 1
     end
-    alpha = alpha * rename_me_track2 * 0.01
+    alpha = alpha * track_intensity * 0.01
     local ox = obj.rand(-dw, dw, i, 1000) * 0.5
     local oy = (i - (n - 1) * 0.5) * dh + obj.rand(-ddh, ddh, i, 2000) * 0.5
     ox, oy = cos * ox + sin * oy, -sin * ox + cos * oy

@@ -3,28 +3,28 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 70
+local track_adapt_rate = 70
 
 ---$track:明度補正
 ---min=0
 ---max=300
 ---step=0.1
-local rename_me_track1 = 100
+local track_lightness_adjust = 100
 
 ---$track:逆光強度
 ---min=0
 ---max=300
 ---step=0.1
-local rename_me_track2 = 0
+local track_backlight_intensity = 0
 
 ---$track:逆光拡散
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track3 = 15
+local track_backlight_diffusion = 15
 
 ---$check:ﾌﾚｰﾑﾊﾞｯﾌｧを背景
-local rename_me_check0 = true
+local check0 = true
 
 ---$check:輝度補正
 local CkV = 1
@@ -49,14 +49,14 @@ local reH = 30
 
 require("T_Familiar_Module")
 
-local P = rename_me_track0 / 100
-local L = rename_me_track1 / 100
-local GL = rename_me_track2
-local GD = rename_me_track3
+local P = track_adapt_rate / 100
+local L = track_lightness_adjust / 100
+local GL = track_backlight_intensity
+local GD = track_backlight_diffusion
 
 BLL = (BLL or 100) / 100
 
-if rename_me_check0 then
+if check0 then
     local Pr =
         { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
     obj.copybuffer("cache:org", "obj")
@@ -99,5 +99,5 @@ if GL > 0 and GD > 0 then
     g = math.max(math.min(g, 255), 0)
     b = math.max(math.min(b, 255), 0)
 
-    obj.effect("ライト", "強さ", rename_me_track2, "拡散", rename_me_track3, "逆光", 1, "color", RGB(r, g, b))
+    obj.effect("ライト", "強さ", track_backlight_intensity, "拡散", track_backlight_diffusion, "逆光", 1, "color", RGB(r, g, b))
 end

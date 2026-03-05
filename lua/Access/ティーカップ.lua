@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 200
+local track_size = 200
 
 ---$track:水面高さ
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 80
+local track_height = 80
 
 ---$track:透明度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 20
+local track_opacity = 20
 
 ---$track:ｶｯﾌﾟｿｰｻｰ間
 ---min=-1000
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 13
+local track_cup_saucer_gap = 13
 
 ---$value:分割数
 local N = 40
@@ -60,8 +60,8 @@ function Rot(u, s)
     return u * math.cos(s), u * math.sin(s)
 end
 
-local size = rename_me_track0 / 2
-local ds = rename_me_track3 / 1000
+local size = track_size / 2
+local ds = track_cup_saucer_gap / 1000
 ANT = math.floor(ANT)
 mpi = math.pi
 
@@ -158,7 +158,7 @@ for j = 0, N - 1 do
 end
 
 --紅茶作成
-u1 = rename_me_track1 / 100
+u1 = track_height / 100
 y1 = -size * CupLine(u1) - size * ds
 u1 = size * u1 - hosei
 obj.load("figure", "円", colt, 2 * u1)
@@ -166,5 +166,5 @@ if ANT > 1 then
     ANT = 1
 end
 obj.setoption("antialias", ANT)
-obj.alpha = 1 - rename_me_track2 / 100
+obj.alpha = 1 - track_opacity / 100
 obj.drawpoly(-u1, y1, -u1, u1, y1, -u1, u1, y1, u1, -u1, y1, u1)

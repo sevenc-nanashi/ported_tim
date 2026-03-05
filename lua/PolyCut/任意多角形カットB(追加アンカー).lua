@@ -3,7 +3,7 @@
 ---min=1
 ---max=16
 ---step=1
-local rename_me_track0 = 4
+local track_vertex_count = 4
 
 ---$value:領域
 local are = { -100, -100, 100, -100, 100, 100, -100, 100 }
@@ -13,7 +13,7 @@ if han == nil or han == 0 then
     N = 0
     han = 1
 end
-NN = rename_me_track0
+NN = track_vertex_count
 obj.setanchor("are", NN, "line")
 for i = 1, NN do
     pos[N + i] = {}

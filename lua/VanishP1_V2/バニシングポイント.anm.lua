@@ -3,25 +3,25 @@
 ---min=-50000
 ---max=50000
 ---step=0.1
-local rename_me_track0 = 0
+local track_move_x = 0
 
 ---$track:移動Y
 ---min=-50000
 ---max=50000
 ---step=0.1
-local rename_me_track1 = 0
+local track_move_y = 0
 
 ---$track:浮上X
 ---min=-20000
 ---max=20000
 ---step=0.1
-local rename_me_track2 = 0
+local track_up_x = 0
 
 ---$track:浮上Y
 ---min=-20000
 ---max=20000
 ---step=0.1
-local rename_me_track3 = 0
+local track_up_y = 0
 
 ---$value:反転[0..3]
 local ReI = 0
@@ -83,11 +83,11 @@ if muki(ps[1], ps[2], ps[2], ps[3]) == 1 then
     ps[3], ps[4] = ps[4], ps[3]
 end
 
-dx = rename_me_track0 / 100
-dy = rename_me_track1 / 100
+dx = track_move_x / 100
+dy = track_move_y / 100
 
-flx = rename_me_track2
-fly = rename_me_track3
+flx = track_up_x
+fly = track_up_y
 
 b = {}
 c = {}

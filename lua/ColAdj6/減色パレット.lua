@@ -3,24 +3,24 @@
 ---min=1
 ---max=512
 ---step=1
-local rename_me_track0 = 16
+local track_color_count = 16
 
 ---$track:X分割
 ---min=1
 ---max=20
 ---step=1
-local rename_me_track1 = 4
+local track_x_split = 4
 
 ---$track:Y分割
 ---min=1
 ---max=20
 ---step=1
-local rename_me_track2 = 4
+local track_y_split = 4
 
 ClusterReductionIdxC_T = {}
-local idn = rename_me_track0
-local nx = rename_me_track1
-local ny = rename_me_track2
+local idn = track_color_count
+local nx = track_x_split
+local ny = track_y_split
 local idT = {}
 local w, h = obj.getpixel()
 local dx, dy = w / nx, h / ny

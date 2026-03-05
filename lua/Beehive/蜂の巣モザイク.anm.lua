@@ -3,25 +3,25 @@
 ---min=2
 ---max=1500
 ---step=1
-local rename_me_track0 = 50
+local track_size = 50
 
 ---$track:補正
 ---min=0
 ---max=1000
 ---step=1
-local rename_me_track1 = 0
+local track_adjust = 0
 
 ---$track:最小ｻｲｽﾞ
 ---min=2
 ---max=1500
 ---step=1
-local rename_me_track2 = 10
+local track_min_size = 10
 
 ---$track:ﾓｻﾞｲｸ回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_rotation = 0
 
 ---$check:背景を透明
 local backC = 0
@@ -46,7 +46,7 @@ local effect = obj.effect
 
 local w, h = obj.getpixel()
 local w0, h0 = w, h
-local ROT = rename_me_track3 % 360
+local ROT = track_rotation % 360
 
 if ROT ~= 0 then
     local rr = math.rad(ROT)
@@ -58,9 +58,9 @@ if ROT ~= 0 then
     obj.load("tempbuffer")
 end
 
-local size = rename_me_track0
-size = math.max(size, rename_me_track2)
-local R = math.max(size - rename_me_track1, 2)
+local size = track_size
+size = math.max(size, track_min_size)
+local R = math.max(size - track_adjust, 2)
 obj.copybuffer("cache:back", "obj")
 
 local L = 0.402963724433828 * size

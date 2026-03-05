@@ -3,12 +3,12 @@
 ---min=1
 ---max=16
 ---step=1
-local rename_me_track0 = 1
+local track_point_count = 1
 
 ---$value:座標
 local pos = { 0, 0 }
 
-local AN = rename_me_track0
+local AN = track_point_count
 obj.setanchor("pos", AN)
 
 local MP = Morphing_obj[Morphing_PC].pos

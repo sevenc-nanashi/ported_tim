@@ -3,25 +3,25 @@
 ---min=1
 ---max=14
 ---step=1
-local rename_me_track0 = 3
+local track_point_count = 3
 
 ---$track:画像番号
 ---min=1
 ---max=2
 ---step=1
-local rename_me_track1 = 1
+local track_image_index = 1
 
 ---$track:ﾎﾟｲﾝﾄｻｲｽﾞ
 ---min=0
 ---max=500
 ---step=1
-local rename_me_track2 = 30
+local track_point_size = 30
 
 ---$track:ﾌｫﾝﾄｻｲｽﾞ
 ---min=0
 ---max=500
 ---step=1
-local rename_me_track3 = 30
+local track_size = 30
 
 ---$color:ポイント色
 local pcol = 0xffffff
@@ -33,7 +33,7 @@ local fcol = 0x0
 local pos = { -100, 0, 0, 0, 100, 0 }
 
 ---$check:ポイント表示
-local rename_me_check0 = true
+local check0 = true
 
 Morphing_drawANC = function()
     if Morphing_check0 then
@@ -58,9 +58,9 @@ Morphing_drawANC = function()
     Morphing_PC = nil
 end
 
-local AN = rename_me_track0
-Morphing_PC = rename_me_track1
-Morphing_check0 = rename_me_check0
+local AN = track_point_count
+Morphing_PC = track_image_index
+Morphing_check0 = check0
 
 if Morphing_obj == nil then
     Morphing_obj = {}
@@ -68,9 +68,9 @@ end
 
 Morphing_Pst = {}
 Morphing_Pst.pcol = pcol
-Morphing_Pst.psize = rename_me_track2
+Morphing_Pst.psize = track_point_size
 Morphing_Pst.fcol = fcol
-Morphing_Pst.fsize = rename_me_track3
+Morphing_Pst.fsize = track_size
 
 local w, h = obj.getpixel()
 local w2, h2 = w * 0.5, h * 0.5

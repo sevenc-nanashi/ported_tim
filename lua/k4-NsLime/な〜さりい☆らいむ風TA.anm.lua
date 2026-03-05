@@ -3,25 +3,25 @@
 ---min=1
 ---max=10000
 ---step=0.1
-local rename_me_track0 = 1000
+local track_time_ms = 1000
 
 ---$track:ｻｲｽﾞ％
 ---min=5
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 450
+local track_size_percent = 450
 
 ---$track:ｻｲｽﾞ誤差
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track2 = 30
+local track_size_error = 30
 
 ---$track:横ズレ量
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 450
+local track_horizontal_offset = 450
 
 ---$value:中心ズレ
 local cx = 70
@@ -30,10 +30,10 @@ local cx = 70
 local seed = 0
 
 local T = obj.time
-local Mtime = rename_me_track0 * 0.001
-local maxsize = rename_me_track1 * 0.01
-local dsize = rename_me_track2
-local yz = rename_me_track3 * 0.01
+local Mtime = track_time_ms * 0.001
+local maxsize = track_size_percent * 0.01
+local dsize = track_size_error
+local yz = track_horizontal_offset * 0.01
 
 local N = obj.num - 1
 local id = obj.index - 1

@@ -3,25 +3,25 @@
 ---min=1
 ---max=2
 ---step=1
-local rename_me_track0 = 1
+local track_max_min = 1
 
 ---$track:ﾁｬﾝﾈﾙ
 ---min=1
 ---max=4
 ---step=1
-local rename_me_track1 = 1
+local track_channel = 1
 
 ---$track:範囲
 ---min=1
 ---max=1000
 ---step=1
-local rename_me_track2 = 10
+local track_range = 10
 
 ---$track:角度
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_angle = 0
 
 ---$check:水平
 local HC = 1
@@ -48,16 +48,16 @@ local lmt = 50
 local Aen = 0
 
 ---$check:結果を保存(同条件1度のみ)
-local rename_me_check0 = false
+local check0 = false
 
 require("T_Color_Module")
-local Deg = -rename_me_track3 % 360
+local Deg = -track_angle % 360
 local Sym2 = Sym or 0
 local asp2 = (asp or 100) / 100
 local svC2 = svC or 0
 local fig2 = math.floor(fig or 0)
 local lmt2 = (lmt or 50)
-local Rng = rename_me_track2
+local Rng = track_range
 local Aen2 = Aen or 0
 if fig2 > 0 then
     if fig2 ~= 3 then
@@ -66,14 +66,14 @@ if fig2 > 0 then
 end
 Rng = math.max(1, Rng)
 local ckr = 0
-if rename_me_check0 then
+if check0 then
     local userdata, w, h = obj.getpixeldata()
     ckr = T_Color_Module.MinimaxCheck(
         userdata,
         w,
         h,
-        math.floor(rename_me_track0),
-        math.floor(rename_me_track1),
+        math.floor(track_max_min),
+        math.floor(track_channel),
         Rng,
         Deg,
         HC,
@@ -106,7 +106,7 @@ if ckr == 0 then
         end
         obj.effect("領域拡張", "右", w2 - wr, "下", h2 - hr)
         local userdata, w, h = obj.getpixeldata()
-        T_Color_Module.MinmaxRot(userdata, w, h, wr, hr, RR, RH, rename_me_track0)
+        T_Color_Module.MinmaxRot(userdata, w, h, wr, hr, RR, RH, track_max_min)
         obj.putpixeldata(userdata)
     end
     local userdata, w, h = obj.getpixeldata()
@@ -114,9 +114,9 @@ if ckr == 0 then
         userdata,
         w,
         h,
-        rename_me_track0,
+        track_max_min,
         Rng,
-        rename_me_track1,
+        track_channel,
         HC,
         VC,
         Sym2,
@@ -131,7 +131,7 @@ if ckr == 0 then
         obj.draw(0, 0, 0, 1, 1, 0, 0, -Deg)
         obj.copybuffer("obj", "tmp")
     end
-    if rename_me_check0 then
+    if check0 then
         local userdata, w, h = obj.getpixeldata()
         T_Color_Module.MinimaxSave(userdata, w, h)
     end

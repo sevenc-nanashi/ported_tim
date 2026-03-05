@@ -3,7 +3,7 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 0
+local track_thickness = 0
 
 ---$color:色
 local col = 0xffffff
@@ -39,7 +39,7 @@ function mydp(p1, p2, p3)
     obj.drawpoly(p1.x, p1.y, 0, p1.x, p1.y, 0, p2.x, p2.y, 0, p3.x, p3.y, 0)
 end
 
-TC = rename_me_track0 / 2
+TC = track_thickness / 2
 
 N = NTBS_N
 pos = {}

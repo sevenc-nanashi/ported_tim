@@ -3,25 +3,25 @@
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 0
+local track_center_x = 0
 
 ---$track:中心Y
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 0
+local track_center_y = 0
 
 ---$track:ブラー量
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track2 = 20
+local track_blur_amount = 20
 
 ---$track:基準位置
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_base_position = 0
 
 ---$check:サイズ保持
 local ck = 1
@@ -30,10 +30,10 @@ local ck = 1
 local Sbai = 3
 
 obj.setanchor("track", 0, "line")
-local dx = rename_me_track0
-local dy = rename_me_track1
-local Br = rename_me_track2
-local BasP = 0.01 * rename_me_track3
+local dx = track_center_x
+local dy = track_center_y
+local Br = track_blur_amount
+local BasP = 0.01 * track_base_position
 Br = math.min(Br, 200 / (1 + BasP) - 0.1)
 local userdata, w, h
 local addX1, addX2, addY1, addY2 = 0, 0, 0, 0

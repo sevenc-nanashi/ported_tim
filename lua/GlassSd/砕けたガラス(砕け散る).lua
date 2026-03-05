@@ -3,25 +3,25 @@
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track0 = 50
+local track_shatter_amount = 50
 
 ---$track:サイズ
 ---min=10
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 150
+local track_size = 150
 
 ---$track:屈折率
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 25
+local track_refractive_index = 25
 
 ---$track:動径速度
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track3 = 10
+local track_diameter_speed = 10
 
 ---$check:オリジナル表示
 local chk = 0
@@ -333,10 +333,10 @@ end
 
 -------------------------------------------------
 
-local of = rename_me_track0
-gsize = rename_me_track1
-local nk = rename_me_track2
-local vr = rename_me_track3
+local of = track_shatter_amount
+gsize = track_size
+local nk = track_refractive_index
+local vr = track_diameter_speed
 
 w, h = obj.getpixel()
 whf = w * 0.5

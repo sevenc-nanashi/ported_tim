@@ -3,25 +3,25 @@
 ---min=1
 ---max=14
 ---step=1
-local rename_me_track0 = 1
+local track_shape = 1
 
 ---$track:サイズ％
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 30
+local track_size_percent = 30
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 50
+local track_intensity = 50
 
 ---$track:ぼかし
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 5
+local track_blur = 5
 
 ---$check:ベースカラー
 local basechk = 1
@@ -54,10 +54,10 @@ local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * rename_me_track2 * 0.01
-local fig = rename_me_track0
-local size = rename_me_track1 * 0.01
-local blur = rename_me_track3
+alpha = alpha * track_intensity * 0.01
+local fig = track_shape
+local size = track_size_percent * 0.01
+local blur = track_blur
 t = t * 0.01
 obj.load("image", obj.getinfo("script_path") .. "CF-image\\I" .. fig .. ".png")
 obj.effect("グラデーション", "color", col, "color2", col, "blend", 5)

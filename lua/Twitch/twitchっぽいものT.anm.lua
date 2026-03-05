@@ -3,25 +3,25 @@
 ---min=1
 ---max=10000
 ---step=0.1
-local rename_me_track0 = 200
+local track_interval_ms = 200
 
 ---$track:ｽﾞｰﾑﾌﾞﾗｰ
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track1 = 100
+local track_zoom_blur = 100
 
 ---$track:ｽﾗｲﾄﾞﾌﾞﾗｰ
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track2 = 100
+local track_slide_blur = 100
 
 ---$track:色ｽﾞﾚ補正
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track3 = 100
+local track_color_offset_adjust = 100
 
 ---$value:ぼかし{量，%}
 local blur = { 5, 20 }
@@ -56,7 +56,7 @@ local Lset = 1
 local Cal = (function(LS)
     if LS == 0 then
         return function(time, p, rn1, rn2, seed)
-            local tt = time * 1000 / rename_me_track0 + 3103
+            local tt = time * 1000 / track_interval_ms + 3103
             local tf, dt = math.modf(tt)
             local v = {}
             for i = 0, 3 do
@@ -72,7 +72,7 @@ local Cal = (function(LS)
         end
     else
         return function(time, p, rn1, rn2, seed)
-            local tt = time * 1000 / rename_me_track0 + 3103
+            local tt = time * 1000 / track_interval_ms + 3103
             local tf, dt = math.modf(tt)
             local v = {}
             for i = 0, 3 do
@@ -164,7 +164,7 @@ obj.effect("色調補正", "明るさ", 100 + li, "色相", cl)
 obj.effect(
     "放射ブラー",
     "範囲",
-    zm * rename_me_track1 * 0.01,
+    zm * track_zoom_blur * 0.01,
     "X",
     -zmp * slxZ,
     "Y",
@@ -191,8 +191,8 @@ local dx = slx2 - slx1
 local dy = sly2 - sly1
 local dr = math.sqrt(dx * dx + dy * dy)
 local deg = math.atan2(-dx, dy) * 180 / math.pi
-dr = dr * rename_me_track2 * 0.01
-local dc = dr * rename_me_track3 * 0.0025
+dr = dr * track_slide_blur * 0.01
+local dc = dr * track_color_offset_adjust * 0.0025
 obj.effect("方向ブラー", "角度", deg, "範囲", dr, "サイズ固定", 1)
 obj.effect("領域拡張", "上", dc, "右", dc, "下", dc, "左", dc, "塗りつぶし", 1)
 obj.effect("色ずれ", "ずれ幅", dc, "角度", deg, "type", Cdir)

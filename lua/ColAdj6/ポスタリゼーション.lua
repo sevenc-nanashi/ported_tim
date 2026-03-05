@@ -3,42 +3,42 @@
 ---min=2
 ---max=256
 ---step=1
-local rename_me_track0 = 8
+local track_r_count = 8
 
 ---$track:G階調数
 ---min=2
 ---max=256
 ---step=1
-local rename_me_track1 = 8
+local track_g_count = 8
 
 ---$track:B階調数
 ---min=2
 ---max=256
 ---step=1
-local rename_me_track2 = 8
+local track_b_count = 8
 
 ---$track:サイズ
 ---min=1
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 1
+local track_size = 1
 
 ---$check:全体をRで調整
-local rename_me_check0 = false
+local check0 = false
 
 ---$check:誤差拡散
 local ED = 0
 
 local ED2 = ED or 0 --追加のため
-local sz = math.max(1, rename_me_track3) --追加のため
+local sz = math.max(1, track_size) --追加のため
 local w0, h0
 require("T_Color_Module")
 local r, g, b
-if rename_me_check0 then
-    r = rename_me_track0
+if check0 then
+    r = track_r_count
     g, b = r, r
 else
-    r, g, b = rename_me_track0, rename_me_track1, rename_me_track2
+    r, g, b = track_r_count, track_g_count, track_b_count
 end
 if sz > 1 then
     w0, h0 = obj.getpixel()

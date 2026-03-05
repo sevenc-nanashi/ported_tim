@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 50
+local track_change_amount = 50
 
 ---$track:サイズ
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 10
+local track_size = 10
 
 ---$track:点数
 ---min=0
 ---max=20000
 ---step=1
-local rename_me_track2 = 120
+local track_point_count = 120
 
 ---$track:ｵﾌｾｯﾄ
 ---min=-2000
 ---max=2000
 ---step=0.1
-local rename_me_track3 = 0
+local track_offset = 0
 
 ---$value:変形前画像ﾚｲﾔｰ
 local inum = 0
@@ -220,10 +220,10 @@ Outlinemorphing_T = function(OT)
 end
 
 Out_morph_T = Out_morph_T or {}
-Out_morph_T.S = rename_me_track0 * 0.01
-Out_morph_T.Cw = rename_me_track1
-Out_morph_T.N = rename_me_track2
-Out_morph_T.OF = -rename_me_track3 * 0.01
+Out_morph_T.S = track_change_amount * 0.01
+Out_morph_T.Cw = track_size
+Out_morph_T.N = track_point_count
+Out_morph_T.OF = -track_offset * 0.01
 
 Out_morph_T.inum = inum or 1
 Out_morph_T.fig = fig

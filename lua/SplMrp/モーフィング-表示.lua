@@ -3,19 +3,19 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 50
+local track_change_amount = 50
 
 ---$track:ﾎﾟｲﾝﾄｻｲｽﾞ
 ---min=0
 ---max=500
 ---step=1
-local rename_me_track2 = 30
+local track_point_size = 30
 
 ---$track:ﾌｫﾝﾄｻｲｽﾞ
 ---min=0
 ---max=500
 ---step=1
-local rename_me_track3 = 30
+local track_size = 30
 
 ---$check:ﾚｲﾔｰｽｸﾘﾌﾟﾄ1
 local Lsc1 = 1
@@ -42,7 +42,7 @@ local pcol = 0xffffff
 local fcol = 0x0
 
 ---$check:ガイド表示
-local rename_me_check0 = true
+local check0 = true
 
 (function()
     local Triangulation = function(Num)
@@ -127,7 +127,7 @@ local rename_me_check0 = true
         Morphing_obj[2] = Morphing_obj[1]
     end
 
-    local t = (Morphing_inport or rename_me_track0) * 0.01
+    local t = (Morphing_inport or track_change_amount) * 0.01
 
     local Lscript = {}
     Lscript[1] = (Lsc1 == 1) and true
@@ -189,7 +189,7 @@ local rename_me_check0 = true
 
     obj.setoption("blend", 0)
 
-    if lchk == 1 and rename_me_check0 then
+    if lchk == 1 and check0 then
         local d_line = function(x1, y1, x2, y2, wd)
             local dx = x2 - x1
             local dy = y2 - y1
@@ -212,13 +212,13 @@ local rename_me_check0 = true
         end
     end
 
-    if pchk == 1 and rename_me_check0 then
-        obj.load("figure", "円", pcol, rename_me_track2)
+    if pchk == 1 and check0 then
+        obj.load("figure", "円", pcol, track_point_size)
         for i = 1, Num do
             obj.draw(MO3.pos[i].x, MO3.pos[i].y)
         end
 
-        obj.setfont("", rename_me_track3, 0, fcol)
+        obj.setfont("", track_size, 0, fcol)
         for i = 1, Num do
             obj.load("text", i)
             obj.draw(MO3.pos[i].x, MO3.pos[i].y)

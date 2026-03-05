@@ -3,25 +3,25 @@
 ---min=0
 ---max=20000
 ---step=0.1
-local rename_me_track0 = 200
+local track_size_adjust = 200
 
 ---$track:表示
 ---min=0
 ---max=2
 ---step=1
-local rename_me_track1 = 0
+local track_display = 0
 
 ---$track:視X/深度
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track2 = 100
+local track_view_x_depth = 100
 
 ---$track:視点Y
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track3 = 100
+local track_view_point_y = 100
 
 ---$value:分割数
 local N = 30
@@ -111,10 +111,10 @@ function dtd(a, b)
 end
 
 obj.setanchor("are", 3)
-local t = (rename_me_track0 + 100) / 200
-local s = (rename_me_track1 + 100) / 200
-local Rsize = rename_me_track0 / 100
-local va = rename_me_track1
+local t = (track_size_adjust + 100) / 200
+local s = (track_display + 100) / 200
+local Rsize = track_size_adjust / 100
+local va = track_display
 local w, h = obj.getpixel()
 if ANT == nil then
     ANT = 0
@@ -184,8 +184,8 @@ if va == 0 then
 elseif va == 1 then
     obj.load("tempbuffer")
     obj.setoption("antialias", ANT)
-    vx = rename_me_track2
-    vy = rename_me_track3
+    vx = track_view_x_depth
+    vy = track_view_point_y
     bvx = Rsize * vx
     bvy = Rsize * vy
     obj.setoption("drawtarget", "tempbuffer", iw + 2 * math.abs(bvx), ih + 2 * math.abs(bvy)) --面倒臭くなって適当＞＜;
@@ -227,7 +227,7 @@ else
     zoom = obj.getvalue("zoom") * 0.01
     w2 = w / 2 --/zoom
     h2 = h / 2 --/zoom
-    L = w * rename_me_track2 / 100
+    L = w * track_view_x_depth / 100
     qcp = { x = (qs[1].x + qs[2].x) / 2, y = (qs[1].y + qs[4].y) / 2 }
     K = L * (Rsize - 1)
 

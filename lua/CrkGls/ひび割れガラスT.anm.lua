@@ -3,25 +3,25 @@
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track0 = 10
+local track_threshold = 10
 
 ---$track:ずれ
 ---min=-500
 ---max=500
 ---step=1
-local rename_me_track1 = 10
+local track_offset = 10
 
 ---$track:ぼかし
 ---min=0
 ---max=500
 ---step=1
-local rename_me_track2 = 0
+local track_blur = 0
 
 ---$track:ｶﾞﾗｽ強度
 ---min=-1000
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 100
+local track_glass_intensity = 100
 
 ---$value:ガラス画像
 local GIL = 1
@@ -36,10 +36,10 @@ local Bcol = 0x0
 local PT = 0
 
 ---$check:マップ表示
-local rename_me_check0 = true
+local check0 = true
 
-local Sh = rename_me_track0
-local bkb = rename_me_track2
+local Sh = track_threshold
+local bkb = track_blur
 PT = math.abs(PT or 0)
 require("T_CrackedGlass_Module")
 local Pr = { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
@@ -58,13 +58,13 @@ obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw(0, 0, 0, Zm)
 obj.copybuffer("obj", "tmp")
 local userdata, w, h = obj.getpixeldata()
-T_CrackedGlass_Module.CrackedGlass(userdata, w, h, Sh, PT, rename_me_check0, Bcol or 0)
+T_CrackedGlass_Module.CrackedGlass(userdata, w, h, Sh, PT, check0, Bcol or 0)
 obj.putpixeldata(userdata)
-if not rename_me_check0 then
+if not check0 then
     obj.copybuffer("tmp", "obj")
     obj.copybuffer("obj", "cache:CG_ORG")
-    local T = rename_me_track1
-    local CS = rename_me_track3
+    local T = track_offset
+    local CS = track_glass_intensity
     obj.effect(
         "ディスプレイスメントマップ",
         "param0",

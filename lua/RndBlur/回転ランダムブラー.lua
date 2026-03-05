@@ -3,25 +3,25 @@
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 0
+local track_center_x = 0
 
 ---$track:中心Y
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 0
+local track_center_y = 0
 
 ---$track:最大ｽﾞﾚ量
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track2 = 20
+local track_max_offset = 20
 
 ---$track:基準
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_base = 0
 
 ---$check:サイズ保持
 local ck = 1
@@ -41,9 +41,9 @@ end
 require("T_RandomBlur_Module")
 userdata, w, h = obj.getpixeldata()
 obj.setanchor("track", 0, "line")
-dx = rename_me_track0
-dy = rename_me_track1
+dx = track_center_x
+dy = track_center_y
 work = obj.getpixeldata("work")
 local LUD =
-    T_RandomBlur_Module.RotRandBlur(userdata, work, w, h, rename_me_track2, r / 2, dx, dy, RC, rename_me_track3 * 0.01)
+    T_RandomBlur_Module.RotRandBlur(userdata, work, w, h, track_max_offset, r / 2, dx, dy, RC, track_base * 0.01)
 obj.putpixeldata(LUD)

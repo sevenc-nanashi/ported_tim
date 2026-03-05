@@ -3,25 +3,25 @@
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track0 = 30
+local track_burn = 30
 
 ---$track:輪郭ﾎﾞｶｼ
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 35
+local track_contour_blur = 35
 
 ---$track:燃焼半径
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 50
+local track_radius = 50
 
 ---$track:乱数
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track3 = 0
+local track_random_seed = 0
 
 ---$value:発火点集中
 local kei = 50
@@ -42,12 +42,12 @@ local lst = 300
 local lsig = 7.5
 
 ---$check:淵発光
-local rename_me_check0 = true
+local check0 = true
 
-local burn = rename_me_track0 * 0.01
-local blur = rename_me_track1 * 0.01
-local fiR = rename_me_track2 * 0.01
-local seed = rename_me_track3
+local burn = track_burn * 0.01
+local blur = track_contour_blur * 0.01
+local fiR = track_radius * 0.01
+local seed = track_random_seed
 kei = kei * 0.001
 porn = porn * 0.01
 fibl = fibl * 0.01
@@ -84,7 +84,7 @@ obj.effect("縁取り", "サイズ", 1, "ぼかし", fibl * dw, "color", col)
 obj.draw()
 obj.load("tempbuffer")
 
-if rename_me_check0 then
+if check0 then
     obj.setoption("drawtarget", "tempbuffer", w, h)
     obj.effect("ライト", "強さ", lst, "拡散", dw * lsig, "逆光", 1)
     obj.draw()

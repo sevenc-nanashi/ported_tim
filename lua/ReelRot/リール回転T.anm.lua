@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 200
+local track_open_position_percent = 200
 
 ---$track:ｵｰﾊﾞｰ量％
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 10
+local track_percent = 10
 
 ---$track:方向
 ---min=-360
 ---max=360
 ---step=0.1
-local rename_me_track2 = -180
+local track_direction = -180
 
 ---$track:ブラー
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 100
+local track_blur = 100
 
 ---$value:開ｵｰﾊﾞｰ補正％
 local sdy1 = 100
@@ -45,7 +45,7 @@ local TM = { 0, 100 }
 local baseChk = 0
 
 ---$check:開始位置角度自動調整
-local rename_me_check0 = true
+local check0 = true
 
 local norm_pos = function(t)
     return t * t * (3 - 2 * t)
@@ -57,16 +57,16 @@ end
 local w, h = obj.getpixel()
 local t = obj.time / obj.totaltime
 
-local y0 = rename_me_track0 * 0.01
-local dy = rename_me_track1 * 0.01
-local deg = rename_me_track2
-local bl = rename_me_track3 * 0.01
+local y0 = track_open_position_percent * 0.01
+local dy = track_percent * 0.01
+local deg = track_direction
+local bl = track_blur * 0.01
 
 local cos = math.cos(deg * math.pi / 180)
 local sin = math.sin(-deg * math.pi / 180)
 local bs = (baseChk == 1) and w or h
 
-if rename_me_check0 then
+if check0 then
     local x = bs * y0 * sin
     local y = bs * y0 * cos
     x = w * math.floor((x + w * 0.5) / w)

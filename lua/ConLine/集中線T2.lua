@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 35
+local track_spawn_amount = 35
 
 ---$track:中心
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 60
+local track_center = 60
 
 ---$track:分布
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track2 = 50
+local track_distribution = 50
 
 ---$track:放射周期
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_period = 0
 
 ---$color:色
 local color = 0xffffff
@@ -53,10 +53,10 @@ local w = nil
 ---$value:高さ
 local h = nil
 
-local sh = 100 - rename_me_track0
-local clipY = rename_me_track1
-local fr1 = rename_me_track2
-local yfr = rename_me_track3
+local sh = 100 - track_spawn_amount
+local clipY = track_center
+local fr1 = track_distribution
+local yfr = track_period
 local screen_w = w or obj.screen_w
 local screen_h = h or obj.screen_h
 

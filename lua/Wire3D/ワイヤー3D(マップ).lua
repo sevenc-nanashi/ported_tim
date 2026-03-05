@@ -3,23 +3,23 @@
 ---min=1
 ---max=100
 ---step=1
-local rename_me_track0 = 10
+local track_horizontal_split_count = 10
 
 ---$track:縦分割数
 ---min=1
 ---max=100
 ---step=1
-local rename_me_track1 = 10
+local track_vertical_split_count = 10
 
 ---$track:ライン幅
 ---min=1
 ---max=1000
 ---step=0.1
-local rename_me_track2 = 2
+local track_width = 2
 
-WireT_c_nw = math.floor(rename_me_track0)
-WireT_c_nh = math.floor(rename_me_track1)
-WireT_line = rename_me_track2
+WireT_c_nw = math.floor(track_horizontal_split_count)
+WireT_c_nh = math.floor(track_vertical_split_count)
+WireT_line = track_width
 
 local w, h = obj.getpixel()
 obj.pixeloption("type", "yc")

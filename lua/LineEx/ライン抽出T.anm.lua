@@ -3,25 +3,25 @@
 ---min=1
 ---max=500
 ---step=1
-local rename_me_track0 = 1
+local track_radius = 1
 
 ---$track:強度
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 300
+local track_intensity = 300
 
 ---$track:粒子化幅
 ---min=0
 ---max=1000
 ---step=1
-local rename_me_track2 = 0
+local track_width = 0
 
 ---$track:しきい値
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track3 = 0
+local track_threshold = 0
 
 ---$color:ライン色
 local col1 = 0xff0000
@@ -57,7 +57,7 @@ local seed = 0
 local sR = 0
 
 ---$check:ラインのみ
-local rename_me_check0 = true
+local check0 = true
 
 dir = dir or { 0, 360 }
 seed = seed or 0
@@ -74,16 +74,16 @@ if arc > 0 then
 end
 local userdata, w, h = obj.getpixeldata()
 T_LineExtra_Module.SetPublicImage(userdata, w, h)
-obj.effect("ぼかし", "範囲", rename_me_track0, "サイズ固定", 1)
+obj.effect("ぼかし", "範囲", track_radius, "サイズ固定", 1)
 userdata, w, h = obj.getpixeldata()
 T_LineExtra_Module.LineExt(
     userdata,
     w,
     h,
-    rename_me_track1,
-    rename_me_track2,
-    rename_me_track3,
-    rename_me_check0,
+    track_intensity,
+    track_width,
+    track_threshold,
+    check0,
     Bal,
     Oal,
     col1,

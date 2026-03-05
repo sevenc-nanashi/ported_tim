@@ -3,25 +3,25 @@
 ---min=-50000
 ---max=50000
 ---step=0.1
-local rename_me_track0 = 0
+local track_vertex_x = 0
 
 ---$track:頂点Y
 ---min=-50000
 ---max=50000
 ---step=0.1
-local rename_me_track1 = 0
+local track_vertex_y = 0
 
 ---$track:頂点数
 ---min=0
 ---max=16
 ---step=1
-local rename_me_track2 = 4
+local track_vertex_count = 4
 
 ---$track:厚み
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 0
+local track_thickness = 0
 
 ---$color:側面色
 local wcol = ""
@@ -130,8 +130,8 @@ function mydp(p1, p2, p3)
     end
 end
 
-TC = rename_me_track3 / 2
-N = rename_me_track2
+TC = track_thickness / 2
+N = track_vertex_count
 
 zoom = obj.getvalue("zoom") * 0.01
 w, h = obj.getpixel()
@@ -157,12 +157,12 @@ if N == 0 then
     N = obj.getoption("section_num") + 1
     for i = 1, N - 1 do
         pos[i] = {}
-        pos[i].x = obj.getvalue("track.rename_me_track0", 0, i - 1)
-        pos[i].y = obj.getvalue("track.rename_me_track1", 0, i - 1)
+        pos[i].x = obj.getvalue("track.track_vertex_x", 0, i - 1)
+        pos[i].y = obj.getvalue("track.track_vertex_y", 0, i - 1)
     end
     pos[N] = {}
-    pos[N].x = obj.getvalue("track.rename_me_track0", 0, -1)
-    pos[N].y = obj.getvalue("track.rename_me_track1", 0, -1)
+    pos[N].x = obj.getvalue("track.track_vertex_x", 0, -1)
+    pos[N].y = obj.getvalue("track.track_vertex_y", 0, -1)
 else
     obj.setanchor("are", N, "loop")
     for i = 1, N do

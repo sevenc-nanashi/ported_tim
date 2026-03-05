@@ -3,19 +3,19 @@
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track0 = 0
+local track_n_1 = 0
 
 ---$track:中心点
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track1 = 128
+local track_center = 128
 
 ---$track:飽和点2
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track2 = 255
+local track_n_2 = 255
 
 ---$check:ミッドトーン色無視
 local egm = 0
@@ -30,13 +30,13 @@ local col2 = 0xb5982c
 local col1 = 0xffffff
 
 ---$check:新バージョン
-local rename_me_check0 = true
+local check0 = true
 
 local p1, p2, p3
-if rename_me_check0 then
-    p3 = math.floor(rename_me_track0)
-    p2 = math.floor(rename_me_track1)
-    p1 = math.floor(rename_me_track2)
+if check0 then
+    p3 = math.floor(track_n_1)
+    p2 = math.floor(track_center)
+    p1 = math.floor(track_n_2)
     p1, p3 = math.max(p1, p3), math.min(p1, p3)
 else
     p1, p2, p3 = 255, 128, 0

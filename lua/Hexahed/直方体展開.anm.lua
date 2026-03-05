@@ -3,25 +3,25 @@
 ---min=-90
 ---max=270
 ---step=0.1
-local rename_me_track0 = 0
+local track_angle = 0
 
 ---$track:側面角度
 ---min=-90
 ---max=270
 ---step=0.1
-local rename_me_track1 = 0
+local track_angle_2 = 0
 
 ---$track:サイズ
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 100
+local track_size = 100
 
 ---$track:奥行き(%)
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track3 = 100
+local track_depth_percent = 100
 
 ---$value:高さ(%)
 local Hr = 100
@@ -57,8 +57,8 @@ local v1 = {}
 local v2 = {}
 local v3 = {}
 
-local sita1 = rename_me_track0
-local sita2 = rename_me_track1
+local sita1 = track_angle
+local sita2 = track_angle_2
 
 local POS = POS
 local REV = REV
@@ -70,13 +70,13 @@ obj.setoption("antialias", ANT)
 Hr = Hr * 0.01
 
 if POS == 0 then
-    ww = rename_me_track2
+    ww = track_size
     hh = ww * obj.h / obj.w
-    ll = ww * rename_me_track3 / 100
+    ll = ww * track_depth_percent / 100
 else
-    ww = rename_me_track2
+    ww = track_size
     hh = ww * (obj.h / 2) / (obj.w / 3)
-    ll = ww * rename_me_track3 / 100
+    ll = ww * track_depth_percent / 100
 end
 
 ww2 = ww / 2

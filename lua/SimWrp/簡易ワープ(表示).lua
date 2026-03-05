@@ -3,13 +3,13 @@
 ---min=1
 ---max=200
 ---step=0.1
-local rename_me_track0 = 30
+local track_split_count = 30
 
 ---$track:境界固定
 ---min=0
 ---max=1
 ---step=0.1
-local rename_me_track1 = 0
+local track_boundary_fixed = 0
 
 ---$value:パス表示
 local PSA = 0
@@ -43,8 +43,8 @@ function TK(Z)
     end
 end
 
-M = math.floor(rename_me_track0)
-BS = math.floor(rename_me_track1)
+M = math.floor(track_split_count)
+BS = math.floor(track_boundary_fixed)
 
 dw = obj.w / M
 dh = obj.h / M

@@ -3,19 +3,19 @@
 ---min=0
 ---max=1
 ---step=1
-local rename_me_track0 = 0
+local track_guide_display = 0
 
 ---$track:ｶﾞｲﾄﾞｻｲｽﾞ
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 50
+local track_size = 50
 
 ---$track:厚み
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track2 = 0
+local track_thickness = 0
 
 ---$color:色
 local col = 0xffffff
@@ -26,8 +26,8 @@ local colG = 0xff0000
 ---$figure:図形
 local fig = "円"
 
-size = rename_me_track1
-TC = rename_me_track2 / 2
+size = track_size
+TC = track_thickness / 2
 N = obj.getoption("section_num") + 1
 N2 = N
 pos = {}
@@ -43,7 +43,7 @@ pos[0] = {}
 pos[0] = pos[N]
 pos[N + 1] = {}
 pos[N + 1] = pos[1]
-mode = math.floor(rename_me_track0)
+mode = math.floor(track_guide_display)
 
 pos2 = {}
 for i = 0, N + 1 do

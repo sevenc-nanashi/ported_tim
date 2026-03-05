@@ -3,13 +3,13 @@
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track0 = 0
+local track_aspect_ratio = 0
 
 ---$track:合成ﾓｰﾄﾞ
 ---min=0
 ---max=9
 ---step=0.1
-local rename_me_track1 = 0
+local track_blend_mode = 0
 
-obj.aspect = rename_me_track0 * 0.01
-obj.setoption("blend", math.floor(rename_me_track1))
+obj.aspect = track_aspect_ratio * 0.01
+obj.setoption("blend", math.floor(track_blend_mode))

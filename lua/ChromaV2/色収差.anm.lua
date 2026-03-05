@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 2
+local track_offset = 2
 
 ---$track:放射ﾎﾞｶｼ
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 2
+local track_radial_blur = 2
 
 ---$track:焦点ｽﾞﾚ
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 0
+local track_focus_offset = 0
 
 ---$track:ｵﾘｼﾞﾅﾙ
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_original = 0
 
 ---$check:位置ズレ補正
 local reC = 1
@@ -33,7 +33,7 @@ local cpos = 0
 local pbl = 0
 
 ---$check:逆順
-local rename_me_check0 = true
+local check0 = true
 
 local iox = obj.ox
 local ioy = obj.oy
@@ -41,16 +41,16 @@ local icx = obj.cx
 local icy = obj.cy
 local reC2 = reC or 0
 
-local mv = rename_me_track0 * 0.01
-local bl = rename_me_track1
-local Cnt = 2 * rename_me_track2 * 0.01
-local OrAlp = rename_me_track3 * 0.01
+local mv = track_offset * 0.01
+local bl = track_radial_blur
+local Cnt = 2 * track_focus_offset * 0.01
+local OrAlp = track_original * 0.01
 local cpos2 = cpos or 0
 local pbl2 = pbl or 0
 
 local mv_r, mv_g, mv_b
 local p_r, p_g, p_b
-if rename_me_check0 then
+if check0 then
     mv_r = 1 + (2 - Cnt) * mv
     mv_g = 1 + (1 - Cnt) * mv
     mv_b = 1 + -Cnt * mv

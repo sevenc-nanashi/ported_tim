@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track0 = 50
+local track_progress = 50
 
 ---$track:左端残し
 ---min=0
 ---max=2000
 ---step=1
-local rename_me_track1 = 0
+local track_keep_left_edge = 0
 
 ---$track:右端残し
 ---min=0
 ---max=2000
 ---step=1
-local rename_me_track2 = 0
+local track_keep_right_edge = 0
 
 ---$track:繰返ﾓｰﾄﾞ
 ---min=1
 ---max=3
 ---step=1
-local rename_me_track3 = 1
+local track_mode = 1
 
 ---$value:軌道精度
 local smN = 30
@@ -50,10 +50,10 @@ local seed = 0
 ---$check:ﾌﾚｰﾑﾊﾞｯﾌｧ表示
 local fbapp = 0
 
-local sp1 = rename_me_track1
-local sp2 = rename_me_track2
-local t = rename_me_track0 * 0.01
-local AP = rename_me_track3 --1は根本固定、2は先端固定、3はランダム
+local sp1 = track_keep_left_edge
+local sp2 = track_keep_right_edge
+local t = track_progress * 0.01
+local AP = track_mode --1は根本固定、2は先端固定、3はランダム
 topadj = topadj or 2 --互換用
 
 T_stroke_f = function()

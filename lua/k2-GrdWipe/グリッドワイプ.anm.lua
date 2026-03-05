@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 25
+local track_unfold = 25
 
 ---$track:サイズ
 ---min=5
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 50
+local track_size = 50
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track2 = 45
+local track_rotation = 45
 
 ---$track:縦横比[%]
 ---min=1
 ---max=100
 ---step=0.1
-local rename_me_track3 = 5
+local track_aspect_ratio_percent = 5
 
 ---$value:ﾜｲﾌﾟﾀｲﾌﾟ[0-8]
 local wtp = 0
@@ -41,7 +41,7 @@ local wipe_door = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy)
     obj.copybuffer("obj", "tmp")
     obj.copybuffer("tmp", "cache:ori")
     obj.setoption("blend", "alpha_sub")
-    local deg = rename_me_track2 + 90
+    local deg = track_rotation + 90
     for i = -n, n do
         local x = i * S
         local y = x * sin
@@ -96,9 +96,9 @@ local wipe_radial = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy, repN)
             local zoom = 2 * Rw / L
             local x0 = -y0 * sin
             y0 = y0 * cos
-            obj.draw(x0 + cx, y0 + cy, 0, zoom, 1, 0, 0, rename_me_track2)
+            obj.draw(x0 + cx, y0 + cy, 0, zoom, 1, 0, 0, track_rotation)
             if repN == 2 then
-                obj.draw(y0 + cx, -x0 + cy, 0, zoom, 1, 0, 0, rename_me_track2 + 90)
+                obj.draw(y0 + cx, -x0 + cy, 0, zoom, 1, 0, 0, track_rotation + 90)
             end
         end
     end
@@ -117,7 +117,7 @@ local wipe_rectangular = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy, repN)
     obj.copybuffer("tmp", "cache:ori")
     obj.setoption("drawtarget", "tempbuffer")
     obj.load("figure", "四角形", 0xffffff, L * 0.5)
-    obj.effect("リサイズ", "Y", rename_me_track3)
+    obj.effect("リサイズ", "Y", track_aspect_ratio_percent)
     obj.setoption("blend", "alpha_sub")
     for i = -n, n do
         local y0 = i * S
@@ -176,7 +176,7 @@ local wipe_diamond = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy, repN)
     obj.copybuffer("obj", "tmp")
     obj.copybuffer("tmp", "cache:ori")
     obj.setoption("blend", "alpha_sub")
-    local deg = rename_me_track2
+    local deg = track_rotation
     for i = -n, n do
         local x = i * S
         local y = x * cos
@@ -188,10 +188,10 @@ local wipe_diamond = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy, repN)
     end
 end
 
-local b = rename_me_track0 * 0.01
-local S = rename_me_track1
-local R = math.rad(rename_me_track2)
-local A = rename_me_track3 * 0.01
+local b = track_unfold * 0.01
+local S = track_size
+local R = math.rad(track_rotation)
+local A = track_aspect_ratio_percent * 0.01
 
 local w, h = obj.getpixel()
 

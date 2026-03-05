@@ -3,16 +3,16 @@
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track0 = 64
+local track_n_1 = 64
 
 ---$track:飽和点2
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track1 = 178
+local track_n_2 = 178
 
-local p3 = math.floor(rename_me_track0)
-local p1 = math.floor(rename_me_track1)
+local p3 = math.floor(track_n_1)
+local p1 = math.floor(track_n_2)
 p1, p3 = math.max(p1, p3), math.min(p1, p3)
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()

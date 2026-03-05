@@ -3,19 +3,19 @@
 ---min=0
 ---max=360
 ---step=0.1
-local rename_me_track0 = 120
+local track_h_range = 120
 
 ---$track:V範囲
 ---min=0
 ---max=180
 ---step=0.1
-local rename_me_track1 = 60
+local track_v_range = 60
 
 ---$check:領域調整
 local resize = 1
 
 ---$check:HとVをリンク
-local rename_me_check0 = true
+local check0 = true
 
 if resize == 1 then
     local w, h = obj.getpixel()
@@ -30,10 +30,10 @@ if resize == 1 then
     end
 end
 
-if rename_me_check0 then
-    T_skydoom_H = rename_me_track0 / 360
+if check0 then
+    T_skydoom_H = track_h_range / 360
     T_skydoom_V = T_skydoom_H
 else
-    T_skydoom_H = rename_me_track0 / 360
-    T_skydoom_V = rename_me_track1 / 180
+    T_skydoom_H = track_h_range / 360
+    T_skydoom_V = track_v_range / 180
 end

@@ -3,13 +3,13 @@
 ---min=1
 ---max=12
 ---step=1
-local rename_me_track0 = 3
+local track_count = 3
 
 ---$value:追加座標
 local anc = { -100, 0, 0, 0, 100, 0 }
 
 --追加削除対策で#は使わない
-local k = rename_me_track0
+local k = track_count
 obj.setanchor("anc", k, "line")
 if T_strokeTM_ancB == nil then
     T_strokeTM_ancB = {}

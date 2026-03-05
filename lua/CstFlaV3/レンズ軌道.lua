@@ -3,25 +3,25 @@
 ---min=1
 ---max=100
 ---step=0.1
-local rename_me_track0 = 10
+local track_density = 10
 
 ---$track:サイズ％
 ---min=0
 ---max=50
 ---step=0.1
-local rename_me_track1 = 15
+local track_size_percent = 15
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 15
+local track_intensity = 15
 
 ---$track:減衰率
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 40
+local track_attenuation_rate = 40
 
 ---$figure:形状
 local fig = "円"
@@ -59,13 +59,13 @@ obj.setoption("blend", CustomFlareMode)
 if basechk == 1 then
     col = CustomFlareColor
 end
-local size = CustomFlareW * rename_me_track1 * 0.01
-local alp = rename_me_track2 * 0.01
-local gen = rename_me_track3 * 0.01
+local size = CustomFlareW * track_size_percent * 0.01
+local alp = track_intensity * 0.01
+local gen = track_attenuation_rate * 0.01
 obj.load("figure", fig, col, size)
 obj.effect("ぼかし", "範囲", blur)
-local countx = math.floor(CustomFlareW / 600 * rename_me_track0)
-local county = math.floor(CustomFlareH / 600 * rename_me_track0)
+local countx = math.floor(CustomFlareW / 600 * track_density)
+local county = math.floor(CustomFlareH / 600 * track_density)
 gen = -200 * gen / (CustomFlareW * CustomFlareW)
 local st = CustomFlareW / countx
 local dw = st * 0.5

@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track0 = 100
+local track_progress = 100
 
 ---$track:サイズ
 ---min=2
 ---max=1000
 ---step=1
-local rename_me_track1 = 20
+local track_size = 20
 
 ---$track:線間隔
 ---min=4
 ---max=1000
 ---step=1
-local rename_me_track2 = 10
+local track_line_spacing = 10
 
 ---$track:領域調整
 ---min=-500
 ---max=500
 ---step=1
-local rename_me_track3 = 0
+local track_area_adjust = 0
 
 ---$value:表示モード[0..5]
 local Md = 0
@@ -63,13 +63,13 @@ local CV = 1
 local EZ = 0
 
 ---$check:角丸なし
-local rename_me_check0 = true
+local check0 = true
 
 require("T_LineFill_Module")
-local P = rename_me_track0 / 100
-local D = math.floor(rename_me_track1)
-local S = math.floor(rename_me_track2)
-local E = math.floor(rename_me_track3)
+local P = track_progress / 100
+local D = math.floor(track_size)
+local S = math.floor(track_line_spacing)
+local E = math.floor(track_area_adjust)
 TLF = T_LineFill or {}
 K = TLF.K or K
 local R = math.rad(K)
@@ -153,7 +153,7 @@ if P > 0 and N > 0 then
     _T_LineFill_last_x, _T_LineFill_last_y =
         q * PS[2 * Ne - 3] + (1 - q) * PS[2 * Ne - 1], q * PS[2 * Ne - 2] + (1 - q) * PS[2 * Ne]
     PS[2 * Ne - 1], PS[2 * Ne] = _T_LineFill_last_x, _T_LineFill_last_y
-    if not rename_me_check0 then
+    if not check0 then
         obj.load("figure", "円", col, 2 * D)
         obj.effect("リサイズ", "拡大率", 50)
         for i = 1, Ne do

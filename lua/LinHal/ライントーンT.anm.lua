@@ -3,25 +3,25 @@
 ---min=10
 ---max=500
 ---step=0.1
-local rename_me_track0 = 80
+local track_split_count = 80
 
 ---$track:ﾗｲﾝ細％
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 10
+local track_percent = 10
 
 ---$track:ﾗｲﾝ太％
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 60
+local track_percent_2 = 60
 
 ---$track:シフト
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track3 = 0
+local track_shift = 0
 
 ---$color:ライン色
 local Lcol = "0x000000"
@@ -38,11 +38,11 @@ local bai = 200
 ---$check:反転
 local rev = 0
 
-local spN = rename_me_track0
+local spN = track_split_count
 local spM = math.floor(spN * bai * 0.01)
-local tsi1 = rename_me_track1 * 0.01
-local tsi2 = math.max(rename_me_track2 - rename_me_track1, 0) * 0.01
-local sf = rename_me_track3
+local tsi1 = track_percent * 0.01
+local tsi2 = math.max(track_percent_2 - track_percent, 0) * 0.01
+local sf = track_shift
 
 local w, h = obj.getpixel()
 local w2, h2 = w * 0.5, h * 0.5

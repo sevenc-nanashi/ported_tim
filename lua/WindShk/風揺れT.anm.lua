@@ -3,25 +3,25 @@
 ---min=0
 ---max=360
 ---step=0.1
-local rename_me_track0 = 30
+local track_sway_angle = 30
 
 ---$track:揺れ周期
 ---min=0.01
 ---max=100
 ---step=0.01
-local rename_me_track1 = 2
+local track_sway_period = 2
 
 ---$track:揺れズレ
 ---min=-360
 ---max=360
 ---step=0.1
-local rename_me_track2 = 90
+local track_sway_offset = 90
 
 ---$track:センター
 ---min=-180
 ---max=180
 ---step=0.1
-local rename_me_track3 = 0
+local track_center = 0
 
 ---$value:分割
 local N = 10
@@ -57,7 +57,7 @@ local stepX = 50
 local Frd = 0
 
 ---$check:アルファ補正
-local rename_me_check0 = true
+local check0 = true
 
 local w, h = obj.getpixel()
 local w2, h2 = w / 2, h / 2
@@ -78,12 +78,12 @@ end
 dL = dL * 0.01 * h
 dL2 = dL2 * 0.01 * h
 local L = h - dL - dL2 --長さ
-local F = math.pi * rename_me_track0 / 180 --揺れ幅
-local dt = rename_me_track1
+local F = math.pi * track_sway_angle / 180 --揺れ幅
+local dt = track_sway_period
 local c = 2 * math.pi / dt --揺れ速度
-local d = 2 * rename_me_track2 * math.pi / 180 --揺れズレ
-local CNT = rename_me_track3 * math.pi / 180 --センター
-local alp = rename_me_check0 and 1 or 0
+local d = 2 * track_sway_offset * math.pi / 180 --揺れズレ
+local CNT = track_center * math.pi / 180 --センター
+local alp = check0 and 1 or 0
 seed = 10 + math.abs(seed)
 
 WindShakeT = function(n)

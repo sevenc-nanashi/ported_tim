@@ -3,28 +3,28 @@
 ---min=1
 ---max=16
 ---step=1
-local rename_me_track0 = 4
+local track_control_point_count = 4
 
 ---$track:ｽﾅｯﾌﾟX
 ---min=1
 ---max=500
 ---step=1
-local rename_me_track1 = 30
+local track_x = 30
 
 ---$track:ｽﾅｯﾌﾟY
 ---min=1
 ---max=500
 ---step=1
-local rename_me_track2 = 30
+local track_y = 30
 
 ---$value:座標
 local pos = { -30, -80, 80, -80, -140, 74, -130, 0 }
 
 RuledlineT = RuledlineT or {}
 RuledlineT.typ = 2
-local N = math.floor(rename_me_track0)
-local SPx = rename_me_track1
-local SPy = rename_me_track2
+local N = math.floor(track_control_point_count)
+local SPx = track_x
+local SPy = track_y
 obj.setanchor("pos", N)
 local posX = {}
 local posY = {}

@@ -3,21 +3,21 @@
 ---min=0
 ---max=255
 ---step=0.1
-local rename_me_track0 = 150
+local track_r = 150
 
 ---$track:G
 ---min=0
 ---max=255
 ---step=0.1
-local rename_me_track1 = 0
+local track_g = 0
 
 ---$track:B
 ---min=0
 ---max=255
 ---step=0.1
-local rename_me_track2 = 0
+local track_b = 0
 
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()
-T_Color_Module.Monochromatic(userdata, w, h, rename_me_track0, rename_me_track1, rename_me_track2)
+T_Color_Module.Monochromatic(userdata, w, h, track_r, track_g, track_b)
 obj.putpixeldata(userdata)

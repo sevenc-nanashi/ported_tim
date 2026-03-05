@@ -3,25 +3,25 @@
 ---min=0
 ---max=6
 ---step=1
-local rename_me_track0 = 0
+local track_alpha = 0
 
 ---$track:赤
 ---min=0
 ---max=6
 ---step=1
-local rename_me_track1 = 1
+local track_red = 1
 
 ---$track:緑
 ---min=0
 ---max=6
 ---step=1
-local rename_me_track2 = 2
+local track_green = 2
 
 ---$track:青
 ---min=0
 ---max=6
 ---step=1
-local rename_me_track3 = 3
+local track_blue = 3
 
 ---$check:チャンネル表示
 local Dchk = 0
@@ -31,7 +31,7 @@ local fs = 34
 
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()
-T_Color_Module.ShiftChannels(userdata, w, h, rename_me_track0, rename_me_track1, rename_me_track2, rename_me_track3)
+T_Color_Module.ShiftChannels(userdata, w, h, track_alpha, track_red, track_green, track_blue)
 obj.putpixeldata(userdata)
 if obj.getinfo("saving") == false and Dchk == 1 then
     obj.setoption("drawtarget", "tempbuffer", w, h)

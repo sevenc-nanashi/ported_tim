@@ -3,25 +3,25 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 200
+local track_count = 200
 
 ---$track:速度
 ---min=-50
 ---max=50
 ---step=0.1
-local rename_me_track1 = -8
+local track_speed = -8
 
 ---$track:方向
 ---min=-50
 ---max=50
 ---step=0.1
-local rename_me_track2 = 0
+local track_direction = 0
 
 ---$track:形状補正
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 50
+local track_adjust = 50
 
 ---$value:サイズ
 local size = 100
@@ -46,8 +46,8 @@ local er = 1
 
 obj.load("figure", "円", col, size)
 obj.effect("ぼかし", "範囲", size)
-obj.effect("クリッピング", "右", size * 1.4 * rename_me_track3 / 100)
-obj.effect("クリッピング", "左", size * 1.4 * rename_me_track3 / 100)
+obj.effect("クリッピング", "右", size * 1.4 * track_adjust / 100)
+obj.effect("クリッピング", "左", size * 1.4 * track_adjust / 100)
 obj.effect("斜めクリッピング")
 obj.effect("極座標変換")
 
@@ -58,11 +58,11 @@ if af == 0 then
 else
     obj.setoption("dst", "tmp", obj.screen_w * er, obj.screen_h * er)
 end
-s = rename_me_track1 / 10
-sp = rename_me_track2 * obj.w
+s = track_speed / 10
+sp = track_direction * obj.w
 s = s * obj.time
 fs = f_speed * obj.time * math.pi * 2 / 10
-n = rename_me_track0
+n = track_count
 fw = fw * obj.w
 xs = -w
 xe = w

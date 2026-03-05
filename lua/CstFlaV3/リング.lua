@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 200
+local track_size = 200
 
 ---$track:幅
 ---min=0
 ---max=4000
 ---step=0.1
-local rename_me_track1 = 10
+local track_width = 10
 
 ---$track:数
 ---min=1
 ---max=100
 ---step=1
-local rename_me_track2 = 3
+local track_count = 3
 
 ---$track:強度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 50
+local track_intensity = 50
 
 ---$value:サイズ幅％
 local dsize = 50
@@ -65,10 +65,10 @@ obj.setoption("blend", CustomFlareMode)
 if basechk == 1 then
     col = CustomFlareColor
 end
-local size = rename_me_track0
-local haba = rename_me_track1
-local count = rename_me_track2
-local alp = rename_me_track3 * 0.01
+local size = track_size
+local haba = track_width
+local count = track_count
+local alp = track_intensity * 0.01
 local t = PP[1]
 local dt = PP[2]
 local sp = SIG[1] * 0.01

@@ -3,25 +3,25 @@
 ---min=0
 ---max=4096
 ---step=1
-local rename_me_track0 = 300
+local track_luminance_range = 300
 
 ---$track:色差範囲
 ---min=0
 ---max=4096
 ---step=1
-local rename_me_track1 = 300
+local track_color_difference_range = 300
 
 ---$track:境界補正
 ---min=0
 ---max=5
 ---step=1
-local rename_me_track2 = 0
+local track_boundary_adjust = 0
 
 ---$color:抽出色
 local col = ""
 
 ---$check:簡易処理
-local rename_me_check0 = true
+local check0 = true
 
 (function()
     local TrHex = function(A)
@@ -39,7 +39,7 @@ local rename_me_check0 = true
     obj.effect("領域拡張", "上", 10, "下", 10, "右", 10, "左", 10, "塗りつぶし", 1)
     obj.copybuffer("cache:ori", "obj")
     obj.setoption("drawtarget", "tempbuffer")
-    if not rename_me_check0 then
+    if not check0 then
         obj.copybuffer("tmp", "obj")
         obj.effect("反転", "透明度反転", 1)
         obj.setoption("blend", "alpha_add")
@@ -54,11 +54,11 @@ local rename_me_check0 = true
     obj.effect(
         "カラーキー",
         "輝度範囲",
-        rename_me_track0,
+        track_luminance_range,
         "色差範囲",
-        rename_me_track1,
+        track_color_difference_range,
         "境界補正",
-        rename_me_track2,
+        track_boundary_adjust,
         "color_yc",
         Y,
         "status",

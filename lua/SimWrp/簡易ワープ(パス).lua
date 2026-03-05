@@ -3,25 +3,25 @@
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track0 = 0
+local track_base_x = 0
 
 ---$track:基準Y
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track1 = 0
+local track_base_y = 0
 
 ---$track:移動X
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track2 = 100
+local track_move_x = 100
 
 ---$track:移動Y
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track3 = 100
+local track_move_y = 100
 
 ---$value:影響範囲
 local ATp = 200
@@ -44,10 +44,10 @@ else
     DF = {}
 end
 
-X0[N] = rename_me_track0
-Y0[N] = rename_me_track1
-X1[N] = rename_me_track2
-Y1[N] = rename_me_track3
+X0[N] = track_base_x
+Y0[N] = track_base_y
+X1[N] = track_move_x
+Y1[N] = track_move_y
 if POS == 1 then
     X1[N] = X1[N] + X0[N]
     Y1[N] = Y1[N] + Y0[N]

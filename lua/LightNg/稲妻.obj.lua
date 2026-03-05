@@ -3,25 +3,25 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 0
+local track_pattern = 0
 
 ---$track:展開度
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track1 = 50
+local track_unfold_amount = 50
 
 ---$track:サイズ
 ---min=1
 ---max=100
 ---step=0.1
-local rename_me_track2 = 6
+local track_size = 6
 
 ---$track:コア間隔
 ---min=2
 ---max=100
 ---step=0.1
-local rename_me_track3 = 3
+local track_interval = 3
 
 ---$value:位置
 local pos = { 0, -150, 0, 150 }
@@ -130,13 +130,13 @@ function Szdrawpoly(x1, y1, x2, y2)
     obj.drawpoly(x1, y1, 0, x2, y1, 0, x2, y2, 0, x1, y2, 0, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h)
 end
 
-frnd = math.floor(rename_me_track0)
-at = 100 - rename_me_track1
+frnd = math.floor(track_pattern)
+at = 100 - track_unfold_amount
 at = (math.exp(0.10 * at) - 1) / 62
 
-Ac_s = rename_me_track2
+Ac_s = track_size
 
-c_d = rename_me_track3
+c_d = track_interval
 
 obj.setanchor("pos", 2, "line")
 local stx, sty, enx, eny = unpack(pos)

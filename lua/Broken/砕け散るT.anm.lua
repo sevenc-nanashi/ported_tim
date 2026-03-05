@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 100
+local track_shatter_amount = 100
 
 ---$track:時間差
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 100
+local track_time_offset = 100
 
 ---$track:限界半径
 ---min=-10000
 ---max=10000
 ---step=0.1
-local rename_me_track2 = 300
+local track_radius = 300
 
 ---$track:厚さ
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 20
+local track_thickness = 20
 
 ---$value:破片サイズ
 local size = 50
@@ -69,10 +69,10 @@ local pv = {}
 local han = {}
 local tt = {}
 
-tm = step * rename_me_track0 / 1000
-delay = rename_me_track1
-Rm = rename_me_track2
-dti = rename_me_track3
+tm = step * track_shatter_amount / 1000
+delay = track_time_offset
+Rm = track_radius
+dti = track_thickness
 obj.effect()
 grav = grav * 6
 delay = delay * 0.002

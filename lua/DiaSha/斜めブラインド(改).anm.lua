@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 30
+local track_ratio = 30
 
 ---$track:幅
 ---min=5
 ---max=2000
 ---step=0.1
-local rename_me_track1 = 100
+local track_width = 100
 
 ---$track:角度
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track2 = 60
+local track_angle = 60
 
 ---$track:基準
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_base = 0
 
 ---$value:時間差[%]
 local TS = 0
@@ -29,16 +29,16 @@ local TS = 0
 ---$check:透明度反転
 local chk = 0
 
-local t = 100 - rename_me_track0
+local t = 100 - track_ratio
 TS = TS * 0.01
 local ATS = math.abs(TS)
 
 if t > 0 then
     t = t * 0.01
-    local spw = rename_me_track1
-    local deg = rename_me_track2
+    local spw = track_width
+    local deg = track_angle
     local rad = math.rad(deg)
-    local bas = rename_me_track3 * 0.005
+    local bas = track_base * 0.005
 
     local w, h = obj.getpixel()
     local L = math.sqrt(w * w + h * h)

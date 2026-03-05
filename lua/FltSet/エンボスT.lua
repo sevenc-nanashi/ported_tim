@@ -3,17 +3,17 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 100
+local track_strength = 100
 
 ---$track:向き
 ---min=0
 ---max=7
 ---step=1
-local rename_me_track1 = 1
+local track_direction = 1
 
 require("T_Filter_Module")
-local St = rename_me_track0 * 0.01
-local Vec = rename_me_track1
+local St = track_strength * 0.01
+local Vec = track_direction
 
 obj.effect("領域拡張", "塗りつぶし", 1, "上", 1, "下", 1, "左", 1, "右", 1)
 local userdata, w, h = obj.getpixeldata()

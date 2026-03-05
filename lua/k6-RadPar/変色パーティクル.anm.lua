@@ -3,25 +3,25 @@
 ---min=1
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 30
+local track_output_frequency = 30
 
 ---$track:出力速度
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 30
+local track_speed = 30
 
 ---$track:初期半径
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track2 = 50
+local track_radius = 50
 
 ---$track:生存時間
 ---min=0
 ---max=10000
 ---step=0.1
-local rename_me_track3 = 300
+local track_lifetime = 300
 
 ---$color:色1
 local col1 = 0xffff00
@@ -39,10 +39,10 @@ local aV = 20
 local Fai = { -180, 180 }
 
 local T = obj.time
-local dn = rename_me_track0
-local V = rename_me_track1
-local R0 = rename_me_track2
-local Life = rename_me_track3 * 0.01
+local dn = track_output_frequency
+local V = track_speed
+local R0 = track_radius
+local Life = track_lifetime * 0.01
 local dS = 1 / dn
 local i1 = math.max(math.floor(1 + (T - Life) * dn), 0)
 local i2 = math.floor(T * dn)

@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 0
+local track_opacity = 0
 
 ---$track:境目調整
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 0
+local track_border_adjust = 0
 
 ---$track:ぼかし
 ---min=0
 ---max=300
 ---step=0.1
-local rename_me_track2 = 10
+local track_blur = 10
 
 ---$track:基準
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track3 = 100
+local track_base = 100
 
 ---$color:色1
 local col = 0x000000
@@ -29,10 +29,10 @@ local col = 0x000000
 ---$check:単色化(T)
 local chk = 0
 
-local AL = 1 - rename_me_track0 * 0.01
-local d = 2 * rename_me_track1
-local rng = rename_me_track2
-local bs = rename_me_track3
+local AL = 1 - track_opacity * 0.01
+local d = 2 * track_border_adjust
+local rng = track_blur
+local bs = track_base
 local w, h = obj.getpixel()
 
 if d < -2 * h then

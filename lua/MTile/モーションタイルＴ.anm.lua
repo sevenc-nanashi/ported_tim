@@ -3,25 +3,25 @@
 ---min=-20000
 ---max=20000
 ---step=0.1
-local rename_me_track0 = 0
+local track_center_position = 0
 
 ---$track:出力幅％
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 150
+local track_width_percent = 150
 
 ---$track:出力高％
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track2 = 150
+local track_percent = 150
 
 ---$track:フェーズ
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track3 = 0
+local track_phase = 0
 
 ---$value:速度方向(度)
 local deg = 0
@@ -33,12 +33,12 @@ local reX = 0
 local reY = 0
 
 ---$check:水平シフト
-local rename_me_check0 = true
+local check0 = true
 
-local CT = rename_me_track0
-local OW = rename_me_track1 * 0.01
-local OH = rename_me_track2 * 0.01
-local SF = -rename_me_track3 * 0.01
+local CT = track_center_position
+local OW = track_width_percent * 0.01
+local OH = track_percent * 0.01
+local SF = -track_phase * 0.01
 
 local w, h = obj.getpixel()
 
@@ -59,7 +59,7 @@ local dy = 180 * reY
 local SW2 = SW * 0.5
 local SH2 = SH * 0.5
 
-if rename_me_check0 then
+if check0 then
     local ny1 = math.ceil((-py - SH2) / h - 0.5)
     local ny2 = math.floor((-py + SH2) / h + 0.5)
     for j = ny1, ny2 do

@@ -3,7 +3,7 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 50
+local track_size = 50
 
 ---$color:ガイド色
 local colG = 0xff0000
@@ -11,7 +11,7 @@ local colG = 0xff0000
 ---$figure:図形
 local fig = "円"
 
-obj.load("figure", fig, colG, rename_me_track0)
+obj.load("figure", fig, colG, track_size)
 NTBS_N = obj.getoption("section_num") + 1
 NTBS_pos = {}
 for i = 1, NTBS_N - 1 do

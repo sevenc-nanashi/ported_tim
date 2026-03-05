@@ -3,19 +3,19 @@
 ---min=1
 ---max=3
 ---step=1
-local rename_me_track0 = 1
+local track_placement = 1
 
 ---$track:サイズ
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 100
+local track_size = 100
 
 ---$track:間隔(%)
 ---min=-1000
 ---max=1000
 ---step=0.1
-local rename_me_track2 = 10
+local track_interval_percent = 10
 
 ---$value:事前回転位置
 local pPOS = ""
@@ -67,8 +67,8 @@ local v1 = {}
 local v2 = {}
 local v3 = {}
 
-local qs = rename_me_track1
-local dw = qs * (1 + rename_me_track2 / 100)
+local qs = track_size
+local dw = qs * (1 + track_interval_percent / 100)
 
 local DataL = math.min(string.len(POS), string.len(ROT))
 for n = 1, DataL do
@@ -108,7 +108,7 @@ end
 for i = -1, 1 do
     for j = -1, 1 do
         for k = -1, 1 do
-            if rename_me_track0 == 1 then
+            if track_placement == 1 then
                 u0[0], v0[0] = (i + 1) * w3, (j + 1) * h3
                 u1[0], v1[0] = (i + 2) * w3, (j + 1) * h3
                 u2[0], v2[0] = (i + 2) * w3, (j + 2) * h3
@@ -138,7 +138,7 @@ for i = -1, 1 do
                 u1[5], v1[5] = (i + 2) * w3, (k + 1) * h3
                 u2[5], v2[5] = (i + 2) * w3, (k + 2) * h3
                 u3[5], v3[5] = (i + 1) * w3, (k + 2) * h3
-            elseif rename_me_track0 == 3 then
+            elseif track_placement == 3 then
                 u0[0], v0[0] = (i + 1) * w9, (j + 1) * h6
                 u1[0], v1[0] = (i + 2) * w9, (j + 1) * h6
                 u2[0], v2[0] = (i + 2) * w9, (j + 2) * h6

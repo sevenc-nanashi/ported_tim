@@ -3,36 +3,36 @@
 ---min=50
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 100
+local track_size = 100
 
 ---$track:幅
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 10
+local track_width = 10
 
 ---$track:高さ
 ---min=0
 ---max=3
 ---step=0.1
-local rename_me_track2 = 1.5
+local track_height = 1.5
 
 ---$track:角度
 ---min=-360
 ---max=360
 ---step=0.1
-local rename_me_track3 = -45
+local track_angle = -45
 
 ---$value:エンボス透明度[0-100]
 local alp = 0
 
 obj.setoption("antialias", 0)
 
-bsi = rename_me_track0
+bsi = track_size
 if bsi < 50 then
     bsi = 50
 end
-wh = rename_me_track1
+wh = track_width
 si = bsi - 2 * wh
 if si < 0 then
     wh = bsi / 2
@@ -161,14 +161,14 @@ end
 
 obj.load("figure", "四角形", 0xffffff, bsi)
 obj.setoption("blend", 3)
-obj.effect("凸エッジ", "幅", wh, "高さ", rename_me_track2, "角度", rename_me_track3)
+obj.effect("凸エッジ", "幅", wh, "高さ", track_height, "角度", track_angle)
 obj.effect("画像ループ", "横回数", 2 * nx + 1, "縦回数", 2 * ny + 1)
 obj.alpha = alp
 obj.draw()
 
 obj.load("figure", "四角形", 0x0, bsi)
 obj.setoption("blend", 1)
-obj.effect("凸エッジ", "幅", wh, "高さ", rename_me_track2, "角度", rename_me_track3)
+obj.effect("凸エッジ", "幅", wh, "高さ", track_height, "角度", track_angle)
 obj.effect("画像ループ", "横回数", 2 * nx + 1, "縦回数", 2 * ny + 1)
 obj.alpha = alp
 obj.draw()

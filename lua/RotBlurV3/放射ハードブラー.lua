@@ -3,25 +3,25 @@
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 0
+local track_center_x = 0
 
 ---$track:中心Y
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 0
+local track_center_y = 0
 
 ---$track:ブラー量
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track2 = 20
+local track_blur_amount = 20
 
 ---$track:凸数
 ---min=3
 ---max=500
 ---step=1
-local rename_me_track3 = 20
+local track_count = 20
 
 ---$check:サイズ保持
 local ck = 1
@@ -47,11 +47,11 @@ local rnds = 1
 ---$value:表示限界倍率
 local Sbai = 3
 
-local Br = rename_me_track2 * 0.01
+local Br = track_blur_amount * 0.01
 if Bx ~= 0 then
-    local dx = rename_me_track0
-    local dy = rename_me_track1
-    local NN = rename_me_track3
+    local dx = track_center_x
+    local dy = track_center_y
+    local NN = track_count
     BasP = RotBlur_BasP or (BasP or 0)
     AmpR = RotBlur_AmpR or (AmpR or 100)
     EG = RotBlur_EG or (EG or 0)

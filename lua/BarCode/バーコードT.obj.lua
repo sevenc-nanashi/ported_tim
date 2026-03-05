@@ -3,25 +3,25 @@
 ---min=1
 ---max=30
 ---step=1
-local rename_me_track0 = 2
+local track_min_width = 2
 
 ---$track:高さ
 ---min=1
 ---max=1000
 ---step=1
-local rename_me_track1 = 50
+local track_height = 50
 
 ---$track:左右余白
 ---min=10
 ---max=1000
 ---step=1
-local rename_me_track2 = 30
+local track_left_right = 30
 
 ---$track:上下余白
 ---min=10
 ---max=1000
 ---step=1
-local rename_me_track3 = 20
+local track_up_down = 20
 
 ---$value:データ
 local TXT = "AviUtl"
@@ -240,10 +240,10 @@ local NM = {
     ["}"] = 93,
     ["~"] = 94,
 }
-local B = math.floor(rename_me_track0)
-local H = math.floor(rename_me_track1)
-local S = math.floor(rename_me_track2)
-local D = 2 * math.floor(rename_me_track3)
+local B = math.floor(track_min_width)
+local H = math.floor(track_height)
+local S = math.floor(track_left_right)
+local D = 2 * math.floor(track_up_down)
 S = 2 * math.max(S, 10 * B)
 local N = string.len(TXT)
 local MJ

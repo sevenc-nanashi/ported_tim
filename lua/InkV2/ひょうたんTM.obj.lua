@@ -3,25 +3,25 @@
 ---min=0
 ---max=2000
 ---step=0.1
-local rename_me_track0 = 80
+local track_height = 80
 
 ---$track:幅
 ---min=0
 ---max=2000
 ---step=0.1
-local rename_me_track1 = 250
+local track_width = 250
 
 ---$track:くびれ
 ---min=0
 ---max=2000
 ---step=0.1
-local rename_me_track2 = 10
+local track_neck = 10
 
 ---$track:つぶれ
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 40
+local track_squash = 40
 
 ---$color:色
 local col = "0xffffff"
@@ -37,10 +37,10 @@ local HA = 0
 
 HA = HA or 0
 
-local r1 = rename_me_track0 * 0.5
-local w = rename_me_track1 * 0.5
-local q = rename_me_track2 * 0.5
-local asp = 1 - rename_me_track3 * 0.01
+local r1 = track_height * 0.5
+local w = track_width * 0.5
+local q = track_neck * 0.5
+local asp = 1 - track_squash * 0.01
 r1 = math.min(w, r1)
 q = math.min(q, r1)
 if HA == 1 then

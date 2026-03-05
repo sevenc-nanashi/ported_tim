@@ -3,10 +3,10 @@
 ---min=1
 ---max=4
 ---step=1
-local rename_me_track0 = 1
+local track_save_target = 1
 
 obj.load("framebuffer")
-i = rename_me_track0
+i = track_save_target
 if set == nil or set == 0 then
     obj.setoption("dst", "tmp", 2 * obj.screen_w, 2 * obj.screen_h)
     set = 1

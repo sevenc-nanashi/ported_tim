@@ -3,25 +3,25 @@
 ---min=0
 ---max=2000
 ---step=0.1
-local rename_me_track0 = 50
+local track_size = 50
 
 ---$track:溝幅
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 1
+local track_width = 1
 
 ---$track:細かさ
 ---min=1
 ---max=100
 ---step=0.1
-local rename_me_track2 = 10
+local track_detail = 10
 
 ---$track:変形量
 ---min=-500
 ---max=500
 ---step=0.1
-local rename_me_track3 = 30
+local track_deform_amount = 30
 
 ---$value:縦横比％
 local asp = 100
@@ -48,18 +48,18 @@ local nv = 0
 local seed = 0
 
 ---$check:がさつき
-local rename_me_check0 = true
+local check0 = true
 
 local w, h = obj.getpixel()
 asp = asp * 0.01
-local Sw = rename_me_track0
+local Sw = track_size
 local Sh = Sw * asp
-local Bw = rename_me_track1
-local Fr = rename_me_track2 * 0.1
-local Rf = rename_me_track3
+local Bw = track_width
+local Fr = track_detail * 0.1
+local Rf = track_deform_amount
 local w2, h2 = w + Sw, h + Sh
 
-if rename_me_check0 then
+if check0 then
     require("T_Filter_Module")
     local Vec = math.floor((tr + 45) / 45 - 0.5)
     Vec = Vec % 8

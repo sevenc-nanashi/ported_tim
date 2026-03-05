@@ -3,25 +3,25 @@
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track0 = 50
+local track_size = 50
 
 ---$track:変形量
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track1 = 20
+local track_deform_amount = 20
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track2 = 0
+local track_rotation = 0
 
 ---$track:変形速度
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track3 = 100
+local track_deform_speed = 100
 
 ---$value:波数
 local Num = 4
@@ -66,17 +66,17 @@ local seed = 0
 local MapAP = 0
 
 ---$check:マスク表示
-local rename_me_check0 = false
+local check0 = false
 
 local Ratio = function(a, b, t)
     local s = (2 * t + 1) * (t - 1) ^ 2
     return s * a + (1 - s) * b
 end
 
-local Cor = 1 + rename_me_track0 * 0.01
-local Tra = rename_me_track1
-local Rot = rename_me_track2 % 360
-local SpC = rename_me_track3 * 0.01
+local Cor = 1 + track_size * 0.01
+local Tra = track_deform_amount
+local Rot = track_rotation % 360
+local SpC = track_deform_speed * 0.01
 
 RgRnd = RgRnd * 0.01
 seed = math.abs(seed)
@@ -177,7 +177,7 @@ if MapAP == 0 then
         "ぼかし",
         BL
     )
-    if rename_me_check0 then
+    if check0 then
         obj.copybuffer("tmp", "obj")
         obj.load("figure", Mfg, Mcl, StR)
         if Asp > 0 then

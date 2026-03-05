@@ -3,19 +3,19 @@
 ---min=1
 ---max=1000
 ---step=1
-local rename_me_track0 = 1
+local track_position_1 = 1
 
 ---$track:位置2
 ---min=0
 ---max=1000
 ---step=1
-local rename_me_track1 = 0
+local track_position_2 = 0
 
 ---$track:ｻｲｽﾞ補正
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track2 = 100
+local track_size_adjust = 100
 
 ---$check:行列反転
 local Rev = 0
@@ -30,7 +30,7 @@ local ord = 0
 local Lastobj = 0
 
 ---$check:ｻｲｽﾞ自動調整
-local rename_me_check0 = true
+local check0 = true
 
 local CalIJ = function(n, nx, ny, Rev)
     local i, j
@@ -46,14 +46,14 @@ end
 local RT = RuledlineTcrd
 local nx = #RT.X - 1
 local ny = #RT.Y - 1
-local n1 = math.floor(rename_me_track0 - 1)
-local n2 = math.floor(rename_me_track1 - 1)
+local n1 = math.floor(track_position_1 - 1)
+local n2 = math.floor(track_position_2 - 1)
 local i1, j1, i2, j2
 if AutoSet == 0 then
     n1 = n1 % (nx * ny)
     n2 = n2 % (nx * ny)
     i1, j1 = CalIJ(n1, nx, ny, Rev)
-    if rename_me_track1 > 0 then
+    if track_position_2 > 0 then
         i2, j2 = CalIJ(n2, nx, ny, Rev)
         i1, i2 = math.min(i1, i2), math.max(i1, i2)
         j1, j2 = math.min(j1, j2), math.max(j1, j2)
@@ -78,8 +78,8 @@ else
 end
 local dx = (RT.X[i1] + RT.X[i2 + 1]) * 0.5
 local dy = (RT.Y[j1] + RT.Y[j2 + 1]) * 0.5
-local zm = rename_me_track2 * 0.01
-if rename_me_check0 then
+local zm = track_size_adjust * 0.01
+if check0 then
     local w, h = obj.getpixel()
     local tx = RT.X[i2 + 1] - RT.X[i1]
     local ty = RT.Y[j2 + 1] - RT.Y[j1]

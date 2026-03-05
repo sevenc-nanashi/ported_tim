@@ -3,25 +3,25 @@
 ---min=0
 ---max=2000
 ---step=1
-local rename_me_track0 = 200
+local track_size = 200
 
 ---$track:円形度合
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 60
+local track_roundness = 60
 
 ---$track:形状
 ---min=0
 ---max=10000
 ---step=1
-local rename_me_track2 = 3000
+local track_shape = 3000
 
 ---$track:展開
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 100
+local track_unfold = 100
 
 ---$color:色
 local col = "0xffffff"
@@ -67,11 +67,11 @@ if NewP == 1 then
     zm2 = (zm2 or 100) * 0.01
     H2as = (H2as or 0) * 0.02
 
-    local L = rename_me_track0
-    local Cp = rename_me_track1 * 0.01
+    local L = track_size
+    local Cp = track_roundness * 0.01
     local Lh = L * 0.5
-    local seed = rename_me_track2
-    local Dev = rename_me_track3 * 0.01
+    local seed = track_shape
+    local Dev = track_unfold * 0.01
     obj.load("figure", "四角形", col, 1)
     TH1 = {}
     TH2 = {}
@@ -292,10 +292,10 @@ if NewP == 1 then
 
     obj.load("tempbuffer")
 else --ここからOLD-------
-    local L = rename_me_track0
-    local Cp = rename_me_track1 * 0.01
+    local L = track_size
+    local Cp = track_roundness * 0.01
     local Lh = L * 0.5
-    local seed = rename_me_track2
+    local seed = track_shape
     local N = 30
     obj.load("figure", "四角形", col, 1)
     --飛散1

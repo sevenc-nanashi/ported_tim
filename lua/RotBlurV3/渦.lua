@@ -3,34 +3,34 @@
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 0
+local track_center_x = 0
 
 ---$track:中心Y
 ---min=-5000
 ---max=5000
 ---step=0.1
-local rename_me_track1 = 0
+local track_center_y = 0
 
 ---$track:渦量
 ---min=-3000
 ---max=3600
 ---step=0.1
-local rename_me_track2 = 100
+local track_swirl_amount = 100
 
 ---$track:変化
 ---min=0
 ---max=1
 ---step=1
-local rename_me_track3 = 0
+local track_change = 0
 
 ---$check:サイズ保持
 local ck = 1
 
 obj.setanchor("track", 0, "line")
-local dx = rename_me_track0
-local dy = rename_me_track1
-local sw = rename_me_track2
-local ch = rename_me_track3
+local dx = track_center_x
+local dy = track_center_y
+local sw = track_swirl_amount
+local ch = track_change
 local userdata, w, h
 w, h = obj.getpixel()
 local r = math.sqrt(w * w + h * h)

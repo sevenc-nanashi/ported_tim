@@ -3,25 +3,25 @@
 ---min=1
 ---max=500
 ---step=1
-local rename_me_track0 = 6
+local track_line_width = 6
 
 ---$track:1行目高比
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track1 = 100
+local track_n_1_ratio = 100
 
 ---$track:1列目幅比
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track2 = 100
+local track_n_1_width_ratio = 100
 
 ---$track:背景透明度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_opacity = 0
 
 ---$color:線色
 local wcl = 0xffffff
@@ -30,13 +30,13 @@ local wcl = 0xffffff
 local SvC = 1
 
 ---$check:エッジ調整
-local rename_me_check0 = true
+local check0 = true
 
 local RL = RuledlineT
-local Lw = rename_me_track0
-local balp = 1 - rename_me_track3 * 0.01
+local Lw = track_line_width
+local balp = 1 - track_opacity * 0.01
 local wcl = wcl or 0xffffff
-local EGC = rename_me_check0 and 1 or 0
+local EGC = check0 and 1 or 0
 local LPX = RL.LPX
 local LPY = RL.LPY
 local ACX = RL.ACX or {}
@@ -59,8 +59,8 @@ local DrawSL = function(x0, y0, x1, y1, Lw, P)
     obj.drawpoly(u0, v0, 0, u1, v1, 0, u2, v2, 0, u3, v3, 0)
 end
 if RL.typ == 1 then
-    hp = rename_me_track1
-    wp = rename_me_track2
+    hp = track_n_1_ratio
+    wp = track_n_1_width_ratio
     local dw = RL.dw
     local dh = dw
     local nx = RL.nx

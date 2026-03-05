@@ -3,25 +3,25 @@
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track0 = 128
+local track_threshold = 128
 
 ---$track:きめ
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 75
+local track_grain = 75
 
 ---$track:レリーフ
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track2 = 100
+local track_relief = 100
 
 ---$track:向き
 ---min=0
 ---max=7
 ---step=1
-local rename_me_track3 = 3
+local track_direction = 3
 
 ---$color:シャドウ
 local col1 = 0x0
@@ -31,7 +31,7 @@ local col2 = 0xffffff
 
 require("T_Filter_Module")
 local userdata, w, h = obj.getpixeldata()
-T_Filter_Module.easybinarization(userdata, w, h, rename_me_track0)
+T_Filter_Module.easybinarization(userdata, w, h, track_threshold)
 obj.putpixeldata(userdata)
 userdata, w, h = obj.getpixeldata()
 T_Filter_Module.GrayColor(userdata, w, h, 128, 128, 128, 255, 255, 255)
@@ -46,11 +46,11 @@ T_Filter_Module.Emboss(userdata, w, h, 1, 2)
 obj.putpixeldata(userdata)
 obj.effect("クリッピング", "上", 1, "下", 1, "左", 1, "右", 1)
 obj.setoption("blend", 2)
-obj.draw(0, 0, 0, 1, 0.5 * (1 - rename_me_track1 * 0.01))
+obj.draw(0, 0, 0, 1, 0.5 * (1 - track_grain * 0.01))
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
 userdata, w, h = obj.getpixeldata()
-T_Filter_Module.Emboss(userdata, w, h, rename_me_track2 * 0.01, rename_me_track3)
+T_Filter_Module.Emboss(userdata, w, h, track_relief * 0.01, track_direction)
 obj.putpixeldata(userdata)
 userdata, w, h = obj.getpixeldata()
 local r1, g1, b1 = RGB(col1)

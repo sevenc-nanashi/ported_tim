@@ -3,19 +3,19 @@
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track0 = 128
+local track_threshold = 128
 
 ---$track:ｸﾞﾚｰ処理
 ---min=0
 ---max=2
 ---step=1
-local rename_me_track1 = 1
+local track_gray_process = 1
 
 ---$track:自動判定
 ---min=0
 ---max=6
 ---step=1
-local rename_me_track2 = 0
+local track_auto_detect = 0
 
 ---$color:明部色
 local col1 = 0xff0000
@@ -24,7 +24,7 @@ local col1 = 0xff0000
 local col2 = 0x0000ff
 
 ---$check:色付け
-local rename_me_check0 = true
+local check0 = true
 
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()
@@ -32,10 +32,10 @@ T_Color_Module.binarization(
     userdata,
     w,
     h,
-    rename_me_track0,
-    rename_me_track1,
-    rename_me_track2,
-    rename_me_check0,
+    track_threshold,
+    track_gray_process,
+    track_auto_detect,
+    check0,
     col1,
     col2
 )

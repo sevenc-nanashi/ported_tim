@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 10
+local track_stroke_width_percent = 10
 
 ---$track:密度
 ---min=1
 ---max=200
 ---step=1
-local rename_me_track1 = 7
+local track_density = 7
 
 ---$track:形状変化
 ---min=1
 ---max=5000
 ---step=0.01
-local rename_me_track2 = 1
+local track_change = 1
 
 ---$track:背景濃度
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track3 = 20
+local track_density_2 = 20
 
 ---$color:枠色
 local col1 = 0xffffff
@@ -70,9 +70,9 @@ local function make_waku(wh, w, h, col1, lw)
 end
 
 local w, h = obj.getpixel()
-local lw = rename_me_track0 * 0.01
-local cou = math.floor(rename_me_track1)
-local pt = rename_me_track2
+local lw = track_stroke_width_percent * 0.01
+local cou = math.floor(track_density)
+local pt = track_change
 local pt1 = math.floor(pt)
 local pt2 = pt1 + 1
 pt = pt - pt1
@@ -87,7 +87,7 @@ else
 end
 pt = pt * 0.5
 
-local backC = rename_me_track3 * 0.01
+local backC = track_density_2 * 0.01
 
 if T_ryouikiwaku_w == nil then
     w, h = pw + w + 2 * lw, ph + h + 2 * lw

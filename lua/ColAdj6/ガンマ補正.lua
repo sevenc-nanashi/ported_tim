@@ -3,34 +3,34 @@
 ---min=1
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 100
+local track_red = 100
 
 ---$track:緑
 ---min=1
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 100
+local track_green = 100
 
 ---$track:青
 ---min=1
 ---max=1000
 ---step=0.1
-local rename_me_track2 = 100
+local track_blue = 100
 
 ---$track:ALL
 ---min=1
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 100
+local track_all = 100
 
 require("T_Color_Module")
 local r, g, b
-if rename_me_track3 == 100 then
-    r = 100 / rename_me_track0
-    g = 100 / rename_me_track1
-    b = 100 / rename_me_track2
+if track_all == 100 then
+    r = 100 / track_red
+    g = 100 / track_green
+    b = 100 / track_blue
 else
-    r = 100 / rename_me_track3
+    r = 100 / track_all
     g, b = r, r
 end
 local userdata, w, h = obj.getpixeldata()

@@ -3,19 +3,19 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 200
+local track_size = 200
 
 ---$track:タイプ
 ---min=1
 ---max=5
 ---step=1
-local rename_me_track1 = 1
+local track_type = 1
 
 ---$track:枠％
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 0
+local track_percent = 0
 
 ---$color:枠色
 local col = 0xffffff
@@ -127,12 +127,12 @@ local create_DP = function(c72, c36, s72, s36, Stype)
     end
 end
 
-local size = rename_me_track0 --内接球の半径
-local Stype = math.floor(rename_me_track1)
+local size = track_size --内接球の半径
+local Stype = math.floor(track_type)
 local N = { 4, 8, 6, 20, 12 }
 local c72, c36, s72, s36 = 0, 0, 0, 0
 local PT = {}
-local waku = rename_me_track2 * 0.01
+local waku = track_percent * 0.01
 
 --最初から規格化すれば良いのだけれど・・めんどくさいので＞＜
 if Stype == 1 then

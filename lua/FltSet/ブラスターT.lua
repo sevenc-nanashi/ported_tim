@@ -3,25 +3,25 @@
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track0 = 128
+local track_threshold = 128
 
 ---$track:なめらか
 ---min=1
 ---max=100
 ---step=1
-local rename_me_track1 = 3
+local track_smooth = 3
 
 ---$track:向き
 ---min=0
 ---max=7
 ---step=1
-local rename_me_track2 = 1
+local track_direction = 1
 
 ---$track:距離
 ---min=1
 ---max=10
 ---step=1
-local rename_me_track3 = 5
+local track_distance = 5
 
 ---$color:シャドウ
 local col1 = 0x0
@@ -33,8 +33,8 @@ local col2 = 0xffffff
 local ed = 100
 
 require("T_Filter_Module")
-local Len = rename_me_track3
-local Vec = rename_me_track2
+local Len = track_distance
+local Vec = track_direction
 local userdata, w, h, w0, h0
 
 obj.copybuffer("cache:original", "obj")
@@ -48,9 +48,9 @@ obj.draw()
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
 
-obj.effect("ぼかし", "範囲", rename_me_track1, "サイズ固定", 1)
+obj.effect("ぼかし", "範囲", track_smooth, "サイズ固定", 1)
 userdata, w, h = obj.getpixeldata()
-T_Filter_Module.easybinarization(userdata, w, h, rename_me_track0)
+T_Filter_Module.easybinarization(userdata, w, h, track_threshold)
 obj.putpixeldata(userdata)
 obj.copybuffer("cache:saveimg", "obj")
 

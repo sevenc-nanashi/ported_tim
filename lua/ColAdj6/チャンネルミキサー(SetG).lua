@@ -3,28 +3,28 @@
 ---min=-300
 ---max=300
 ---step=0.1
-local rename_me_track0 = 0
+local track_green_red_percent = 0
 
 ---$track:緑←緑％
 ---min=-300
 ---max=300
 ---step=0.1
-local rename_me_track1 = 100
+local track_green_green_percent = 100
 
 ---$track:緑←青％
 ---min=-300
 ---max=300
 ---step=0.1
-local rename_me_track2 = 0
+local track_green_blue_percent = 0
 
 ---$track:緑←定数
 ---min=-300
 ---max=300
 ---step=0.1
-local rename_me_track3 = 0
+local track_green_count = 0
 
 ChannelMixerRate = ChannelMixerRate or {}
-ChannelMixerRate[5] = rename_me_track0
-ChannelMixerRate[6] = rename_me_track1
-ChannelMixerRate[7] = rename_me_track2
-ChannelMixerRate[8] = rename_me_track3
+ChannelMixerRate[5] = track_green_red_percent
+ChannelMixerRate[6] = track_green_green_percent
+ChannelMixerRate[7] = track_green_blue_percent
+ChannelMixerRate[8] = track_green_count

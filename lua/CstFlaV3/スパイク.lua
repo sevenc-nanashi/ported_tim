@@ -3,25 +3,25 @@
 ---min=0
 ---max=3000
 ---step=0.1
-local rename_me_track0 = 230
+local track_length = 230
 
 ---$track:数
 ---min=0
 ---max=5000
 ---step=1
-local rename_me_track1 = 50
+local track_count = 50
 
 ---$track:強度
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track2 = 40
+local track_intensity = 40
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_rotation = 0
 
 ---$check:ベースカラー
 local basechk = 1
@@ -66,13 +66,13 @@ obj.setoption("blend", CustomFlareMode)
 if basechk == 1 then
     col = CustomFlareColor
 end
-local dL0 = rename_me_track0 * 0.5
-local n = rename_me_track1
+local dL0 = track_length * 0.5
+local n = track_count
 local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
-alpha = alpha * rename_me_track2 * 0.02
+alpha = alpha * track_intensity * 0.02
 dH0 = dL0 * dH0 * 0.01
 ddeg = ddeg * 0.5
 fig = math.floor(fig)
@@ -96,7 +96,7 @@ for i = 1, n do
     local dL = dL0 * rnd
     dH = w0 * dH / 30
     dL = h0 * dL / 100
-    local rz = math.rad(i * spdeg + obj.rand(-ddeg, ddeg, i, 1000 + seed) - rename_me_track3)
+    local rz = math.rad(i * spdeg + obj.rand(-ddeg, ddeg, i, 1000 + seed) - track_rotation)
     local r = dL
     local s = math.sin(rz)
     local c = math.cos(rz)

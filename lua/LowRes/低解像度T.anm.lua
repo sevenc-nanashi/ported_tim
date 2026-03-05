@@ -3,25 +3,25 @@
 ---min=-200
 ---max=200
 ---step=0.1
-local rename_me_track0 = 50
+local track_intensity = 50
 
 ---$track:サイズ
 ---min=3
 ---max=500
 ---step=1
-local rename_me_track1 = 10
+local track_size = 10
 
 ---$track:角度
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track2 = 0
+local track_angle = 0
 
 ---$track:ぼかし%
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track3 = 100
+local track_percent = 100
 
 ---$color:色1
 local col1 = 0xffffff
@@ -39,13 +39,13 @@ local Lc = 0
 local Ap = 0
 
 ---$check:ブロック描画
-local rename_me_check0 = false
+local check0 = false
 
-local L = rename_me_track0 / 100
-local S = math.floor(rename_me_track1)
+local L = track_intensity / 100
+local S = math.floor(track_size)
 local w0, h0 = obj.getpixel()
-local D = rename_me_track2
-local N = rename_me_track3 / 100
+local D = track_angle
+local N = track_percent / 100
 local ty, tw
 if Lc == 0 then
     ty, tw = 1, 100
@@ -69,7 +69,7 @@ end
 w, h = obj.getpixel()
 local nx2 = 2 * math.ceil(0.5 * w / S)
 local ny2 = 2 * math.ceil(0.5 * h / S)
-if rename_me_check0 then
+if check0 then
     local ws, hs = nx2 * S, ny2 * S
     local dx, dy = (ws - w) / 2, (hs - h) / 2
     obj.effect("領域拡張", "上", dy, "下", dy, "左", dx, "右", dx, "塗りつぶし", 1)

@@ -3,25 +3,25 @@
 ---min=-20000
 ---max=20000
 ---step=0.1
-local rename_me_track0 = 0
+local track_offset_x = 0
 
 ---$track:ズレY
 ---min=-20000
 ---max=20000
 ---step=0.1
-local rename_me_track1 = 0
+local track_offset_y = 0
 
 ---$track:輝度
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track2 = 100
+local track_luminance = 100
 
 ---$track:縁補正
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 1
+local track_adjust = 1
 
 ---$check:透明度エッジ
 local Edchk = 0
@@ -38,10 +38,10 @@ local sh = 0
 ---$value:エッジぼかし
 local blur = 2
 
-local dx = rename_me_track0
-local dy = rename_me_track1
-local ld = rename_me_track2
-local edc = rename_me_track3
+local dx = track_offset_x
+local dy = track_offset_y
+local ld = track_luminance
+local edc = track_adjust
 
 local w, h = obj.getpixel()
 

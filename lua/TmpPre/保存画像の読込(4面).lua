@@ -3,14 +3,14 @@
 ---min=1
 ---max=4
 ---step=1
-local rename_me_track0 = 1
+local track_load_target = 1
 
 ---$check:中心調整
-local rename_me_check0 = true
+local check0 = true
 
-i = rename_me_track0
+i = track_load_target
 obj.copybuffer("obj", "cache:__ichijitekinihozon__")
-if not rename_me_check0 then
+if not check0 then
     if i == 1 then
         obj.effect("クリッピング", "右", obj.screen_w, "下", obj.screen_h)
         obj.ox = obj.screen_w / 2

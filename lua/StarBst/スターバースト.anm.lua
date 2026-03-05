@@ -3,25 +3,25 @@
 ---min=0
 ---max=400
 ---step=0.1
-local rename_me_track0 = 10
+local track_strength = 10
 
 ---$track:拡散
 ---min=0
 ---max=200
 ---step=0.1
-local rename_me_track1 = 100
+local track_diffusion = 100
 
 ---$track:しきい値
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 60
+local track_threshold = 60
 
 ---$track:発光回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 45
+local track_glow_rotation = 45
 
 ---$color:発光色
 local col = 0xffffff
@@ -42,7 +42,7 @@ local w, h = obj.getpixel()
 
 obj.copybuffer("cache:ori_img", "obj")
 
-local deg = rename_me_track3
+local deg = track_glow_rotation
 
 local sin = math.abs(math.sin(math.rad(deg)))
 local cos = math.abs(math.cos(math.rad(deg)))
@@ -57,11 +57,11 @@ obj.copybuffer("obj", "tmp")
 obj.effect(
     "グロー",
     "強さ",
-    rename_me_track0,
+    track_strength,
     "拡散",
-    rename_me_track1,
+    track_diffusion,
     "しきい値",
-    rename_me_track2,
+    track_threshold,
     "ぼかし",
     blur,
     "type",

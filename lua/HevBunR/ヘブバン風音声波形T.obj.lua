@@ -3,25 +3,25 @@
 ---min=0
 ---max=5000
 ---step=1
-local rename_me_track0 = 300
+local track_size = 300
 
 ---$track:分割量
 ---min=2
 ---max=400
 ---step=1
-local rename_me_track1 = 120
+local track_split_amount = 120
 
 ---$track:MAX長%
 ---min=0
 ---max=2000
 ---step=0.1
-local rename_me_track2 = 30
+local track_max_percent = 30
 
 ---$track:音量上限
 ---min=1
 ---max=100000
 ---step=1
-local rename_me_track3 = 30000
+local track_upper_limit = 30000
 
 ---$color:色W1
 local _1 = 0xc19ec1
@@ -66,7 +66,7 @@ local _13 = 1000
 local _0 = nil
 
 ---$check:波形反転
-local rename_me_check0 = false
+local check0 = false
 
 local floor = math.floor
 local abs = math.abs
@@ -81,11 +81,11 @@ local aoi = _0
 if _0[1] == "蒼井" then
     _0 = {}
 end
-local Rev = _0[0] == nil and rename_me_check0 or _0[0]
-local Siz = math.floor(_0[1] or rename_me_track0)
-local SpN = floor(_0[2] or rename_me_track1)
-local MxL = (_0[3] or rename_me_track2) * Siz / 100
-local SdU = floor(_0[4] or rename_me_track3)
+local Rev = _0[0] == nil and check0 or _0[0]
+local Siz = math.floor(_0[1] or track_size)
+local SpN = floor(_0[2] or track_split_amount)
+local MxL = (_0[3] or track_max_percent) * Siz / 100
+local SdU = floor(_0[4] or track_upper_limit)
 local SdD = floor(_6 or 0)
 local col1 = _1 or 0xc19ec1
 local col2 = _2 or 0x40acac

@@ -3,25 +3,25 @@
 ---min=50
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 600
+local track_size_x = 600
 
 ---$track:サイズY
 ---min=50
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 200
+local track_size_y = 200
 
 ---$track:赤凹凸
 ---min=-30
 ---max=30
 ---step=0.01
-local rename_me_track2 = 0
+local track_red_bump = 0
 
 ---$track:表示方式
 ---min=-1
 ---max=2
 ---step=1
-local rename_me_track3 = 0
+local track_display_mode = 0
 
 ---$value:緑凹凸
 local g3 = 0
@@ -45,7 +45,7 @@ local pos = { -280, 80, -200, 0, -120, -80, -80, 80, 0, 0, 80, -80, 120, 80, 200
 local spN = 20
 
 ---$check:カーブ表示
-local rename_me_check0 = true
+local check0 = true
 
 require("T_Color_Module")
 local drawtoneC = function(Cty, k, sw, sh, dx, dy, col, flg, a, TC, spN)
@@ -137,40 +137,40 @@ local drawtoneC = function(Cty, k, sw, sh, dx, dy, col, flg, a, TC, spN)
         obj.draw(dx, dy)
     end
 end
-local sw, sh = rename_me_track0, rename_me_track1
-local ar = rename_me_track2
+local sw, sh = track_size_x, track_size_y
+local ar = track_red_bump
 local ag = g3 or 0
 local ab = b3 or 0
-local TC_Type = rename_me_track3
+local TC_Type = track_display_mode
 spN = spN or 20
 Rset = Rset or 0
 Gset = Gset or 0
 Bset = Bset or 0
 if Rset == 1 or Gset == 1 or Bset == 1 then
-    if rename_me_check0 then
+    if check0 then
         obj.setanchor("pos", 3)
     end
     obj.setoption("drawtarget", "tempbuffer", sw / 3, sh)
     if Rset == 1 then
-        drawtoneC(0, 1, sw / 3, sh, 0, 0, 0xff0000, rename_me_check0, ar, TC_Type, spN)
+        drawtoneC(0, 1, sw / 3, sh, 0, 0, 0xff0000, check0, ar, TC_Type, spN)
         T_ToneCurve_R = 1
     elseif Gset == 1 then
-        drawtoneC(1, 1, sw / 3, sh, 0, 0, 0x00ff00, rename_me_check0, ar, TC_Type, spN)
+        drawtoneC(1, 1, sw / 3, sh, 0, 0, 0x00ff00, check0, ar, TC_Type, spN)
         T_ToneCurve_G = 1
     else
-        drawtoneC(2, 1, sw / 3, sh, 0, 0, 0x0000ff, rename_me_check0, ar, TC_Type, spN)
+        drawtoneC(2, 1, sw / 3, sh, 0, 0, 0x0000ff, check0, ar, TC_Type, spN)
         T_ToneCurve_B = 1
     end
 else
     T_ToneCurve_R = 1
     T_ToneCurve_G = 1
     T_ToneCurve_B = 1
-    if rename_me_check0 then
+    if check0 then
         obj.setanchor("pos", 9)
     end
     obj.setoption("drawtarget", "tempbuffer", sw, sh)
-    drawtoneC(0, 1, sw / 3, sh, -sw / 3, 0, 0xff0000, rename_me_check0, ar, TC_Type, spN)
-    drawtoneC(1, 7, sw / 3, sh, 0, 0, 0x00ff00, rename_me_check0, ag, TC_Type, spN)
-    drawtoneC(2, 13, sw / 3, sh, sw / 3, 0, 0x0000ff, rename_me_check0, ab, TC_Type, spN)
+    drawtoneC(0, 1, sw / 3, sh, -sw / 3, 0, 0xff0000, check0, ar, TC_Type, spN)
+    drawtoneC(1, 7, sw / 3, sh, 0, 0, 0x00ff00, check0, ag, TC_Type, spN)
+    drawtoneC(2, 13, sw / 3, sh, sw / 3, 0, 0x0000ff, check0, ab, TC_Type, spN)
 end
 obj.load("tempbuffer")

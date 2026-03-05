@@ -4,25 +4,25 @@
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track0 = 0
+local track_rotation = 0
 
 ---$track:垂直回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track1 = 0
+local track_rotation_2 = 0
 
 ---$track:側方回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track2 = 0
+local track_rotation_3 = 0
 
 ---$track:視野角
 ---min=0
 ---max=120
 ---step=0.1
-local rename_me_track3 = 30
+local track_fov = 30
 
 ---$value:分割数
 local N = 30
@@ -31,7 +31,7 @@ local N = 30
 local chk = 1
 
 ---$check:親カメラデータを取得
-local rename_me_check0 = false
+local check0 = false
 
 local chgRP = function(t, f)
     f = -f + math.pi
@@ -102,7 +102,7 @@ end
 
 local L, drz, camt, camf
 
-if rename_me_check0 then
+if check0 then
     local camx, camy, camz
     L = aviutl_camera_param_copy.d
 
@@ -153,10 +153,10 @@ if rename_me_check0 then
         end
     end
 
-    drz = drz + math.rad(aviutl_camera_param_copy.rz + rename_me_track2)
+    drz = drz + math.rad(aviutl_camera_param_copy.rz + track_rotation_3)
 else
-    drz = math.rad(rename_me_track2)
-    L = obj.screen_h * 0.5 / math.tan(math.rad(rename_me_track3 * 0.5))
+    drz = math.rad(track_rotation_3)
+    L = obj.screen_h * 0.5 / math.tan(math.rad(track_fov * 0.5))
     camt = 0
     camf = 0
 end
@@ -172,8 +172,8 @@ local hpi = math.pi * 0.5
 local wf = obj.screen_w * 0.5
 local hf = obj.screen_h * 0.5
 
-local dt = math.rad(rename_me_track1) - camt
-local df = -math.rad(rename_me_track0) + camf
+local dt = math.rad(track_rotation_2) - camt
+local df = -math.rad(track_rotation) + camf
 
 obj.setoption("drawtarget", "tempbuffer", obj.screen_w, obj.screen_h)
 if chk == 1 then

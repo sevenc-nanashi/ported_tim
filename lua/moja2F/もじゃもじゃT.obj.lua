@@ -3,28 +3,28 @@
 ---min=1
 ---max=2000
 ---step=1
-local rename_me_track0 = 200
+local track_size = 200
 
 ---$track:誤差％
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 30
+local track_percent = 30
 
 ---$track:線幅
 ---min=1
 ---max=200
 ---step=1
-local rename_me_track2 = 6
+local track_line_width = 6
 
 ---$track:巻き数
 ---min=0
 ---max=200
 ---step=0.01
-local rename_me_track3 = 5
+local track_count = 5
 
 ---$check:時間展開
-local rename_me_check0 = true
+local check0 = true
 
 ---$color:色
 local _1 = 0xff0000
@@ -84,10 +84,10 @@ local sqrt = math.sqrt
 local floor = math.floor
 local ceil = math.ceil
 _0 = _0 or {}
-local SZ = (_0[1] or rename_me_track0) / 2
-local RS = (_0[2] or rename_me_track1) / 100
-local Lw = floor(_0[3] or rename_me_track2)
-local RN = _0[4] or rename_me_track3
+local SZ = (_0[1] or track_size) / 2
+local RS = (_0[2] or track_percent) / 100
+local Lw = floor(_0[3] or track_line_width)
+local RN = _0[4] or track_count
 local CL = _1 or 0xffffff
 local DN = abs(_2 or 2)
 if DN < 1 then
@@ -127,7 +127,7 @@ if Ju == 0 then
 end
 local SD = abs(_14 or 0) + 1
 local SR = floor(_15 or 0)
-local CK = _0[0] == nil and rename_me_check0 or _0[0]
+local CK = _0[0] == nil and check0 or _0[0]
 _0 = nil
 _1 = nil
 _2 = nil

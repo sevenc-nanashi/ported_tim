@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track0 = 50
+local track_start_shift = 50
 
 ---$track:終了/全長
 ---min=0
 ---max=100
 ---step=0.01
-local rename_me_track1 = 0
+local track_end_total_length = 0
 
 ---$track:頂点数
 ---min=2
 ---max=16
 ---step=1
-local rename_me_track2 = 2
+local track_vertex_count = 2
 
 ---$track:間隔
 ---min=0.1
 ---max=500
 ---step=0.1
-local rename_me_track3 = 5
+local track_interval = 5
 
 ---$value:描画方法[0-2]
 local dm = 1
@@ -57,7 +57,7 @@ local dSI = { 0, 0 }
 local pos = { 0, 0, 100, 100 }
 
 ---$check:頂点群を分離
-local rename_me_check0 = true
+local check0 = true
 
 Tracking = {}
 
@@ -399,11 +399,11 @@ Tracking.Lw = Lw or { 100, 100, 100 }
 Tracking.col = col or ""
 Tracking.dSI = dSI or { 0, 0 }
 
-Tracking.st = rename_me_track0 * 0.01
-Tracking.ed = rename_me_track1 * 0.01
-local num = rename_me_track2
-Tracking.iv = rename_me_track3
-Tracking.ck = rename_me_check0
+Tracking.st = track_start_shift * 0.01
+Tracking.ed = track_end_total_length * 0.01
+local num = track_vertex_count
+Tracking.iv = track_interval
+Tracking.ck = check0
 
 obj.setanchor("pos", num, "line")
 

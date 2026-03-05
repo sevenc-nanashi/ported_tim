@@ -3,25 +3,25 @@
 ---min=0
 ---max=2000
 ---step=0.1
-local rename_me_track0 = 100
+local track_blur_amount = 100
 
 ---$track:凹凸ｻｲｽﾞ
 ---min=1
 ---max=1000
 ---step=1
-local rename_me_track1 = 30
+local track_bump_size = 30
 
 ---$track:角度
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track2 = 0
+local track_angle = 0
 
 ---$track:丸み
 ---min=-100
 ---max=100
 ---step=0.1
-local rename_me_track3 = 0
+local track_roundness = 0
 
 ---$check:サイズ保持
 local ck = 1
@@ -44,11 +44,11 @@ local rnds = 1
 ---$value:表示限界倍率
 local Sbai = 3
 
-local Bx = rename_me_track0
+local Bx = track_blur_amount
 if Bx ~= 0 then
-    local dS = rename_me_track1
-    local deg = rename_me_track2
-    local EG = rename_me_track3 * 0.01
+    local dS = track_bump_size
+    local deg = track_angle
+    local EG = track_roundness * 0.01
     local rad = deg * math.pi / 180
     BasP = RotBlur_BasP or (BasP or 0)
     AmpR = RotBlur_AmpR or (AmpR or 100)

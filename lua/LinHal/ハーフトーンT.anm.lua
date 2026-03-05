@@ -3,25 +3,25 @@
 ---min=5
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 10
+local track_size = 10
 
 ---$track:トーン小
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track1 = 0
+local track_tone_small = 0
 
 ---$track:トーン大
 ---min=0
 ---max=500
 ---step=0.1
-local rename_me_track2 = 100
+local track_tone_large = 100
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track3 = 0
+local track_rotation = 0
 
 ---$color:シャドウ色
 local col2 = "0x0"
@@ -42,13 +42,13 @@ local bkap = 0
 local tnrep = 0
 
 ---$check:自分自身で型抜き
-local rename_me_check0 = true
+local check0 = true
 
 obj.copybuffer("cache:ori_img", "obj")
-local si_x = rename_me_track0
-local tsi1 = rename_me_track1 * 0.01
-local tsi2 = rename_me_track2 * 0.01 - tsi1
-local rz = rename_me_track3
+local si_x = track_size
+local tsi1 = track_tone_small * 0.01
+local tsi2 = track_tone_large * 0.01 - tsi1
+local rz = track_rotation
 local w, h = obj.getpixel()
 local si_y = si_x
 local figsz = si_x
@@ -101,7 +101,7 @@ for i = -nx, nx do
         obj.draw(posx[i][j], posy[i][j], 0, con[i][j], al[i][j], 0, 0, rz)
     end
 end
-if rename_me_check0 then
+if check0 then
     obj.copybuffer("obj", "cache:ori_img")
     obj.effect("反転", "透明度反転", 1)
     obj.setoption("blend", "alpha_sub")

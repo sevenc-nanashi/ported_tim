@@ -3,25 +3,25 @@
 ---min=1
 ---max=16
 ---step=1
-local rename_me_track0 = 4
+local track_count = 4
 
 ---$track:線幅
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track1 = 20
+local track_line_width = 20
 
 ---$track:矢尻幅％
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track2 = 200
+local track_width_percent = 200
 
 ---$track:矢尻長％
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 240
+local track_percent = 240
 
 ---$color:線色
 local line_col = 0xff0000
@@ -45,7 +45,7 @@ local ysp = 0
 local anc = { -150, -100, 150, -100, -150, 100, 150, 100 }
 
 ---$check:矢印位置反転
-local rename_me_check0 = true
+local check0 = true
 
 --ver1.1
 
@@ -56,11 +56,11 @@ local alc = alc
 local xsp = math.abs(xsp or 0)
 local ysp = math.abs(ysp or 0)
 
-local acN = rename_me_track0
+local acN = track_count
 
-local Lw = rename_me_track1
-local Aw = Lw * rename_me_track2 * 0.01
-local Ah = Lw * rename_me_track3 * 0.01
+local Lw = track_line_width
+local Aw = Lw * track_width_percent * 0.01
+local Ah = Lw * track_percent * 0.01
 
 obj.setanchor("anc", acN, "line")
 
@@ -92,7 +92,7 @@ for i = 1, acN do
     mset[i] = mset[j]
 end
 
-if rename_me_check0 then
+if check0 then
     for i = 1, acN / 2 do
         X[i], X[acN + 1 - i] = X[acN + 1 - i], X[i]
         Y[i], Y[acN + 1 - i] = Y[acN + 1 - i], Y[i]

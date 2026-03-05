@@ -3,7 +3,7 @@
 ---min=0
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 0
+local track_thickness = 0
 
 ---$color:側面色
 local wcol = ""
@@ -109,7 +109,7 @@ function mydp(p1, p2, p3)
     end
 end
 
-TC = rename_me_track0 / 2
+TC = track_thickness / 2
 zoom = obj.getvalue("zoom") * 0.01
 w, h = obj.getpixel()
 if TC == 0 then

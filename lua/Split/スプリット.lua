@@ -3,25 +3,25 @@
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track0 = 30
+local track_n_1 = 30
 
 ---$track:ｽﾌﾟﾘｯﾄ2
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track1 = 30
+local track_n_2 = 30
 
 ---$track:形状
 ---min=0
 ---max=300
 ---step=0.1
-local rename_me_track2 = 100
+local track_shape = 100
 
 ---$track:影響範囲
 ---min=100
 ---max=1000
 ---step=0.1
-local rename_me_track3 = 100
+local track_range = 100
 
 ---$check:上下を揃える
 local spC = 0
@@ -41,10 +41,10 @@ local pos = { -100, 0, 100, 0 }
 ---$value:透明度境界ボカシ
 local bl = 1
 
-local sp1 = rename_me_track0 * 0.01
-local sp2 = rename_me_track1 * 0.01
-local fig = rename_me_track2 * 0.01
-local maxP = rename_me_track3 * 0.01
+local sp1 = track_n_1 * 0.01
+local sp2 = track_n_2 * 0.01
+local fig = track_shape * 0.01
+local maxP = track_range * 0.01
 
 if fig > 1 then
     fig = 10 * fig - 9

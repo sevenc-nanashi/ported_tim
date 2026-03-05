@@ -3,25 +3,25 @@
 ---min=0
 ---max=500
 ---step=1
-local rename_me_track0 = 10
+local track_length = 10
 
 ---$track:強度上限
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track1 = 128
+local track_intensity_max = 128
 
 ---$track:強度下限
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track2 = 0
+local track_intensity_min = 0
 
 ---$track:しきい値
 ---min=0
 ---max=1000
 ---step=1
-local rename_me_track3 = 0
+local track_threshold = 0
 
 ---$color:線色
 local _1 = 0x0
@@ -66,14 +66,14 @@ local _13 = 0
 local _0 = nil
 
 ---$check:画線のみ
-local rename_me_check0 = true
+local check0 = true
 
 _0 = _0 or {}
-local pw = _0[1] or rename_me_track0
-local Lu = _0[2] or rename_me_track1
-local Ld = _0[3] or rename_me_track2
-local Ls = _0[4] or rename_me_track3
-local Is = _0[0] == nil and rename_me_check0 or _0[0]
+local pw = _0[1] or track_length
+local Lu = _0[2] or track_intensity_max
+local Ld = _0[3] or track_intensity_min
+local Ls = _0[4] or track_threshold
+local Is = _0[0] == nil and check0 or _0[0]
 local col1 = _1 or 0x0
 local col2 = _2 or 0xffffff
 local Oal = _3 or 0

@@ -3,25 +3,25 @@
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track0 = 0
+local track_n_1 = 0
 
 ---$track:中間点1
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track1 = 85
+local track_midpoint_1 = 85
 
 ---$track:中間点2
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track2 = 170
+local track_midpoint_2 = 170
 
 ---$track:飽和点2
 ---min=0
 ---max=255
 ---step=1
-local rename_me_track3 = 255
+local track_n_2 = 255
 
 ---$color:シャドウ
 local col1 = 0x000000
@@ -35,7 +35,7 @@ local col3 = 0xffff00
 ---$color: ハイライト
 local col4 = 0xffffff
 
-local p = { rename_me_track0, rename_me_track1, rename_me_track2, rename_me_track3 }
+local p = { track_n_1, track_midpoint_1, track_midpoint_2, track_n_2 }
 table.sort(p)
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()
