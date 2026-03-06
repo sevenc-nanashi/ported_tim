@@ -291,6 +291,34 @@ impl PortedTimMod2 {
         Ok(())
     }
 
+    fn shift_channels(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        alpha_shift: i32,
+        red_shift: i32,
+        green_shift: i32,
+        blue_shift: i32,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+
+        unoptimized::shift_channels::shift_channels(
+            image_buffer,
+            width,
+            height,
+            alpha_shift,
+            red_shift,
+            green_shift,
+            blue_shift,
+        )?;
+        Ok(())
+    }
+
     fn bias_deletion(
         image_buffer: NonNull<u8>,
         width: usize,

@@ -19,6 +19,7 @@ pub mod pastel;
 pub mod posterize;
 pub mod reduction;
 pub mod shadow_highlight;
+pub mod shift_channels;
 pub mod standard_color;
 pub mod tetratone;
 pub mod threshold;
