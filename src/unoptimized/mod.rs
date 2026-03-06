@@ -5,6 +5,7 @@ pub mod change_to_color;
 pub mod channel_mixer;
 pub mod color_reduction;
 pub mod colorama;
+pub mod cycle_bit_shift;
 pub mod enh_grayscale;
 pub mod equalize;
 pub mod extended_contrast;
