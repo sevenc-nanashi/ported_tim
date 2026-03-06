@@ -11,6 +11,7 @@ pub mod gamma_correction;
 pub mod grainy;
 pub mod grayscale;
 pub mod metal;
+pub mod minimax;
 pub mod monochromatic;
 pub mod monochromatic2;
 pub mod pastel;

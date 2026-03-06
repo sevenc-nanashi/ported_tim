@@ -5,7 +5,7 @@
 ---step=1
 local track_max_min = 1
 
----$track:ﾁｬﾝﾈﾙ
+---$track:チャンネル
 ---min=1
 ---max=4
 ---step=1
@@ -24,24 +24,35 @@ local track_range = 10
 local track_angle = 0
 
 ---$check:水平
-local HC = 1
+local HC = true
 
 ---$check:垂直
-local VC = 1
+local VC = true
 
----$value:縦横比
+---$track:縦横比
+---min=1
+---max=100
+---step=0.01
 local asp = 100
 
 ---$check:範囲対称
-local Sym = 1
+local Sym2 = true
 
 ---$check:色も保存
-local svC = 0
+local svC2 = false
 
----$value:形状[0..4]
+---$select:形状
+---四角=0
+---円=1
+---菱形=2
+---十字=3
+---六角形=4
 local fig = 0
 
----$value:限界範囲
+---$track:限界範囲
+---min=1
+---max=1000
+---step=1
 local lmt = 50
 
 ---$value:α拡張
@@ -50,11 +61,10 @@ local Aen = 0
 ---$check:結果を保存(同条件1度のみ)
 local check0 = false
 
-require("T_Color_Module")
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
 local Deg = -track_angle % 360
-local Sym2 = Sym or 0
 local asp2 = (asp or 100) / 100
-local svC2 = svC or 0
 local fig2 = math.floor(fig or 0)
 local lmt2 = (lmt or 50)
 local Rng = track_range
@@ -67,8 +77,8 @@ end
 Rng = math.max(1, Rng)
 local ckr = 0
 if check0 then
-    local userdata, w, h = obj.getpixeldata()
-    ckr = T_Color_Module.MinimaxCheck(
+    local userdata, w, h = obj.getpixeldata("object", "bgra")
+    ckr = T_Color_Module.minimax_check(
         userdata,
         w,
         h,
@@ -86,7 +96,7 @@ if check0 then
         0
     )
     if ckr == 1 then
-        obj.putpixeldata(userdata)
+        obj.putpixeldata("object", userdata, w, h, "bgra")
     end
 end
 if ckr == 0 then
@@ -105,12 +115,12 @@ if ckr == 0 then
             wr, hr = hr, wr
         end
         obj.effect("領域拡張", "右", w2 - wr, "下", h2 - hr)
-        local userdata, w, h = obj.getpixeldata()
-        T_Color_Module.MinmaxRot(userdata, w, h, wr, hr, RR, RH, track_max_min)
-        obj.putpixeldata(userdata)
+        local userdata, w, h = obj.getpixeldata("object", "bgra")
+        T_Color_Module.minimax_rot(userdata, w, h, wr, hr, RR, RH, track_max_min)
+        obj.putpixeldata("object", userdata, w, h, "bgra")
     end
-    local userdata, w, h = obj.getpixeldata()
-    T_Color_Module.Minimax(
+    local userdata, w, h = obj.getpixeldata("object", "bgra")
+    T_Color_Module.minimax(
         userdata,
         w,
         h,
@@ -125,14 +135,14 @@ if ckr == 0 then
         fig2,
         Aen2
     )
-    obj.putpixeldata(userdata)
+    obj.putpixeldata("object", userdata, w, h, "bgra")
     if Deg ~= 0 then
         obj.setoption("drawtarget", "tempbuffer", w0, h0)
         obj.draw(0, 0, 0, 1, 1, 0, 0, -Deg)
-        obj.copybuffer("obj", "tmp")
+        obj.copybuffer("object", "tempbuffer")
     end
     if check0 then
-        local userdata, w, h = obj.getpixeldata()
+        local userdata, w, h = obj.getpixeldata("object", "bgra")
         T_Color_Module.MinimaxSave(userdata, w, h)
     end
 end

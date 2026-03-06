@@ -61,7 +61,7 @@
 | T_Color_Module.anm        | テトラトーン                              | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 簡易コロラマ                              | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ポスタリゼーション                        | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm        | 最大/最小                                 | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm        | 最大/最小                                 | :o:      | :o: | :o:              | ？           |
 | T_Color_Module.anm        | しきい値                                  | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | チャンネルミキサー(SetR)                  | ？       | -   | :x:              | ？           |
 | T_Color_Module.anm        | チャンネルミキサー(SetG)                  | ？       | -   | :x:              | ？           |

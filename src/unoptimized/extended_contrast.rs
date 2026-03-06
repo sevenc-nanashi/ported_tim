@@ -1,4 +1,4 @@
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 
 /// Lua 側の呼び出しと同じ並びを想定:
 /// ExtendedContrast(userdata, w, h, center, intensity, brightness, smooth, show_curve)
@@ -62,8 +62,7 @@ fn build_extended_contrast_lut(
         v = v.clamp(0.0, 255.0);
 
         let t = v / 255.0;
-        let curved =
-            (t * inv_smooth + (3.0 - t * 2.0) * (t * t) * smooth) * 255.0 + brightness;
+        let curved = (t * inv_smooth + (3.0 - t * 2.0) * (t * t) * smooth) * 255.0 + brightness;
 
         lut[x] = clamp_to_u8(curved);
     }
@@ -95,28 +94,17 @@ fn draw_curve_preview(buffer: &mut [u8], w: usize, h: usize, lut: &[u8; 256]) {
     }
 
     for y in 0..h {
-        let row_value = 255usize
-            .saturating_mul(h.saturating_sub(y).saturating_sub(3));
+        let row_value = 255usize.saturating_mul(h.saturating_sub(y).saturating_sub(3));
 
-        let row_curve_y = if h > 5 {
-            row_value / (h - 5)
-        } else {
-            0
-        };
+        let row_curve_y = if h > 5 { row_value / (h - 5) } else { 0 };
 
         for x in 0..w {
             let color = if x < 2 || x > w.saturating_sub(3) || y < 2 || y > h.saturating_sub(3) {
                 BGRA_RED
             } else {
-                let col_value = 255usize
-                    .saturating_mul(x)
-                    .saturating_sub(510);
+                let col_value = 255usize.saturating_mul(x).saturating_sub(510);
 
-                let curve_index = if w > 5 {
-                    col_value / (w - 5)
-                } else {
-                    0
-                };
+                let curve_index = if w > 5 { col_value / (w - 5) } else { 0 };
 
                 let lut_y = lut[curve_index.min(255)] as usize;
 

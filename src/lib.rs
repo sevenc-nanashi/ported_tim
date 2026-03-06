@@ -30,6 +30,10 @@ static SHADOW_HIGHLIGHT_STATE: std::sync::LazyLock<
 > = std::sync::LazyLock::new(|| {
     std::sync::Mutex::new(unoptimized::shadow_highlight::ShadowHighlightState::new())
 });
+static MINIMAX_CACHE: std::sync::LazyLock<std::sync::Mutex<unoptimized::minimax::MinimaxCache>> =
+    std::sync::LazyLock::new(|| {
+        std::sync::Mutex::new(unoptimized::minimax::MinimaxCache::default())
+    });
 
 #[aviutl2::module::functions]
 #[allow(clippy::too_many_arguments)]
@@ -829,6 +833,145 @@ impl PortedTimMod2 {
             col5,
             col6,
         )?;
+        Ok(())
+    }
+
+    fn minimax_check(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        max_min: u8,  // 1..=2
+        channel: u8,  // 1..=4
+        range: usize, // 1..=
+        angle_deg: f64,
+        horizontal: bool,
+        vertical: bool,
+        aspect_ratio: f64,
+        symmetric: bool,
+        save_color: bool,
+        fig: u8, // caller comment says [0..4]
+        reserved0: f64,
+        reserved1: f64,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let mut cache = MINIMAX_CACHE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire minimax cache lock"))?;
+        unoptimized::minimax::minimax_check(
+            &mut cache,
+            image_buffer,
+            width,
+            height,
+            unoptimized::minimax::MinimaxCheckParams {
+                max_min,
+                channel,
+                range,
+                angle_deg,
+                horizontal,
+                vertical,
+                aspect_ratio,
+                symmetric,
+                save_color,
+                fig,
+                reserved0,
+                reserved1,
+            },
+        )?;
+        Ok(())
+    }
+
+    fn minimax(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        max_min: u8,
+        range: usize,
+        channel: u8,
+        horizontal: bool,
+        vertical: bool,
+        symmetric: bool,
+        aspect_ratio: f64,
+        save_color: bool,
+        fig: u8,
+        alpha_expand: bool,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+
+        unoptimized::minimax::minmax_impl(
+            image_buffer,
+            width,
+            height,
+            unoptimized::minimax::MinimaxParams {
+                max_min,
+                range,
+                channel,
+                horizontal,
+                vertical,
+                symmetric,
+                aspect_ratio,
+                save_color,
+                fig,
+                alpha_expand,
+            },
+        )?;
+
+        Ok(())
+    }
+
+    fn minimax_rot(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        original_width: usize,
+        original_height: usize,
+        angle_rad: f64,
+        rotated_90_first: i32,
+        max_min: u8,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+
+        unoptimized::minimax::minimax_rot(
+            image_buffer,
+            width,
+            height,
+            unoptimized::minimax::MinimaxRotParams {
+                original_width,
+                original_height,
+                angle_rad,
+                rotated_90_first: rotated_90_first != 0,
+                max_min,
+            },
+        )?;
+
+        Ok(())
+    }
+
+    fn minimax_save(image_buffer: NonNull<u8>, width: usize, height: usize) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let mut cache = MINIMAX_CACHE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire minimax cache lock"))?;
+        unoptimized::minimax::minimax_save(&mut cache, image_buffer, width, height)?;
         Ok(())
     }
 }
