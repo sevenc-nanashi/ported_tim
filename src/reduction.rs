@@ -48,10 +48,6 @@ enum Axis {
     B,
 }
 
-fn rgb_to_u32(rgb: Rgb8) -> u32 {
-    ((rgb.r as u32) << 16) | ((rgb.g as u32) << 8) | (rgb.b as u32)
-}
-
 fn u32_to_rgb(color: u32) -> Rgb8 {
     Rgb8 {
         r: ((color >> 16) & 0xff) as u8,

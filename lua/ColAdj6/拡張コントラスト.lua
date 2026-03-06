@@ -20,28 +20,32 @@ local track_brightness = 0
 ---$track:なめらか
 ---min=0
 ---max=100
----step=0
+---step=0.001
 local track_smooth = 50
 
----$value:カーブサイズ
-local Csiz = 260
+---$track:カーブサイズ
+---min=100
+---max=1000
+---step=1
+local curve_size = 260
 
 ---$check:カーブ表示
-local check0 = false
+local show_curve = false
 
-require("T_Color_Module")
-if check0 then
-    obj.load("figure", "四角形", 0xffffff, math.max(100, Csiz or 260))
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+if show_curve then
+    obj.load("figure", "四角形", 0xffffff, math.max(100, curve_size or 260))
 end
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.ExtendedContrast(
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.extended_contrast(
     userdata,
     w,
     h,
     track_center,
-    track_intensity,
+    track_intensity / 100,
     track_brightness,
     track_smooth / 100,
-    check0
+    show_curve
 )
-obj.putpixeldata(userdata)
+obj.putpixeldata("object", userdata, w, h, "bgra")
