@@ -9,6 +9,7 @@ pub mod cycle_bit_shift;
 pub mod enh_grayscale;
 pub mod equalize;
 pub mod extended_contrast;
+pub mod fringe_fix;
 pub mod gamma_correction;
 pub mod grainy;
 pub mod grayscale;

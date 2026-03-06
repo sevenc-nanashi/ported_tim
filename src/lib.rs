@@ -381,6 +381,36 @@ impl PortedTimMod2 {
         Ok(())
     }
 
+    fn fringe_fix(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        bg_color: u32,
+        adjust_method: i32,
+        alpha_upper_limit: i32,
+        alpha_lower_limit: i32,
+        apply_alpha_after: i32,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+
+        unoptimized::fringe_fix::fringe_fix(
+            image_buffer,
+            width,
+            height,
+            bg_color,
+            adjust_method,
+            alpha_upper_limit,
+            alpha_lower_limit,
+            apply_alpha_after != 0,
+        )?;
+        Ok(())
+    }
+
     fn bias_deletion(
         image_buffer: NonNull<u8>,
         width: usize,

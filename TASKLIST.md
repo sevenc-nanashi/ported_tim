@@ -67,7 +67,7 @@
 | T_Color_Module.anm        | チャンネルシフト                          | :o:      | :o: | :o:              | :x:                  |
 | T_Color_Module.anm        | サイクルビットシフト                      | :o:      | :o: | :o:              | :x:                  |
 | T_Color_Module.anm        | 色抜き                                    | :o:      | :o: | :o:              | :x:                  |
-| T_Color_Module.anm        | フリンジ修正                              | ？       | :x: | :x:              | ？                   |
+| T_Color_Module.anm        | フリンジ修正                              | :o:      | :o: | :o:              | :x:                  |
 | -                         | 色付きエッジ抽出.anm                      | ？       | -   | :x:              | ？                   |
 | -                         | 色抽出T.anm                               | ？       | -   | :x:              | ？                   |
 | -                         | 燃焼T.anm                                 | ？       | :x: | :x:              | ？                   |
