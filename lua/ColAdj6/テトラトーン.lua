@@ -37,7 +37,8 @@ local col4 = 0xffffff
 
 local p = { track_n_1, track_midpoint_1, track_midpoint_2, track_n_2 }
 table.sort(p)
-require("T_Color_Module")
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.Tetratone(userdata, w, h, col1, col2, col3, col4, unpack(p))
-obj.putpixeldata(userdata)
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.tetratone(userdata, w, h, col1, col2, col3, col4, unpack(p))
+obj.putpixeldata("object", userdata, w, h, "bgra")

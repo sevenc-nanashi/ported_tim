@@ -732,6 +732,105 @@ impl PortedTimMod2 {
         )?;
         Ok(())
     }
+
+    fn tetratone(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        col1: u32, // 0xRRGGBB: shadow
+        col2: u32, // 0xRRGGBB: midtone 1
+        col3: u32, // 0xRRGGBB: midtone 2
+        col4: u32, // 0xRRGGBB: highlight
+        n1: u8,
+        midpoint1: u8,
+        midpoint2: u8,
+        n2: u8,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        unoptimized::tetratone::tetratone(
+            image_buffer,
+            width,
+            height,
+            col1,
+            col2,
+            col3,
+            col4,
+            n1,
+            midpoint1,
+            midpoint2,
+            n2,
+        )?;
+        Ok(())
+    }
+
+    fn posterize(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        r_count: usize,
+        g_count: usize,
+        b_count: usize,
+        error_diffusion: bool,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        unoptimized::posterize::posterize(
+            image_buffer,
+            width,
+            height,
+            r_count,
+            g_count,
+            b_count,
+            error_diffusion,
+        )?;
+        Ok(())
+    }
+
+    fn colorama(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        f_shift: f64,
+        cycle_count: f64,
+        max_colors: usize,
+        col1: u32,
+        col2: u32,
+        col3: u32,
+        col4: u32,
+        col5: u32,
+        col6: u32,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        unoptimized::colorama::colorama(
+            image_buffer,
+            width,
+            height,
+            f_shift,
+            cycle_count,
+            max_colors,
+            col1,
+            col2,
+            col3,
+            col4,
+            col5,
+            col6,
+        )?;
+        Ok(())
+    }
 }
 
 aviutl2::register_script_module!(PortedTimMod2);

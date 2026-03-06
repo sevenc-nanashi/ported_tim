@@ -27,12 +27,12 @@ local track_size = 1
 local check0 = false
 
 ---$check:誤差拡散
-local ED = 0
+local ED = false
 
-local ED2 = ED or 0 --追加のため
 local sz = math.max(1, track_size) --追加のため
 local w0, h0
-require("T_Color_Module")
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
 local r, g, b
 if check0 then
     r = track_r_count
@@ -44,9 +44,9 @@ if sz > 1 then
     w0, h0 = obj.getpixel()
     obj.effect("リサイズ", "拡大率", 100 / sz)
 end
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.Posterize(userdata, w, h, r, g, b, ED2)
-obj.putpixeldata(userdata)
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.posterize(userdata, w, h, r, g, b, ED)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 if sz > 1 then
     obj.effect("リサイズ", "X", w0, "Y", h0, "補間なし", 1, "ドット数でサイズ指定", 1)
 end

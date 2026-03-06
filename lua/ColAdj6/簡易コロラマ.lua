@@ -26,25 +26,23 @@ local col2 = 0xffff00
 ---$color:色3
 local col3 = 0x00ff00
 
----$value:色4
+---$color:色4
 local col4 = 0x00ffff
 
----$value:色5
+---$color:色5
 local col5 = 0x0000ff
 
----$value:色6
+---$color:色6
 local col6 = 0xff00ff
-
----$color:取得用
-local col7 = 0x000000
 
 local maxN = math.floor(track_max_colors)
 if maxN < 1 then
     maxN = 6
 end
-require("T_Color_Module")
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.Colorama(
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.colorama(
     userdata,
     w,
     h,
@@ -58,4 +56,4 @@ T_Color_Module.Colorama(
     col5,
     col6
 )
-obj.putpixeldata(userdata)
+obj.putpixeldata("object", userdata, w, h, "bgra")
