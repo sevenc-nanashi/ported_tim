@@ -27,4 +27,5 @@ pub mod standard_color;
 pub mod tetratone;
 pub mod threshold;
 pub mod tone_curve;
+pub mod tritone_v2;
 pub mod tritone_v3;

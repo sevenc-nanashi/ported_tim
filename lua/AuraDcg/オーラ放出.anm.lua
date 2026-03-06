@@ -29,23 +29,27 @@ local egm = 0
 ---$color:ハイライト
 local col1 = 0xffffff
 
----$color: ミッドトーン
+---$color:ミッドトーン
 local col2 = 0x0080ff
 
----$color: シャドウ
+---$color:シャドウ
 local col3 = 0x0080ff
 
----$value:ぼかし
+---$track:ぼかし
+---min=0
+---max=1000
+---step=1
 local bl = 1
 
----$check:ｵﾘｼﾞﾅﾙ表示
+---$check:オリジナル表示
 local check0 = true
 
-require("T_Color_Module")
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
 
 local ox, oy, oz = obj.ox, obj.oy, obj.oz
 local cx, cy, cz = obj.cx, obj.cy, obj.cz
-obj.copybuffer("cache:ori", "obj")
+obj.copybuffer("cache:ori", "object")
 
 local sz = track_range
 
@@ -66,34 +70,34 @@ obj.effect("縁取り", "サイズ", sz * 0.5, "ぼかし", 0, "color", 0xffffff
 obj.effect("縁取り", "サイズ", sz * 0.5, "ぼかし", 0, "color", 0x0)
 obj.effect("ぼかし", "範囲", sz)
 
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.Colorama(userdata, w, h, sft, repN, 2, 255, 255, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-obj.putpixeldata(userdata)
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.colorama(userdata, w, h, sft, repN, 2, 0xffffff, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 
-obj.copybuffer("cache:wave", "obj")
+obj.copybuffer("cache:wave", "object")
 
 obj.load("figure", "四角形", 0x0, (w < h and h or w))
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
-obj.copybuffer("obj", "cache:wave")
+obj.copybuffer("object", "cache:wave")
 obj.draw()
-obj.copybuffer("obj", "tmp")
+obj.copybuffer("object", "tempbuffer")
 
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.ShiftChannels(userdata, w, h, 1, 1, 1, 1)
-obj.putpixeldata(userdata)
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.shift_channels(userdata, w, h, 1, 1, 1, 1)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.TritoneV2(userdata, w, h, r1, g1, b1, r2, g2, b2, r3, g3, b3, 255, 128, 0)
-obj.putpixeldata(userdata)
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.tritone_v2(userdata, w, h, r1, g1, b1, r2, g2, b2, r3, g3, b3, 255, 128, 0)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 obj.effect("ぼかし", "範囲", bl)
 
 if check0 then
-    obj.copybuffer("tmp", "obj")
-    obj.copybuffer("obj", "cache:ori")
+    obj.copybuffer("tempbuffer", "object")
+    obj.copybuffer("object", "cache:ori")
     obj.draw()
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
 end
-
+obj.setoption("draw_state", false)
 obj.ox, obj.oy, obj.oz = ox, oy, oz
 obj.cx, obj.cy, obj.cz = cx, cy, cz
