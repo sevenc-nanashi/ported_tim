@@ -36,7 +36,7 @@ task :download do
   end
 end
 
-extensions = %w[anm tra obj]
+extensions = %w[anm tra obj cam scn]
 task :seed do
   require "yaml"
   require "fileutils"
@@ -81,7 +81,6 @@ task :seed do
                 }
                 current_script_lines = []
               end
-              pp line
               current_script = line[1..-1].strip
               next
             end
@@ -255,7 +254,7 @@ task :tasklist do
         filename = File.basename(source["path"]).delete_suffix(".lua")
         label.gsub!(/#{prefix}\\?/, "")
         label = "-" if label.empty?
-        puts "| #{label} | #{filename} | ？ | #{dll} | :x: | - |"
+        puts "| #{label} | #{filename} | ？ | #{dll} | :x: | ？ |"
       end
     end
   end

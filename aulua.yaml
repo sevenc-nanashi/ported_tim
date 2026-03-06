@@ -351,9 +351,9 @@ scripts:
     label: モーフィング(輪郭)-オプション
   - path: "./lua/Split/スプリット(位置拡張).lua"
     label: スプリット(位置拡張)
-  - path: "./lua/Split/スプリット(形状拡張__アンカー).lua"
+  - path: "./lua/Split/スプリット(形状拡張__ｱﾝｶｰ).lua"
     label: スプリット(形状拡張:ｱﾝｶｰ)
-  - path: "./lua/Split/スプリット(形状拡張__ファイル).lua"
+  - path: "./lua/Split/スプリット(形状拡張__ﾌｧｲﾙ).lua"
     label: スプリット(形状拡張:ﾌｧｲﾙ)
   - path: "./lua/Split/スプリット.lua"
     label: スプリット
@@ -463,3 +463,33 @@ scripts:
     label: 保存画像の読込(4面)
   - path: "./lua/moja2F/もじゃもじゃT.obj.lua"
     label: もじゃもじゃT.obj
+- name: tim2.cam2
+  sources:
+  - path: "./lua/Access/カメラデータコピー(親).lua"
+    label: カメラデータコピー(親)
+  - path: "./lua/Access/カメラデータコピー(子).lua"
+    label: カメラデータコピー(子)
+  - path: "./lua/AutoTgt/オートターゲット.cam.lua"
+    label: オートターゲット.cam
+  - path: "./lua/AutoTgt/オートターゲット100.cam.lua"
+    label: オートターゲット100.cam
+  - path: "./lua/AutoTgt/位置補正.cam.lua"
+    label: 位置補正.cam
+  - path: "./lua/AutoTgt/位置補正R.cam.lua"
+    label: 位置補正R.cam
+  - path: "./lua/MMDCam/MMDカメラデータ読込VMD.cam.lua"
+    label: MMDカメラデータ読込VMD.cam
+- name: tim2.scn2
+  sources:
+  - path: "./lua/SceChg/モザイクT.lua"
+    label: モザイクT
+  - path: "./lua/SceChg/矩形T.lua"
+    label: 矩形T
+  - path: "./lua/SceChg/ブラースライドT.lua"
+    label: ブラースライドT
+  - path: "./lua/SceChg/分割スライドT.lua"
+    label: 分割スライドT
+  - path: "./lua/SceChg/ルミナンスT.lua"
+    label: ルミナンスT
+  - path: "./lua/SceChg/ホールT.lua"
+    label: ホールT
