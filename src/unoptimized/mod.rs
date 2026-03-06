@@ -20,5 +20,6 @@ pub mod reduction;
 pub mod shadow_highlight;
 pub mod standard_color;
 pub mod tetratone;
+pub mod threshold;
 pub mod tone_curve;
 pub mod tritone_v3;
