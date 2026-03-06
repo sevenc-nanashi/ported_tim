@@ -23,34 +23,94 @@ local track_radius = 300
 ---step=0.1
 local track_limit_distance = 150
 
----$value:厚さ
+---$track:厚さ
+---min=0
+---max=500
+---step=0.1
 local dti = 20
 
----$value:破片サイズ
+---$track:破片サイズ
+---min=1
+---max=500
+---step=0.1
 local size = 40
 
----$value:ランダム形状
+---$track:ランダム形状
+---min=0
+---max=100
+---step=0.1
 local Rk = 100
 
----$value:中心
-local AA = "0,0,0"
+--group:中心
+---$track:中心X
+---min=-2000
+---max=2000
+---step=0.1
+local track_center_x = 0
 
----$value:速度
+---$track:中心Y
+---min=-2000
+---max=2000
+---step=0.1
+local track_center_y = 0
+
+---$track:中心Z
+---min=-2000
+---max=2000
+---step=0.1
+local track_center_z = 0
+
+--group
+
+---$track:速度
+---min=-1000
+---max=1000
+---step=0.1
 local speed = 100
 
----$value:距離影響
+---$track:距離影響
+---min=0
+---max=500
+---step=0.1
 local impact = 100
 
----$value:円周方向初速度
+---$track:円周方向初速度
+---min=-1000
+---max=1000
+---step=0.1
 local vr = 0
 
----$value:重力
-local grav = "0,100,0"
+--group:重力
+---$track:重力X
+---min=-1000
+---max=1000
+---step=0.1
+local track_gravity_x = 0
 
----$value:ランダム回転
+---$track:重力Y
+---min=-1000
+---max=1000
+---step=0.1
+local track_gravity_y = 100
+
+---$track:重力Z
+---min=-1000
+---max=1000
+---step=0.1
+local track_gravity_z = 0
+
+--group
+
+---$track:ランダム回転
+---min=0
+---max=500
+---step=0.1
 local spin = 100
 
----$value:ランダム方向
+---$track:ランダム方向
+---min=0
+---max=500
+---step=0.1
 local diff = 100
 
 local hxx = {}
@@ -65,6 +125,8 @@ local pu = {}
 local pv = {}
 local han = {}
 local tt = {}
+local AA = string.format("%s,%s,%s", track_center_x, track_center_y, track_center_z)
+local grav = string.format("%s,%s,%s", track_gravity_x, track_gravity_y, track_gravity_z)
 
 obj.effect()
 

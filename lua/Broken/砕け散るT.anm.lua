@@ -23,37 +23,70 @@ local track_radius = 300
 ---step=0.1
 local track_thickness = 20
 
----$value:破片サイズ
+---$track:破片サイズ
+---min=1
+---max=500
+---step=0.1
 local size = 50
 
----$value:ランダム形状
+---$track:ランダム形状
+---min=0
+---max=100
+---step=0.1
 local Rk = 100
 
----$value:中心X
+---$track:中心X
+---min=-2000
+---max=2000
+---step=0.1
 local ax = 0
 
----$value:中心Y
+---$track:中心Y
+---min=-2000
+---max=2000
+---step=0.1
 local ay = 0
 
----$value:中心Z
+---$track:中心Z
+---min=-2000
+---max=2000
+---step=0.1
 local az = 0
 
----$value:速度
+---$track:速度
+---min=-1000
+---max=1000
+---step=0.1
 local speed = 100
 
----$value:重力
+---$track:重力
+---min=-1000
+---max=1000
+---step=0.1
 local grav = 100
 
----$value:距離影響
+---$track:距離影響
+---min=0
+---max=500
+---step=0.1
 local impact = 100
 
----$value:ランダム回転
+---$track:ランダム回転
+---min=0
+---max=500
+---step=0.1
 local spin = 100
 
----$value:ランダム方向
+---$track:ランダム方向
+---min=0
+---max=500
+---step=0.1
 local diff = 100
 
----$value:再生速度
+---$track:再生速度
+---min=0
+---max=10
+---step=0.01
 local step = 1.0
 
 local hxx = {}
