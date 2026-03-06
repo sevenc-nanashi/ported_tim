@@ -56,7 +56,7 @@
 | T_Color_Module.anm        | 単色化(T)                                 | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 単色化(T2)                                | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 基準色変更                                | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm        | 特定色域変換T                             | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm        | 特定色域変換T                             | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | トライトーン                              | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | テトラトーン                              | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 簡易コロラマ                              | ？       | :x: | :x:              | ？           |

@@ -1,16 +1,5 @@
 use anyhow::{Result, ensure};
 
-#[inline]
-fn clamp_u8_from_i32(v: i32) -> u8 {
-    if v <= 0 {
-        0
-    } else if v >= 255 {
-        255
-    } else {
-        v as u8
-    }
-}
-
 /// C の sub_100151F0 + sub_10015240 相当:
 /// lut[0..=255]   = 0..=255
 /// lut[256..=511] = 255

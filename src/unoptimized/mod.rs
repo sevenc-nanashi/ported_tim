@@ -1,6 +1,7 @@
 pub mod bias_deletion;
 pub mod binarization;
 pub mod binarization_rgb;
+pub mod change_to_color;
 pub mod color_reduction;
 pub mod enh_grayscale;
 pub mod equalize;

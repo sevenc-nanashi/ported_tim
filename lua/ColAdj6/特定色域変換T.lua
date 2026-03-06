@@ -1,6 +1,6 @@
 --label:tim2\T_Color_Module.anm
 ---$track:色相範囲
----min=0
+---min=0.1
 ---max=360
 ---step=0.1
 local track_hue_range = 100
@@ -26,16 +26,20 @@ local track_boundary_adjust = 2
 ---$color:変更前
 local col1 = 0x0000ff
 
----$color: 変更後
+---$color:変更後
 local col2 = 0xff0000
 
----$value:彩度調整
+---$track:彩度調整
+---min=0
+---max=100
+---step=0.1
 local pS = 100
 
 local pS2 = pS or 100
-require("T_Color_Module")
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.ChangeToColor(
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.change_to_color(
     userdata,
     w,
     h,
@@ -47,4 +51,4 @@ T_Color_Module.ChangeToColor(
     track_luminance_adjust * 0.01,
     track_boundary_adjust
 )
-obj.putpixeldata(userdata)
+obj.putpixeldata("object", userdata, w, h, "bgra")

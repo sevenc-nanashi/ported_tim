@@ -699,6 +699,39 @@ impl PortedTimMod2 {
         )?;
         Ok(())
     }
+
+    fn change_to_color(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        src_color: u32,
+        dst_color: u32,
+        hue_range: f64,
+        saturation_range: f64,
+        saturation_adjust: f64,
+        luminance_adjust: f64,
+        boundary_adjust: f64,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        unoptimized::change_to_color::change_to_color(
+            image_buffer,
+            width,
+            height,
+            src_color,
+            dst_color,
+            hue_range,
+            saturation_range,
+            saturation_adjust,
+            luminance_adjust,
+            boundary_adjust,
+        )?;
+        Ok(())
+    }
 }
 
 aviutl2::register_script_module!(PortedTimMod2);
