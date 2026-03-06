@@ -23,7 +23,7 @@ local track_blue = 100
 ---step=0.1
 local track_all = 100
 
-require("T_Color_Module")
+-- require("T_Color_Module")
 local r, g, b
 if track_all == 100 then
     r = 100 / track_red
@@ -33,6 +33,7 @@ else
     r = 100 / track_all
     g, b = r, r
 end
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.GammaCorrection(userdata, w, h, r, g, b)
-obj.putpixeldata(userdata)
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.gamma_correction(userdata, w, h, r, g, b)
+obj.putpixeldata("object", userdata, w, h, "bgra")

@@ -5,7 +5,8 @@
 ---step=1
 local track_color = 3
 
-require("T_Color_Module")
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.ColorReduction(userdata, w, h, track_color)
-obj.putpixeldata(userdata)
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.color_reduction(userdata, w, h, track_color)
+obj.putpixeldata("object", userdata, w, h, "bgra")

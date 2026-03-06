@@ -5,7 +5,9 @@ use std::ptr::NonNull;
 mod bias_deletion;
 mod binarization;
 mod binarization_rgb;
+mod color_reduction;
 mod enh_grayscale;
+mod gamma_correction;
 mod grainy;
 mod grayscale;
 mod metal;
@@ -265,6 +267,41 @@ impl PortedTimMod2 {
             color1,
             color2,
         )?;
+        Ok(())
+    }
+
+    fn gamma_correction(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        exp_r: f64,
+        exp_g: f64,
+        exp_b: f64,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        gamma_correction::gamma_correction(image_buffer, width, height, exp_r, exp_g, exp_b)
+            .map_err(|e| anyhow::anyhow!(e))?;
+        Ok(())
+    }
+
+    fn color_reduction(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        shift: u8,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        color_reduction::color_reduction(image_buffer, shift)?;
         Ok(())
     }
 }

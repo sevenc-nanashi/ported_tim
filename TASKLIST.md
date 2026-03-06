@@ -35,7 +35,7 @@
 | T_Color_Module.anm        | メタル化                        | :o:      | D   | :o:              | :x:          |
 | T_Color_Module.anm        | 金属質                          | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 黄金質                          | ？       | :x: | :x:              | ？           |
-| T_Color_Module.anm        | ブリーチバイパス                | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm        | ブリーチバイパス                | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | パステル調                      | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ネオン                          | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | グレースケール                  | :o:      | :o: | :o:              | :x:          |
@@ -44,8 +44,8 @@
 | T_Color_Module.anm        | ２値化RGB                       | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | バイアス消去                    | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 粒状化                          | :o:      | :o: | :o:              | ？           |
-| T_Color_Module.anm        | ガンマ補正                      | ？       | :x: | :x:              | ？           |
-| T_Color_Module.anm        | 簡易減色                        | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm        | ガンマ補正                      | :o:      | :o: | :o:              | :x:          |
+| T_Color_Module.anm        | 簡易減色                        | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 減色パレット                    | ？       | -   | :x:              | ？           |
 | T_Color_Module.anm        | メディアンカット減色            | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 拡張コントラスト                | ？       | :x: | :x:              | ？           |
