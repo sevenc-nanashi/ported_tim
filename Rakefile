@@ -81,6 +81,7 @@ task :seed do
                 }
                 current_script_lines = []
               end
+              pp line
               current_script = line[1..-1].strip
               next
             end
@@ -101,7 +102,6 @@ task :seed do
           }
         end
       else
-        filename = "簡易トーンカーブ.obj" if filename == "簡易トーンカーブ.obj"
         content = File.read(file, encoding: "SHIFT_JIS").encode("UTF-8")
         FileUtils.mkdir_p(root)
         File.write(

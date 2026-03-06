@@ -23,8 +23,8 @@ local track_blur = 10
 ---step=0.1
 local track_base = 100
 
----$color:色1
-local col = 0x000000
+---$color:色
+local col = nil
 
 ---$check:単色化(T)
 local chk = 0
