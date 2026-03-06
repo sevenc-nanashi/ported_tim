@@ -23,10 +23,16 @@ local track_adjust = 100
 ---step=0.1
 local track_adjust_2 = 50
 
----$value:歯数
+---$track:歯数
+---min=3
+---max=200
+---step=1
 local N = 20
 
----$value:内輪半径補正
+---$track:内輪半径補正
+---min=0
+---max=200
+---step=0.1
 local R_ER = 100
 
 Lou = track_thickness

@@ -5,19 +5,19 @@
 ---step=0.1
 local track_offset = 2
 
----$track:放射ﾎﾞｶｼ
+---$track:放射ボカシ
 ---min=0
 ---max=100
 ---step=0.1
 local track_radial_blur = 2
 
----$track:焦点ｽﾞﾚ
+---$track:焦点ズレ
 ---min=0
 ---max=100
 ---step=0.1
 local track_focus_offset = 0
 
----$track:ｵﾘｼﾞﾅﾙ
+---$track:オリジナル
 ---min=0
 ---max=100
 ---step=0.1
@@ -26,11 +26,17 @@ local track_original = 0
 ---$check:位置ズレ補正
 local reC = 1
 
----$value:色配置[0〜2]
-local cpos = 0
+---$select:色配置
+---RGB=0
+---GRB=1
+---RBG=2
+local select_color_layout = 0
 
----$value:ピンボケ量
-local pbl = 0
+---$track:ピンボケ量
+---min=0
+---max=100
+---step=0.1
+local track_defocus = 0
 
 ---$check:逆順
 local check0 = false
@@ -45,8 +51,8 @@ local mv = track_offset * 0.01
 local bl = track_radial_blur
 local Cnt = 2 * track_focus_offset * 0.01
 local OrAlp = track_original * 0.01
-local cpos2 = cpos or 0
-local pbl2 = pbl or 0
+local cpos2 = select_color_layout or 0
+local pbl2 = track_defocus or 0
 
 local mv_r, mv_g, mv_b
 local p_r, p_g, p_b
@@ -74,7 +80,7 @@ elseif cpos2 == 2 then
     p_b, p_g = p_g, p_b
 end
 
-local userdata, w, h = obj.getpixeldata()
+local w, h = obj.getpixel()
 obj.setoption("drawtarget", "tempbuffer", w, h)
 
 obj.copybuffer("cache:ori_img", "obj")
