@@ -259,3 +259,35 @@ task :tasklist do
     end
   end
 end
+
+task :current_progress do
+  tasklist = File.read("./TASKLIST.md")
+  # | カテゴリ                  | スクリプト                                | 動作確認 | DLL | パラメーター改善 | シェーダー化 |
+  num_checked = 0
+  num_dll_ported = 0
+  num_dll_all = 0
+  num_parameter_improved = 0
+  num_shader_ported = 0
+  num_shader_all = 0
+  num_scripts = 0
+  tasklist
+    .scan(/\| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|/)
+    .each do |category, script, confirmed, dll, parameter, shader|
+      next if category.include?("カテゴリ") || category.include?("----")
+      num_checked += 1 if confirmed.include?("o")
+      num_dll_ported += 1 if dll.include?("o")
+      num_dll_all += 1 unless dll.include?("-")
+      num_parameter_improved += 1 if parameter.include?("o")
+      if shader.include?("o")
+        num_shader_ported += 1
+        num_shader_all += 1
+      end
+      num_shader_all += 1 if shader.include?("x")
+      num_scripts += 1
+    end
+
+  puts "動作確認: #{num_checked}/#{num_scripts} (#{(num_checked.to_f / num_scripts * 100).round(1)}%)"
+  puts "DLL化: #{num_dll_ported}/#{num_dll_all} (#{num_dll_all > 0 ? (num_dll_ported.to_f / num_dll_all * 100).round(1) : "N/A"}%)"
+  puts "パラメーター改善: #{num_parameter_improved}/#{num_scripts} (#{(num_parameter_improved.to_f / num_scripts * 100).round(1)}%)"
+  puts "シェーダー化: #{num_shader_ported}/#{num_shader_all} (#{num_shader_all > 0 ? (num_shader_ported.to_f / num_shader_all * 100).round(1) : "N/A"}%)"
+end
