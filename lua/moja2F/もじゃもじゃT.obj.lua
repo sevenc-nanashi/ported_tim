@@ -27,52 +27,106 @@ local track_count = 5
 local check0 = true
 
 ---$color:色
-local _1 = 0xff0000
+local param_color = 0xff0000
 
----$value:間隔
-local _2 = 0
+---$track:間隔
+---min=0
+---max=600
+---step=0.1
+local param_spacing = 0
 
----$value:中心ずれサイズ
-local _3 = { 0, 0 }
+--group:中心ずれサイズ
+---$track:中心ずれX
+---min=-1000
+---max=1000
+---step=0.1
+local param_center_offset_x = 0
 
----$value:減衰速度％
-local _4 = 0
+---$track:中心ずれY
+---min=-1000
+---max=1000
+---step=0.1
+local param_center_offset_y = 0
 
----$value:減衰形状
-local _5 = 0
+local param_center_offset = { param_center_offset_x, param_center_offset_y }
 
----$value:円状≦100
-local _6 = 100
+--group
 
----$value:開始角度
-local _8 = 0
+---$track:減衰速度％
+---min=-100
+---max=100
+---step=0.1
+local param_attenuation_pct = 0
 
----$value:半径ｵﾌｾｯﾄ
-local _9 = 0
+---$track:減衰形状
+---min=0
+---max=20
+---step=0.1
+local param_attenuation_shape = 0
 
----$value:誤差比[-100..100]
-local _10 = 0
+---$track:円状
+---min=0
+---max=100
+---step=0.1
+local param_circle_ratio = 100
 
----$value:時間展開法[0..3]
-local _7 = 0
+---$track:開始角度
+---min=-360
+---max=360
+---step=0.1
+local param_start_angle = 0
 
----$value:周分割≦30
-local _11 = 4
+---$track:半径ｵﾌｾｯﾄ
+---min=-1000
+---max=1000
+---step=0.1
+local param_radius_offset = 0
 
----$value:分解能≦50
-local _12 = 40
+---$track:誤差比
+---min=-100
+---max=100
+---step=0.1
+local param_error_balance = 0
 
----$value:重ね描き
-local _13 = 0
+---$select:時間展開法
+---等速度=0
+---等角速度=1
+---反転等速度=2
+---反転等角速度=3
+local param_time_expand_mode = 0
 
----$value:シード
-local _14 = 0
+---$track:周分割
+---min=3
+---max=30
+---step=1
+local param_circumference_divisions = 4
 
----$value:└変化間隔
-local _15 = 0
+---$track:分解能
+---min=1
+---max=50
+---step=1
+local param_resolution = 40
+
+---$track:重ね描き
+---min=0
+---max=20
+---step=1
+local param_overdraw_count = 0
+
+---$track:シード
+---min=0
+---max=1000000
+---step=1
+local param_seed = 0
+
+---$track:└変化間隔
+---min=0
+---max=10000
+---step=1
+local param_seed_step = 0
 
 ---$value:PI
-local _0 = nil
+local param_override = {}
 
 local PI = math.pi
 local sin = math.sin
@@ -83,41 +137,41 @@ local abs = math.abs
 local sqrt = math.sqrt
 local floor = math.floor
 local ceil = math.ceil
-_0 = _0 or {}
-local SZ = (_0[1] or track_size) / 2
-local RS = (_0[2] or track_percent) / 100
-local Lw = floor(_0[3] or track_line_width)
-local RN = _0[4] or track_count
-local CL = _1 or 0xffffff
-local DN = abs(_2 or 2)
+param_override = param_override or {}
+local SZ = (param_override[1] or track_size) / 2
+local RS = (param_override[2] or track_percent) / 100
+local Lw = floor(param_override[3] or track_line_width)
+local RN = param_override[4] or track_count
+local CL = param_color or 0xffffff
+local DN = abs(param_spacing or 2)
 if DN < 1 then
     DN = math.log(Lw)
     DN = (0.5126 * DN + 0.4641) * DN
     DN = math.max(DN, 1)
 end
-local CT = _3 or { 0, 0 }
+local CT = param_center_offset or { 0, 0 }
 CT[1] = (CT[1] or 0) / RN
 CT[2] = abs(CT[2] or 0) / RN
-local AT = abs(_4 or 0) / 100
-local AA = abs(_5 or 0) + 1
-local HP = (_6 or 100) / 100
+local AT = abs(param_attenuation_pct or 0) / 100
+local AA = abs(param_attenuation_shape or 0) + 1
+local HP = (param_circle_ratio or 100) / 100
 HP = max(HP, 0)
 HP = min(HP, 1)
-local RT = _7 or 0
-local f0 = math.rad(_8 or 0)
-local R0 = abs(_9 or 0)
-local AS = (_10 or 0) / 100
+local RT = param_time_expand_mode or 0
+local f0 = math.rad(param_start_angle or 0)
+local R0 = abs(param_radius_offset or 0)
+local AS = (param_error_balance or 0) / 100
 AS = max(AS, -1)
 AS = min(AS, 1)
 local RS1 = (AS >= 0 and 1 or 1 + AS) * RS
 local RS2 = (AS >= 0 and 1 - AS or 1) * RS
-local CN = floor(_11 or 4)
+local CN = floor(param_circumference_divisions or 4)
 CN = max(CN, 3)
 CN = min(CN, 30)
-local RE = floor(abs(_12 or 10))
+local RE = floor(abs(param_resolution or 10))
 RE = max(RE, 1)
 RE = min(RE, 50)
-local Ju = floor(abs(_13 or 0))
+local Ju = floor(abs(param_overdraw_count or 0))
 if Ju == 0 then
     if Lw < 4 then
         Ju = ({ 5, 3, 2 })[Lw]
@@ -125,25 +179,25 @@ if Ju == 0 then
         Ju = 1
     end
 end
-local SD = abs(_14 or 0) + 1
-local SR = floor(_15 or 0)
-local CK = _0[0] == nil and check0 or _0[0]
-_0 = nil
-_1 = nil
-_2 = nil
-_3 = nil
-_4 = nil
-_5 = nil
-_6 = nil
-_7 = nil
-_8 = nil
-_9 = nil
-_10 = nil
-_11 = nil
-_12 = nil
-_13 = nil
-_14 = nil
-_15 = nil
+local SD = abs(param_seed or 0) + 1
+local SR = floor(param_seed_step or 0)
+local CK = param_override[0] == nil and check0 or param_override[0]
+-- param_override = nil
+-- param_color = nil
+-- param_spacing = nil
+-- param_center_offset = nil
+-- param_attenuation_pct = nil
+-- param_attenuation_shape = nil
+-- param_circle_ratio = nil
+-- param_time_expand_mode = nil
+-- param_start_angle = nil
+-- param_radius_offset = nil
+-- param_error_balance = nil
+-- param_circumference_divisions = nil
+-- param_resolution = nil
+-- param_overdraw_count = nil
+-- param_seed = nil
+-- param_seed_step = nil
 obj.load("figure", "円", CL, Lw * 2)
 obj.effect("リサイズ", "拡大率", 50)
 if RN == 0 then
@@ -159,11 +213,11 @@ else
     if RS >= 0.1 then
         interpolationT = obj.interpolation
     else
-        interpolationT = function(t, x0, y0, x1, y1, x2, y2, x3, y3)
-            local x, y = obj.interpolation(t, x0, y0, x1, y1, x2, y2, x3, y3)
-            local x21, y21 = x2 - x1, y2 - y1
-            local dx1, dy1 = x2 - x0, y2 - y0
-            local dx2, dy2 = x1 - x3, y1 - y3
+        interpolationT = function(t, prev_x, prev_y, cur_x, cur_y, next_x, next_y, next2_x, next2_y)
+            local x, y = obj.interpolation(t, prev_x, prev_y, cur_x, cur_y, next_x, next_y, next2_x, next2_y)
+            local x21, y21 = next_x - cur_x, next_y - cur_y
+            local dx1, dy1 = next_x - prev_x, next_y - prev_y
+            local dx2, dy2 = cur_x - next2_x, cur_y - next2_y
             local D = dx2 * dy1 - dx1 * dy2
             local A = (-dy2 * x21 + dx2 * y21) / D * Asp
             local B = (-dy1 * x21 + dx1 * y21) / D * Asp
@@ -172,11 +226,11 @@ else
             B = min(B, 0.75)
             B = max(B, 0)
             local it = 1 - t
-            local u1, v1 = x1 + A * dx1, y1 + A * dy1
-            local u2, v2 = x2 + B * dx2, y2 + B * dy2
-            local X1, Y1 = it * x1 + t * u1, it * y1 + t * v1
+            local u1, v1 = cur_x + A * dx1, cur_y + A * dy1
+            local u2, v2 = next_x + B * dx2, next_y + B * dy2
+            local X1, Y1 = it * cur_x + t * u1, it * cur_y + t * v1
             local X2, Y2 = it * u1 + t * u2, it * v1 + t * v2
-            local X3, Y3 = it * u2 + t * x2, it * v2 + t * y2
+            local X3, Y3 = it * u2 + t * next_x, it * v2 + t * next_y
             X1, Y1 = it * X1 + t * X2, it * Y1 + t * Y2
             X2, Y2 = it * X2 + t * X3, it * Y2 + t * Y3
             X1, Y1 = it * X1 + t * X2, it * Y1 + t * Y2
@@ -222,24 +276,24 @@ else
     local REx = RE * RNx
     Xs[REx] = x
     Ys[REx] = y
-    local MaxMin = function(XX, screen, max_z)
-        local Zmax = XX[0]
-        local Zmin = XX[0]
-        local N = #XX
+    local calc_max_dimension = function(values, screen_size, max_limit)
+        local max_value = values[0]
+        local min_value = values[0]
+        local N = #values
         for i = 1, N do
-            Zmax = Zmax < XX[i] and XX[i] or Zmax
+            max_value = max_value < values[i] and values[i] or max_value
         end
         for i = 1, N do
-            Zmin = Zmin > XX[i] and XX[i] or Zmin
+            min_value = min_value > values[i] and values[i] or min_value
         end
-        Zmax = max(abs(Zmax), abs(Zmin))
-        Zmax = floor(Zmax + Lw / 2 + 5)
-        Zmax = 2 * Zmax + screen % 2
-        return min(Zmax, max_z)
+        max_value = max(abs(max_value), abs(min_value))
+        max_value = floor(max_value + Lw / 2 + 5)
+        max_value = 2 * max_value + screen_size % 2
+        return min(max_value, max_limit)
     end
     local max_x, max_y = obj.getinfo("image_max")
-    local XMAX = MaxMin(Xs, obj.screen_w, max_x)
-    local YMAX = MaxMin(Ys, obj.screen_h, max_y)
+    local XMAX = calc_max_dimension(Xs, obj.screen_w, max_x)
+    local YMAX = calc_max_dimension(Ys, obj.screen_h, max_y)
     obj.setoption("drawtarget", "tempbuffer", XMAX, YMAX)
     RN = REx * RN / RNi
     RNx = floor(RN)
