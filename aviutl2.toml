@@ -37,3 +37,13 @@ destination = "Script/@tim.obj2.obj2"
 build = { group = "aulua" }
 source = "build/tim2.tra2"
 destination = "Script/@tim.tra2.tra2"
+
+[artifacts.tim2_cam2]
+build = { group = "aulua" }
+source = "build/tim2.cam2"
+destination = "Script/@tim.cam2.cam2"
+
+[artifacts.tim2_scn2]
+build = { group = "aulua" }
+source = "build/tim2.scn2"
+destination = "Script/@tim.scn2.scn2"
