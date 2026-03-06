@@ -6,6 +6,7 @@ mod bias_deletion;
 mod binarization;
 mod binarization_rgb;
 mod enh_grayscale;
+mod grainy;
 mod grayscale;
 mod metal;
 mod pastel;
@@ -233,6 +234,37 @@ impl PortedTimMod2 {
             variance_correction,
         )
         .map_err(|e| anyhow::anyhow!(e))?;
+        Ok(())
+    }
+
+    fn grainy(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        amount: f64,
+        contrast: f64,
+        processing_method: u8,
+        seed: i32,
+        color1: u32,
+        color2: u32,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        grainy::grainy(
+            image_buffer,
+            width,
+            height,
+            amount,
+            contrast,
+            processing_method as i32,
+            seed,
+            color1,
+            color2,
+        )?;
         Ok(())
     }
 }

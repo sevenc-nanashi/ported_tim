@@ -68,6 +68,7 @@ function CupLine(x)
         return BB * x * x + CC * x + 1 - BB - CC
     end
 end
+
 function Rot(u, s)
     return u * math.cos(s), u * math.sin(s)
 end
@@ -75,7 +76,7 @@ end
 local size = track_size / 2
 local ds = track_cup_saucer_gap / 1000
 -- ANT = math.floor(ANT)
-mpi = math.pi
+local mpi = math.pi
 
 --ティーカップ本体作成
 obj.load("figure", "四角形", colc, size)
@@ -84,26 +85,26 @@ obj.load("figure", "四角形", colc, size)
 --     obj.setoption("antialias", ANT)
 -- end
 
-y1 = -size * CupLine(0) - size * ds
-u1 = 0
+local y1 = -size * CupLine(0) - size * ds
+local u1 = 0
 for i = 0, N - 1 do
-    if ANT >= 2 then
-        if i == N - 1 then
-            obj.setoption("antialias", 1)
-        else
-            obj.setoption("antialias", 0)
-        end
-    end
-    v0 = (i + 1) / N
-    y0 = -size * CupLine(v0) - size * ds
-    u0 = size * v0
-    x0, z0 = Rot(u0, 0)
-    x3, z3 = Rot(u1, 0)
+    -- if ANT >= 2 then
+    --     if i == N - 1 then
+    --         obj.setoption("antialias", 1)
+    --     else
+    --         obj.setoption("antialias", 0)
+    --     end
+    -- end
+    local v0 = (i + 1) / N
+    local y0 = -size * CupLine(v0) - size * ds
+    local u0 = size * v0
+    local x0, z0 = Rot(u0, 0)
+    local x3, z3 = Rot(u1, 0)
     for j = 0, N - 1 do
-        s1 = j * 2 * mpi / N
-        s2 = (j + 1) * 2 * mpi / N
-        x1, z1 = Rot(u0, s2)
-        x2, z2 = Rot(u1, s2)
+        -- local s1 = j * 2 * mpi / N
+        local s2 = (j + 1) * 2 * mpi / N
+        local x1, z1 = Rot(u0, s2)
+        local x2, z2 = Rot(u1, s2)
         obj.drawpoly(x0, y0, z0, x1, y0, z1, x2, y1, z2, x3, y1, z3)
         x0, z0 = x1, z1
         x3, z3 = x2, z2
@@ -117,30 +118,30 @@ obj.load("figure", "四角形", cols, size)
 -- if ANT < 2 then
 --     obj.setoption("antialias", ANT)
 -- end
-v1 = 0
+local v1 = 0
 y1 = 0
 u1 = 0
 for i = 0, N - 1 do
-    if ANT >= 2 then
-        if i == N - 1 then
-            obj.setoption("antialias", 1)
-        else
-            obj.setoption("antialias", 0)
-        end
-    end
-    v0 = (i + 1) / N
-    y0 = -0.26 * size * v0 ^ 2.4
-    u0 = 1.5 * size * v0
+    -- if ANT >= 2 then
+    --     if i == N - 1 then
+    --         obj.setoption("antialias", 1)
+    --     else
+    --         obj.setoption("antialias", 0)
+    --     end
+    -- end
+    local v0 = (i + 1) / N
+    local y0 = -0.26 * size * v0 ^ 2.4
+    local u0 = 1.5 * size * v0
     for j = 0, N - 1 do
-        s1 = j * 2 * mpi / N
-        s2 = (j + 1) * 2 * mpi / N
-        x0, z0 = Rot(u0, s1)
-        x1, z1 = Rot(u0, s2)
-        x2, z2 = Rot(u1, s2)
-        x3, z3 = Rot(u1, s1)
+        local s1 = j * 2 * mpi / N
+        local s2 = (j + 1) * 2 * mpi / N
+        local x0, z0 = Rot(u0, s1)
+        local x1, z1 = Rot(u0, s2)
+        local x2, z2 = Rot(u1, s2)
+        local x3, z3 = Rot(u1, s1)
         obj.drawpoly(x0, y0, z0, x1, y0, z1, x2, y1, z2, x3, y1, z3)
     end
-    v1 = v0
+    -- local v1 = v0
     y1 = y0
     u1 = u0
 end
@@ -151,18 +152,18 @@ obj.load("figure", "四角形", colc, size * 0.6)
 --     ANT = 1
 -- end
 --obj.setoption("antialias", ANT)
-oy = size * CupLine(0.85) + size * ds
-ox = (0.85 + 0.315) * size + tp
-dz = size * tw
+local oy = size * CupLine(0.85) + size * ds
+local ox = (0.85 + 0.315) * size + tp
+local dz = size * tw
 for j = 0, N - 1 do
-    s1 = j * 2 * mpi / N
-    s2 = (j + 1) * 2 * mpi / N
-    hi1 = 1 + 0.5 * ((1 + math.cos(s1)) / 2) ^ 12
-    hi2 = 1 + 0.5 * ((1 + math.cos(s2)) / 2) ^ 12
-    x0, y0 = Rot(size * 0.30 * hi1, s1 + 0.7 * mpi)
-    x1, y1 = Rot(size * 0.30 * hi2, s2 + 0.7 * mpi)
-    x2, y2 = Rot(size * 0.24 * hi2, s2 + 0.7 * mpi)
-    x3, y3 = Rot(size * 0.24 * hi1, s1 + 0.7 * mpi)
+    local s1 = j * 2 * mpi / N
+    local s2 = (j + 1) * 2 * mpi / N
+    local hi1 = 1 + 0.5 * ((1 + math.cos(s1)) / 2) ^ 12
+    local hi2 = 1 + 0.5 * ((1 + math.cos(s2)) / 2) ^ 12
+    local x0, y0 = Rot(size * 0.30 * hi1, s1 + 0.7 * mpi)
+    local x1, y1 = Rot(size * 0.30 * hi2, s2 + 0.7 * mpi)
+    local x2, y2 = Rot(size * 0.24 * hi2, s2 + 0.7 * mpi)
+    local x3, y3 = Rot(size * 0.24 * hi1, s1 + 0.7 * mpi)
     obj.drawpoly(x0 + ox, y0 - oy, dz, x1 + ox, y1 - oy, dz, x2 + ox, y2 - oy, dz, x3 + ox, y3 - oy, dz)
     obj.drawpoly(x0 + ox, y0 - oy, -dz, x1 + ox, y1 - oy, -dz, x2 + ox, y2 - oy, -dz, x3 + ox, y3 - oy, -dz)
     obj.drawpoly(x0 + ox, y0 - oy, dz, x1 + ox, y1 - oy, dz, x1 + ox, y1 - oy, -dz, x0 + ox, y0 - oy, -dz)

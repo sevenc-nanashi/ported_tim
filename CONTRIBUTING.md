@@ -18,15 +18,19 @@
 > 最終目標はシェーダーでの実装のため、Rustでの並列化はしません。
 > ただし、シェーダーでの実装が難しい場合はRustでの並列化を行います。
 
-## デコンパイルのメモ
+## デコンパイル
 
-プロンプト：
+- 乱数の一致は目指しません。
+
+### プロンプト
 
 ````md
-port this to rust function that takes the same parameter as lua, with single thread.
+Port these C code to rust function that takes the same parameter as lua, with single thread.
 Tell me when there are undefined variables or functions.
-use unreachable! for unreachable part, and anyhow::Result for errors.
+Use `unreachable!` for unreachable part, and `anyhow::Result` for errors.
 Callee's buffer's pixel structure is BGRA, and the output buffer's pixel structure is also BGRA.
+You don't have to:
+- Port randomization (if there are). Use `rand` crate instead.
 
 Callee:
 ```lua

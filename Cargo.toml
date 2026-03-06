@@ -10,3 +10,4 @@ crate-type = ["cdylib"]
 [dependencies]
 anyhow = "1.0.102"
 aviutl2 = "0.20.3"
+rand = "0.10.0"
