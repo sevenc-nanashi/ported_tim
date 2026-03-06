@@ -91,12 +91,8 @@ scripts:
     label: 最大/最小
   - path: "./lua/ColAdj6/しきい値.lua"
     label: しきい値
-  - path: "./lua/ColAdj6/チャンネルミキサー(SetR).lua"
-    label: チャンネルミキサー(SetR)
-  - path: "./lua/ColAdj6/チャンネルミキサー(SetG).lua"
-    label: チャンネルミキサー(SetG)
-  - path: "./lua/ColAdj6/チャンネルミキサー(表示+SetB).lua"
-    label: チャンネルミキサー(表示+SetB)
+  - path: "./lua/ColAdj6/チャンネルミキサー.lua"
+    label: チャンネルミキサー
   - path: "./lua/ColAdj6/チャンネルシフト.lua"
     label: チャンネルシフト
   - path: "./lua/ColAdj6/サイクルビットシフト.lua"

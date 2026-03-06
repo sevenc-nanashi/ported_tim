@@ -63,9 +63,7 @@
 | T_Color_Module.anm        | ポスタリゼーション                        | :o:      | :o: | :o:              | :x:                  |
 | T_Color_Module.anm        | 最大/最小                                 | :o:      | :o: | :o:              | :x:                  |
 | T_Color_Module.anm        | しきい値                                  | :o:      | :o: | :o:              | :x:                  |
-| T_Color_Module.anm        | チャンネルミキサー(SetR)                  | ？       | -   | :x:              | ？                   |
-| T_Color_Module.anm        | チャンネルミキサー(SetG)                  | ？       | -   | :x:              | ？                   |
-| T_Color_Module.anm        | チャンネルミキサー(表示+SetB)             | ？       | :x: | :x:              | ？                   |
+| T_Color_Module.anm        | チャンネルミキサー                        | :o:      | :o: | :o:              | :x:                  |
 | T_Color_Module.anm        | チャンネルシフト                          | ？       | :x: | :x:              | ？                   |
 | T_Color_Module.anm        | サイクルビットシフト                      | ？       | :x: | :x:              | ？                   |
 | T_Color_Module.anm        | 色抜き                                    | ？       | :x: | :x:              | ？                   |

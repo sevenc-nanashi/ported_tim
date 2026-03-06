@@ -247,6 +247,50 @@ impl PortedTimMod2 {
         Ok(())
     }
 
+    fn channel_mixer(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        rr: i32,
+        rg: i32,
+        rb: i32,
+        rc: i32,
+        gr: i32,
+        gg: i32,
+        gb: i32,
+        gc: i32,
+        br: i32,
+        bg: i32,
+        bb: i32,
+        bc: i32,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+
+        unoptimized::channel_mixer::channel_mixer(
+            image_buffer,
+            width,
+            height,
+            rr,
+            rg,
+            rb,
+            rc,
+            gr,
+            gg,
+            gb,
+            gc,
+            br,
+            bg,
+            bb,
+            bc,
+        )?;
+        Ok(())
+    }
+
     fn bias_deletion(
         image_buffer: NonNull<u8>,
         width: usize,
