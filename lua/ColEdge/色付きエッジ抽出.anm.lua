@@ -26,33 +26,45 @@ local track_adjust = 1
 ---$check:透明度エッジ
 local Edchk = 0
 
----$check:ｵﾘｼﾞﾅﾙ表示
+---$check:オリジナル表示
 local orichk = 0
 
----$value:エッジ強さ
-local pow = 100
+---$track:エッジ強さ
+---min=0
+---max=1000
+---step=0.1
+local track_edge_strength = 100
 
----$value:エッジしきい値
-local sh = 0
+---$track:エッジしきい値
+---min=0
+---max=255
+---step=0.1
+local track_edge_threshold = 0
 
----$value:エッジぼかし
-local blur = 2
+---$track:エッジぼかし
+---min=0
+---max=100
+---step=0.1
+local track_edge_blur = 2
 
 local dx = track_offset_x
 local dy = track_offset_y
 local ld = track_luminance
 local edc = track_adjust
+local pow = track_edge_strength
+local sh = track_edge_threshold
+local blur = track_edge_blur
 
 local w, h = obj.getpixel()
 
 obj.setoption("drawtarget", "tempbuffer", w, h)
 
-obj.copybuffer("cache:ori", "obj")
+obj.copybuffer("cache:ori", "object")
 
 obj.effect("色調補正", "輝度", ld)
 obj.draw()
 
-obj.copybuffer("obj", "cache:ori")
+obj.copybuffer("object", "cache:ori")
 
 if Edchk == 0 then
     obj.effect(
@@ -87,11 +99,11 @@ obj.effect("反転", "透明度反転", 1)
 obj.setoption("blend", "alpha_sub")
 obj.draw()
 
-obj.copybuffer("obj", "tmp")
-obj.setoption("blend", 0)
+obj.copybuffer("object", "tempbuffer")
+obj.setoption("blend", "none")
 
 if orichk == 1 then
-    obj.copybuffer("tmp", "cache:ori")
+    obj.copybuffer("tempbuffer", "cache:ori")
 else
     obj.setoption("drawtarget", "tempbuffer", w, h)
 end
