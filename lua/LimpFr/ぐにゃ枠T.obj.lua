@@ -24,78 +24,89 @@ local track_fluctuation_amount = 10
 local track_fluctuation_length = 70
 
 ---$color:線色
-local _1 = 0xffffff
+local param_line_color = 0xffffff
 
 ---$figure:形状
-local _2 = "円"
+local param_figure = "円"
 
----$value:延長%
-local _3 = 10
+---$track:延長%
+---min=-100
+---max=500
+---step=0.1
+local param_extension_pct = 10
 
----$value:縦横比[-100..100]
-local _4 = 0
+---$track:縦横比
+---min=-100
+---max=100
+---step=0.1
+local param_aspect_ratio = 0
 
----$value:点間隔
-local _5 = 2
+---$track:点間隔
+---min=0
+---max=200
+---step=1
+local param_dot_spacing = 2
 
----$value:追加角度
-local _6 = 0
+---$track:追加角度
+---min=-360
+---max=360
+---step=0.1
+local param_additional_angle = 0
 
 ---$check:└自動方向
-local _7 = 0
+local param_auto_direction = 0
 
----$value:分割精度
-local _11 = 10
+---$track:分割精度
+---min=1
+---max=200
+---step=1
+local param_subdivision_precision = 10
 
----$value:重ね描き
-local _12 = 1
+---$track:重ね描き
+---min=1
+---max=20
+---step=1
+local param_overdraw_count = 1
 
 ---$check:└自動調整
-local _13 = 1
+local param_auto_adjust_overdraw = 1
 
----$value:シード
-local _14 = 0
+---$track:シード
+---min=0
+---max=1000000
+---step=1
+local param_seed = 0
 
----$value:└変化間隔
-local _15 = 0
+---$track:└変化間隔
+---min=0
+---max=10000
+---step=1
+local param_seed_change_interval = 0
 
 ---$value: PI
-local _0 = nil
+local param_override = {}
 
 ---$check:単一線
 local check0 = false
 
-_0 = _0 or {}
-local FgS = math.floor(_0[1] or track_size)
-local LnW = math.floor(_0[2] or track_line_width)
-local LnA = (_0[3] or track_fluctuation_amount)
-local LnL = math.floor(_0[4] or track_fluctuation_length)
-local Col = _1 or 0xffffff
-local Fig = _2 or "円"
-local SmL = (_3 or 0) / 100
-local Asp = (_4 or 0) / 100
-local DoS = math.floor(_5 or 1)
-local drz = _6 or 0
-local AuA = _7 == 1
-local Sn = math.floor(_11 or 10)
-local Ju = math.floor(_12 or 1)
-local JA = _13 == 1
-local SeD = _14 or 0
-local ChI = _15 or 0
-local SL = _0[0] == nil and check0 or _0[0]
-_0 = nil
-_1 = nil
-_2 = nil
-_3 = nil
-_4 = nil
-_5 = nil
-_6 = nil
-_7 = nil
-_11 = nil
-_12 = nil
-_13 = nil
-_14 = nil
-_15 = nil
+param_override = param_override or {}
+local FgS = math.floor(param_override[1] or track_size)
+local LnW = math.floor(param_override[2] or track_line_width)
+local LnA = (param_override[3] or track_fluctuation_amount)
+local LnL = math.floor(param_override[4] or track_fluctuation_length)
+local Col = param_line_color or 0xffffff
+local Fig = param_figure or "円"
+local SmL = (param_extension_pct or 0) / 100
+local Asp = (param_aspect_ratio or 0) / 100
+local DoS = math.floor(param_dot_spacing or 1)
+local drz = param_additional_angle or 0
+local AuA = param_auto_direction == 1
+local Sn = math.floor(param_subdivision_precision or 10)
+local Ju = math.floor(param_overdraw_count or 1)
+local JA = param_auto_adjust_overdraw == 1
+local SeD = param_seed or 0
+local ChI = param_seed_change_interval or 0
+local SL = param_override[0] == nil and check0 or param_override[0]
 if DoS == 0 then
     DoS = math.floor(2 * math.sqrt(0.2 * (2 * LnW - 0.2)))
 end --円と円の交わりによる窪みが0.2ピクセル以下
@@ -207,9 +218,9 @@ if SL then
     Lset(LL1 + dL, 0, 0, 1, 0)
 else
     Lset(LL1 + dL, 0, -LL2 / 2, 1, 0) --上
-    Lset(LL1 + dL, 0, LL2 / 2, 2, 0) --下
+    Lset(LL1 + dL, 0, LL2 / 2, 2, 0)  --下
     Lset(LL2 + dL, -LL1 / 2, 0, 3, 1) --左
-    Lset(LL2 + dL, LL1 / 2, 0, 4, 1) --右
+    Lset(LL2 + dL, LL1 / 2, 0, 4, 1)  --右
 end
 obj.copybuffer("obj", "tmp")
 for i = 2, Ju do
