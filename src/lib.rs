@@ -12,6 +12,7 @@ mod grainy;
 mod grayscale;
 mod metal;
 mod pastel;
+mod tone_curve;
 mod tritone_v3;
 
 #[aviutl2::plugin(ScriptModule)]
@@ -29,6 +30,9 @@ impl aviutl2::module::ScriptModule for PortedTimMod2 {
         }
     }
 }
+
+static TONE_CURVE_STATE: std::sync::LazyLock<std::sync::Mutex<tone_curve::ToneCurveState>> =
+    std::sync::LazyLock::new(|| std::sync::Mutex::new(tone_curve::ToneCurveState::default()));
 
 #[aviutl2::module::functions]
 #[allow(clippy::too_many_arguments)]
@@ -335,6 +339,158 @@ impl PortedTimMod2 {
             p2,
             p3,
             mode,
+        )?;
+        Ok(())
+    }
+
+    fn set_tone_curve_mode_0(
+        channel_type: usize,
+        bias: f64,
+        quadratic: f64,
+        linear: f64,
+        scale: f64,
+    ) -> anyhow::Result<()> {
+        let mut state = TONE_CURVE_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
+        tone_curve::set_tone_curve_mode_0(
+            &mut state,
+            channel_type,
+            bias,
+            quadratic,
+            linear,
+            scale,
+        )?;
+        Ok(())
+    }
+
+    fn set_tone_curve_mode_1(
+        channel_type: usize,
+        threshold: f64,
+        upper_bias: f64,
+        upper_slope: f64,
+        lower_bias: f64,
+        lower_slope: f64,
+    ) -> anyhow::Result<()> {
+        let mut state = TONE_CURVE_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
+        tone_curve::set_tone_curve_mode_1(
+            &mut state,
+            channel_type,
+            threshold,
+            upper_bias,
+            upper_slope,
+            lower_bias,
+            lower_slope,
+        )?;
+        Ok(())
+    }
+
+    fn set_tone_curve_mode_2(
+        channel_type: usize,
+        threshold: f64,
+        upper_bias: f64,
+        upper_linear: f64,
+        upper_quadratic: f64,
+        lower_bias: f64,
+        lower_linear: f64,
+        lower_quadratic: f64,
+    ) -> anyhow::Result<()> {
+        let mut state = TONE_CURVE_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
+        tone_curve::set_tone_curve_mode_2(
+            &mut state,
+            channel_type,
+            threshold,
+            upper_bias,
+            upper_linear,
+            upper_quadratic,
+            lower_bias,
+            lower_linear,
+            lower_quadratic,
+        )?;
+        Ok(())
+    }
+
+    fn sim_tone_curve(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        copy_red_to_green_blue: bool,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let state = TONE_CURVE_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
+        tone_curve::sim_tone_curve(&state, image_buffer, width, height, copy_red_to_green_blue)?;
+        Ok(())
+    }
+
+    fn image_tone_curve(
+        image_buffer: NonNull<u8>,
+        image_width: usize,
+        image_height: usize,
+        center_x: f64,
+        center_y: f64,
+        angle_deg: f64,
+        line_length: f64,
+        line_color_bgra: u32,
+        hide_line: bool,
+    ) -> anyhow::Result<()> {
+        let buffer_size = image_width
+            .checked_mul(image_height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let mut state = TONE_CURVE_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
+        tone_curve::image_tone_curve(
+            &mut state,
+            image_buffer,
+            image_width,
+            image_height,
+            center_x,
+            center_y,
+            angle_deg,
+            line_length,
+            line_color_bgra,
+            hide_line,
+        )?;
+        Ok(())
+    }
+
+    fn draw_tone_curve(
+        image_buffer: NonNull<u8>,
+        image_width: usize,
+        image_height: usize,
+        channel_type: usize,
+        curve_color_bgra: u32,
+    ) -> anyhow::Result<()> {
+        let buffer_size = image_width
+            .checked_mul(image_height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let state = TONE_CURVE_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
+        tone_curve::draw_tone_curve(
+            &state,
+            image_buffer,
+            image_width,
+            image_height,
+            channel_type,
+            curve_color_bgra,
         )?;
         Ok(())
     }

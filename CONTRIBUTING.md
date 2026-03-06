@@ -32,7 +32,7 @@ Use `unreachable!` for unreachable part, and `anyhow::Result` for errors.
 Callee's buffer's pixel structure is BGRA, and the output buffer's pixel structure is also BGRA.
 You don't have to:
 - Port randomization (if there are). Use `rand` crate instead.
-- Input validation.
+- Port receiving parameters from lua. Just assume the parameters are passed as function arguments.
 
 Callee:
 ```lua

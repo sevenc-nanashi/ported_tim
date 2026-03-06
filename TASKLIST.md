@@ -49,8 +49,8 @@
 | T_Color_Module.anm        | 減色パレット                    | ？       | -   | :x:              | ？           |
 | T_Color_Module.anm        | メディアンカット減色            | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 拡張コントラスト                | ？       | :x: | :x:              | ？           |
-| T_Color_Module.anm        | 画像トーンカーブ                | ？       | :x: | :x:              | ？           |
-| T_Color_Module.anm        | 簡易トーンカーブ                | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm        | 画像トーンカーブ                | :o:      | :o: | :o:              | :x:          |
+| T_Color_Module.anm        | 簡易トーンカーブ                | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | イコライズ                      | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | シャドウ・ハイライト            | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 単色化(T)                       | ？       | :x: | :x:              | ？           |
@@ -226,7 +226,7 @@
 | -                         | ベジエ軌道Ｔ.obj                | ？       | -   | :x:              | ？           |
 | -                         | パズルピース.obj                | ？       | -   | :x:              | ？           |
 | -                         | 泡.obj                          | ？       | -   | :x:              | ？           |
-| -                         | 簡易トーンカーブ.obj            | ？       | :x: | :x:              | ？           |
+| -                         | 簡易トーンカーブ.obj            | :o:      | :o: | :o:              | :x:          |
 | -                         | 簡易ヒストグラム.obj            | ？       | :x: | :x:              | ？           |
 | -                         | 色相環.obj                      | ？       | -   | :x:              | ？           |
 | 集中線T.obj               | 集中線T1                        | ？       | -   | :x:              | ？           |
