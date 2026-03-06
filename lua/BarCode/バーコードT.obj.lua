@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\カスタムオブジェクト
 ---$track:最小幅
 ---min=1
 ---max=30

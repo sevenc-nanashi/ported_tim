@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\切り替え効果
 ---$track:割合
 ---min=0
 ---max=100

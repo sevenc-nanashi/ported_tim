@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\変形
 ---$track:変換範囲
 ---min=0
 ---max=100

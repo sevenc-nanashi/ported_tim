@@ -1,4 +1,4 @@
---label:tim2\未分類\カスタムフレア.anm
+--label:tim2\光効果\カスタムフレア.anm
 ---$track:密度
 ---min=1
 ---max=100

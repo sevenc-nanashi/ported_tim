@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\加工
 ---$track:焼け
 ---min=0
 ---max=200

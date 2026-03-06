@@ -1,4 +1,4 @@
---label:tim2\未分類\カメレオン効果.anm
+--label:tim2\色調整\カメレオン効果.anm
 ---$track:中心X
 ---min=-10000
 ---max=10000

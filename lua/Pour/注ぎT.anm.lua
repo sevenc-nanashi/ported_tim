@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\アニメーション効果
 ---$track:水位
 ---min=-5000
 ---max=5000

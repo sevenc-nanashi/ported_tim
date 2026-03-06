@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\配置
 ---$track:中心位置
 ---min=-20000
 ---max=20000

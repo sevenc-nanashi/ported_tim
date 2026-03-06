@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\アニメーション効果
 ---$track:速度
 ---min=0
 ---max=10000

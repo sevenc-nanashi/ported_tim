@@ -1,4 +1,4 @@
---label:tim2\未分類\T_Color_Module.anm
+--label:tim2\色調整\T_Color_Module.anm
 ---$check:赤カーブ全体統一
 local check0 = false
 

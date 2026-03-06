@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\装飾
 ---$track:サイズ
 ---min=0
 ---max=3000

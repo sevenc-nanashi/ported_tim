@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\色調整
 ---$track:レイヤー
 ---min=1
 ---max=100

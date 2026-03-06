@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\変形
 ---$track:基準X
 ---min=-10000
 ---max=10000

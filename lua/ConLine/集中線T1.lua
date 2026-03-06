@@ -1,4 +1,4 @@
---label:tim2\未分類\集中線T.obj
+--label:tim2\カスタムオブジェクト\集中線T.obj
 ---$track:発生確率
 ---min=0
 ---max=100

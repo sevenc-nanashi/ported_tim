@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\カメラ制御
 ---$track:ﾀｰｹﾞｯﾄ
 ---min=100
 ---max=10000

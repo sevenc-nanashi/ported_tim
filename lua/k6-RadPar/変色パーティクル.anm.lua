@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\アニメーション効果
 ---$track:出力頻度
 ---min=1
 ---max=5000

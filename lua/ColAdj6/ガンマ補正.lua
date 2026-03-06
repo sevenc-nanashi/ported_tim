@@ -1,4 +1,4 @@
---label:tim2\未分類\T_Color_Module.anm
+--label:tim2\色調整\T_Color_Module.anm
 ---$track:赤
 ---min=1
 ---max=1000

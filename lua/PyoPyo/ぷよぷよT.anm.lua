@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\アニメーション効果
 ---$track:枠サイズ
 ---min=0
 ---max=500

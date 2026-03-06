@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\カメラ制御
 ---$track:補正X
 ---min=-5000
 ---max=5000

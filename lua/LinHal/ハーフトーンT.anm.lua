@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\加工
 ---$track:サイズ
 ---min=5
 ---max=1000

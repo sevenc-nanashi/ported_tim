@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\配置
 ---$track:透明度
 ---min=0
 ---max=100

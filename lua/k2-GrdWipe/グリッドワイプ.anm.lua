@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\切り替え効果
 ---$track:展開
 ---min=0
 ---max=100

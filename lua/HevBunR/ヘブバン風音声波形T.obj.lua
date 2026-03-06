@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\カスタムオブジェクト
 ---$track:外円ｻｲｽﾞ
 ---min=0
 ---max=5000

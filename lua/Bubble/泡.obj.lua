@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\カスタムオブジェクト
 ---$track:個数
 ---min=0
 ---max=1000

@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\カスタムオブジェクト
 ---$track:ｱﾝｶｰ数
 ---min=1
 ---max=16

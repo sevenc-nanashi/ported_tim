@@ -1,4 +1,4 @@
---label:tim2\未分類\輪郭追跡.anm
+--label:tim2\オブジェクト制御\輪郭追跡.anm
 ---$track:描画度
 ---min=0
 ---max=100

@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\変形
 ---$track:中心Y
 ---min=-5000
 ---max=5000

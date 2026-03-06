@@ -1,3 +1,3 @@
---label:tim2\未分類\一時保存読込.obj
+--label:tim2\オブジェクト制御\一時保存読込.obj
 obj.copybuffer("tmp", "frm")
 obj.copybuffer("cache:__ichijitekinihozon__", "tmp")

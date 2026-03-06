@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\変形
 ---$track:蓋角度
 ---min=-90
 ---max=270

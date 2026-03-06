@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\変形
 ---$track:移動X
 ---min=-50000
 ---max=50000

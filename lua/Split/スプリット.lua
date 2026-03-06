@@ -1,4 +1,4 @@
---label:tim2\未分類\スプリット.anm
+--label:tim2\変形\スプリット.anm
 ---$track:ｽﾌﾟﾘｯﾄ1
 ---min=0
 ---max=100

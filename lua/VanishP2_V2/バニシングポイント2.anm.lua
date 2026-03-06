@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\変形
 ---$track:サイズ補正
 ---min=0
 ---max=20000

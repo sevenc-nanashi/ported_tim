@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\加工
 ---$track:強度
 ---min=-200
 ---max=200

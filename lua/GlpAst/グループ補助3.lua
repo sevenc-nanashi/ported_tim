@@ -1,4 +1,4 @@
---label:tim2\未分類\グループ補助.anm
+--label:tim2\オブジェクト制御\グループ補助.anm
 ---$track:縦横比
 ---min=-100
 ---max=100

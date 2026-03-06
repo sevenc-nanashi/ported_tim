@@ -1,4 +1,4 @@
---label:tim2\未分類\シーンチェンジセットT.scn
+--label:tim2\シーンチェンジ\シーンチェンジセットT.scn
 ---$track:単独量
 ---min=0
 ---max=100

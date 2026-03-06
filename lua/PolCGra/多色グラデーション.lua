@@ -1,4 +1,4 @@
---label:tim2\未分類\多色グラデーション.anm
+--label:tim2\色調整\多色グラデーション.anm
 ---$track:幅
 ---min=0
 ---max=5000

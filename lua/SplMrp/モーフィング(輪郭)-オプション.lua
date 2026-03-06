@@ -1,4 +1,4 @@
---label:tim2\未分類\モーフィング.anm
+--label:tim2\変形\モーフィング.anm
 ---$track:ライン幅
 ---min=0
 ---max=1000

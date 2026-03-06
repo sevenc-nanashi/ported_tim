@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\色調整
 ---$track:サイズX
 ---min=50
 ---max=1000

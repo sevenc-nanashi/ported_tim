@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\光効果
 ---$track:ズレ量
 ---min=0
 ---max=100

@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\抽出
 ---$track:半径
 ---min=1
 ---max=500

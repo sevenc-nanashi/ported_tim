@@ -1,4 +1,4 @@
---label:tim2\未分類\カスタムフレア.anm
+--label:tim2\光効果\カスタムフレア.anm
 ---$track:サイズ
 ---min=10
 ---max=1000

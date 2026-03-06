@@ -1,4 +1,4 @@
---label:tim2\未分類
+--label:tim2\変形
 ---$track:ﾂﾏﾐ量％
 ---min=-1000
 ---max=1000
