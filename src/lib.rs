@@ -2,6 +2,7 @@
 use aviutl2::{anyhow, module::ScriptModuleFunctions};
 use std::ptr::NonNull;
 
+mod bias_deletion;
 mod binarization;
 mod binarization_rgb;
 mod enh_grayscale;
@@ -203,6 +204,35 @@ impl PortedTimMod2 {
             auto_detect_method,
         );
 
+        Ok(())
+    }
+    fn bias_deletion(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        range: i32,
+        adjust_amount: f64,
+        offset: f64,
+        threshold: f64,
+        variance_correction: bool,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        bias_deletion::bias_deletion(
+            image_buffer,
+            width,
+            height,
+            range,
+            adjust_amount,
+            offset,
+            threshold,
+            variance_correction,
+        )
+        .map_err(|e| anyhow::anyhow!(e))?;
         Ok(())
     }
 }

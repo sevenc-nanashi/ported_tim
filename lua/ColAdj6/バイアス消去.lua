@@ -11,7 +11,7 @@ local track_range = 30
 ---step=0.1
 local track_adjust_amount = 100
 
----$track:ｵﾌｾｯﾄ
+---$track:オフセット
 ---min=-300
 ---max=300
 ---step=0.1
@@ -26,9 +26,10 @@ local track_threshold = 0
 ---$check:偏差補正
 local check0 = true
 
-require("T_Color_Module")
-userdata, w, h = obj.getpixeldata()
-T_Color_Module.BiasDeletion(
+--require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.bias_deletion(
     userdata,
     w,
     h,
@@ -38,4 +39,4 @@ T_Color_Module.BiasDeletion(
     track_threshold,
     check0
 )
-obj.putpixeldata(userdata)
+obj.putpixeldata("object", userdata, w, h, "bgra")
