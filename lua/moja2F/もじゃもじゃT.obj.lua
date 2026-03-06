@@ -35,7 +35,6 @@ local param_color = 0xff0000
 ---step=0.1
 local param_spacing = 0
 
---group:中心ずれサイズ
 ---$track:中心ずれX
 ---min=-1000
 ---max=1000
@@ -49,8 +48,6 @@ local param_center_offset_x = 0
 local param_center_offset_y = 0
 
 local param_center_offset = { param_center_offset_x, param_center_offset_y }
-
---group
 
 ---$track:減衰速度％
 ---min=-100

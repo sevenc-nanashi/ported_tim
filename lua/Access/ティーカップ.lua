@@ -74,7 +74,7 @@ end
 
 local size = track_size / 2
 local ds = track_cup_saucer_gap / 1000
-ANT = math.floor(ANT)
+-- ANT = math.floor(ANT)
 mpi = math.pi
 
 --ティーカップ本体作成
