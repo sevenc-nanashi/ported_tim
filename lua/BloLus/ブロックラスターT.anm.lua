@@ -26,25 +26,43 @@ local track_randomness = 0
 ---$check:縦方向
 local check0 = false
 
----$value:速度(px/s)
+---$track:速度(px/s)
+---min=-5000
+---max=5000
+---step=0.1
 local rtv = 100
 
----$value:ｵﾌｾｯﾄ(px)
+---$track:オフセット(px)
+---min=-10000
+---max=10000
+---step=0.1
 local sfh = 0
 
----$value:振幅単位
+---$track:振幅単位
+---min=0
+---max=500
+---step=0.1
 local aut = 0
 
 ---$check:画像もシフト(px)
 local ick = 0
 
----$value:開始振幅%
+---$track:開始振幅%
+---min=0
+---max=100
+---step=0.1
 local dw1 = 100
 
----$value:終了振幅%
+---$track:終了振幅%
+---min=0
+---max=100
+---step=0.1
 local dw2 = 100
 
----$value:シード
+---$track:シード
+---min=0
+---max=1000000
+---step=1
 local seed = 0
 
 local A = track_width
