@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:ｻｲｽﾞ補正
 ---min=0
 ---max=10000

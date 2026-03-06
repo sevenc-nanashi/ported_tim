@@ -1,4 +1,4 @@
---label:tim2\ライトバースト.anm
+--label:tim2\未分類\ライトバースト.anm
 ---$track:発光中心X
 ---min=-10000
 ---max=10000

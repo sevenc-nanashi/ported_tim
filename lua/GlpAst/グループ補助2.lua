@@ -1,4 +1,4 @@
---label:tim2\グループ補助.anm
+--label:tim2\未分類\グループ補助.anm
 ---$track:透過率
 ---min=0
 ---max=100

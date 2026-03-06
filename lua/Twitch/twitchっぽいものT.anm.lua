@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:間隔ﾐﾘ秒
 ---min=1
 ---max=10000

@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:レイヤー
 ---min=1
 ---max=100

@@ -1,4 +1,4 @@
---label:tim2\スカイドーム.anm
+--label:tim2\未分類\スカイドーム.anm
 ---$track:H範囲
 ---min=0
 ---max=360

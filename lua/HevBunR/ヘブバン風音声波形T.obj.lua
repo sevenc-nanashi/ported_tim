@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:外円ｻｲｽﾞ
 ---min=0
 ---max=5000

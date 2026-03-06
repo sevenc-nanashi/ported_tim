@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:変形量
 ---min=0
 ---max=1000

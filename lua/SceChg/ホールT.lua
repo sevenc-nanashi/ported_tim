@@ -1,4 +1,4 @@
---label:tim2\シーンチェンジセットT.scn
+--label:tim2\未分類\シーンチェンジセットT.scn
 ---$track:サイズ
 ---min=10
 ---max=2000

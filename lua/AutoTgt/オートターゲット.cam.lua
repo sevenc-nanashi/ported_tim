@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:ﾀｰｹﾞｯﾄ
 ---min=1
 ---max=100

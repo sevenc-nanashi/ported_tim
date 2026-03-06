@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:ｱﾝｶｰ数
 ---min=1
 ---max=16

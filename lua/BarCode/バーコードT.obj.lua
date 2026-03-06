@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:最小幅
 ---min=1
 ---max=30

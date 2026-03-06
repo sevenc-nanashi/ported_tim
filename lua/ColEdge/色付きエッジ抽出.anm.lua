@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:ズレX
 ---min=-20000
 ---max=20000

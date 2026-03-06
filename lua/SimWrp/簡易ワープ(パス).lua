@@ -1,4 +1,4 @@
---label:tim2\簡易ワープ.anm
+--label:tim2\未分類\簡易ワープ.anm
 ---$track:基準X
 ---min=-10000
 ---max=10000

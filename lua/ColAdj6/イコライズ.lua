@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm
+--label:tim2\未分類\T_Color_Module.anm
 ---$select:計算法
 ---イコライズ+RGB補正=0
 ---イコライズ=1

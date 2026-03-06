@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:輝度範囲
 ---min=0
 ---max=4096

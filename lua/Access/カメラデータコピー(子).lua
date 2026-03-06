@@ -1,4 +1,4 @@
---label:tim2\カメラデータコピー.cam
+--label:tim2\未分類\カメラデータコピー.cam
 ---$track:倍率[%]
 ---min=0
 ---max=5000

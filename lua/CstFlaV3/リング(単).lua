@@ -1,4 +1,4 @@
---label:tim2\カスタムフレア.anm
+--label:tim2\未分類\カスタムフレア.anm
 ---$track:サイズ
 ---min=0
 ---max=5000

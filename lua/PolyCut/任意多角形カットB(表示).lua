@@ -1,4 +1,4 @@
---label:tim2\任意多角形カット.anm
+--label:tim2\未分類\任意多角形カット.anm
 ---$track:厚み
 ---min=0
 ---max=1000

@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:開位置％
 ---min=0
 ---max=5000

@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:角数
 ---min=3
 ---max=100

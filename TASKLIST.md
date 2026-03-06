@@ -27,7 +27,7 @@
 | -                         | オーラ放出.anm                            | :o:      | :o: | :o:              | :x:                  |
 | -                         | 蜂の巣モザイク.anm                        | :o:      | -   | :o:              | :x:                  |
 | -                         | ブロックラスターT.anm                     | :o:      | -   | :o:              | -                    |
-| -                         | 砕け散るパズル.anm                        | ？       | :x: | :x:              | ？                   |
+| -                         | 砕け散るパズル.anm                        | :o:      | :x: | :o:              | :x:                  |
 | -                         | 砕け散るT.anm                             | ？       | -   | :x:              | ？                   |
 | -                         | 砕け散る球.anm                            | ？       | -   | :x:              | ？                   |
 | -                         | 色収差.anm                                | ？       | -   | :x:              | ？                   |
@@ -47,7 +47,7 @@
 | T_Color_Module.anm        | ガンマ補正                                | :o:      | :o: | :o:              | :x:                  |
 | T_Color_Module.anm        | 簡易減色                                  | :o:      | :o: | :o:              | :x:                  |
 | T_Color_Module.anm        | 減色パレット                              | :o:      | -   | :o:              | -                    |
-| T_Color_Module.anm        | メディアンカット減色                      | :o:      | :o: | :o:              | -                    |
+| T_Color_Module.anm        | メディアンカット減色                      | :o:      | :o: | :o:              | :x:                  |
 | T_Color_Module.anm        | 拡張コントラスト                          | :o:      | :o: | :o:              | :x:                  |
 | T_Color_Module.anm        | 画像トーンカーブ                          | :o:      | :o: | :o:              | :x:                  |
 | T_Color_Module.anm        | 簡易トーンカーブ                          | :o:      | :o: | :o:              | :x:                  |

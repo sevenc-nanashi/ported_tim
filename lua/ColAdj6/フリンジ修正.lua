@@ -1,4 +1,4 @@
---label:tim2\T_Color_Module.anm
+--label:tim2\未分類\T_Color_Module.anm
 ---$select:補正法
 ---アルファ値の変更=0
 ---背景色の削除=1

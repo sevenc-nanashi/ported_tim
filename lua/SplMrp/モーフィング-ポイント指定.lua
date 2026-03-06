@@ -1,4 +1,4 @@
---label:tim2\モーフィング.anm
+--label:tim2\未分類\モーフィング.anm
 ---$track:ﾎﾟｲﾝﾄ数
 ---min=1
 ---max=14

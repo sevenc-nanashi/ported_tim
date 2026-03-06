@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:光中心(X)
 ---min=-5000
 ---max=5000

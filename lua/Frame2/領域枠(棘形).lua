@@ -1,4 +1,4 @@
---label:tim2\領域枠.anm
+--label:tim2\未分類\領域枠.anm
 ---$track:画線幅％
 ---min=0
 ---max=100

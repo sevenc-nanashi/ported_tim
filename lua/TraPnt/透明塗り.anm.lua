@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:指定位置X
 ---min=-10000
 ---max=10000

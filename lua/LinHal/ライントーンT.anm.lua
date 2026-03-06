@@ -1,4 +1,4 @@
---label:tim2
+--label:tim2\未分類
 ---$track:分割数
 ---min=10
 ---max=500

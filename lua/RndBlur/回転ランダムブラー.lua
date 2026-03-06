@@ -1,4 +1,4 @@
---label:tim2\T_RandomBlur_Module.anm
+--label:tim2\未分類\T_RandomBlur_Module.anm
 ---$track:中心X
 ---min=-5000
 ---max=5000
