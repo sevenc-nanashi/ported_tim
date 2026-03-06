@@ -61,4 +61,4 @@ yellow = (yellow or 100) * 0.01
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
 T_Color_Module.enh_grayscale(userdata, w, h, red, green, blue, cyan, magenta, yellow, white, 100 / gamma, col)
-obj.putpixeldata("object", userdata, w, h)
+obj.putpixeldata("object", userdata, w, h, "bgra")

@@ -33,8 +33,8 @@
 | -                         | 色収差.anm                      | ？       | -   | :x:              | ？           |
 | -                         | 歯車.anm                        | ？       | -   | :x:              | ？           |
 | T_Color_Module.anm        | メタル化                        | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm        | 金属質                          | ？       | :x: | :x:              | ？           |
-| T_Color_Module.anm        | 黄金質                          | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm        | 金属質                          | :o:      | :o: | :o:              | :x:          |
+| T_Color_Module.anm        | 黄金質                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ブリーチバイパス                | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | パステル調                      | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ネオン                          | ？       | :x: | :x:              | ？           |
@@ -43,7 +43,7 @@
 | T_Color_Module.anm        | ２値化                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ２値化RGB                       | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | バイアス消去                    | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm        | 粒状化                          | :o:      | :o: | :o:              | ？           |
+| T_Color_Module.anm        | 粒状化                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ガンマ補正                      | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 簡易減色                        | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 減色パレット                    | ？       | -   | :x:              | ？           |
@@ -57,7 +57,7 @@
 | T_Color_Module.anm        | 単色化(T2)                      | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 基準色変更                      | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 特定色域変換T                   | ？       | :x: | :x:              | ？           |
-| T_Color_Module.anm        | トライトーン                    | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm        | トライトーン                    | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | テトラトーン                    | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 簡易コロラマ                    | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | ポスタリゼーション              | ？       | :x: | :x:              | ？           |

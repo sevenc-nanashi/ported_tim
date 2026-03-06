@@ -12,6 +12,7 @@ mod grainy;
 mod grayscale;
 mod metal;
 mod pastel;
+mod tritone_v3;
 
 #[aviutl2::plugin(ScriptModule)]
 struct PortedTimMod2 {}
@@ -302,6 +303,39 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
         color_reduction::color_reduction(image_buffer, shift)?;
+        Ok(())
+    }
+
+    fn tritone_v3(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        color1: u32,
+        color2: u32,
+        color3: u32,
+        p1: u8,
+        p2: u8,
+        p3: u8,
+        mode: i32,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        tritone_v3::tritone_v3(
+            image_buffer,
+            width,
+            height,
+            color1,
+            color2,
+            color3,
+            p1,
+            p2,
+            p3,
+            mode,
+        )?;
         Ok(())
     }
 }

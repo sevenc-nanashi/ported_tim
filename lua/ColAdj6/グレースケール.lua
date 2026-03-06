@@ -30,4 +30,4 @@ local T_Color_Module = obj.module("tim2")
 
 local userdata, w, h = obj.getpixeldata("object", "bgra")
 T_Color_Module.grayscale(userdata, w, h, gray_mode, bright_color, dark_color, 100 / gamma)
-obj.putpixeldata("object", userdata, w, h)
+obj.putpixeldata("object", userdata, w, h, "bgra")

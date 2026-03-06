@@ -52,4 +52,4 @@ T_Color_Module.binarization(
     col1,
     col2
 )
-obj.putpixeldata("object", userdata, w, h)
+obj.putpixeldata("object", userdata, w, h, "bgra")

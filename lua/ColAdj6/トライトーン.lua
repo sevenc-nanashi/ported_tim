@@ -41,7 +41,7 @@ if check0 then
 else
     p1, p2, p3 = 255, 128, 0
 end
-require("T_Color_Module")
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.TritoneV3(userdata, w, h, col1, col2, col3, p1, p2, p3, egm or 0)
-obj.putpixeldata(userdata)
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.tritone_v3(userdata, w, h, col1, col2, col3, p1, p2, p3, egm or 0)
+obj.putpixeldata("object", userdata, w, h, "bgra")
