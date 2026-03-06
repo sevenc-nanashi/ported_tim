@@ -51,7 +51,7 @@
 | T_Color_Module.anm        | 拡張コントラスト                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 画像トーンカーブ                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 簡易トーンカーブ                          | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm        | イコライズ                                | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm        | イコライズ                                | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | シャドウ・ハイライト                      | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 単色化(T)                                 | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 単色化(T2)                                | ？       | :x: | :x:              | ？           |

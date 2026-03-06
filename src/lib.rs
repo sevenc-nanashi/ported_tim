@@ -7,6 +7,7 @@ mod binarization;
 mod binarization_rgb;
 mod color_reduction;
 mod enh_grayscale;
+mod equalize;
 mod extended_contrast;
 mod gamma_correction;
 mod grainy;
@@ -554,6 +555,33 @@ impl PortedTimMod2 {
             smooth,
             show_curve,
         )?;
+        Ok(())
+    }
+
+    fn equalize(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        calc_method: u8,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        equalize::equalize(image_buffer, width, height, calc_method)?;
+        Ok(())
+    }
+
+    fn equalize_rgb(image_buffer: NonNull<u8>, width: usize, height: usize) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        equalize::equalize_rgb(image_buffer, width, height)?;
         Ok(())
     }
 }
