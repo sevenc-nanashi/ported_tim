@@ -1,0 +1,15 @@
+pub mod bias_deletion;
+pub mod binarization;
+pub mod binarization_rgb;
+pub mod color_reduction;
+pub mod enh_grayscale;
+pub mod equalize;
+pub mod extended_contrast;
+pub mod gamma_correction;
+pub mod grainy;
+pub mod grayscale;
+pub mod metal;
+pub mod pastel;
+pub mod reduction;
+pub mod tone_curve;
+pub mod tritone_v3;
