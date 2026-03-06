@@ -17,7 +17,7 @@ local track_height = 80
 ---step=0.1
 local track_opacity = 20
 
----$track:ｶｯﾌﾟｿｰｻｰ間
+---$track:カップソーサー間
 ---min=-1000
 ---max=1000
 ---step=0.1
@@ -35,17 +35,29 @@ local cols = 0x02d2d2
 ---$color:ティー(色)
 local colt = 0xa14250
 
----$value:ティー境界補正
+-- ---$value:ティー境界補正
+---$track:ティー境界補正
+---min=-1000
+---max=1000
+---step=0.1
 local hosei = 5
 
----$value:取っ手幅
+-- ---$value:取っ手幅
+---$track:取っ手幅
+---min=0
+---max=1000
+---step=0.01
 local tw = 0.03
 
----$value:取っ手位置補正
+-- ---$value:取っ手位置補正
+---$track:取っ手位置補正
+---min=-1000
+---max=1000
+---step=0.1
 local tp = 1
 
----$value:ｱﾝﾁｴｲﾘｱｽ[0/1/2]
-local ANT = 0
+-- ---$value:ｱﾝﾁｴｲﾘｱｽ[0/1/2]
+-- local ANT = 0
 
 function CupLine(x)
     if x <= 0.9 then
@@ -68,9 +80,9 @@ mpi = math.pi
 --ティーカップ本体作成
 obj.load("figure", "四角形", colc, size)
 
-if ANT < 2 then
-    obj.setoption("antialias", ANT)
-end
+-- if ANT < 2 then
+--     obj.setoption("antialias", ANT)
+-- end
 
 y1 = -size * CupLine(0) - size * ds
 u1 = 0
@@ -102,9 +114,9 @@ end
 
 --皿作成
 obj.load("figure", "四角形", cols, size)
-if ANT < 2 then
-    obj.setoption("antialias", ANT)
-end
+-- if ANT < 2 then
+--     obj.setoption("antialias", ANT)
+-- end
 v1 = 0
 y1 = 0
 u1 = 0
@@ -135,10 +147,10 @@ end
 
 --取っ手作成
 obj.load("figure", "四角形", colc, size * 0.6)
-if ANT > 1 then
-    ANT = 1
-end
-obj.setoption("antialias", ANT)
+-- if ANT > 1 then
+--     ANT = 1
+-- end
+--obj.setoption("antialias", ANT)
 oy = size * CupLine(0.85) + size * ds
 ox = (0.85 + 0.315) * size + tp
 dz = size * tw
@@ -162,9 +174,9 @@ u1 = track_height / 100
 y1 = -size * CupLine(u1) - size * ds
 u1 = size * u1 - hosei
 obj.load("figure", "円", colt, 2 * u1)
-if ANT > 1 then
-    ANT = 1
-end
-obj.setoption("antialias", ANT)
+-- if ANT > 1 then
+--     ANT = 1
+-- end
+-- obj.setoption("antialias", ANT)
 obj.alpha = 1 - track_opacity / 100
 obj.drawpoly(-u1, y1, -u1, u1, y1, -u1, u1, y1, u1, -u1, y1, u1)
