@@ -12,6 +12,7 @@ pub mod extended_contrast;
 pub mod gamma_correction;
 pub mod grainy;
 pub mod grayscale;
+pub mod leave_color;
 pub mod metal;
 pub mod minimax;
 pub mod monochromatic;

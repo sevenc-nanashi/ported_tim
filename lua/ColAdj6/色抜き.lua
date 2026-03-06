@@ -17,25 +17,21 @@ local track_color_difference_range = 50
 ---step=0.1
 local track_edge = 50
 
----$track:ﾏｯﾁﾝｸﾞ法
----min=1
----max=4
----step=1
+---$select:マッチング法
+---RGB=1
+---L*a*b*色相=2
+---L*a*b*輝度=3
+---HSV色相=4
 local track_matching_method = 1
 
 ---$color:抽出色
 local col = 0xff0000
 
----$check:ﾏｯﾁﾝｸﾞ法表示
-local Dchk = 0
-
----$value:フォントサイズ
-local fs = 34
-
 local r, g, b = RGB(col)
-require("T_Color_Module")
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.LeaveColor(
+-- require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.leave_color(
     userdata,
     w,
     h,
@@ -47,13 +43,4 @@ T_Color_Module.LeaveColor(
     track_edge,
     track_matching_method
 )
-obj.putpixeldata(userdata)
-if obj.getinfo("saving") == false and Dchk == 1 then
-    obj.setoption("drawtarget", "tempbuffer", w, h)
-    obj.draw()
-    local text = "ﾏｯﾁﾝｸﾞ法\n 1:RGB\n 2:L*a*b*色相\n 3:L*a*b*輝度、色相\n 4:HSV色相"
-    obj.setfont("", fs, 1, 0xffffff, 0x000000)
-    obj.load("text", text)
-    obj.draw()
-    obj.load("tempbuffer")
-end
+obj.putpixeldata("object", userdata, w, h, "bgra")
