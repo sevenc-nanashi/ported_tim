@@ -63,7 +63,7 @@ local CV = 1
 local EZ = 0
 
 ---$check:角丸なし
-local check0 = true
+local check0 = false
 
 require("T_LineFill_Module")
 local P = track_progress / 100

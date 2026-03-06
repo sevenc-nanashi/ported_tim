@@ -42,7 +42,7 @@ local lst = 300
 local lsig = 7.5
 
 ---$check:淵発光
-local check0 = true
+local check0 = false
 
 local burn = track_burn * 0.01
 local blur = track_contour_blur * 0.01

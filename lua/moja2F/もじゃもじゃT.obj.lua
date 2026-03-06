@@ -24,7 +24,7 @@ local track_line_width = 6
 local track_count = 5
 
 ---$check:時間展開
-local check0 = true
+local check0 = false
 
 ---$color:色
 local param_color = 0xff0000

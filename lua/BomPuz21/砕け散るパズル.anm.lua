@@ -66,7 +66,7 @@ local seed = 0
 local FBR = 0
 
 ---$check:マップ反転
-local check0 = true
+local check0 = false
 
 Pfig = Pfig or 0
 if Pfig == 0 then

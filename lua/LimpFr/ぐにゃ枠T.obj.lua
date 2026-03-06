@@ -63,7 +63,7 @@ local _15 = 0
 local _0 = nil
 
 ---$check:単一線
-local check0 = true
+local check0 = false
 
 _0 = _0 or {}
 local FgS = math.floor(_0[1] or track_size)

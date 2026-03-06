@@ -57,7 +57,7 @@ local seed = 0
 local sR = 0
 
 ---$check:ラインのみ
-local check0 = true
+local check0 = false
 
 dir = dir or { 0, 360 }
 seed = seed or 0

@@ -18,7 +18,7 @@ local track_blur = 0
 local track_load_target = 0
 
 ---$check:暗い所から透過
-local check0 = true
+local check0 = false
 
 require("T_Color_Module")
 

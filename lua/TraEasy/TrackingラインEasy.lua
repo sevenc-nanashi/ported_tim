@@ -57,7 +57,7 @@ local dSI = { 0, 0 }
 local pos = { 0, 0, 100, 100 }
 
 ---$check:頂点群を分離
-local check0 = true
+local check0 = false
 
 Tracking = {}
 

@@ -36,7 +36,7 @@ local Bcol = 0x0
 local PT = 0
 
 ---$check:マップ表示
-local check0 = true
+local check0 = false
 
 local Sh = track_threshold
 local bkb = track_blur

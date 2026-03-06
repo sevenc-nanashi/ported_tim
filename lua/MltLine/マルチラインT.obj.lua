@@ -45,7 +45,7 @@ local ysp = 0
 local anc = { -150, -100, 150, -100, -150, 100, 150, 100 }
 
 ---$check:矢印位置反転
-local check0 = true
+local check0 = false
 
 --ver1.1
 

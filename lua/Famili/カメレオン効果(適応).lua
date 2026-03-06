@@ -24,7 +24,7 @@ local track_backlight_intensity = 0
 local track_backlight_diffusion = 15
 
 ---$check:ﾌﾚｰﾑﾊﾞｯﾌｧを背景
-local check0 = true
+local check0 = false
 
 ---$check:輝度補正
 local CkV = 1

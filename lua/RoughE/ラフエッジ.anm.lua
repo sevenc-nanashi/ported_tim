@@ -30,7 +30,7 @@ local seed = 0
 local fry = nil
 
 ---$check:周囲を少し残す
-local check0 = true
+local check0 = false
 
 local Rf = track_deform_amount
 local frx = track_period

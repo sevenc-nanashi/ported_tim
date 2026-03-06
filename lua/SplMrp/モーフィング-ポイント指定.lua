@@ -33,7 +33,7 @@ local fcol = 0x0
 local pos = { -100, 0, 0, 0, 100, 0 }
 
 ---$check:ポイント表示
-local check0 = true
+local check0 = false
 
 Morphing_drawANC = function()
     if Morphing_check0 then

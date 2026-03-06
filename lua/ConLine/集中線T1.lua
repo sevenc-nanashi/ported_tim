@@ -57,7 +57,7 @@ local h = nil
 local ad = 0
 
 ---$check:最大本数自動計算
-local check0 = true
+local check0 = false
 
 local CalXY = function(x0, y0, x1, y1, a, b)
     local AA = ((x1 - x0) / a) ^ 2 + ((y1 - y0) / b) ^ 2

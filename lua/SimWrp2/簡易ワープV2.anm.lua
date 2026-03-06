@@ -60,7 +60,7 @@ local sz = 50
 local lw = 3
 
 ---$check:中心XY基準
-local check0 = true
+local check0 = false
 
 local TK = function(Z)
     if Z >= 1 then

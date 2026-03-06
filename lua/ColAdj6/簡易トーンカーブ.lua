@@ -1,6 +1,6 @@
 --label:tim2\T_Color_Module.anm
 ---$check:赤カーブ全体統一
-local check0 = true
+local check0 = false
 
 ---$check:データクリア
 local DCL = 0

@@ -30,7 +30,7 @@ local wcl = 0xffffff
 local SvC = 1
 
 ---$check:エッジ調整
-local check0 = true
+local check0 = false
 
 local RL = RuledlineT
 local Lw = track_line_width

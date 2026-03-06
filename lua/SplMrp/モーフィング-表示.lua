@@ -42,7 +42,7 @@ local pcol = 0xffffff
 local fcol = 0x0
 
 ---$check:ガイド表示
-local check0 = true
+local check0 = false
 
 (function()
     local Triangulation = function(Num)

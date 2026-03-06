@@ -30,7 +30,7 @@ local col1 = 0xffffff
 local col2 = 0x0
 
 ---$check:時間変動
-local check0 = true
+local check0 = false
 
 local N = track_seed
 if check0 then

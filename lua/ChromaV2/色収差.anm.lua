@@ -33,7 +33,7 @@ local cpos = 0
 local pbl = 0
 
 ---$check:逆順
-local check0 = true
+local check0 = false
 
 local iox = obj.ox
 local ioy = obj.oy

@@ -51,7 +51,7 @@ local adi = 1
 local cc = { 10, 10, 2 }
 
 ---$check:YZ反転
-local check0 = true
+local check0 = false
 
 if WireT_c_nw == nil then
     WireT_c_nw = cc[1] or 10

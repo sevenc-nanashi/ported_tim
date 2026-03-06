@@ -33,7 +33,7 @@ local DX = 0
 local DY = 0
 
 ---$check:MAPサイズ調整
-local check0 = true
+local check0 = false
 
 T_LineFill = T_LineFill or {}
 T_LineFill.Ly = math.floor(track_map)

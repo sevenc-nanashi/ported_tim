@@ -12,7 +12,7 @@ local cy = 0
 local pos = { 0, 0, 100, 100 }
 
 ---$check:頂点追加を無効にする
-local check0 = true
+local check0 = false
 
 if not check0 then
     local num = track_plus_vertex_count

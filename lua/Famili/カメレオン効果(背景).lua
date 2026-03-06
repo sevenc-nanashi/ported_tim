@@ -24,7 +24,7 @@ local track_width = 5000
 local track_height = 5000
 
 ---$check:範囲を表示
-local check0 = true
+local check0 = false
 
 ---$color:枠色
 local col = oxffffff

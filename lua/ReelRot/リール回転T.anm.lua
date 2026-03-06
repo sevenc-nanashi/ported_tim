@@ -45,7 +45,7 @@ local TM = { 0, 100 }
 local baseChk = 0
 
 ---$check:開始位置角度自動調整
-local check0 = true
+local check0 = false
 
 local norm_pos = function(t)
     return t * t * (3 - 2 * t)

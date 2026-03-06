@@ -42,7 +42,7 @@ local rotV = 10
 local ANT = 0
 
 ---$check:重心を中心にする
-local check0 = true
+local check0 = false
 
 local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
     local ROTxyz = function(x, y, z, rx, ry, rz)

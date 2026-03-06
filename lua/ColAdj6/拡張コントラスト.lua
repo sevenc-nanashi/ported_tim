@@ -27,7 +27,7 @@ local track_smooth = 50
 local Csiz = 260
 
 ---$check:カーブ表示
-local check0 = true
+local check0 = false
 
 require("T_Color_Module")
 if check0 then

@@ -66,7 +66,7 @@ local _13 = 0
 local _0 = nil
 
 ---$check:画線のみ
-local check0 = true
+local check0 = false
 
 _0 = _0 or {}
 local pw = _0[1] or track_length

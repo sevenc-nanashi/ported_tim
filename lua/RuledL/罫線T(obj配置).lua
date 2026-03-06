@@ -30,7 +30,7 @@ local ord = 0
 local Lastobj = 0
 
 ---$check:ｻｲｽﾞ自動調整
-local check0 = true
+local check0 = false
 
 local CalIJ = function(n, nx, ny, Rev)
     local i, j

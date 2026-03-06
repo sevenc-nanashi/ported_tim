@@ -24,7 +24,7 @@ local track_wavelength = 600
 local track_randomness = 0
 
 ---$check:縦方向
-local check0 = true
+local check0 = false
 
 ---$value:速度(px/s)
 local rtv = 100

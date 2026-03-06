@@ -33,7 +33,7 @@ local col = 0xff0000
 local Lck = 0
 
 ---$check:極座標移動
-local check0 = true
+local check0 = false
 
 col = col or 0x0
 obj.setanchor("CC", 1)

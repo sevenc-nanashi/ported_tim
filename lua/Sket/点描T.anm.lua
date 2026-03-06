@@ -57,7 +57,7 @@ local _10 = 0
 local _0 = nil
 
 ---$check:色参照位置固定
-local check0 = true
+local check0 = false
 
 require("T_Sketch_Module")
 _0 = _0 or {}

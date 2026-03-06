@@ -51,7 +51,7 @@ local GE = 1
 local IE = 0
 
 ---$check:展開を調整
-local check0 = true
+local check0 = false
 
 if orAP == 1 or fiAP == 1 then
     require("T_burning_Module")

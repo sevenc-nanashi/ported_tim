@@ -45,7 +45,7 @@ local col10 = ""
 local Cap = 0
 
 ---$check:指定色を有効にする
-local check0 = true
+local check0 = false
 
 require("T_Color_Module")
 local userdata, w, h = obj.getpixeldata()

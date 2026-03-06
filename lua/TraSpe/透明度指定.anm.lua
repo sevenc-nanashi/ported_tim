@@ -18,7 +18,7 @@ local effect = 1
 local cksize = 1
 
 ---$check:透明度反転
-local check0 = true
+local check0 = false
 
 --[[
 指定方法
