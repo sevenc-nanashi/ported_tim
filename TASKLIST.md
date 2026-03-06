@@ -46,8 +46,8 @@
 | T_Color_Module.anm        | 粒状化                                    | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ガンマ補正                                | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 簡易減色                                  | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm        | 減色パレット                              | ？       | -   | :x:              | ？           |
-| T_Color_Module.anm        | メディアンカット減色                      | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm        | 減色パレット                              | :o:      | -   | :o:              | -            |
+| T_Color_Module.anm        | メディアンカット減色                      | :o:      | :o: | :o:              | -            |
 | T_Color_Module.anm        | 拡張コントラスト                          | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 画像トーンカーブ                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 簡易トーンカーブ                          | :o:      | :o: | :o:              | :x:          |

@@ -36,8 +36,8 @@ for j = 0, ny - 1 do
     end
 end
 ClusterReductionIdxC_T.N = idn
-obj.setoption("drawtarget", "tempbuffer")
-obj.copybuffer("tmp", "obj")
+obj.setoption("drawtarget", "tempbuffer", obj.w, obj.h)
+obj.copybuffer("tempbuffer", "object")
 obj.load("figure", "四角形", 0xff0000, 6, 1)
 k = 0
 for j = 0, ny - 1 do
@@ -48,4 +48,4 @@ for j = 0, ny - 1 do
         end
     end
 end
-obj.copybuffer("obj", "tmp")
+obj.copybuffer("object", "tempbuffer")

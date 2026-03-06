@@ -12,6 +12,7 @@ mod grainy;
 mod grayscale;
 mod metal;
 mod pastel;
+mod reduction;
 mod tone_curve;
 mod tritone_v3;
 
@@ -448,6 +449,81 @@ impl PortedTimMod2 {
             channel_type,
             curve_color_rgba,
         )?;
+        Ok(())
+    }
+
+    fn mcut_reduction(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        mc_color_count: usize,
+        cl_color_count: usize,
+        cap: bool,
+        specified_colors_rgb: Vec<i32>,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let specified_colors_rgb = specified_colors_rgb
+            .into_iter()
+            .map(|c| c as u32)
+            .collect::<Vec<u32>>();
+        reduction::mcut_reduction(
+            image_buffer,
+            width,
+            height,
+            mc_color_count,
+            cl_color_count,
+            cap,
+            &specified_colors_rgb,
+        )?;
+        Ok(())
+    }
+
+    fn sample_grid_colors(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        sample_count: usize,
+        x_split: usize,
+        y_split: usize,
+    ) -> anyhow::Result<Vec<i32>> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+
+        let colors = reduction::sample_grid_colors(
+            image_buffer,
+            width,
+            height,
+            sample_count,
+            x_split,
+            y_split,
+        )?;
+
+        Ok(colors.iter().map(|&c| c as i32).collect())
+    }
+
+    fn disp_reduction(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        colors: Vec<i32>,
+    ) -> anyhow::Result<()> {
+        let colors = colors.into_iter().map(|c| c as u32).collect::<Vec<u32>>();
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        reduction::disp_reduction(image_buffer, width, height, &colors)?;
         Ok(())
     }
 }
