@@ -37,7 +37,7 @@
 | T_Color_Module.anm        | 黄金質                                    | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ブリーチバイパス                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | パステル調                                | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm        | ネオン                                    | :o:      | :o: | :o:              | ？           |
+| T_Color_Module.anm        | ネオン                                    | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | グレースケール                            | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 白黒                                      | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ２値化                                    | :o:      | :o: | :o:              | :x:          |
@@ -52,7 +52,7 @@
 | T_Color_Module.anm        | 画像トーンカーブ                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 簡易トーンカーブ                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | イコライズ                                | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm        | シャドウ・ハイライト                      | ？       | :x: | :x:              | ？           |
+| T_Color_Module.anm        | シャドウ・ハイライト                      | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 単色化(T)                                 | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 単色化(T2)                                | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 基準色変更                                | ？       | :x: | :x:              | ？           |

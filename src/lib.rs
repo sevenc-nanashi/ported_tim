@@ -25,6 +25,11 @@ static TONE_CURVE_STATE: std::sync::LazyLock<
 > = std::sync::LazyLock::new(|| {
     std::sync::Mutex::new(unoptimized::tone_curve::ToneCurveState::default())
 });
+static SHADOW_HIGHLIGHT_STATE: std::sync::LazyLock<
+    std::sync::Mutex<unoptimized::shadow_highlight::ShadowHighlightState>,
+> = std::sync::LazyLock::new(|| {
+    std::sync::Mutex::new(unoptimized::shadow_highlight::ShadowHighlightState::new())
+});
 
 #[aviutl2::module::functions]
 #[allow(clippy::too_many_arguments)]
@@ -578,6 +583,46 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
         unoptimized::equalize::equalize_rgb(image_buffer, width, height)?;
+        Ok(())
+    }
+
+    fn save_g_image(image_buffer: NonNull<u8>, width: usize, height: usize) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let mut state = SHADOW_HIGHLIGHT_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire shadow/highlight state lock"))?;
+        state.save_g_image(image_buffer, width, height)?;
+        Ok(())
+    }
+
+    fn shadow_highlight(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        black_crush_adjust: f64,
+        white_clip_adjust: f64,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let mut state = SHADOW_HIGHLIGHT_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire shadow/highlight state lock"))?;
+        state.shadow_highlight_in_place(
+            image_buffer,
+            width,
+            height,
+            black_crush_adjust,
+            white_clip_adjust,
+        )?;
         Ok(())
     }
 }

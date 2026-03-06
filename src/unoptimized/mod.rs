@@ -11,5 +11,6 @@ pub mod grayscale;
 pub mod metal;
 pub mod pastel;
 pub mod reduction;
+pub mod shadow_highlight;
 pub mod tone_curve;
 pub mod tritone_v3;
