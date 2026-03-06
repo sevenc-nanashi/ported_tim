@@ -29,16 +29,26 @@ local backC = 0
 ---$check:背景をシャープ
 local backS = 0
 
----$check:凸エッジ
+--group:凸エッジ
+---$check:凸エッジ有効
 local totsuC = 0
 
----$value:凸エッジ幅
+---$track:凸エッジ幅
+---min=0
+---max=100
+---step=1
 local totsu1 = 2
 
 ---$value:凸エッジ高さ
+---min=0
+---max=100
+---step=1
 local totsu2 = 1
 
----$value:凸エッジ角度
+---$track:凸エッジ角度
+---min=-360
+---max=360
+---step=1
 local totsu3 = -45
 
 local draw = obj.draw
