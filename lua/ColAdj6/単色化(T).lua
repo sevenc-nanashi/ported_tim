@@ -1,4 +1,9 @@
 --label:tim2\T_Color_Module.anm
+
+---$color:色
+local track_color = nil
+
+--group:RGB
 ---$track:R
 ---min=0
 ---max=255
@@ -17,7 +22,11 @@ local track_g = 0
 ---step=0.1
 local track_b = 0
 
-require("T_Color_Module")
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.Monochromatic(userdata, w, h, track_r, track_g, track_b)
-obj.putpixeldata(userdata)
+--require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+if track_color ~= nil then
+    track_r, track_g, track_b = RGB(track_color)
+end
+T_Color_Module.monochromatic(userdata, w, h, track_r, track_g, track_b)
+obj.putpixeldata("object", userdata, w, h, "bgra")

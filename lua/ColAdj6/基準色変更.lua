@@ -24,11 +24,12 @@ local col1 = 0x0
 local col2 = 0xffffff
 
 ---$check:指定色からの距離
-local check0 = false
+local use_distance_from_standard_color = false
 
-require("T_Color_Module")
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.StandardColor(
+--require("T_Color_Module")
+local T_Color_Module = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Color_Module.standard_color(
     userdata,
     w,
     h,
@@ -37,6 +38,6 @@ T_Color_Module.StandardColor(
     track_change / 100,
     track_count,
     track_scale,
-    check0
+    use_distance_from_standard_color
 )
-obj.putpixeldata(userdata)
+obj.putpixeldata("object", userdata, w, h, "bgra")
