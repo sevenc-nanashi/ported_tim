@@ -24,7 +24,7 @@ local track_offset = 0
 local track_threshold = 0
 
 ---$check:偏差補正
-local check0 = true
+local check0 = false
 
 --require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")

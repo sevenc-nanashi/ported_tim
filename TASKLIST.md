@@ -42,7 +42,7 @@
 | T_Color_Module.anm        | 白黒                            | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ２値化                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ２値化RGB                       | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm        | バイアス消去                    | :x:      | D   | :o:              | :x:          |
+| T_Color_Module.anm        | バイアス消去                    | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 粒状化                          | :o:      | :o: | :o:              | ？           |
 | T_Color_Module.anm        | ガンマ補正                      | ？       | :x: | :x:              | ？           |
 | T_Color_Module.anm        | 簡易減色                        | ？       | :x: | :x:              | ？           |
