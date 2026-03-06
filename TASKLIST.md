@@ -37,7 +37,7 @@
 | T_Color_Module.anm        | 黄金質                                    | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ブリーチバイパス                          | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | パステル調                                | :o:      | :o: | :o:              | :x:          |
-| T_Color_Module.anm        | ネオン                                    | :o:      | :o: | :x:              | ？           |
+| T_Color_Module.anm        | ネオン                                    | :o:      | :o: | :o:              | ？           |
 | T_Color_Module.anm        | グレースケール                            | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | 白黒                                      | :o:      | :o: | :o:              | :x:          |
 | T_Color_Module.anm        | ２値化                                    | :o:      | :o: | :o:              | :x:          |

@@ -11,23 +11,29 @@ local track_size_x = 600
 ---step=0.1
 local track_size_y = 200
 
----$track:赤凹凸
----min=-30
----max=30
----step=0.01
-local track_red_bump = 0
-
 ---$track:表示方式
 ---min=-1
 ---max=2
 ---step=1
 local track_display_mode = 0
 
----$value:緑凹凸
-local g3 = 0
+---$track:赤凹凸
+---min=-30
+---max=30
+---step=0.01
+local track_red_bump = 0
 
----$value:青凹凸
-local b3 = 0
+---$track:緑凹凸
+---min=-30
+---max=30
+---step=0.01
+local track_green_bump = 0
+
+---$track:青凹凸
+---min=-30
+---max=30
+---step=0.01
+local track_blue_bump = 0
 
 ---$check:Rのみ設定
 local Rset = 0
@@ -41,8 +47,11 @@ local Bset = 0
 ---$value:カーブ
 local pos = { -280, 80, -200, 0, -120, -80, -80, 80, 0, 0, 80, -80, 120, 80, 200, 0, 280, -80 }
 
----$value:表示精度
-local spN = 20
+---$track:表示精度
+---min=1
+---max=100
+---step=1
+local track_display_precision = 20
 
 ---$check:カーブ表示
 local check0 = true
@@ -140,10 +149,10 @@ local drawtoneC = function(Cty, k, sw, sh, dx, dy, col, flg, a, TC, spN)
 end
 local sw, sh = track_size_x, track_size_y
 local ar = track_red_bump
-local ag = g3 or 0
-local ab = b3 or 0
+local ag = track_green_bump or 0
+local ab = track_blue_bump or 0
 local TC_Type = track_display_mode
-spN = spN or 20
+local spN = track_display_precision or 20
 Rset = Rset or 0
 Gset = Gset or 0
 Bset = Bset or 0
