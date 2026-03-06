@@ -29,7 +29,9 @@ Port these C code to rust function that takes the same parameter as lua, with si
 Tell me when there are undefined variables or functions.
 Use proper types, such as using `u32` for colors, `usize` for widths, `u8` for numbers that is within [0, 255], etc. These validations are handled by macros.
 Use `unreachable!` for unreachable part, and `anyhow::Result` for errors.
-Callee's buffer's pixel structure is BGRA, and the output buffer's pixel structure is also BGRA.
+Note:
+- Callee's buffer's pixel structure is BGRA, and the output buffer's pixel structure is also BGRA.
+- Single color u32 is in the format of 0xRRGGBB, without alpha channel.
 You don't have to:
 - Port randomization (if there are). Use `rand` crate instead.
 - Port receiving parameters from lua. Just assume the parameters are passed as function arguments.

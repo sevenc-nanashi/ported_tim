@@ -104,15 +104,13 @@ local drawtoneC = function(Cty, k, sw, sh, dx, dy, col, flg, a, TC, spN)
             local b = (dr10 - dr20) / (x1 - x2)
             local c = dr10 - b * (x1 + x0)
             local d = y0 - b * x0 * x0 - c * x0
-            -- TRA = { TC, a, -b, -c, 1 - d, 0, 0, 0 }
-            TRA = { a, -b, -c, 1 - d, 0, 0, 0 }
+            TRA = { TC, a, -b, -c, 1 - d, 0, 0, 0 }
         elseif TC == 1 then
             a1 = (y1 - y0) / (x1 - x0)
             b1 = y0 - a1 * x0 - a / 20
             a2 = (y2 - y1) / (x2 - x1)
             b2 = y1 - a2 * x1 + a / 20
-            -- TRA = { TC, -a1, 1 - b1, -a2, 1 - b2, x1, 0, 0 }
-            TRA = { -a1, 1 - b1, -a2, 1 - b2, x1, 0, 0 }
+            TRA = { TC, -a1, 1 - b1, -a2, 1 - b2, x1, 0, 0 }
         elseif TC == 2 then
             local dx10, dx20, dx21 = x1 - x0, x2 - x0, x2 - x1
             local dr10, dr20, dr21 = (y1 - y0) / dx10, (y2 - y0) / dx20, (y2 - y1) / dx21
@@ -126,17 +124,9 @@ local drawtoneC = function(Cty, k, sw, sh, dx, dy, col, flg, a, TC, spN)
             local a2 = -(dr20 - dr21) / dx21
             local b2 = dr20 - 2 * x1 * a2
             local c2 = y1 - (a2 * x1 + b2) * x1
-            -- TRA = { TC, -a1, -b1, 1 - c1, -a2, -b2, 1 - c2, x1 }
-            TRA = { -a1, -b1, 1 - c1, -a2, -b2, 1 - c2, x1 }
+            TRA = { TC, -a1, -b1, 1 - c1, -a2, -b2, 1 - c2, x1 }
         end
-        -- T_Color_Module.SetToneCurve(Cty, unpack(TRA))
-        if TC == 0 then
-            T_Color_Module.set_tone_curve_mode_0(Cty, unpack(TRA))
-        elseif TC == 1 then
-            T_Color_Module.set_tone_curve_mode_1(Cty, unpack(TRA))
-        elseif TC == 2 then
-            T_Color_Module.set_tone_curve_mode_2(Cty, unpack(TRA))
-        end
+        T_Color_Module.set_tone_curve(Cty, unpack(TRA))
     end
     if flg then
         obj.load("figure", "四角形", col, 1)

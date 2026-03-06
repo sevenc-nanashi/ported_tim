@@ -343,75 +343,31 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn set_tone_curve_mode_0(
-        channel_type: usize,
-        bias: f64,
-        quadratic: f64,
-        linear: f64,
-        scale: f64,
+    fn set_tone_curve(
+        channel: usize,
+        mode: i32,
+        unused_arg3: f64,
+        arg4: f64,
+        arg5: f64,
+        arg6: f64,
+        arg7: f64,
+        arg8: f64,
+        arg9: f64,
     ) -> anyhow::Result<()> {
         let mut state = TONE_CURVE_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
-        tone_curve::set_tone_curve_mode_0(
-            &mut state,
-            channel_type,
-            bias,
-            quadratic,
-            linear,
-            scale,
-        )?;
-        Ok(())
-    }
-
-    fn set_tone_curve_mode_1(
-        channel_type: usize,
-        threshold: f64,
-        upper_bias: f64,
-        upper_slope: f64,
-        lower_bias: f64,
-        lower_slope: f64,
-    ) -> anyhow::Result<()> {
-        let mut state = TONE_CURVE_STATE
-            .lock()
-            .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
-        tone_curve::set_tone_curve_mode_1(
-            &mut state,
-            channel_type,
-            threshold,
-            upper_bias,
-            upper_slope,
-            lower_bias,
-            lower_slope,
-        )?;
-        Ok(())
-    }
-
-    fn set_tone_curve_mode_2(
-        channel_type: usize,
-        threshold: f64,
-        upper_bias: f64,
-        upper_linear: f64,
-        upper_quadratic: f64,
-        lower_bias: f64,
-        lower_linear: f64,
-        lower_quadratic: f64,
-    ) -> anyhow::Result<()> {
-        let mut state = TONE_CURVE_STATE
-            .lock()
-            .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
-        tone_curve::set_tone_curve_mode_2(
-            &mut state,
-            channel_type,
-            threshold,
-            upper_bias,
-            upper_linear,
-            upper_quadratic,
-            lower_bias,
-            lower_linear,
-            lower_quadratic,
-        )?;
-        Ok(())
+        state.set_tone_curve_impl(
+            channel,
+            mode,
+            unused_arg3,
+            arg4,
+            arg5,
+            arg6,
+            arg7,
+            arg8,
+            arg9,
+        )
     }
 
     fn sim_tone_curve(
@@ -426,26 +382,27 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let state = TONE_CURVE_STATE
+        let mut state = TONE_CURVE_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
-        tone_curve::sim_tone_curve(&state, image_buffer, width, height, copy_red_to_green_blue)?;
+        state.sim_tone_curve_impl(image_buffer, copy_red_to_green_blue)?;
         Ok(())
     }
 
     fn image_tone_curve(
         image_buffer: NonNull<u8>,
-        image_width: usize,
-        image_height: usize,
+        width: usize,
+        height: usize,
         center_x: f64,
         center_y: f64,
-        angle_deg: f64,
-        line_length: f64,
-        line_color_bgra: u32,
+        degree: f64,
+        line_width: f64,
+        unused_arg8: f64,
         hide_line: bool,
+        color_rgb: u32,
     ) -> anyhow::Result<()> {
-        let buffer_size = image_width
-            .checked_mul(image_height)
+        let buffer_size = width
+            .checked_mul(height)
             .and_then(|v| v.checked_mul(4))
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
@@ -453,17 +410,17 @@ impl PortedTimMod2 {
         let mut state = TONE_CURVE_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
-        tone_curve::image_tone_curve(
-            &mut state,
+        state.image_tone_curve_impl(
             image_buffer,
-            image_width,
-            image_height,
+            width,
+            height,
             center_x,
             center_y,
-            angle_deg,
-            line_length,
-            line_color_bgra,
+            degree,
+            line_width,
+            unused_arg8,
             hide_line,
+            color_rgb,
         )?;
         Ok(())
     }
@@ -473,7 +430,7 @@ impl PortedTimMod2 {
         image_width: usize,
         image_height: usize,
         channel_type: usize,
-        curve_color_bgra: u32,
+        curve_color_rgba: u32,
     ) -> anyhow::Result<()> {
         let buffer_size = image_width
             .checked_mul(image_height)
@@ -484,13 +441,12 @@ impl PortedTimMod2 {
         let state = TONE_CURVE_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
-        tone_curve::draw_tone_curve(
-            &state,
+        state.draw_tone_curve_impl(
             image_buffer,
             image_width,
             image_height,
             channel_type,
-            curve_color_bgra,
+            curve_color_rgba,
         )?;
         Ok(())
     }
