@@ -1490,6 +1490,27 @@ impl PortedTimMod2 {
         Ok(())
     }
 
+    fn filter_easy_binarization(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        threshold: i32,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        unoptimized::filter::easy_binarization::easy_binarization(
+            image_buffer,
+            width,
+            height,
+            threshold,
+        );
+        Ok(())
+    }
+
     fn custom_flare_load_image(name: String) -> anyhow::Result<(*const u8, usize, usize)> {
         let image_data = unoptimized::custom_flare::load_image(&name)?;
         Ok(image_data)

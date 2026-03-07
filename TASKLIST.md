@@ -98,7 +98,7 @@
 | カメレオン効果.anm        | カメレオン効果(適応)                      | ？       | :x: | :x:              | :x:                  |
 | -                         | フィルム焦げ.anm                          | ？       | -   | :x:              | :x:                  |
 | T_Filter_Module.anm       | グラフィックペンT                         | :o:      | :o: | :o:              | :x:                  |
-| T_Filter_Module.anm       | ノート用紙T                               | ？       | :x: | :x:              | :x:                  |
+| T_Filter_Module.anm       | ノート用紙T                               | :o:      | :o: | :o:              | :x:                  |
 | T_Filter_Module.anm       | チョーク・木炭T                           | ？       | :x: | :x:              | :x:                  |
 | T_Filter_Module.anm       | ブラスターT                               | ？       | :x: | :x:              | :x:                  |
 | T_Filter_Module.anm       | モザイクタイルT                           | :o:      | :o: | :o:              | :x:                  |
