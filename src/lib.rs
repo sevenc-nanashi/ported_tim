@@ -1511,6 +1511,68 @@ impl PortedTimMod2 {
         Ok(())
     }
 
+    fn filter_preprocessing(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        charcoal_apply: f64,
+        chalk_apply: f64,
+        pen_pressure: f64,
+        threshold: i32,
+        auto_threshold: bool,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        unoptimized::filter::preprocessing::preprocessing(
+            image_buffer,
+            width,
+            height,
+            charcoal_apply,
+            chalk_apply,
+            pen_pressure,
+            threshold,
+            auto_threshold,
+        );
+        Ok(())
+    }
+
+    fn filter_chalk_charcoal(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        length: i32,
+        r1: i32,
+        g1: i32,
+        b1: i32,
+        r2: i32,
+        g2: i32,
+        b2: i32,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        unoptimized::filter::chalk_charcoal::chalk_charcoal(
+            image_buffer,
+            width,
+            height,
+            length,
+            r1,
+            g1,
+            b1,
+            r2,
+            g2,
+            b2,
+        );
+        Ok(())
+    }
+
     fn custom_flare_load_image(name: String) -> anyhow::Result<(*const u8, usize, usize)> {
         let image_data = unoptimized::custom_flare::load_image(&name)?;
         Ok(image_data)

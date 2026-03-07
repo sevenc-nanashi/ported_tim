@@ -23,7 +23,10 @@ local track_angle = 60
 ---step=0.1
 local track_base = 0
 
----$value:時間差[%]
+---$track:時間差[%]
+---min=-100
+---max=100
+---step=0.1
 local TS = 0
 
 ---$check:透明度反転
@@ -33,45 +36,53 @@ local t = 100 - track_ratio
 TS = TS * 0.01
 local ATS = math.abs(TS)
 
-if t > 0 then
-    t = t * 0.01
-    local spw = track_width
-    local deg = track_angle
-    local rad = math.rad(deg)
-    local bas = track_base * 0.005
 
-    local w, h = obj.getpixel()
-    local L = math.sqrt(w * w + h * h)
-    local N = math.ceil(L * 0.5 / spw)
+obj.copybuffer("cache:original", "object")
+t = t * 0.01
+local spw = track_width
+local deg = track_angle
+local rad = math.rad(deg)
+local bas = track_base * 0.005
 
-    local sin = math.sin(rad)
-    local cos = -math.cos(rad)
+local w, h = obj.getpixel()
+local L = math.sqrt(w * w + h * h)
+local N = math.ceil(L * 0.5 / spw)
 
-    for i = -N, N do
-        local t0 = t * (2 * N * ATS + 1) - N * ATS
-        t0 = t0 - i * TS
-        if t0 > 1 then
-            t0 = 1
-        end
+local sin = math.sin(rad)
+local cos = -math.cos(rad)
 
-        local haba = math.floor((spw + 1) * t0)
-
-        local sf = i * spw + haba * bas
-        if t0 > 0 and haba > 0 then
-            obj.effect(
-                "斜めクリッピング",
-                "中心X",
-                sf * sin,
-                "中心Y",
-                sf * cos,
-                "角度",
-                deg,
-                "ぼかし",
-                0,
-                "幅",
-                -haba
-            )
-        end
+for i = -N, N do
+    local t0 = t * (2 * N * ATS + 1) - N * ATS
+    t0 = t0 - i * TS
+    if t0 > 1 then
+        t0 = 1
     end
-    obj.effect("反転", "透明度反転", chk)
+
+    local haba = math.floor((spw + 1) * t0)
+
+    local sf = i * spw + haba * bas
+    if t0 > 0 and haba > 0 then
+        obj.effect(
+            "斜めクリッピング",
+            "中心X",
+            sf * sin,
+            "中心Y",
+            sf * cos,
+            "角度",
+            deg,
+            "ぼかし",
+            0,
+            "幅",
+            -haba
+        )
+    end
+end
+if chk == 1 then
+    obj.copybuffer("cache:cropped", "object")
+    obj.setoption("drawtarget", "tempbuffer", w, h)
+    obj.copybuffer("tempbuffer", "cache:original")
+    obj.copybuffer("object", "cache:cropped")
+    obj.setoption("blend", "alpha_sub")
+    obj.draw()
+    obj.copybuffer("object", "tempbuffer")
 end

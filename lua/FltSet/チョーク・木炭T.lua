@@ -44,7 +44,7 @@ local seed = 0
 ---$check:しきい値を自動計算
 local check0 = true
 
-require("T_Filter_Module")
+local T_Filter_Module = obj.module("tim2")
 if sechk == 0 then
     seed = seed + obj.time * obj.framerate
 end
@@ -54,8 +54,8 @@ elseif len > 10 then
     len = 10
 end
 obj.effect("単色化")
-local userdata, w, h = obj.getpixeldata()
-T_Filter_Module.Preprocessing(
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Filter_Module.filter_preprocessing(
     userdata,
     w,
     h,
@@ -65,7 +65,7 @@ T_Filter_Module.Preprocessing(
     track_threshold,
     check0
 )
-obj.putpixeldata(userdata)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 obj.effect("単色化", "輝度を保持する", 0)
@@ -74,9 +74,9 @@ obj.effect("ぼかし", "範囲", 3, "サイズ固定", 1)
 obj.setoption("blend", 5)
 obj.draw(0, 0, 0, 1, np * 0.01)
 obj.load("tempbuffer")
-userdata, w, h = obj.getpixeldata()
+userdata, w, h = obj.getpixeldata("object", "bgra")
 local r1, g1, b1 = RGB(col1)
 local r2, g2, b2 = RGB(col2)
-T_Filter_Module.ChalkCharcoal(userdata, w, h, len, r1, g1, b1, r2, g2, b2)
-obj.putpixeldata(userdata)
+T_Filter_Module.filter_chalk_charcoal(userdata, w, h, len, r1, g1, b1, r2, g2, b2)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 obj.setoption("blend", 0)
