@@ -1,5 +1,10 @@
 [tools]
+bun = "latest"
 "github:karoterra/aviutl2-aulua" = "latest"
 "github:sevenc-nanashi/aviutl2-cli" = { version = "latest", bin = "au2.exe" }
+"npm:rulesync" = "latest"
 ruby = "latest"
 stylua = "latest"
+
+[settings]
+npm = { package_manager = "bun" }
