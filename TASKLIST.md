@@ -101,9 +101,9 @@
 | T_Filter_Module.anm       | ノート用紙T                               | ？       | :x: | :x:              | :x:                  |
 | T_Filter_Module.anm       | チョーク・木炭T                           | ？       | :x: | :x:              | :x:                  |
 | T_Filter_Module.anm       | ブラスターT                               | ？       | :x: | :x:              | :x:                  |
-| T_Filter_Module.anm       | モザイクタイルT                           | ？       | :x: | :x:              | :x:                  |
+| T_Filter_Module.anm       | モザイクタイルT                           | :o:      | :o: | :o:              | :x:                  |
 | T_Filter_Module.anm       | ガラスT                                   | ？       | :x: | :x:              | :x:                  |
-| T_Filter_Module.anm       | エンボスT                                 | ？       | :x: | :x:              | :x:                  |
+| T_Filter_Module.anm       | エンボスT                                 | :o:      | :o: | :o:              | :x:                  |
 | T_Filter_Module.anm       | シャープT                                 | ？       | :x: | :x:              | :x:                  |
 | -                         | はためき.anm                              | ？       | -   | :x:              | :x:                  |
 | 領域枠.anm                | 領域枠                                    | ？       | -   | :x:              | :x:                  |

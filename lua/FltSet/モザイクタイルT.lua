@@ -23,28 +23,57 @@ local track_detail = 10
 ---step=0.1
 local track_deform_amount = 30
 
----$value:縦横比％
+---$track:縦横比%
+---min=1
+---max=400
+---step=0.1
 local asp = 100
 
----$value:溝明度
+---$track:溝明度
+---min=-255
+---max=255
+---step=1
 local BL = 70
 
----$value:凸エッジ幅
+---$track:凸エッジ幅
+---min=0
+---max=50
+---step=0.1
 local tw = 2
 
----$value:凸エッジ高さ
+---$track:凸エッジ高さ
+---min=-20
+---max=20
+---step=0.1
 local th = 1
 
----$value:凸エッジ角度
-local tr = -45
+---$select:凸エッジ角度
+---左=-180
+---左上=-135
+---上=-90
+---右上=-45
+---右=0
+---右下=45
+---下=90
+---左下=135
+local edge_angle = -45
 
----$value:がさつき
+---$track:がさつき
+---min=0
+---max=200
+---step=0.1
 local gs = 50
 
----$value:変化速度
+---$track:変化速度
+---min=-100
+---max=100
+---step=0.1
 local nv = 0
 
----$value:乱数シード
+---$track:乱数シード
+---min=0
+---max=9999
+---step=1
 local seed = 0
 
 ---$check:がさつきを有効化
@@ -61,7 +90,7 @@ local w2, h2 = w + Sw, h + Sh
 local T_Filter_Module = obj.module("tim2")
 
 if check0 then
-    local Vec = math.floor((tr + 45) / 45 - 0.5)
+    local Vec = math.floor((edge_angle + 45) / 45 - 0.5)
     Vec = Vec % 8
     obj.effect("領域拡張", "塗りつぶし", 1, "上", 1, "下", 1, "左", 1, "右", 1)
     local userdata, w, h = obj.getpixeldata("object", "bgra")
@@ -127,7 +156,7 @@ obj.copybuffer("tempbuffer", "cache:ori")
 obj.setoption("blend", "alpha_sub")
 obj.draw()
 obj.copybuffer("object", "tempbuffer")
-obj.effect("凸エッジ", "幅", tw, "高さ", th, "角度", tr)
+obj.effect("凸エッジ", "幅", tw, "高さ", th, "角度", edge_angle)
 obj.copybuffer("tempbuffer", "cache:D-ori")
 obj.setoption("blend", "none")
 obj.draw()
