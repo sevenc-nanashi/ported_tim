@@ -35,6 +35,11 @@ static MINIMAX_CACHE: std::sync::LazyLock<
 > = std::sync::LazyLock::new(|| {
     std::sync::Mutex::new(unoptimized::color::minimax::MinimaxCache::default())
 });
+static FILTER_UNSHARP_STATE: std::sync::LazyLock<
+    std::sync::Mutex<unoptimized::filter::unsharp::UnsharpState>,
+> = std::sync::LazyLock::new(|| {
+    std::sync::Mutex::new(unoptimized::filter::unsharp::UnsharpState::new())
+});
 
 #[aviutl2::module::functions]
 #[allow(clippy::too_many_arguments)]
@@ -1382,6 +1387,42 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
         unoptimized::filter::flat_rgb::flat_rgb(image_buffer, width, height, mode);
+        Ok(())
+    }
+
+    fn filter_set_public_image(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+    ) -> anyhow::Result<bool> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts(image_buffer.as_ptr(), buffer_size) };
+        let mut state = FILTER_UNSHARP_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire unsharp state lock"))?;
+        state.set_public_image(image_buffer, width, height)
+    }
+
+    fn filter_unsharp_mask(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        strength: f64,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let mut state = FILTER_UNSHARP_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire unsharp state lock"))?;
+        state.unsharp_mask(image_buffer, width, height, strength)?;
         Ok(())
     }
 

@@ -104,7 +104,7 @@
 | T_Filter_Module.anm       | モザイクタイルT                           | :o:      | :o: | :o:              | :x:                  |
 | T_Filter_Module.anm       | ガラスT                                   | ？       | :x: | :x:              | :x:                  |
 | T_Filter_Module.anm       | エンボスT                                 | :o:      | :o: | :o:              | :x:                  |
-| T_Filter_Module.anm       | シャープT                                 | ？       | :x: | :x:              | :x:                  |
+| T_Filter_Module.anm       | シャープT                                 | :o:      | :o: | :o:              | :x:                  |
 | -                         | はためき.anm                              | ？       | -   | :x:              | :x:                  |
 | 領域枠.anm                | 領域枠                                    | ？       | -   | :x:              | :x:                  |
 | 領域枠.anm                | 領域枠(楕円)                              | ？       | -   | :x:              | :x:                  |
