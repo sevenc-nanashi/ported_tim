@@ -29,19 +29,28 @@ local basechk = 1
 ---$color:色
 local col = 0xccccff
 
----$value:位置％
+---$track:位置％
+---min=-5000
+---max=5000
+---step=0.1
 local t = -100
 
 ---$value:位置オフセット％
 local OFSET = { 0, 0, 0 }
 
----$value:発光中心サイズ％
+---$track:発光中心サイズ％
+---min=0
+---max=100
+---step=0.1
 local hs = 80
 
 ---$check:自動拡大
 local aubg = 0
 
----$value:基準距離
+---$track:基準距離
+---min=0
+---max=5000
+---step=0.1
 local Rmax = 400
 
 obj.copybuffer("tmp", "obj")

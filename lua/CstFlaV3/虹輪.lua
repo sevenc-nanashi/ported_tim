@@ -23,13 +23,22 @@ local track_intensity_percent = 50
 ---step=0.1
 local track_rotation = 0
 
----$value:位置％
+---$track:位置％
+---min=-5000
+---max=5000
+---step=0.1
 local t = 50
 
----$value:虹輪開％
+---$track:虹輪開％
+---min=0
+---max=100
+---step=0.1
 local ds = 20
 
----$value:裁ち落とし％
+---$track:裁ち落とし％
+---min=0
+---max=100
+---step=0.1
 local spt = 0
 
 ---$value:位置オフセット％
@@ -38,16 +47,29 @@ local OFSET = { 0, 0, 0 }
 ---$check:自動拡大
 local aubg = 0
 
----$value:基準距離
+---$track:基準距離
+---min=0
+---max=5000
+---step=0.1
 local Rmax = 400
 
----$value:偏平率％
+---$track:偏平率％
+---min=0
+---max=200
+---step=0.1
 local asp = 100
 
----$value:ぼかし
+---$track:ぼかし
+---min=0
+---max=1000
+---step=0.1
 local blur = 1
 
----$value:パターン[1-4]
+---$select:パターン
+---1=1
+---2=2
+---3=3
+---4=4
 local fig = 1
 
 ---$check:色上書き
@@ -56,7 +78,10 @@ local ovchk = 0
 ---$color:上書き色
 local ovcol = 0xccccff
 
----$value:点滅
+---$track:点滅
+---min=0
+---max=1
+---step=0.01
 local blink = 0.2
 
 ---$value:発光

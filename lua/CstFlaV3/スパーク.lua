@@ -23,7 +23,10 @@ local track_intensity = 20
 ---step=0.1
 local track_rotation = 0
 
----$value:数
+---$track:数
+---min=1
+---max=5000
+---step=1
 local n = 150
 
 ---$check:ベースカラー
@@ -32,28 +35,49 @@ local basechk = 1
 ---$color:光芒色
 local col = 0x9999ff
 
----$value:幅比率％
+---$track:幅比率％
+---min=0
+---max=100
+---step=0.1
 local dH = 10
 
----$value:ぼかし
+---$track:ぼかし
+---min=0
+---max=1000
+---step=0.1
 local blur = 5
 
----$value:放射ブラー
+---$track:放射ブラー
+---min=0
+---max=1000
+---step=0.1
 local rblur = 50
 
----$value:位置％
+---$track:位置％
+---min=-5000
+---max=5000
+---step=0.1
 local t = -100
 
 ---$value:位置オフセット％
 local OFSET = { 0, 0, 0 }
 
----$value:動径方向バラツキ％
+---$track:動径方向バラツキ％
+---min=0
+---max=200
+---step=0.1
 local drh = 100
 
----$value:点滅
+---$track:点滅
+---min=0
+---max=1
+---step=0.01
 local blink = 0.2
 
----$value:乱数シード
+---$track:乱数シード
+---min=0
+---max=100000
+---step=1
 local seed = 0
 
 obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存

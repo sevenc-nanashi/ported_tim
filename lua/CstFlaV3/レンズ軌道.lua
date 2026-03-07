@@ -26,10 +26,16 @@ local track_attenuation_rate = 40
 ---$figure:形状
 local fig = "円"
 
----$value:サイズ幅％
+---$track:サイズ幅％
+---min=0
+---max=100
+---step=0.1
 local dsize = 10
 
----$value:強度幅％
+---$track:強度幅％
+---min=0
+---max=100
+---step=0.1
 local dalp = 0
 
 ---$check:ベースカラー
@@ -38,19 +44,34 @@ local basechk = 1
 ---$color:色
 local col = 0xccccff
 
----$value:色幅％
+---$track:色幅％
+---min=0
+---max=100
+---step=0.1
 local dcol = 0
 
----$value:回転
+---$track:回転
+---min=-3600
+---max=3600
+---step=0.1
 local rot = 0
 
----$value:回転幅
+---$track:回転幅
+---min=-3600
+---max=3600
+---step=0.1
 local drot = 0
 
----$value:ぼかし
+---$track:ぼかし
+---min=0
+---max=1000
+---step=0.1
 local blur = 0
 
----$value:乱数シード
+---$track:乱数シード
+---min=0
+---max=100000
+---step=1
 local seed = 0
 
 obj.copybuffer("tmp", "obj")

@@ -29,28 +29,48 @@ local basechk = 1
 ---$color:光芒色
 local col = 0x9999ff
 
----$value:位置％
+---$track:位置％
+---min=-5000
+---max=5000
+---step=0.1
 local t = -100
 
 ---$value:位置オフセット％
 local OFSET = { 0, 0, 0 }
 
----$value:先端ぼかし％
+---$track:先端ぼかし％
+---min=0
+---max=100
+---step=0.1
 local rnd = 100
 
----$value:光芒変化速度
+---$track:光芒変化速度
+---min=0
+---max=5
+---step=0.01
 local speed = 0.2
 
----$value:形状[1-8]
+---$select:形状
+---1=1
+---2=2
+---3=3
+---4=4
+---5=5
+---6=6
+---7=7
+---8=8
 local fig = 5
 
----$value:ｸﾘｯﾌﾟ位置幅ﾎﾞｶｼ
+---$value:クリップ位置幅ボカシ
 local clp = { 0, 0, 0 }
 
----$check:ｸﾘｯﾌﾟ向き
+---$check:クリップ向き
 local aub = 0
 
----$value:点滅
+---$track:点滅
+---min=0
+---max=1
+---step=0.01
 local blink = 0.1
 
 obj.copybuffer("tmp", "obj")

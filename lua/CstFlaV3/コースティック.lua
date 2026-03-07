@@ -23,16 +23,25 @@ local basechk = 1
 ---$color:色
 local col = 0xccccff
 
----$value:位置％
+---$track:位置％
+---min=-5000
+---max=5000
+---step=0.1
 local t = 100
 
 ---$value:位置オフセット％
 local OFSET = { 0, 0, 0 }
 
----$value:最大半径
+---$track:最大半径
+---min=0
+---max=5000
+---step=0.1
 local Rmax = 400
 
----$value:点滅
+---$track:点滅
+---min=0
+---max=1
+---step=0.01
 local blink = 0.2
 
 obj.copybuffer("tmp", "obj")

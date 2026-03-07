@@ -32,7 +32,10 @@ local col = 0xccccff
 ---$value:位置ズレ％
 local OFSET = { 0, 0, 0 }
 
----$value:点滅
+---$track:点滅
+---min=0
+---max=1
+---step=0.01
 local blink = 0.2
 
 obj.copybuffer("tmp", "obj")

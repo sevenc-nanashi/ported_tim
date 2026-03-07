@@ -29,34 +29,62 @@ local basechk = 1
 ---$color:光芒色
 local col = 0x9999ff
 
----$value:幅比率％
+---$track:幅比率％
+---min=0
+---max=100
+---step=0.1
 local dH0 = 8
 
----$value:高さランダム％
+---$track:高さランダム％
+---min=0
+---max=100
+---step=0.1
 local hrnd = 50
 
----$value:ぼかし
+---$track:ぼかし
+---min=0
+---max=1000
+---step=0.1
 local blur = 5
 
----$value:ステップ角度
+---$track:ステップ角度
+---min=-3600
+---max=3600
+---step=0.1
 local spdeg = 0
 
----$value:誤差角度
+---$track:誤差角度
+---min=0
+---max=3600
+---step=0.1
 local ddeg = 360
 
----$value:位置％
+---$track:位置％
+---min=-5000
+---max=5000
+---step=0.1
 local t = -100
 
 ---$value:位置オフセット％
 local OFSET = { 0, 0, 0 }
 
----$value:形状[1-4]
+---$select:形状
+---1=1
+---2=2
+---3=3
+---4=4
 local fig = 1
 
----$value:点滅
+---$track:点滅
+---min=0
+---max=1
+---step=0.01
 local blink = 0.2
 
----$value:乱数シード
+---$track:乱数シード
+---min=0
+---max=100000
+---step=1
 local seed = 0
 
 local figmax = 4

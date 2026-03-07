@@ -23,13 +23,19 @@ local track_count = 3
 ---step=0.1
 local track_intensity = 50
 
----$value:サイズ幅％
+---$track:サイズ幅％
+---min=0
+---max=100
+---step=0.1
 local dsize = 50
 
 ---$check:順次拡大
 local biger = 0
 
----$value:強度幅％
+---$track:強度幅％
+---min=0
+---max=100
+---step=0.1
 local dalp = 5
 
 ---$check:ベースカラー
@@ -38,7 +44,10 @@ local basechk = 1
 ---$color:色
 local col = 0xccccff
 
----$value:色幅％
+---$track:色幅％
+---min=0
+---max=100
+---step=0.1
 local dcol = 5
 
 ---$value:位置％
@@ -50,13 +59,22 @@ local OFSET = { 0, 0, 0 }
 ---$value:散らばり％
 local SIG = { 100, 25 }
 
----$value:ぼかし
+---$track:ぼかし
+---min=0
+---max=1000
+---step=0.1
 local blur = 10
 
----$value:点滅
+---$track:点滅
+---min=0
+---max=1
+---step=0.01
 local blink = 0.2
 
----$value:乱数シード
+---$track:乱数シード
+---min=0
+---max=100000
+---step=1
 local seed = 0
 
 obj.copybuffer("tmp", "obj")

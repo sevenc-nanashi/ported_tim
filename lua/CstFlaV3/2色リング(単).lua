@@ -32,19 +32,34 @@ local col1 = 0xff0000
 ---$color:色2
 local col2 = 0x22ff22
 
----$value:グラデ幅
+---$track:グラデ幅
+---min=0
+---max=100
+---step=0.1
 local grh = 40
 
----$value:ぼかし
+---$track:ぼかし
+---min=0
+---max=1000
+---step=0.1
 local blur = 5
 
----$value:開口量％
+---$track:開口量％
+---min=0
+---max=100
+---step=0.1
 local ew = 40
 
----$value:開口ぼかし％
+---$track:開口ぼかし％
+---min=0
+---max=100
+---step=0.1
 local bw = 20
 
----$value:位置％
+---$track:位置％
+---min=-5000
+---max=5000
+---step=0.1
 local t = 25
 
 ---$value:位置オフセット
@@ -53,10 +68,16 @@ local OFSET = { 0, 0, 0 }
 ---$check:自動消去
 local auba = 0
 
----$value:基準距離
+---$track:基準距離
+---min=0
+---max=5000
+---step=0.1
 local Rmax = 400
 
----$value:点滅
+---$track:点滅
+---min=0
+---max=1
+---step=0.01
 local blink = 0.2
 
 obj.copybuffer("tmp", "obj")

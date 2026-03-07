@@ -5,10 +5,9 @@
 ---step=0.1
 local track_move_amount = 0
 
----$track:合成モード
----min=0
----max=1
----step=1
+---$select:合成モード
+---加算=0
+---スクリーン=1
 local track_blend_mode = 0
 
 ---$color:ベースカラー

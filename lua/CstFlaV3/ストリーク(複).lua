@@ -29,28 +29,49 @@ local basechk = 1
 ---$color:光芒色
 local col = 0x9999ff
 
----$value:本数
+---$track:本数
+---min=1
+---max=5000
+---step=1
 local n = 3
 
----$value:位置％
+---$track:位置％
+---min=-5000
+---max=5000
+---step=0.1
 local t = -100
 
 ---$value:位置オフセット％
 local OFSET = { 0, 0, 0 }
 
----$value:拡大率
+---$track:拡大率
+---min=0
+---max=1000
+---step=0.1
 local exp = 50
 
----$value:間隔
+---$track:間隔
+---min=0
+---max=1000
+---step=0.1
 local dh = 5
 
----$value:間隔ﾗﾝﾀﾞﾑ
+---$track:間隔ランダム
+---min=0
+---max=1000
+---step=0.1
 local ddh = 5
 
----$value:横ﾗﾝﾀﾞﾑ
+---$track:横ランダム
+---min=0
+---max=1000
+---step=0.1
 local dw = 10
 
----$value:点滅
+---$track:点滅
+---min=0
+---max=1
+---step=0.01
 local blink = 0.1
 
 obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存

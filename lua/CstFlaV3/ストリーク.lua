@@ -29,16 +29,22 @@ local basechk = 1
 ---$color:光芒色
 local col = 0x9999ff
 
----$value:位置％
+---$track:位置％
+---min=-5000
+---max=5000
+---step=0.1
 local t = -100
 
 ---$value:位置オフセット％
 local OFSET = { 0, 0, 0 }
 
----$check:ｱﾝｶｰに合わせる
+---$check:アンカーに合わせる
 local acr = 0
 
----$value:点滅
+---$track:点滅
+---min=0
+---max=1
+---step=0.01
 local blink = 0.1
 
 obj.copybuffer("tmp", "obj")
