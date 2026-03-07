@@ -1,3 +1,9 @@
 {
-  "mcpServers": {}
+  "mcpServers": {
+    "ghidra": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "--script", "./.rulesync/mcp/ghidra_mcp_bridge.py"]
+    }
+  }
 }
