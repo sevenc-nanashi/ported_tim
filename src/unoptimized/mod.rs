@@ -1,6 +1,9 @@
 pub mod bias_deletion;
 pub mod binarization;
 pub mod binarization_rgb;
+pub mod burning_extended_contrast;
+pub mod burning_shift_channels;
+pub mod burning_tritone;
 pub mod change_to_color;
 pub mod channel_mixer;
 pub mod color_reduction;

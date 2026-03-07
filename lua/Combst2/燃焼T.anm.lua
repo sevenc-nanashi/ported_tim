@@ -1,4 +1,8 @@
 --label:tim2\アニメーション効果
+
+--NOTE: AviUtl2の内部フォーマットの変更（YUY2 -> RGBA(f16)）に伴い、処理の再現が困難なため、
+--ある程度パラメーターを変えています。まぁまぁそれっぽくはなっているはず...
+
 ---$track:展開
 ---min=0
 ---max=100
@@ -35,33 +39,50 @@ local orAP = 1
 ---$check:炎表示
 local fiAP = 1
 
----$value:シード
-local seed = 0
+---$track:シード
+---min=0
+---max=1000000
+---step=1
+local track_seed = 0
 
----$value:合成ﾓｰﾄﾞ[0-9]
-local mode = 1
+---$select:合成モード
+---通常=0
+---加算=1
+---減算=2
+---乗算=3
+---スクリーン=4
+---オーバーレイ=5
+---比較(明)=6
+---比較(暗)=7
+---輝度=8
+---陰影=9
+local select_blend_mode = 1
 
----$value:レイヤー指定
-local map = 0
+---$track:レイヤー指定
+---min=0
+---max=100
+---step=1
+local track_layer_index = 0
 
----$check:ｴﾌｪｸﾄ取得
+---$check:エフェクト取得
 local GE = 1
 
----$check:一時保存EXT
-local IE = 0
+-- ---$check:一時保存EXT
+-- local IE = 0
 
 ---$check:展開を調整
 local check0 = false
 
 if orAP == 1 or fiAP == 1 then
-    require("T_burning_Module")
+    local T_burning_Module = obj.module("tim2")
     local userdata, w, h
     local T = (track_unfold * 0.02 - 1) * 128
     local Si = track_period_width * 0.01
     local ST, Sh
 
-    seed = seed or 0
-    map = map or 0
+    local seed = track_seed or 0
+    local map = track_layer_index or 0
+    local mode = select_blend_mode or 1
 
     if check0 then
         ST = 60
@@ -76,9 +97,9 @@ if orAP == 1 or fiAP == 1 then
         Sh = track_threshold * 0.006
     end
 
-    obj.copybuffer("cache:ori", "obj")
+    obj.copybuffer("cache:ori", "object")
 
-    obj.effect("単色化", "color", 0xffffff, "輝度を保持する", 0)
+    obj.effect("単色化", "色", 0xffffff, "輝度を保持する", 0)
     local w0, h0 = obj.getpixel()
 
     local ECW
@@ -90,6 +111,7 @@ if orAP == 1 or fiAP == 1 then
         if IE == 0 then
             obj.load("layer", map, GE == 1)
         else
+            error("extbufferは未実装です。")
             require("extbuffer")
             extbuffer.read(map)
         end
@@ -104,21 +126,31 @@ if orAP == 1 or fiAP == 1 then
         T = (1 + 1 / kaku) * T
     end
 
-    userdata, w, h = obj.getpixeldata()
-    T_burning_Module.ExtendedContrast(userdata, w, h, T, ECW)
-    obj.putpixeldata(userdata)
-    obj.copybuffer("cache:dst", "obj")
+    userdata, w, h = obj.getpixeldata("object", "bgra")
+    T_burning_Module.burning_extended_contrast(userdata, w, h, T, ECW)
+    obj.putpixeldata("object", userdata, w, h, "bgra")
+    obj.copybuffer("cache:dst", "object")
 
-    obj.effect("グロー", "強さ", 40, "拡散", 30, "しきい値", 0, "ぼかし", 1)
-    obj.copybuffer("cache:alp", "obj")
+    obj.effect("グロー",
+        "強さ", 40,
+        "拡散", 0,
+        "しきい値", 0,
+        "ぼかし", 1,
+        "形状", "通常"
+    )
+
+    -- NOTE: rgbをu8の範囲で飽和させる
+    userdata, w, h = obj.getpixeldata("object", "bgra")
+    obj.putpixeldata("object", userdata, w, h, "bgra")
+    obj.copybuffer("cache:alp", "object")
 
     obj.setoption("drawtarget", "tempbuffer", w, h)
 
     if orAP == 1 then
-        obj.copybuffer("tmp", "cache:ori")
-        userdata, w, h = obj.getpixeldata()
-        T_burning_Module.ShiftChannels(userdata, w, h)
-        obj.putpixeldata(userdata)
+        obj.copybuffer("tempbuffer", "cache:ori")
+        userdata, w, h = obj.getpixeldata("object", "bgra")
+        T_burning_Module.burning_shift_channels(userdata, w, h)
+        obj.putpixeldata("object", userdata, w, h, "bgra")
         obj.effect("反転", "透明度反転", 1)
         obj.setoption("blend", "alpha_sub")
         obj.draw()
@@ -126,28 +158,30 @@ if orAP == 1 or fiAP == 1 then
     end
 
     if fiAP == 1 then
-        obj.copybuffer("obj", "cache:alp")
+        obj.copybuffer("object", "cache:alp")
         obj.effect("エッジ抽出", "輝度エッジを抽出", 1, "しきい値", 73 * Sh, "強さ", 100)
-        userdata, w, h = obj.getpixeldata()
-        T_burning_Module.Tritone(userdata, w, h, col1, col2)
-        obj.putpixeldata(userdata)
-        obj.effect("グロー", "強さ", 50 * ST, "拡散", 30, "しきい値", 40, "ぼかし", 3)
+
+        userdata, w, h = obj.getpixeldata("object", "bgra")
+        T_burning_Module.burning_tritone(userdata, w, h, col1, col2)
+
+        obj.putpixeldata("object", userdata, w, h, "bgra")
+        obj.effect("グロー", "強さ", 50 * ST, "拡散", 10, "しきい値", 40, "ぼかし", 3, "形状", "通常")
         obj.effect("斜めクリッピング", "幅", h0)
         obj.effect("斜めクリッピング", "幅", w0, "角度", 90)
         obj.setoption("blend", mode)
         obj.draw()
 
-        obj.copybuffer("obj", "cache:dst")
+        obj.copybuffer("object", "cache:dst")
         obj.effect("エッジ抽出", "輝度エッジを抽出", 1, "しきい値", 38 * Sh, "強さ", 330)
-        userdata, w, h = obj.getpixeldata()
-        T_burning_Module.Tritone(userdata, w, h, col1, col2)
-        obj.putpixeldata(userdata)
-        obj.effect("グロー", "強さ", 20 * ST, "拡散", 40, "しきい値", 40, "ぼかし", 3)
+        userdata, w, h = obj.getpixeldata("object", "bgra")
+        T_burning_Module.burning_tritone(userdata, w, h, col1, col2)
+        obj.putpixeldata("object", userdata, w, h, "bgra")
+        obj.effect("グロー", "強さ", 20 * ST, "拡散", 10, "しきい値", 40, "ぼかし", 3, "形状", "通常")
         obj.effect("斜めクリッピング", "幅", h0)
         obj.effect("斜めクリッピング", "幅", w0, "角度", 90)
         obj.setoption("blend", mode)
         obj.draw()
     end
     obj.load("tempbuffer")
-    obj.setoption("blend", 0)
+    obj.setoption("blend", "none")
 end
