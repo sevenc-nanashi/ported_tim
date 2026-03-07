@@ -59,7 +59,14 @@ local fig = track_shape
 local size = track_size_percent * 0.01
 local blur = track_blur
 t = t * 0.01
-obj.load("image", obj.getinfo("script_path") .. "CF-image\\I" .. fig .. ".png")
+
+-- obj.load("image", obj.getinfo("script_path") .. "CF-image\\I" .. fig .. ".png")
+local tim2_images = obj.module("tim2")
+local data, w, h = tim2_images.custom_flare_load_image("I" .. fig)
+obj.putpixeldata("object", data, w, h)
+tim2_images.custom_flare_free_image(data)
+
+obj.setoption("antialias", 1)
 obj.effect("グラデーション", "color", col, "color2", col, "blend", 5)
 obj.effect("ぼかし", "範囲", blur)
 ox = CustomFlareCX + t * CustomFlaredX + OFSET[1] * CustomFlaredX * 0.01

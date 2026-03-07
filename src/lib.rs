@@ -1335,6 +1335,15 @@ impl PortedTimMod2 {
         unoptimized::color::minimax::minimax_save(&mut cache, image_buffer, width, height)?;
         Ok(())
     }
+
+    fn custom_flare_load_image(name: String) -> anyhow::Result<(*const u8, usize, usize)> {
+        let image_data = unoptimized::custom_flare::load_image(&name)?;
+        Ok(image_data)
+    }
+
+    fn custom_flare_free_image(image_ptr: NonNull<u8>) {
+        unoptimized::custom_flare::free_image(image_ptr.as_ptr());
+    }
 }
 
 aviutl2::register_script_module!(PortedTimMod2);

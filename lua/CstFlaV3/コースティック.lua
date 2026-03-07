@@ -48,7 +48,10 @@ if alpha > 1 then
 end
 alpha = alpha * track_intensity * 0.01
 local blur = track_blur
-obj.load("image", obj.getinfo("script_path") .. "CF-image\\ctc1.png")
+local tim2_images = obj.module("tim2")
+local data, w, h = tim2_images.custom_flare_load_image("ctc1")
+obj.putpixeldata("object", data, w, h)
+tim2_images.custom_flare_free_image(data)
 obj.effect("グラデーション", "color", col, "color2", col, "blend", 5)
 obj.effect("ぼかし", "範囲", blur)
 local ox = (t + OFSET[1]) * 0.01 * CustomFlaredX
@@ -72,7 +75,9 @@ else
     ox, oy, oz, alpha, s1, s2 = 0, 0, 0, 0, 0, 0
 end
 obj.draw(ox, oy, oz, size / 200, alpha, s2, -s1, 0)
-obj.load("image", obj.getinfo("script_path") .. "CF-image\\ctc2.png")
+local data, w, h = tim2_images.custom_flare_load_image("ctc2")
+obj.putpixeldata("object", data, w, h)
+tim2_images.custom_flare_free_image(data)
 obj.effect("グラデーション", "color", col, "color2", col, "blend", 5)
 obj.effect("ぼかし", "範囲", blur)
 local k = 30
