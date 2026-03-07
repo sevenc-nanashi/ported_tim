@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$track:しきい値1
 ---min=0
 ---max=255

@@ -99,5 +99,15 @@ if GL > 0 and GD > 0 then
     g = math.max(math.min(g, 255), 0)
     b = math.max(math.min(b, 255), 0)
 
-    obj.effect("ライト", "強さ", track_backlight_intensity, "拡散", track_backlight_diffusion, "逆光", 1, "color", RGB(r, g, b))
+    obj.effect(
+        "ライト",
+        "強さ",
+        track_backlight_intensity,
+        "拡散",
+        track_backlight_diffusion,
+        "逆光",
+        1,
+        "color",
+        RGB(r, g, b)
+    )
 end

@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$track:U
 ---min=-500
 ---max=500

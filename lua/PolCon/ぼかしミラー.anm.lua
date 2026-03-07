@@ -28,15 +28,7 @@ else
 end
 obj.setoption("drawtarget", "tempbuffer", obj.getpixel())
 obj.draw()
-obj.effect(
-    "斜めクリッピング",
-    "中心Y",
-    track_center_y,
-    "角度",
-    track_angle,
-    "ぼかし",
-    track_blur
-)
+obj.effect("斜めクリッピング", "中心Y", track_center_y, "角度", track_angle, "ぼかし", track_blur)
 obj.effect("反転", "上下反転", 1, "左右反転", chk)
 obj.draw()
 obj.load("tempbuffer")

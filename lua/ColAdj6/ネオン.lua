@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$track:輝度中心
 ---min=-200
 ---max=200

@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$track:赤←赤％
 ---min=-300
 ---max=300
@@ -70,7 +71,6 @@ local track_blue_blue_percent = 100
 ---max=300
 ---step=0.1
 local track_blue_count = 0
-
 
 local current_rate = {
     track_red_red_percent,

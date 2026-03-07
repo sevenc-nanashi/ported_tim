@@ -218,9 +218,9 @@ if SL then
     Lset(LL1 + dL, 0, 0, 1, 0)
 else
     Lset(LL1 + dL, 0, -LL2 / 2, 1, 0) --上
-    Lset(LL1 + dL, 0, LL2 / 2, 2, 0)  --下
+    Lset(LL1 + dL, 0, LL2 / 2, 2, 0) --下
     Lset(LL2 + dL, -LL1 / 2, 0, 3, 1) --左
-    Lset(LL2 + dL, LL1 / 2, 0, 4, 1)  --右
+    Lset(LL2 + dL, LL1 / 2, 0, 4, 1) --右
 end
 obj.copybuffer("obj", "tmp")
 for i = 2, Ju do

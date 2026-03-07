@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$track:閾値
 ---min=0
 ---max=255
@@ -36,7 +37,6 @@ local colorize = false
 local col1 = 0xff0000
 ---$color:暗部色
 local col2 = 0x0000ff
-
 
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")

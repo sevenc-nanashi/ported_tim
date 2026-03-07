@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$select:計算法
 ---イコライズ+RGB補正=0
 ---イコライズ=1

@@ -131,13 +131,7 @@ if orAP == 1 or fiAP == 1 then
     obj.putpixeldata("object", userdata, w, h, "bgra")
     obj.copybuffer("cache:dst", "object")
 
-    obj.effect("グロー",
-        "強さ", 40,
-        "拡散", 0,
-        "しきい値", 0,
-        "ぼかし", 1,
-        "形状", "通常"
-    )
+    obj.effect("グロー", "強さ", 40, "拡散", 0, "しきい値", 0, "ぼかし", 1, "形状", "通常")
 
     -- NOTE: rgbをu8の範囲で飽和させる
     userdata, w, h = obj.getpixeldata("object", "bgra")

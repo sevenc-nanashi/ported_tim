@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$select:アルファ
 ---アルファ=0
 ---赤=1

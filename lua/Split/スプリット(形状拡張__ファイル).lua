@@ -11,9 +11,9 @@ local a = obj.track2 * 0.01
 
 T_line_data = {}
 local one = io.input(file)
-while (one) do
+while one do
     one = io.read("*l")
-    if (one) then
+    if one then
         table.insert(T_line_data, one)
     end
 end

@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$select:補正法
 ---アルファ値の変更=0
 ---背景色の削除=1
@@ -27,5 +28,14 @@ local Af = 1
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_fringe_fix(userdata, w, h, col, track_adjust_method, track_alpha_upper_limit, track_alpha_lower_limit, Af or 0)
+T_Color_Module.color_fringe_fix(
+    userdata,
+    w,
+    h,
+    col,
+    track_adjust_method,
+    track_alpha_upper_limit,
+    track_alpha_lower_limit,
+    Af or 0
+)
 obj.putpixeldata("object", userdata, w, h, "bgra")

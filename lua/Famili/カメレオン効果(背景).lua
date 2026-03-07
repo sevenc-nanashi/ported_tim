@@ -34,16 +34,5 @@ local Lw = 2
 
 require("T_Familiar_Module")
 local userdata, w, h = obj.getpixeldata()
-T_Familiar_Module.SetColor(
-    userdata,
-    w,
-    h,
-    track_center_x,
-    track_center_y,
-    track_width,
-    track_height,
-    check0,
-    col,
-    Lw
-)
+T_Familiar_Module.SetColor(userdata, w, h, track_center_x, track_center_y, track_width, track_height, check0, col, Lw)
 obj.putpixeldata(userdata)

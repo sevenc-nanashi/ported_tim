@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$track:黒潰補正
 ---min=-1000
 ---max=1000

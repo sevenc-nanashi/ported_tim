@@ -39,8 +39,8 @@ for i = 1, 6 do
 end
 pos[1] = {
     { x = -Lhw, y = -Lhw, z = -Lh },
-    { x = Lhw,  y = -Lhw, z = -Lh },
-    { x = Lhw,  y = Lhw,  z = -Lh },
+    { x = Lhw, y = -Lhw, z = -Lh },
+    { x = Lhw, y = Lhw, z = -Lh },
     {
         x = -Lhw,
         y = Lhw,
@@ -49,8 +49,8 @@ pos[1] = {
 }
 pos[2] = {
     { z = -Lhw, y = -Lhw, x = Lh },
-    { z = Lhw,  y = -Lhw, x = Lh },
-    { z = Lhw,  y = Lhw,  x = Lh },
+    { z = Lhw, y = -Lhw, x = Lh },
+    { z = Lhw, y = Lhw, x = Lh },
     {
         z = -Lhw,
         y = Lhw,
@@ -58,9 +58,9 @@ pos[2] = {
     },
 }
 pos[3] = {
-    { x = Lhw,  y = -Lhw, z = Lh },
+    { x = Lhw, y = -Lhw, z = Lh },
     { x = -Lhw, y = -Lhw, z = Lh },
-    { x = -Lhw, y = Lhw,  z = Lh },
+    { x = -Lhw, y = Lhw, z = Lh },
     {
         x = Lhw,
         y = Lhw,
@@ -68,9 +68,9 @@ pos[3] = {
     },
 }
 pos[4] = {
-    { z = Lhw,  y = -Lhw, x = -Lh },
+    { z = Lhw, y = -Lhw, x = -Lh },
     { z = -Lhw, y = -Lhw, x = -Lh },
-    { z = -Lhw, y = Lhw,  x = -Lh },
+    { z = -Lhw, y = Lhw, x = -Lh },
     {
         z = Lhw,
         y = Lhw,
@@ -78,9 +78,9 @@ pos[4] = {
     },
 }
 pos[5] = {
-    { x = -Lhw, z = Lhw,  y = -Lh },
-    { x = Lhw,  z = Lhw,  y = -Lh },
-    { x = Lhw,  z = -Lhw, y = -Lh },
+    { x = -Lhw, z = Lhw, y = -Lh },
+    { x = Lhw, z = Lhw, y = -Lh },
+    { x = Lhw, z = -Lhw, y = -Lh },
     {
         x = -Lhw,
         z = -Lhw,
@@ -89,8 +89,8 @@ pos[5] = {
 }
 pos[6] = {
     { x = -Lhw, z = -Lhw, y = Lh },
-    { x = Lhw,  z = -Lhw, y = Lh },
-    { x = Lhw,  z = Lhw,  y = Lh },
+    { x = Lhw, z = -Lhw, y = Lh },
+    { x = Lhw, z = Lhw, y = Lh },
     {
         x = -Lhw,
         z = Lhw,

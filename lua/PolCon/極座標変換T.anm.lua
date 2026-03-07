@@ -22,10 +22,8 @@ local userdata, w, h = obj.getpixeldata()
 local work = obj.getpixeldata("work")
 local LUD
 if track_inverse_transform == 0 then
-    LUD =
-        T_PolarConversion_Module.PolarConversion(userdata, work, w, h, track_range * 0.01, track_apply_amount * 0.01)
+    LUD = T_PolarConversion_Module.PolarConversion(userdata, work, w, h, track_range * 0.01, track_apply_amount * 0.01)
 else
-    LUD =
-        T_PolarConversion_Module.PolarInversion(userdata, work, w, h, track_range * 0.01, track_apply_amount * 0.01)
+    LUD = T_PolarConversion_Module.PolarInversion(userdata, work, w, h, track_range * 0.01, track_apply_amount * 0.01)
 end
 obj.putpixeldata(LUD)

@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$track:R閾値
 ---min=0
 ---max=255
@@ -30,5 +31,13 @@ local track_auto_detect = 0
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_binarization_rgb(userdata, w, h, track_r_threshold, track_g_threshold, track_b_threshold, track_auto_detect)
+T_Color_Module.color_binarization_rgb(
+    userdata,
+    w,
+    h,
+    track_r_threshold,
+    track_g_threshold,
+    track_b_threshold,
+    track_auto_detect
+)
 obj.putpixeldata("object", userdata, w, h, "bgra")

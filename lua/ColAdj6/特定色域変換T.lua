@@ -1,4 +1,5 @@
 --label:tim2\色調整\T_Color_Module.anm
+--filter
 ---$track:色相範囲
 ---min=0.1
 ---max=360
