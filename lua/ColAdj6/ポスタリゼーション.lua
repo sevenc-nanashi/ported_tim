@@ -45,7 +45,7 @@ if sz > 1 then
     obj.effect("リサイズ", "拡大率", 100 / sz)
 end
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.posterize(userdata, w, h, r, g, b, ED)
+T_Color_Module.color_posterize(userdata, w, h, r, g, b, ED)
 obj.putpixeldata("object", userdata, w, h, "bgra")
 if sz > 1 then
     obj.effect("リサイズ", "X", w0, "Y", h0, "補間なし", 1, "ドット数でサイズ指定", 1)

@@ -23,7 +23,7 @@ fn lerp_u8(a: u8, b: u8, t: f64) -> u8 {
 /// T_burning_Module.dll の Tritone 相当。
 ///
 /// 2 色から中間色を作り、輝度 200..255 の範囲のみ補間して着色する。
-pub fn burning_tritone(
+pub fn tritone(
     buffer: &mut [u8],
     width: usize,
     height: usize,

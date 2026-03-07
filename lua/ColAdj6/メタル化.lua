@@ -26,5 +26,5 @@ local gray_mode = 1
 --require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.metal(userdata, w, h, flip_lower, flip_upper, gray_mode)
+T_Color_Module.color_metal(userdata, w, h, flip_lower, flip_upper, gray_mode)
 obj.putpixeldata("object", userdata, w, h, "bgra")

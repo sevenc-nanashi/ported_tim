@@ -29,5 +29,5 @@ dark_color = dark_color or 0x0
 local T_Color_Module = obj.module("tim2")
 
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.grayscale(userdata, w, h, gray_mode, bright_color, dark_color, 100 / gamma)
+T_Color_Module.color_grayscale(userdata, w, h, gray_mode, bright_color, dark_color, 100 / gamma)
 obj.putpixeldata("object", userdata, w, h, "bgra")

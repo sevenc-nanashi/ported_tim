@@ -28,5 +28,5 @@ local userdata, w, h = obj.getpixeldata("object", "bgra")
 if track_color ~= nil then
     track_r, track_g, track_b = RGB(track_color)
 end
-T_Color_Module.monochromatic(userdata, w, h, track_r, track_g, track_b)
+T_Color_Module.color_monochromatic(userdata, w, h, track_r, track_g, track_b)
 obj.putpixeldata("object", userdata, w, h, "bgra")

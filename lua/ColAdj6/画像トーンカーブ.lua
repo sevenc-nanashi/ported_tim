@@ -48,7 +48,7 @@ if check0 then
     X, Y = -X * math.sin(Y / 180 * math.pi), X * math.cos(Y / 180 * math.pi)
 end
 X, Y = X + CC[1], Y + CC[2]
-T_Color_Module.image_tone_curve(userdata, w, h, X, Y, Deg, w * track_width_percent * 0.01, col, Lck)
+T_Color_Module.color_image_tone_curve(userdata, w, h, X, Y, Deg, w * track_width_percent * 0.01, col, Lck)
 obj.putpixeldata("object", userdata, w, h, "bgra")
 T_ToneCurve_R = 1
 T_ToneCurve_G = 1

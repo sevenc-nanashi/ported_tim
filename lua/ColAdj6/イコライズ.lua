@@ -9,8 +9,8 @@ local calc_method = 0
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
 if calc_method < 2 then
-    T_Color_Module.equalize(userdata, w, h, calc_method)
+    T_Color_Module.color_equalize(userdata, w, h, calc_method)
 elseif calc_method == 2 then
-    T_Color_Module.equalize_rgb(userdata, w, h)
+    T_Color_Module.color_equalize_rgb(userdata, w, h)
 end
 obj.putpixeldata("object", userdata, w, h, "bgra")

@@ -42,7 +42,7 @@ end
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.colorama(
+T_Color_Module.color_colorama(
     userdata,
     w,
     h,

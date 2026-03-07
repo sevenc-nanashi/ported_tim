@@ -39,7 +39,7 @@ local pS2 = pS or 100
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.change_to_color(
+T_Color_Module.color_change_to_color(
     userdata,
     w,
     h,

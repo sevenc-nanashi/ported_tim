@@ -89,5 +89,5 @@ local current_rate = {
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.channel_mixer(userdata, w, h, unpack(current_rate))
+T_Color_Module.color_channel_mixer(userdata, w, h, unpack(current_rate))
 obj.putpixeldata("object", userdata, w, h, "bgra")

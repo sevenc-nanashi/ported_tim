@@ -38,7 +38,7 @@ local invert_range = false
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.threshold(
+T_Color_Module.color_threshold(
     userdata,
     w,
     h,

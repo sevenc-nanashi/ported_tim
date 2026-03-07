@@ -42,7 +42,7 @@ if check0 then
         for j = -1, 1 do
             obj.copybuffer("object", "cache:ORI")
             local userdata, w, h = obj.getpixeldata("object", "bgra")
-            T_Color_Module.monochromatic2(userdata, w, h, UU + i * 0.1, VV + j * 0.1, GM)
+            T_Color_Module.color_monochromatic2(userdata, w, h, UU + i * 0.1, VV + j * 0.1, GM)
             obj.putpixeldata("object", userdata, w, h, "bgra")
             obj.draw(w * i, -h * j, 0)
         end
@@ -50,6 +50,6 @@ if check0 then
     obj.load("tempbuffer")
 else
     local userdata, w, h = obj.getpixeldata("object", "bgra")
-    T_Color_Module.monochromatic2(userdata, w, h, UU, VV, GM)
+    T_Color_Module.color_monochromatic2(userdata, w, h, UU, VV, GM)
     obj.putpixeldata("object", userdata, w, h, "bgra")
 end

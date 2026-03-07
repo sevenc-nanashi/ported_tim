@@ -717,7 +717,7 @@ fn shaped_max_metric(
 /// 備考:
 /// - `save_color == true` は `FUN_100070c0` 系列の近似移植。
 /// - `fig != 0` は `FUN_10007e00` 系列の近似移植。
-pub fn minmax_impl(
+pub fn minimax_impl(
     userdata: &mut [u8],
     width: usize,
     height: usize,

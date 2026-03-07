@@ -39,5 +39,5 @@ end
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.grainy(userdata, w, h, track_amount, track_contrast, track_processing_method, N, col1, col2)
+T_Color_Module.color_grainy(userdata, w, h, track_amount, track_contrast, track_processing_method, N, col1, col2)
 obj.putpixeldata("object", userdata, w, h, "bgra")

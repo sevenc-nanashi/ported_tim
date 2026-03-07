@@ -43,5 +43,5 @@ else
 end
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.tritone_v3(userdata, w, h, col1, col2, col3, p1, p2, p3, egm or 0)
+T_Color_Module.color_tritone_v3(userdata, w, h, col1, col2, col3, p1, p2, p3, egm or 0)
 obj.putpixeldata("object", userdata, w, h, "bgra")

@@ -35,5 +35,5 @@ else
 end
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.gamma_correction(userdata, w, h, r, g, b)
+T_Color_Module.color_gamma_correction(userdata, w, h, r, g, b)
 obj.putpixeldata("object", userdata, w, h, "bgra")

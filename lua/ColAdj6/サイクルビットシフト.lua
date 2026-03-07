@@ -35,5 +35,5 @@ if shift_24bit then
     r = math.floor(track_n_24bit)
 end
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.cycle_bit_shift(userdata, w, h, r, g, b, shift_24bit)
+T_Color_Module.color_cycle_bit_shift(userdata, w, h, r, g, b, shift_24bit)
 obj.putpixeldata("object", userdata, w, h, "bgra")

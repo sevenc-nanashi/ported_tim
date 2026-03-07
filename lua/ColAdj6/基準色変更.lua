@@ -29,7 +29,7 @@ local use_distance_from_standard_color = false
 --require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.standard_color(
+T_Color_Module.color_standard_color(
     userdata,
     w,
     h,

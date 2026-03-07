@@ -56,7 +56,7 @@ if ClusterReductionIdxC_T then
     for i = 1, ClusterReductionIdxC_T.N do
         colors[i] = ClusterReductionIdxC_T.T[i]
     end
-    T_Color_Module.disp_reduction(userdata, w, h, colors)
+    T_Color_Module.color_disp_reduction(userdata, w, h, colors)
     ClusterReductionIdxC_T = nil
 else
     local mN = track_mc_color_count
@@ -73,6 +73,6 @@ else
         end
     end
     -- T_Color_Module.MCutReduction(userdata, w, h, mN, cN, Cap, colN, col)
-    T_Color_Module.mcut_reduction(userdata, w, h, mN, cN, Cap, col)
+    T_Color_Module.color_mcut_reduction(userdata, w, h, mN, cN, Cap, col)
 end
 obj.putpixeldata("object", userdata, w, h, "bgra")

@@ -31,7 +31,7 @@ local r, g, b = RGB(col)
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.leave_color(
+T_Color_Module.color_leave_color(
     userdata,
     w,
     h,

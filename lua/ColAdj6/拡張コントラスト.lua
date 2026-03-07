@@ -38,7 +38,7 @@ if show_curve then
     obj.load("figure", "四角形", 0xffffff, math.max(100, curve_size or 260))
 end
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.extended_contrast(
+T_Color_Module.color_extended_contrast(
     userdata,
     w,
     h,

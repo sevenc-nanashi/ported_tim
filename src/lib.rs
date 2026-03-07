@@ -21,24 +21,25 @@ impl aviutl2::module::ScriptModule for PortedTimMod2 {
 }
 
 static TONE_CURVE_STATE: std::sync::LazyLock<
-    std::sync::Mutex<unoptimized::tone_curve::ToneCurveState>,
+    std::sync::Mutex<unoptimized::color::tone_curve::ToneCurveState>,
 > = std::sync::LazyLock::new(|| {
-    std::sync::Mutex::new(unoptimized::tone_curve::ToneCurveState::default())
+    std::sync::Mutex::new(unoptimized::color::tone_curve::ToneCurveState::default())
 });
 static SHADOW_HIGHLIGHT_STATE: std::sync::LazyLock<
-    std::sync::Mutex<unoptimized::shadow_highlight::ShadowHighlightState>,
+    std::sync::Mutex<unoptimized::color::shadow_highlight::ShadowHighlightState>,
 > = std::sync::LazyLock::new(|| {
-    std::sync::Mutex::new(unoptimized::shadow_highlight::ShadowHighlightState::new())
+    std::sync::Mutex::new(unoptimized::color::shadow_highlight::ShadowHighlightState::new())
 });
-static MINIMAX_CACHE: std::sync::LazyLock<std::sync::Mutex<unoptimized::minimax::MinimaxCache>> =
-    std::sync::LazyLock::new(|| {
-        std::sync::Mutex::new(unoptimized::minimax::MinimaxCache::default())
-    });
+static MINIMAX_CACHE: std::sync::LazyLock<
+    std::sync::Mutex<unoptimized::color::minimax::MinimaxCache>,
+> = std::sync::LazyLock::new(|| {
+    std::sync::Mutex::new(unoptimized::color::minimax::MinimaxCache::default())
+});
 
 #[aviutl2::module::functions]
 #[allow(clippy::too_many_arguments)]
 impl PortedTimMod2 {
-    fn metal(
+    fn color_metal(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -47,9 +48,9 @@ impl PortedTimMod2 {
         gray_mode: u8,
     ) -> anyhow::Result<()> {
         let gray_mode = match gray_mode {
-            0 => unoptimized::metal::GrayMode::Average,
-            1 => unoptimized::metal::GrayMode::Lightness,
-            2 => unoptimized::metal::GrayMode::Luminance,
+            0 => unoptimized::color::metal::GrayMode::Average,
+            1 => unoptimized::color::metal::GrayMode::Lightness,
+            2 => unoptimized::color::metal::GrayMode::Luminance,
             _ => {
                 anyhow::bail!("Invalid gray mode: {}", gray_mode);
             }
@@ -60,11 +61,11 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::metal::metal(image_buffer, flip_upper, flip_lower, gray_mode);
+        unoptimized::color::metal::metal(image_buffer, flip_upper, flip_lower, gray_mode);
         Ok(())
     }
 
-    fn pastel(
+    fn color_pastel(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -79,7 +80,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::pastel::pastel_bgra(
+        unoptimized::color::pastel::pastel_bgra(
             image_buffer,
             width,
             height,
@@ -91,7 +92,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn grayscale(
+    fn color_grayscale(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -106,7 +107,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::grayscale::grayscale(
+        unoptimized::color::grayscale::grayscale(
             image_buffer,
             width,
             height,
@@ -118,7 +119,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn enh_grayscale(
+    fn color_enh_grayscale(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -138,7 +139,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::enh_grayscale::enh_grayscale(
+        unoptimized::color::enh_grayscale::enh_grayscale(
             image_buffer,
             width,
             height,
@@ -156,7 +157,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn binarization(
+    fn color_binarization(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -173,7 +174,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::binarization::binarization(
+        unoptimized::color::binarization::binarization(
             image_buffer,
             width,
             height,
@@ -188,7 +189,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn binarization_rgb(
+    fn color_binarization_rgb(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -203,7 +204,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::binarization_rgb::binarization_rgb(
+        unoptimized::color::binarization_rgb::binarization_rgb(
             image_buffer,
             width,
             height,
@@ -216,7 +217,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn threshold(
+    fn color_threshold(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -233,7 +234,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::threshold::threshold(
+        unoptimized::color::threshold::threshold(
             image_buffer,
             width,
             height,
@@ -247,7 +248,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn channel_mixer(
+    fn color_channel_mixer(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -271,7 +272,7 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        unoptimized::channel_mixer::channel_mixer(
+        unoptimized::color::channel_mixer::channel_mixer(
             image_buffer,
             width,
             height,
@@ -291,7 +292,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn shift_channels(
+    fn color_shift_channels(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -307,7 +308,7 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        unoptimized::shift_channels::shift_channels(
+        unoptimized::color::shift_channels::shift_channels(
             image_buffer,
             width,
             height,
@@ -319,7 +320,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn cycle_bit_shift(
+    fn color_cycle_bit_shift(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -335,7 +336,7 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        unoptimized::cycle_bit_shift::cycle_bit_shift(
+        unoptimized::color::cycle_bit_shift::cycle_bit_shift(
             image_buffer,
             width,
             height,
@@ -347,7 +348,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn leave_color(
+    fn color_leave_color(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -366,7 +367,7 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        unoptimized::leave_color::leave_color(
+        unoptimized::color::leave_color::leave_color(
             image_buffer,
             width,
             height,
@@ -381,7 +382,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn fringe_fix(
+    fn color_fringe_fix(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -398,7 +399,7 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        unoptimized::fringe_fix::fringe_fix(
+        unoptimized::color::fringe_fix::fringe_fix(
             image_buffer,
             width,
             height,
@@ -411,7 +412,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn bias_deletion(
+    fn color_bias_deletion(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -427,7 +428,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::bias_deletion::bias_deletion(
+        unoptimized::color::bias_deletion::bias_deletion(
             image_buffer,
             width,
             height,
@@ -441,7 +442,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn grainy(
+    fn color_grainy(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -458,7 +459,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::grainy::grainy(
+        unoptimized::color::grainy::grainy(
             image_buffer,
             width,
             height,
@@ -472,7 +473,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn gamma_correction(
+    fn color_gamma_correction(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -486,7 +487,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::gamma_correction::gamma_correction(
+        unoptimized::color::gamma_correction::gamma_correction(
             image_buffer,
             width,
             height,
@@ -498,7 +499,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn color_reduction(
+    fn color_color_reduction(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -510,11 +511,11 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::color_reduction::color_reduction(image_buffer, shift)?;
+        unoptimized::color::color_reduction::color_reduction(image_buffer, shift)?;
         Ok(())
     }
 
-    fn tritone_v3(
+    fn color_tritone_v3(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -532,7 +533,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::tritone_v3::tritone_v3(
+        unoptimized::color::tritone_v3::tritone_v3(
             image_buffer,
             width,
             height,
@@ -547,7 +548,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn tritone_v2(
+    fn color_tritone_v2(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -570,7 +571,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::tritone_v2::tritone_v2(
+        unoptimized::color::tritone_v2::tritone_v2(
             image_buffer,
             width,
             height,
@@ -590,7 +591,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn set_tone_curve(
+    fn color_set_tone_curve(
         channel: usize,
         mode: i32,
         unused_arg3: f64,
@@ -617,7 +618,7 @@ impl PortedTimMod2 {
         )
     }
 
-    fn sim_tone_curve(
+    fn color_sim_tone_curve(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -636,7 +637,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn image_tone_curve(
+    fn color_image_tone_curve(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -672,7 +673,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn draw_tone_curve(
+    fn color_draw_tone_curve(
         image_buffer: NonNull<u8>,
         image_width: usize,
         image_height: usize,
@@ -698,7 +699,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn mcut_reduction(
+    fn color_mcut_reduction(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -717,7 +718,7 @@ impl PortedTimMod2 {
             .into_iter()
             .map(|c| c as u32)
             .collect::<Vec<u32>>();
-        unoptimized::reduction::mcut_reduction(
+        unoptimized::color::reduction::mcut_reduction(
             image_buffer,
             width,
             height,
@@ -729,7 +730,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn sample_grid_colors(
+    fn color_sample_grid_colors(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -744,7 +745,7 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        let colors = unoptimized::reduction::sample_grid_colors(
+        let colors = unoptimized::color::reduction::sample_grid_colors(
             image_buffer,
             width,
             height,
@@ -756,7 +757,7 @@ impl PortedTimMod2 {
         Ok(colors.iter().map(|&c| c as i32).collect())
     }
 
-    fn disp_reduction(
+    fn color_disp_reduction(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -769,11 +770,11 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::reduction::disp_reduction(image_buffer, width, height, &colors)?;
+        unoptimized::color::reduction::disp_reduction(image_buffer, width, height, &colors)?;
         Ok(())
     }
 
-    fn extended_contrast(
+    fn color_extended_contrast(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -789,7 +790,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::extended_contrast::extended_contrast(
+        unoptimized::color::extended_contrast::extended_contrast(
             image_buffer,
             width,
             height,
@@ -815,7 +816,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::burning_extended_contrast::burning_extended_contrast(
+        unoptimized::burning::extended_contrast::extended_contrast(
             image_buffer,
             width,
             height,
@@ -836,7 +837,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::burning_shift_channels::burning_shift_channels(image_buffer, width, height)?;
+        unoptimized::burning::shift_channels::shift_channels(image_buffer, width, height)?;
         Ok(())
     }
 
@@ -853,11 +854,11 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::burning_tritone::burning_tritone(image_buffer, width, height, color1, color2)?;
+        unoptimized::burning::tritone::tritone(image_buffer, width, height, color1, color2)?;
         Ok(())
     }
 
-    fn equalize(
+    fn color_equalize(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -869,22 +870,30 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::equalize::equalize(image_buffer, width, height, calc_method)?;
+        unoptimized::color::equalize::equalize(image_buffer, width, height, calc_method)?;
         Ok(())
     }
 
-    fn equalize_rgb(image_buffer: NonNull<u8>, width: usize, height: usize) -> anyhow::Result<()> {
+    fn color_equalize_rgb(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+    ) -> anyhow::Result<()> {
         let buffer_size = width
             .checked_mul(height)
             .and_then(|v| v.checked_mul(4))
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::equalize::equalize_rgb(image_buffer, width, height)?;
+        unoptimized::color::equalize::equalize_rgb(image_buffer, width, height)?;
         Ok(())
     }
 
-    fn save_g_image(image_buffer: NonNull<u8>, width: usize, height: usize) -> anyhow::Result<()> {
+    fn color_save_g_image(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+    ) -> anyhow::Result<()> {
         let buffer_size = width
             .checked_mul(height)
             .and_then(|v| v.checked_mul(4))
@@ -898,7 +907,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn shadow_highlight(
+    fn color_shadow_highlight(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -924,7 +933,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn monochromatic(
+    fn color_monochromatic(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -938,7 +947,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::monochromatic::monochromatic(
+        unoptimized::color::monochromatic::monochromatic(
             image_buffer,
             width,
             height,
@@ -949,7 +958,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn monochromatic2(
+    fn color_monochromatic2(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -963,11 +972,18 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::monochromatic2::monochromatic2(image_buffer, width, height, u, v, gamma)?;
+        unoptimized::color::monochromatic2::monochromatic2(
+            image_buffer,
+            width,
+            height,
+            u,
+            v,
+            gamma,
+        )?;
         Ok(())
     }
 
-    fn standard_color(
+    fn color_standard_color(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -984,7 +1000,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::standard_color::standard_color(
+        unoptimized::color::standard_color::standard_color(
             image_buffer,
             width,
             height,
@@ -998,7 +1014,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn change_to_color(
+    fn color_change_to_color(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -1016,7 +1032,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::change_to_color::change_to_color(
+        unoptimized::color::change_to_color::change_to_color(
             image_buffer,
             width,
             height,
@@ -1031,7 +1047,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn tetratone(
+    fn color_tetratone(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -1050,7 +1066,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::tetratone::tetratone(
+        unoptimized::color::tetratone::tetratone(
             image_buffer,
             width,
             height,
@@ -1066,7 +1082,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn posterize(
+    fn color_posterize(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -1081,7 +1097,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::posterize::posterize(
+        unoptimized::color::posterize::posterize(
             image_buffer,
             width,
             height,
@@ -1093,7 +1109,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn colorama(
+    fn color_colorama(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -1113,7 +1129,7 @@ impl PortedTimMod2 {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        unoptimized::colorama::colorama(
+        unoptimized::color::colorama::colorama(
             image_buffer,
             width,
             height,
@@ -1130,7 +1146,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn minimax_check(
+    fn color_minimax_check(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -1156,12 +1172,12 @@ impl PortedTimMod2 {
         let mut cache = MINIMAX_CACHE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire minimax cache lock"))?;
-        unoptimized::minimax::minimax_check(
+        unoptimized::color::minimax::minimax_check(
             &mut cache,
             image_buffer,
             width,
             height,
-            unoptimized::minimax::MinimaxCheckParams {
+            unoptimized::color::minimax::MinimaxCheckParams {
                 max_min,
                 channel,
                 range,
@@ -1179,7 +1195,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn minimax(
+    fn color_minimax(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -1201,11 +1217,11 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        unoptimized::minimax::minmax_impl(
+        unoptimized::color::minimax::minimax_impl(
             image_buffer,
             width,
             height,
-            unoptimized::minimax::MinimaxParams {
+            unoptimized::color::minimax::MinimaxParams {
                 max_min,
                 range,
                 channel,
@@ -1222,7 +1238,7 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn minimax_rot(
+    fn color_minimax_rot(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -1239,11 +1255,11 @@ impl PortedTimMod2 {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        unoptimized::minimax::minimax_rot(
+        unoptimized::color::minimax::minimax_rot(
             image_buffer,
             width,
             height,
-            unoptimized::minimax::MinimaxRotParams {
+            unoptimized::color::minimax::MinimaxRotParams {
                 original_width,
                 original_height,
                 angle_rad,
@@ -1255,7 +1271,11 @@ impl PortedTimMod2 {
         Ok(())
     }
 
-    fn minimax_save(image_buffer: NonNull<u8>, width: usize, height: usize) -> anyhow::Result<()> {
+    fn color_minimax_save(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+    ) -> anyhow::Result<()> {
         let buffer_size = width
             .checked_mul(height)
             .and_then(|v| v.checked_mul(4))
@@ -1265,7 +1285,7 @@ impl PortedTimMod2 {
         let mut cache = MINIMAX_CACHE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire minimax cache lock"))?;
-        unoptimized::minimax::minimax_save(&mut cache, image_buffer, width, height)?;
+        unoptimized::color::minimax::minimax_save(&mut cache, image_buffer, width, height)?;
         Ok(())
     }
 }

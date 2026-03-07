@@ -78,7 +78,7 @@ Rng = math.max(1, Rng)
 local ckr = 0
 if check0 then
     local userdata, w, h = obj.getpixeldata("object", "bgra")
-    ckr = T_Color_Module.minimax_check(
+    ckr = T_Color_Module.color_minimax_check(
         userdata,
         w,
         h,
@@ -116,11 +116,11 @@ if ckr == 0 then
         end
         obj.effect("領域拡張", "右", w2 - wr, "下", h2 - hr)
         local userdata, w, h = obj.getpixeldata("object", "bgra")
-        T_Color_Module.minimax_rot(userdata, w, h, wr, hr, RR, RH, track_max_min)
+        T_Color_Module.color_minimax_rot(userdata, w, h, wr, hr, RR, RH, track_max_min)
         obj.putpixeldata("object", userdata, w, h, "bgra")
     end
     local userdata, w, h = obj.getpixeldata("object", "bgra")
-    T_Color_Module.minimax(
+    T_Color_Module.color_minimax(
         userdata,
         w,
         h,
@@ -143,7 +143,7 @@ if ckr == 0 then
     end
     if check0 then
         local userdata, w, h = obj.getpixeldata("object", "bgra")
-        T_Color_Module.MinimaxSave(userdata, w, h)
+        T_Color_Module.color_minimax_save(userdata, w, h)
     end
 end
 obj.cx = 0

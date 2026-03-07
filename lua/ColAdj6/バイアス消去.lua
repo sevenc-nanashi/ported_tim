@@ -29,7 +29,7 @@ local check0 = false
 --require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.bias_deletion(
+T_Color_Module.color_bias_deletion(
     userdata,
     w,
     h,

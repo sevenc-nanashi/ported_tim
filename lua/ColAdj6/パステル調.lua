@@ -84,7 +84,7 @@ if Ces > 0 then
     obj.copybuffer("object", "cache:org")
 end
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.pastel(userdata, w, h, saturation, brightness, threshold, shw or 0)
+T_Color_Module.color_pastel(userdata, w, h, saturation, brightness, threshold, shw or 0)
 obj.putpixeldata("object", userdata, w, h, "bgra")
 obj.setoption("draw_state", false)
 if Ces > 0 then

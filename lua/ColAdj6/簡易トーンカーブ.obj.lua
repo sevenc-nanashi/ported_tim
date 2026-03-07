@@ -135,13 +135,13 @@ local drawtoneC = function(Cty, k, sw, sh, dx, dy, col, flg, a, TC, spN)
             local c2 = y1 - (a2 * x1 + b2) * x1
             TRA = { TC, -a1, -b1, 1 - c1, -a2, -b2, 1 - c2, x1 }
         end
-        T_Color_Module.set_tone_curve(Cty, unpack(TRA))
+        T_Color_Module.color_set_tone_curve(Cty, unpack(TRA))
     end
     if flg then
         obj.load("figure", "四角形", col, 1)
         obj.effect("リサイズ", "ドット数でサイズ指定", 1, "X", 256, "Y", 2 * shg2)
         local userdata, w, h = obj.getpixeldata("object", "bgra")
-        T_Color_Module.draw_tone_curve(userdata, w, h, Cty, col)
+        T_Color_Module.color_draw_tone_curve(userdata, w, h, Cty, col)
         obj.putpixeldata("object", userdata, w, h, "bgra")
         obj.effect("リサイズ", "ドット数でサイズ指定", 1, "X", swg2, "Y", shg2)
         obj.draw(dx, dy)

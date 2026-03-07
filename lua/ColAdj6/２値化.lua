@@ -41,7 +41,7 @@ local col2 = 0x0000ff
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.binarization(
+T_Color_Module.color_binarization(
     userdata,
     w,
     h,

@@ -7,7 +7,7 @@ use std::f64::consts::PI;
 /// `tan(pi * ecw * 0.0025)` へ変換し、
 /// `v = clamp((i - 128 - t) * coeff + 128)` の LUT を作成して
 /// RGB 各チャンネルへ適用する。アルファは保持。
-pub fn burning_extended_contrast(
+pub fn extended_contrast(
     buffer: &mut [u8],
     width: usize,
     height: usize,
