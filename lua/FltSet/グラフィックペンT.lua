@@ -23,8 +23,12 @@ local track_white_line_amount = 8
 ---step=0.1
 local track_black_line_amount = 8
 
----$value:向き[0..3]
-local Vec = 2
+---$select:向き
+---斜め右下=0
+---縦=1
+---斜め左下=2
+---横=3
+local direction = 2
 
 ---$color:シャドウ
 local col1 = 0x0
@@ -33,25 +37,28 @@ local col1 = 0x0
 local col2 = 0xffffff
 
 ---$check:シード固定
-local sechk = 1
+local seed_fixed = true
 
----$value:シード
+---$track:シード
+---min=0
+---max=99999
+---step=1
 local seed = 0
 
 ---$check:しきい値を自動計算
-local check0 = true
+local auto_threshold = true
 
-require("T_Filter_Module")
+local T_Filter_Module = obj.module("tim2")
 local Lng = track_line_length
 obj.effect("単色化")
 obj.effect("領域拡張", "塗りつぶし", 1, "上", Lng, "下", Lng, "左", Lng, "右", Lng)
 
-if sechk == 0 then
+if not seed_fixed then
     seed = seed + obj.time * obj.framerate
 end
-Vec = math.floor(((Vec or 2) % 4))
-local userdata, w, h = obj.getpixeldata()
-T_Filter_Module.Graphicpen(
+direction = math.floor(((direction or 2) % 4))
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+T_Filter_Module.filter_graphicpen(
     userdata,
     w,
     h,
@@ -59,15 +66,15 @@ T_Filter_Module.Graphicpen(
     track_threshold,
     track_white_line_amount * 0.01,
     track_black_line_amount * 0.01,
-    Vec,
+    direction,
     seed,
-    check0
+    auto_threshold
 )
-obj.putpixeldata(userdata)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 
-userdata, w, h = obj.getpixeldata()
+userdata, w, h = obj.getpixeldata("object", "bgra")
 local r1, g1, b1 = RGB(col1)
 local r2, g2, b2 = RGB(col2)
-T_Filter_Module.GrayColor(userdata, w, h, r1, g1, b1, r2, g2, b2)
-obj.putpixeldata(userdata)
+T_Filter_Module.filter_gray_color(userdata, w, h, r1, g1, b1, r2, g2, b2)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 obj.effect("クリッピング", "上", Lng, "下", Lng, "左", Lng, "右", Lng)
