@@ -5,42 +5,40 @@ build:
 scripts:
 - name: tim2.anm2
   sources:
-  - path: "./lua/26Poly/二十六面体.anm.lua"
-    label: 二十六面体.anm
-  - path: "./lua/Access/サイズ指定.lua"
-    label: サイズ指定
-  - path: "./lua/Access/領域サイズ指定+事前拡大回転.lua"
-    label: 領域サイズ指定+事前拡大回転
-  - path: "./lua/Access/ミラーT.anm.lua"
-    label: ミラーT.anm
-  - path: "./lua/AuraDcg/オーラ放出.anm.lua"
-    label: オーラ放出.anm
-  - path: "./lua/Beehive/蜂の巣モザイク.anm.lua"
-    label: 蜂の巣モザイク.anm
-  - path: "./lua/BloLus/ブロックラスターT.anm.lua"
-    label: ブロックラスターT.anm
-  - path: "./lua/BomPuz21/砕け散るパズル.anm.lua"
-    label: 砕け散るパズル.anm
-  - path: "./lua/Broken/砕け散るT.anm.lua"
-    label: 砕け散るT.anm
-  - path: "./lua/BrokenB/砕け散る球.anm.lua"
-    label: 砕け散る球.anm
-  - path: "./lua/ChromaV2/色収差.anm.lua"
-    label: 色収差.anm
-  - path: "./lua/CogWhl/歯車.anm.lua"
-    label: 歯車.anm
-  - path: "./lua/ColAdj6/メタル化.lua"
-    label: メタル化
-  - path: "./lua/ColAdj6/金属質.lua"
-    label: 金属質
-  - path: "./lua/ColAdj6/黄金質.lua"
-    label: 黄金質
-  - path: "./lua/ColAdj6/ブリーチバイパス.lua"
-    label: ブリーチバイパス
-  - path: "./lua/ColAdj6/パステル調.lua"
-    label: パステル調
+  - path: "./lua/GlpAst/グループ補助1.lua"
+    label: グループ補助1
+  - path: "./lua/OutLPur/輪郭追跡(表示).lua"
+    label: 輪郭追跡(表示)
+  - path: "./lua/OutLPur/輪郭追跡拡張機能.lua"
+    label: 輪郭追跡拡張機能
+  - path: "./lua/GlpAst/グループ補助2.lua"
+    label: グループ補助2
+  - path: "./lua/GlpAst/グループ補助3.lua"
+    label: グループ補助3
+  - path: "./lua/SkyDome/スカイドーム.lua"
+    label: スカイドーム
+  - path: "./lua/SkyDome/通常画像用前処理.lua"
+    label: 通常画像用前処理
   - path: "./lua/ColAdj6/ネオン.lua"
     label: ネオン
+  - path: "./lua/ColAdj6/パステル調.lua"
+    label: パステル調
+  - path: "./lua/ColAdj6/ブリーチバイパス.lua"
+    label: ブリーチバイパス
+  - path: "./lua/ColAdj6/黄金質.lua"
+    label: 黄金質
+  - path: "./lua/ColAdj6/金属質.lua"
+    label: 金属質
+  - path: "./lua/ColAdj6/メタル化.lua"
+    label: メタル化
+  - path: "./lua/PolCGra/４色グラデーション.anm.lua"
+    label: ４色グラデーション.anm
+  - path: "./lua/PolCGra/多色グラデーション拡張.lua"
+    label: 多色グラデーション拡張
+  - path: "./lua/PolCGra/多色グラデーション.lua"
+    label: 多色グラデーション
+  - path: "./lua/Famili/カメレオン効果(背景).lua"
+    label: カメレオン効果(背景)
   - path: "./lua/ColAdj6/グレースケール.lua"
     label: グレースケール
   - path: "./lua/ColAdj6/白黒.lua"
@@ -61,28 +59,30 @@ scripts:
     label: 減色パレット
   - path: "./lua/ColAdj6/メディアンカット減色.lua"
     label: メディアンカット減色
-  - path: "./lua/ColAdj6/拡張コントラスト.lua"
-    label: 拡張コントラスト
-  - path: "./lua/ColAdj6/画像トーンカーブ.lua"
-    label: 画像トーンカーブ
-  - path: "./lua/ColAdj6/簡易トーンカーブ.lua"
-    label: 簡易トーンカーブ
-  - path: "./lua/ColAdj6/イコライズ.lua"
-    label: イコライズ
-  - path: "./lua/ColAdj6/シャドウ・ハイライト.lua"
-    label: シャドウ・ハイライト
-  - path: "./lua/ColAdj6/単色化(T).lua"
-    label: 単色化(T)
-  - path: "./lua/ColAdj6/単色化(T2).lua"
-    label: 単色化(T2)
-  - path: "./lua/ColAdj6/基準色変更.lua"
-    label: 基準色変更
-  - path: "./lua/ColAdj6/特定色域変換T.lua"
-    label: 特定色域変換T
-  - path: "./lua/ColAdj6/トライトーン.lua"
-    label: トライトーン
   - path: "./lua/ColAdj6/テトラトーン.lua"
     label: テトラトーン
+  - path: "./lua/ColAdj6/トライトーン.lua"
+    label: トライトーン
+  - path: "./lua/ColAdj6/特定色域変換T.lua"
+    label: 特定色域変換T
+  - path: "./lua/ColAdj6/基準色変更.lua"
+    label: 基準色変更
+  - path: "./lua/ColAdj6/単色化(T2).lua"
+    label: 単色化(T2)
+  - path: "./lua/ColAdj6/単色化(T).lua"
+    label: 単色化(T)
+  - path: "./lua/ColAdj6/シャドウ・ハイライト.lua"
+    label: シャドウ・ハイライト
+  - path: "./lua/ColAdj6/イコライズ.lua"
+    label: イコライズ
+  - path: "./lua/ColAdj6/簡易トーンカーブ.lua"
+    label: 簡易トーンカーブ
+  - path: "./lua/ColAdj6/画像トーンカーブ.lua"
+    label: 画像トーンカーブ
+  - path: "./lua/ColAdj6/拡張コントラスト.lua"
+    label: 拡張コントラスト
+  - path: "./lua/RbwGra/虹色グラデーション.anm.lua"
+    label: 虹色グラデーション.anm
   - path: "./lua/ColAdj6/簡易コロラマ.lua"
     label: 簡易コロラマ
   - path: "./lua/ColAdj6/ポスタリゼーション.lua"
@@ -101,214 +101,76 @@ scripts:
     label: 色抜き
   - path: "./lua/ColAdj6/フリンジ修正.lua"
     label: フリンジ修正
-  - path: "./lua/ColEdge/色付きエッジ抽出.anm.lua"
-    label: 色付きエッジ抽出.anm
-  - path: "./lua/ColExt/色抽出T.anm.lua"
-    label: 色抽出T.anm
-  - path: "./lua/Combst2/燃焼T.anm.lua"
-    label: 燃焼T.anm
-  - path: "./lua/CrkGls/ひび割れガラスT.anm.lua"
-    label: ひび割れガラスT.anm
-  - path: "./lua/CstFlaV3/ベース.lua"
-    label: ベース
-  - path: "./lua/CstFlaV3/アイリス.lua"
-    label: アイリス
-  - path: "./lua/CstFlaV3/アイリス(単).lua"
-    label: アイリス(単)
-  - path: "./lua/CstFlaV3/リング.lua"
-    label: リング
-  - path: "./lua/CstFlaV3/リング(単).lua"
-    label: リング(単)
-  - path: "./lua/CstFlaV3/2色リング(単).lua"
-    label: 2色リング(単)
-  - path: "./lua/CstFlaV3/円.lua"
-    label: 円
-  - path: "./lua/CstFlaV3/発光.lua"
-    label: 発光
-  - path: "./lua/CstFlaV3/ストリーク.lua"
-    label: ストリーク
-  - path: "./lua/CstFlaV3/ストリーク(複).lua"
-    label: ストリーク(複)
-  - path: "./lua/CstFlaV3/スパイク.lua"
-    label: スパイク
-  - path: "./lua/CstFlaV3/ゆらめき.lua"
-    label: ゆらめき
-  - path: "./lua/CstFlaV3/スパーク.lua"
-    label: スパーク
-  - path: "./lua/CstFlaV3/カラースパーク.lua"
-    label: カラースパーク
-  - path: "./lua/CstFlaV3/コースティック.lua"
-    label: コースティック
-  - path: "./lua/CstFlaV3/虹輪.lua"
-    label: 虹輪
-  - path: "./lua/CstFlaV3/レンズ軌道.lua"
-    label: レンズ軌道
-  - path: "./lua/DiaSha/斜めブラインド(改).anm.lua"
-    label: 斜めブラインド(改).anm
-  - path: "./lua/EmbTile/エンボスタイル.anm.lua"
-    label: エンボスタイル.anm
-  - path: "./lua/EsyRpt/リピーター(基準).lua"
-    label: リピーター(基準)
-  - path: "./lua/EsyRpt/リピーター(+時間).lua"
-    label: リピーター(+時間)
-  - path: "./lua/EsyRpt/リピーター(変化率).lua"
-    label: リピーター(変化率)
-  - path: "./lua/EsyRpt/リピーター(表示).lua"
-    label: リピーター(表示)
-  - path: "./lua/Famili/カメレオン効果(背景).lua"
-    label: カメレオン効果(背景)
   - path: "./lua/Famili/カメレオン効果(適応).lua"
     label: カメレオン効果(適応)
-  - path: "./lua/FilmScr/フィルム焦げ.anm.lua"
-    label: フィルム焦げ.anm
-  - path: "./lua/FltSet/グラフィックペンT.lua"
-    label: グラフィックペンT
-  - path: "./lua/FltSet/ノート用紙T.lua"
-    label: ノート用紙T
-  - path: "./lua/FltSet/チョーク・木炭T.lua"
-    label: チョーク・木炭T
-  - path: "./lua/FltSet/ブラスターT.lua"
-    label: ブラスターT
-  - path: "./lua/FltSet/モザイクタイルT.lua"
-    label: モザイクタイルT
-  - path: "./lua/FltSet/ガラスT.lua"
-    label: ガラスT
-  - path: "./lua/FltSet/エンボスT.lua"
-    label: エンボスT
-  - path: "./lua/FltSet/シャープT.lua"
-    label: シャープT
-  - path: "./lua/Flutter/はためき.anm.lua"
-    label: はためき.anm
-  - path: "./lua/Frame2/領域枠.lua"
-    label: 領域枠
-  - path: "./lua/Frame2/領域枠(楕円).lua"
-    label: 領域枠(楕円)
-  - path: "./lua/Frame2/領域枠(サイズ補助).lua"
-    label: 領域枠(サイズ補助)
-  - path: "./lua/Frame2/領域枠(角落ち).lua"
-    label: 領域枠(角落ち)
-  - path: "./lua/Frame2/領域枠(雲形).lua"
-    label: 領域枠(雲形)
-  - path: "./lua/Frame2/領域枠(棘形).lua"
-    label: 領域枠(棘形)
-  - path: "./lua/Framing/縁取りT.anm.lua"
-    label: 縁取りT.anm
-  - path: "./lua/GlassSd/砕けたガラス(エンドレス).lua"
-    label: 砕けたガラス(エンドレス)
-  - path: "./lua/GlassSd/砕けたガラス(拡張).lua"
-    label: 砕けたガラス(拡張)
-  - path: "./lua/GlassSd/砕けたガラス(砕け散る).lua"
-    label: 砕けたガラス(砕け散る)
-  - path: "./lua/GlpAst/グループ補助1.lua"
-    label: グループ補助1
-  - path: "./lua/GlpAst/グループ補助2.lua"
-    label: グループ補助2
-  - path: "./lua/GlpAst/グループ補助3.lua"
-    label: グループ補助3
-  - path: "./lua/HalfRes/網点分解(CMY).lua"
-    label: 網点分解(CMY)
-  - path: "./lua/HalfRes/網点分解(特色).lua"
-    label: 網点分解(特色)
-  - path: "./lua/Hexahed/直方体展開.anm.lua"
-    label: 直方体展開.anm
-  - path: "./lua/LBurst/ライトバースト(拡張機能).lua"
-    label: ライトバースト(拡張機能)
-  - path: "./lua/LBurst/ライトバースト.lua"
-    label: ライトバースト
-  - path: "./lua/LinFil/ジグザグ塗りT(設定).lua"
-    label: ジグザグ塗りT(設定)
-  - path: "./lua/LinFil/ジグザグ塗りT(ﾃﾞｨｽﾌﾟﾚｲｽﾒﾝﾄﾏｯﾌﾟ).lua"
-    label: ジグザグ塗りT(ﾃﾞｨｽﾌﾟﾚｲｽﾒﾝﾄﾏｯﾌﾟ)
-  - path: "./lua/LinFil/ジグザグ塗りT(表示).lua"
-    label: ジグザグ塗りT(表示)
-  - path: "./lua/LinFil/ジグザグ塗りT(先端座標).lua"
-    label: ジグザグ塗りT(先端座標)
-  - path: "./lua/LinHal/ハーフトーンT.anm.lua"
-    label: ハーフトーンT.anm
-  - path: "./lua/LinHal/ライントーンT.anm.lua"
-    label: ライントーンT.anm
-  - path: "./lua/LineEx/ライン抽出T.anm.lua"
-    label: ライン抽出T.anm
-  - path: "./lua/LowRes/低解像度T.anm.lua"
-    label: 低解像度T.anm
-  - path: "./lua/MTile/モーションタイルＴ.anm.lua"
-    label: モーションタイルＴ.anm
-  - path: "./lua/MtnPasI/MP-A1.lua"
-    label: MP-A1
-  - path: "./lua/MtnPasI/MP-A2(複数可).lua"
-    label: MP-A2(複数可)
-  - path: "./lua/MtnPasI/MP-A3.lua"
-    label: MP-A3
-  - path: "./lua/MtnPasI/MP-B1.lua"
-    label: MP-B1
-  - path: "./lua/MtnPasI/MP-B2(複数可).lua"
-    label: MP-B2(複数可)
-  - path: "./lua/MtnPasI/MP-B3.lua"
-    label: MP-B3
-  - path: "./lua/MtnPasI/MP-C.lua"
-    label: MP-C
-  - path: "./lua/MtnPasI/MP-D.lua"
-    label: MP-D
-  - path: "./lua/MulGim/錐変形.anm.lua"
-    label: 錐変形.anm
-  - path: "./lua/OutLPur/輪郭追跡拡張機能.lua"
-    label: 輪郭追跡拡張機能
-  - path: "./lua/OutLPur/輪郭追跡(表示).lua"
-    label: 輪郭追跡(表示)
-  - path: "./lua/PickUp/つまむ.anm.lua"
-    label: つまむ.anm
-  - path: "./lua/PolCGra/多色グラデーション.lua"
-    label: 多色グラデーション
-  - path: "./lua/PolCGra/多色グラデーション拡張.lua"
-    label: 多色グラデーション拡張
-  - path: "./lua/PolCGra/４色グラデーション.anm.lua"
-    label: ４色グラデーション.anm
-  - path: "./lua/PolCon/ぼかしミラー.anm.lua"
-    label: ぼかしミラー.anm
-  - path: "./lua/PolCon/極座標変換T.anm.lua"
-    label: 極座標変換T.anm
-  - path: "./lua/PolyCut/任意多角形カットA.lua"
-    label: 任意多角形カットA
-  - path: "./lua/PolyCut/任意多角形カットB(追加アンカー).lua"
-    label: 任意多角形カットB(追加アンカー)
-  - path: "./lua/PolyCut/任意多角形カットB(表示).lua"
-    label: 任意多角形カットB(表示)
-  - path: "./lua/Polyhed/正多面体.anm.lua"
-    label: 正多面体.anm
-  - path: "./lua/Pour/注ぎT.anm.lua"
-    label: 注ぎT.anm
-  - path: "./lua/PyoPyo/ぷよぷよT.anm.lua"
-    label: ぷよぷよT.anm
-  - path: "./lua/RCube2/ルービックキューブ配置V2.anm.lua"
-    label: ルービックキューブ配置V2.anm
-  - path: "./lua/RbwGra/虹色グラデーション.anm.lua"
-    label: 虹色グラデーション.anm
-  - path: "./lua/ReelRot/リール回転T.anm.lua"
-    label: リール回転T.anm
-  - path: "./lua/RgLine/ラフ画線T.anm.lua"
-    label: ラフ画線T.anm
-  - path: "./lua/RndBlur/ランダムブラー.lua"
-    label: ランダムブラー
-  - path: "./lua/RndBlur/回転ランダムブラー.lua"
-    label: 回転ランダムブラー
-  - path: "./lua/RndBlur/放射ランダムブラー.lua"
-    label: 放射ランダムブラー
-  - path: "./lua/RotBlurV3/回転ブラー.lua"
-    label: 回転ブラー
   - path: "./lua/RotBlurV3/放射ブラー.lua"
     label: 放射ブラー
+  - path: "./lua/RotBlurV3/回転ブラー.lua"
+    label: 回転ブラー
+  - path: "./lua/RndBlur/放射ランダムブラー.lua"
+    label: 放射ランダムブラー
+  - path: "./lua/RndBlur/回転ランダムブラー.lua"
+    label: 回転ランダムブラー
   - path: "./lua/RotBlurV3/ハードブラー拡張.lua"
     label: ハードブラー拡張
   - path: "./lua/RotBlurV3/回転ハードブラー.lua"
     label: 回転ハードブラー
   - path: "./lua/RotBlurV3/放射ハードブラー.lua"
     label: 放射ハードブラー
+  - path: "./lua/RndBlur/ランダムブラー.lua"
+    label: ランダムブラー
   - path: "./lua/RotBlurV3/方向ハードブラー.lua"
     label: 方向ハードブラー
   - path: "./lua/RotBlurV3/渦.lua"
     label: 渦
-  - path: "./lua/RoughE/ラフエッジ.anm.lua"
-    label: ラフエッジ.anm
+  - path: "./lua/CstFlaV3/スパイク.lua"
+    label: スパイク
+  - path: "./lua/CstFlaV3/発光.lua"
+    label: 発光
+  - path: "./lua/CstFlaV3/ゆらめき.lua"
+    label: ゆらめき
+  - path: "./lua/CstFlaV3/ストリーク.lua"
+    label: ストリーク
+  - path: "./lua/CstFlaV3/ストリーク(複).lua"
+    label: ストリーク(複)
+  - path: "./lua/CstFlaV3/円.lua"
+    label: 円
+  - path: "./lua/CstFlaV3/2色リング(単).lua"
+    label: 2色リング(単)
+  - path: "./lua/CstFlaV3/リング(単).lua"
+    label: リング(単)
+  - path: "./lua/CstFlaV3/リング.lua"
+    label: リング
+  - path: "./lua/CstFlaV3/アイリス(単).lua"
+    label: アイリス(単)
+  - path: "./lua/LBurst/ライトバースト(拡張機能).lua"
+    label: ライトバースト(拡張機能)
+  - path: "./lua/LBurst/ライトバースト.lua"
+    label: ライトバースト
+  - path: "./lua/CstFlaV3/レンズ軌道.lua"
+    label: レンズ軌道
+  - path: "./lua/CstFlaV3/虹輪.lua"
+    label: 虹輪
+  - path: "./lua/CstFlaV3/コースティック.lua"
+    label: コースティック
+  - path: "./lua/CstFlaV3/カラースパーク.lua"
+    label: カラースパーク
+  - path: "./lua/CstFlaV3/スパーク.lua"
+    label: スパーク
+  - path: "./lua/AuraDcg/オーラ放出.anm.lua"
+    label: オーラ放出.anm
+  - path: "./lua/ChromaV2/色収差.anm.lua"
+    label: 色収差.anm
+  - path: "./lua/StarBst/スターバースト.anm.lua"
+    label: スターバースト.anm
+  - path: "./lua/CstFlaV3/ベース.lua"
+    label: ベース
+  - path: "./lua/CstFlaV3/アイリス.lua"
+    label: アイリス
+  - path: "./lua/Frame2/領域枠(楕円).lua"
+    label: 領域枠(楕円)
+  - path: "./lua/Frame2/領域枠.lua"
+    label: 領域枠
   - path: "./lua/RuledL/罫線T(Type1).lua"
     label: 罫線T(Type1)
   - path: "./lua/RuledL/罫線T(Type2).lua"
@@ -321,88 +183,234 @@ scripts:
     label: 罫線T(表示)
   - path: "./lua/RuledL/罫線T(obj配置).lua"
     label: 罫線T(obj配置)
-  - path: "./lua/Shake/ゆらめき.anm.lua"
-    label: ゆらめき.anm
+  - path: "./lua/Stroke/ストローク(反復).lua"
+    label: ストローク(反復)
+  - path: "./lua/Stroke/ストローク(配置__変動).lua"
+    label: ストローク(配置:変動)
+  - path: "./lua/LinFil/ジグザグ塗りT(設定).lua"
+    label: ジグザグ塗りT(設定)
+  - path: "./lua/LinFil/ジグザグ塗りT(ﾃﾞｨｽﾌﾟﾚｲｽﾒﾝﾄﾏｯﾌﾟ).lua"
+    label: ジグザグ塗りT(ﾃﾞｨｽﾌﾟﾚｲｽﾒﾝﾄﾏｯﾌﾟ)
+  - path: "./lua/LinFil/ジグザグ塗りT(表示).lua"
+    label: ジグザグ塗りT(表示)
+  - path: "./lua/LinFil/ジグザグ塗りT(先端座標).lua"
+    label: ジグザグ塗りT(先端座標)
+  - path: "./lua/Stroke/ストローク用アンカー.lua"
+    label: ストローク用アンカー
+  - path: "./lua/Framing/縁取りT.anm.lua"
+    label: 縁取りT.anm
+  - path: "./lua/Stroke/ストローク(配置).lua"
+    label: ストローク(配置)
+  - path: "./lua/RgLine/ラフ画線T.anm.lua"
+    label: ラフ画線T.anm
+  - path: "./lua/Frame2/領域枠(サイズ補助).lua"
+    label: 領域枠(サイズ補助)
+  - path: "./lua/Frame2/領域枠(角落ち).lua"
+    label: 領域枠(角落ち)
+  - path: "./lua/Frame2/領域枠(雲形).lua"
+    label: 領域枠(雲形)
+  - path: "./lua/Frame2/領域枠(棘形).lua"
+    label: 領域枠(棘形)
+  - path: "./lua/RoughE/ラフエッジ.anm.lua"
+    label: ラフエッジ.anm
+  - path: "./lua/LineEx/ライン抽出T.anm.lua"
+    label: ライン抽出T.anm
+  - path: "./lua/ColExt/色抽出T.anm.lua"
+    label: 色抽出T.anm
+  - path: "./lua/ColEdge/色付きエッジ抽出.anm.lua"
+    label: 色付きエッジ抽出.anm
+  - path: "./lua/Split/スプリット(位置拡張).lua"
+    label: スプリット(位置拡張)
+  - path: "./lua/SplMrp/モーフィング(輪郭)-オプション.lua"
+    label: モーフィング(輪郭)-オプション
   - path: "./lua/SimWrp/簡易ワープ(パス).lua"
     label: 簡易ワープ(パス)
   - path: "./lua/SimWrp/簡易ワープ(表示).lua"
     label: 簡易ワープ(表示)
   - path: "./lua/SimWrp2/簡易ワープV2.anm.lua"
     label: 簡易ワープV2.anm
-  - path: "./lua/Sket/点描T.anm.lua"
-    label: 点描T.anm
-  - path: "./lua/SkyDome/通常画像用前処理.lua"
-    label: 通常画像用前処理
-  - path: "./lua/SkyDome/スカイドーム.lua"
-    label: スカイドーム
   - path: "./lua/SplMrp/モーフィング-ポイント指定.lua"
     label: モーフィング-ポイント指定
-  - path: "./lua/SplMrp/モーフィング-ポイント追加.lua"
-    label: モーフィング-ポイント追加
-  - path: "./lua/SplMrp/モーフィング-表示.lua"
-    label: モーフィング-表示
   - path: "./lua/SplMrp/モーフィング(輪郭)-表示.lua"
     label: モーフィング(輪郭)-表示
-  - path: "./lua/SplMrp/モーフィング(輪郭)-オプション.lua"
-    label: モーフィング(輪郭)-オプション
-  - path: "./lua/Split/スプリット(位置拡張).lua"
-    label: スプリット(位置拡張)
-  - path: "./lua/Split/スプリット(形状拡張__アンカー).lua"
-    label: スプリット(形状拡張:ｱﾝｶｰ)
-  - path: "./lua/Split/スプリット(形状拡張__ファイル).lua"
-    label: スプリット(形状拡張:ﾌｧｲﾙ)
-  - path: "./lua/Split/スプリット.lua"
-    label: スプリット
-  - path: "./lua/StarBst/スターバースト.anm.lua"
-    label: スターバースト.anm
-  - path: "./lua/Stroke/ストローク用アンカー.lua"
-    label: ストローク用アンカー
-  - path: "./lua/Stroke/ストローク(反復).lua"
-    label: ストローク(反復)
-  - path: "./lua/Stroke/ストローク(配置__変動).lua"
-    label: ストローク(配置:変動)
-  - path: "./lua/Stroke/ストローク(配置).lua"
-    label: ストローク(配置)
-  - path: "./lua/TraEasy/TrackingラインEasy.lua"
-    label: TrackingラインEasy
-  - path: "./lua/TraEasy/TrackingラインEasy(頂点追加).lua"
-    label: TrackingラインEasy(頂点追加)
-  - path: "./lua/TraPnt/透明塗り.anm.lua"
-    label: 透明塗り.anm
-  - path: "./lua/TraSpe/透明度指定.anm.lua"
-    label: 透明度指定.anm
-  - path: "./lua/Twitch/twitchっぽいものT.anm.lua"
-    label: twitchっぽいものT.anm
+  - path: "./lua/SplMrp/モーフィング-表示.lua"
+    label: モーフィング-表示
+  - path: "./lua/SplMrp/モーフィング-ポイント追加.lua"
+    label: モーフィング-ポイント追加
+  - path: "./lua/Hexahed/直方体展開.anm.lua"
+    label: 直方体展開.anm
+  - path: "./lua/26Poly/二十六面体.anm.lua"
+    label: 二十六面体.anm
+  - path: "./lua/MulGim/錐変形.anm.lua"
+    label: 錐変形.anm
+  - path: "./lua/PickUp/つまむ.anm.lua"
+    label: つまむ.anm
   - path: "./lua/VanishP1_V2/バニシングポイント.anm.lua"
     label: バニシングポイント.anm
+  - path: "./lua/RCube2/ルービックキューブ配置V2.anm.lua"
+    label: ルービックキューブ配置V2.anm
+  - path: "./lua/Polyhed/正多面体.anm.lua"
+    label: 正多面体.anm
+  - path: "./lua/PolyCut/任意多角形カットB(表示).lua"
+    label: 任意多角形カットB(表示)
+  - path: "./lua/PolyCut/任意多角形カットB(追加アンカー).lua"
+    label: 任意多角形カットB(追加アンカー)
+  - path: "./lua/PolyCut/任意多角形カットA.lua"
+    label: 任意多角形カットA
+  - path: "./lua/PolCon/極座標変換T.anm.lua"
+    label: 極座標変換T.anm
   - path: "./lua/VanishP2_V2/バニシングポイント2.anm.lua"
     label: バニシングポイント2.anm
-  - path: "./lua/WindShk/風揺れT.anm.lua"
-    label: 風揺れT.anm
+  - path: "./lua/PolCon/ぼかしミラー.anm.lua"
+    label: ぼかしミラー.anm
   - path: "./lua/Wire3D/ワイヤー3D(マップ).lua"
     label: ワイヤー3D(マップ)
   - path: "./lua/Wire3D/ワイヤー3D(表示).lua"
     label: ワイヤー3D(表示)
-  - path: "./lua/k1-TwisterV2/ツイスター.anm.lua"
-    label: ツイスター.anm
+  - path: "./lua/k5-CurTra/曲面変形.anm.lua"
+    label: 曲面変形.anm
+  - path: "./lua/Split/スプリット.lua"
+    label: スプリット
+  - path: "./lua/Split/スプリット(形状拡張__ファイル).lua"
+    label: スプリット(形状拡張:ﾌｧｲﾙ)
+  - path: "./lua/Split/スプリット(形状拡張__アンカー).lua"
+    label: スプリット(形状拡張:ｱﾝｶｰ)
+  - path: "./lua/LowRes/低解像度T.anm.lua"
+    label: 低解像度T.anm
+  - path: "./lua/LinHal/ライントーンT.anm.lua"
+    label: ライントーンT.anm
+  - path: "./lua/LinHal/ハーフトーンT.anm.lua"
+    label: ハーフトーンT.anm
+  - path: "./lua/HalfRes/網点分解(特色).lua"
+    label: 網点分解(特色)
+  - path: "./lua/HalfRes/網点分解(CMY).lua"
+    label: 網点分解(CMY)
+  - path: "./lua/FltSet/シャープT.lua"
+    label: シャープT
+  - path: "./lua/FltSet/エンボスT.lua"
+    label: エンボスT
+  - path: "./lua/FltSet/ガラスT.lua"
+    label: ガラスT
+  - path: "./lua/FltSet/モザイクタイルT.lua"
+    label: モザイクタイルT
+  - path: "./lua/FltSet/ブラスターT.lua"
+    label: ブラスターT
+  - path: "./lua/FltSet/チョーク・木炭T.lua"
+    label: チョーク・木炭T
+  - path: "./lua/FltSet/ノート用紙T.lua"
+    label: ノート用紙T
+  - path: "./lua/FltSet/グラフィックペンT.lua"
+    label: グラフィックペンT
+  - path: "./lua/Sket/点描T.anm.lua"
+    label: 点描T.anm
+  - path: "./lua/FilmScr/フィルム焦げ.anm.lua"
+    label: フィルム焦げ.anm
+  - path: "./lua/EmbTile/エンボスタイル.anm.lua"
+    label: エンボスタイル.anm
+  - path: "./lua/Beehive/蜂の巣モザイク.anm.lua"
+    label: 蜂の巣モザイク.anm
+  - path: "./lua/EsyRpt/リピーター(変化率).lua"
+    label: リピーター(変化率)
+  - path: "./lua/EsyRpt/リピーター(表示).lua"
+    label: リピーター(表示)
+  - path: "./lua/MtnPasI/MP-B2(複数可).lua"
+    label: MP-B2(複数可)
+  - path: "./lua/MTile/モーションタイルＴ.anm.lua"
+    label: モーションタイルＴ.anm
+  - path: "./lua/MtnPasI/MP-A1.lua"
+    label: MP-A1
+  - path: "./lua/MtnPasI/MP-A2(複数可).lua"
+    label: MP-A2(複数可)
+  - path: "./lua/TraEasy/TrackingラインEasy.lua"
+    label: TrackingラインEasy
+  - path: "./lua/MtnPasI/MP-B1.lua"
+    label: MP-B1
+  - path: "./lua/MtnPasI/MP-A3.lua"
+    label: MP-A3
+  - path: "./lua/MtnPasI/MP-D.lua"
+    label: MP-D
+  - path: "./lua/TraEasy/TrackingラインEasy(頂点追加).lua"
+    label: TrackingラインEasy(頂点追加)
+  - path: "./lua/EsyRpt/リピーター(+時間).lua"
+    label: リピーター(+時間)
+  - path: "./lua/EsyRpt/リピーター(基準).lua"
+    label: リピーター(基準)
+  - path: "./lua/MtnPasI/MP-B3.lua"
+    label: MP-B3
+  - path: "./lua/MtnPasI/MP-C.lua"
+    label: MP-C
+  - path: "./lua/Access/ミラーT.anm.lua"
+    label: ミラーT.anm
+  - path: "./lua/DiaSha/斜めブラインド(改).anm.lua"
+    label: 斜めブラインド(改).anm
   - path: "./lua/k2-GrdWipe/グリッドワイプ.anm.lua"
     label: グリッドワイプ.anm
   - path: "./lua/k3-BriWipe/輝度ワイプ.anm.lua"
     label: 輝度ワイプ.anm
-  - path: "./lua/k4-NsLime/な〜さりい☆らいむ風TA.anm.lua"
-    label: な〜さりい☆らいむ風TA.anm
-  - path: "./lua/k5-CurTra/曲面変形.anm.lua"
-    label: 曲面変形.anm
-  - path: "./lua/k6-RadPar/変色パーティクル.anm.lua"
-    label: 変色パーティクル.anm
+  - path: "./lua/BloLus/ブロックラスターT.anm.lua"
+    label: ブロックラスターT.anm
+  - path: "./lua/BomPuz21/砕け散るパズル.anm.lua"
+    label: 砕け散るパズル.anm
+  - path: "./lua/Broken/砕け散るT.anm.lua"
+    label: 砕け散るT.anm
+  - path: "./lua/BrokenB/砕け散る球.anm.lua"
+    label: 砕け散る球.anm
+  - path: "./lua/CogWhl/歯車.anm.lua"
+    label: 歯車.anm
+  - path: "./lua/Combst2/燃焼T.anm.lua"
+    label: 燃焼T.anm
+  - path: "./lua/CrkGls/ひび割れガラスT.anm.lua"
+    label: ひび割れガラスT.anm
+  - path: "./lua/GlassSd/砕けたガラス(エンドレス).lua"
+    label: 砕けたガラス(エンドレス)
+  - path: "./lua/Pour/注ぎT.anm.lua"
+    label: 注ぎT.anm
+  - path: "./lua/PyoPyo/ぷよぷよT.anm.lua"
+    label: ぷよぷよT.anm
+  - path: "./lua/Shake/ゆらめき.anm.lua"
+    label: ゆらめき.anm
+  - path: "./lua/ReelRot/リール回転T.anm.lua"
+    label: リール回転T.anm
+  - path: "./lua/Flutter/はためき.anm.lua"
+    label: はためき.anm
+  - path: "./lua/TraPnt/透明塗り.anm.lua"
+    label: 透明塗り.anm
   - path: "./lua/k6-RadPar/放射分布.anm.lua"
     label: 放射分布.anm
+  - path: "./lua/k6-RadPar/変色パーティクル.anm.lua"
+    label: 変色パーティクル.anm
+  - path: "./lua/k4-NsLime/な〜さりい☆らいむ風TA.anm.lua"
+    label: な〜さりい☆らいむ風TA.anm
+  - path: "./lua/GlassSd/砕けたガラス(砕け散る).lua"
+    label: 砕けたガラス(砕け散る)
+  - path: "./lua/GlassSd/砕けたガラス(拡張).lua"
+    label: 砕けたガラス(拡張)
+  - path: "./lua/k1-TwisterV2/ツイスター.anm.lua"
+    label: ツイスター.anm
+  - path: "./lua/TraSpe/透明度指定.anm.lua"
+    label: 透明度指定.anm
+  - path: "./lua/Twitch/twitchっぽいものT.anm.lua"
+    label: twitchっぽいものT.anm
+  - path: "./lua/WindShk/風揺れT.anm.lua"
+    label: 風揺れT.anm
+  - path: "./lua/Access/サイズ指定.lua"
+    label: サイズ指定
+  - path: "./lua/Access/領域サイズ指定+事前拡大回転.lua"
+    label: 領域サイズ指定+事前拡大回転
 - name: tim2.tra2
   sources:
   - path: "./lua/BezSpe/ベジエ軌道Ｔ.tra.lua"
     label: ベジエ軌道Ｔ.tra
 - name: tim2.obj2
   sources:
+  - path: "./lua/TmpPre/保存画像の読込(4面).lua"
+    label: 保存画像の読込(4面)
+  - path: "./lua/TmpPre/一時的に保存(4面).lua"
+    label: 一時的に保存(4面)
+  - path: "./lua/TmpPre/保存画像の読込.lua"
+    label: 保存画像の読込
+  - path: "./lua/TmpPre/一時的に保存.lua"
+    label: 一時的に保存
   - path: "./lua/26Poly/二十六面体.obj.lua"
     label: 二十六面体.obj
   - path: "./lua/Access/ティーカップ.lua"
@@ -417,12 +425,6 @@ scripts:
     label: パズルピース.obj
   - path: "./lua/Bubble/泡.obj.lua"
     label: 泡.obj
-  - path: "./lua/ColAdj6/簡易トーンカーブ.obj.lua"
-    label: 簡易トーンカーブ.obj
-  - path: "./lua/ColAdj6/簡易ヒストグラム.obj.lua"
-    label: 簡易ヒストグラム.obj
-  - path: "./lua/ColAdj6/色相環.obj.lua"
-    label: 色相環.obj
   - path: "./lua/ConLine/集中線T1.lua"
     label: 集中線T1
   - path: "./lua/ConLine/集中線T2.lua"
@@ -437,8 +439,6 @@ scripts:
     label: Lensflare.obj
   - path: "./lua/LightNg/稲妻.obj.lua"
     label: 稲妻.obj
-  - path: "./lua/LimpFr/ぐにゃ枠T.obj.lua"
-    label: ぐにゃ枠T.obj
   - path: "./lua/MltLine/マルチラインT.obj.lua"
     label: マルチラインT.obj
   - path: "./lua/Polygon/任意多角形.lua"
@@ -449,16 +449,16 @@ scripts:
     label: 任意多角形分離指定（表示）
   - path: "./lua/Polygon/凸多角形.lua"
     label: 凸多角形
-  - path: "./lua/TmpPre/一時的に保存.lua"
-    label: 一時的に保存
-  - path: "./lua/TmpPre/保存画像の読込.lua"
-    label: 保存画像の読込
-  - path: "./lua/TmpPre/一時的に保存(4面).lua"
-    label: 一時的に保存(4面)
-  - path: "./lua/TmpPre/保存画像の読込(4面).lua"
-    label: 保存画像の読込(4面)
   - path: "./lua/moja2F/もじゃもじゃT.obj.lua"
     label: もじゃもじゃT.obj
+  - path: "./lua/ColAdj6/色相環.obj.lua"
+    label: 色相環.obj
+  - path: "./lua/ColAdj6/簡易ヒストグラム.obj.lua"
+    label: 簡易ヒストグラム.obj
+  - path: "./lua/ColAdj6/簡易トーンカーブ.obj.lua"
+    label: 簡易トーンカーブ.obj
+  - path: "./lua/LimpFr/ぐにゃ枠T.obj.lua"
+    label: ぐにゃ枠T.obj
 - name: tim2.cam2
   sources:
   - path: "./lua/Access/カメラデータコピー(親).lua"
