@@ -11,43 +11,48 @@ local track_width = 100
 ---step=0.1
 local track_count = 100
 
----$track:位相ｽﾞﾚX
+---$track:位相ズレX
 ---min=-5000
 ---max=5000
 ---step=0.1
 local track_offset_x = -100
 
----$track:位相ｽﾞﾚY
+---$track:位相ズレY
 ---min=-5000
 ---max=5000
 ---step=0.1
 local track_offset_y = 0
 
----$value:分割数
+---$track:分割数
+---min=2
+---max=300
+---step=1
 local N = 30
 
----$value:モード
-local SW = 1
+---$value:モード(1-4組み合わせ)
+local SW = "1"
 
 ---$check:縦波数を別指定
-local Yck = 0
+local Yck = false
 
----$value:└縦波数
+---$track:└縦波数
+---min=0
+---max=5000
+---step=0.1
 local HC = 100
 
 N = N or 30
-SW = (SW or 1) .. ""
+SW = tostring(SW or "1")
 local w, h = obj.w, obj.h
 local w2, h2 = w / 2, h / 2
 local wN, hN = w / N, h / N
 local A = w / 30 * track_width / 100
 local WC = track_count
-HC = (Yck == 1) and (HC or 100) or WC
+HC = (Yck and (HC or 100)) or WC
 WC = 2 * math.pi / w * WC / 100
 HC = 2 * math.pi / w * HC / 100
 local d1 = 2 * math.pi * track_offset_x / 100
 local d2 = 2 * math.pi * track_offset_y / 100
-obj.setoption("antialias", 1)
 for i = 0, N - 1 do
     local u1 = i * wN
     local u2 = (i + 1) * wN
