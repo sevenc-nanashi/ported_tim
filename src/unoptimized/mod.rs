@@ -5,4 +5,5 @@ pub mod custom_flare;
 pub mod familiar;
 pub mod filter;
 pub mod framing;
+pub mod lineextra;
 pub mod linefill;
