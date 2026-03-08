@@ -17,7 +17,7 @@ local track_min = 0
 ---step=0.1
 local track_max = 120
 
----$track:ﾎﾞｶｼ補正
+---$track:ボカシ補正
 ---min=0
 ---max=500
 ---step=1
@@ -26,28 +26,46 @@ local track_adjust = 50
 ---$figure:形状
 local fig = "円"
 
----$value:網点角度C
+---$track:網点角度C
+---min=0
+---max=360
+---step=0.1
 local deg1 = 15
 
----$value:網点角度M
+---$track:網点角度M
+---min=0
+---max=360
+---step=0.1
 local deg2 = 75
 
----$value:網点角度Y
+---$track:網点角度Y
+---min=0
+---max=360
+---step=0.1
 local deg3 = 30
 
 ---$check:網点も回転
 local Drt = 0
 
----$value:公転速度
+---$track:公転速度
+---min=-10
+---max=10
+---step=0.1
 local rV = 0
 
----$value:自転速度
+---$track:自転速度
+---min=-10
+---max=10
+---step=0.1
 local mV = 0
 
 ---$color:背景色
 local Bcol = 0xffffff
 
----$value:型抜法[0/1/2]
+---$select:型抜法
+---なし=0
+---網点のみ=1
+---網点と元画像=2
 local Dcut = 2
 
 ---$check:簡易表示
