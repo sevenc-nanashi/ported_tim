@@ -1,3 +1,4 @@
+pub mod blaster;
 pub mod chalk_charcoal;
 pub mod easy_binarization;
 pub mod emboss;

@@ -6,3 +6,5 @@
 *.scn2 text linguist-language=Lua
 *.cam2 text linguist-language=Lua
 *.tra2 text linguist-language=Lua
+
+.rulesync/mcp/ghidra_mcp_bridge.py linguist-vendored
