@@ -23,16 +23,21 @@ local track_size = 100
 ---step=0.1
 local track_depth_percent = 100
 
----$value:高さ(%)
+---$track:高さ(%)
+---min=0
+---max=5000
+---step=0.1
 local Hr = 100
 
----$value:配置
+---$select:配置
+---同一画像=0
+---展開画像(3x2)=1
 local POS = 0
 
----$value:表裏反転
+---$check:表裏反転
 local REV = 0
 
----$value:アンチエイリアス
+---$check:アンチエイリアス
 local ANT = 0
 
 local sx0 = {}
