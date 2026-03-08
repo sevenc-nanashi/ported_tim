@@ -23,7 +23,10 @@ local track_height = 1.5
 ---step=0.1
 local track_angle = -45
 
----$value:エンボス透明度[0-100]
+---$track:エンボス透明度
+---min=0
+---max=100
+---step=0.01
 local alp = 0
 
 obj.setoption("antialias", 0)
