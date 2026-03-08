@@ -23,13 +23,48 @@ local track_refractive_index = 25
 ---step=0.1
 local track_diameter_speed = 10
 
----$check:オリジナル表示
-local chk = 0
+---$select:分割パターン
+---ファイル読込=0
+---四角形=1
+---四角形+三角形=2
+---ランダム四角形=3
+---ランダム四角形+三角形=4
+local track_split_pattern = 1
 
----$value:回転速度
+---$track:限界サイズ
+---min=5
+---max=1000
+---step=0.1
+local track_limit_size = 50
+
+---$track:光散乱
+---min=1
+---max=100
+---step=0.1
+local track_light_scatter = 30
+
+---$track:拡大率
+---min=0
+---max=1000
+---step=0.1
+local track_scale = 100
+
+---$file:ファイル
+local split_file = ""
+
+---$check:オリジナル表示
+local chk = false
+
+---$track:回転速度
+---min=0
+---max=100
+---step=0.1
 local rotv = 5
 
----$value:Z速度
+---$track:Z速度
+---min=-100
+---max=100
+---step=0.1
 local vz = 7
 
 ---$value:XY速度中心
@@ -38,25 +73,40 @@ local pos = { 0, 0 }
 ---$value:重力方向
 local gr = { 0, 100, 0 }
 
----$value:ぼかし
+---$track:ぼかし
+---min=0
+---max=500
+---step=0.1
 local blur = 25
 
----$value:透明度[%]
+---$track:透明度[%]
+---min=0
+---max=100
+---step=0.1
 local alpha = 25
 
----$value:厚さ
+---$track:厚さ
+---min=0
+---max=100
+---step=0.1
 local d = 5
 
 ---$value:光線方向
 local L = { 1, 0, 1 }
 
----$value:正反射強度[%]
+---$track:正反射強度[%]
+---min=0
+---max=200
+---step=0.1
 local refp = 75
 
----$value:形状&速度ﾗﾝﾀﾞﾑ性[%]
+---$value:形状&速度ランダム性[%]
 local fvrd = { 70, 50 }
 
----$value:乱数パターン
+---$track:乱数パターン
+---min=0
+---max=10000
+---step=1
 local rnd = 100
 
 function sqsplit1()
@@ -305,7 +355,7 @@ function sqsplit0()
     end
 
     T_line_data = {}
-    local one = io.input(kudaketagarasu_file)
+    local one = io.input(split_file)
     while one do
         one = io.read("*l")
         if one then
@@ -346,7 +396,7 @@ d = d * 0.5
 
 obj.setoption("drawtarget", "tempbuffer", w, h)
 
-if chk == 1 then
+if chk then
     obj.draw()
 end
 
@@ -356,10 +406,10 @@ gr[2] = gr[2] / 1000
 gr[3] = gr[3] / 100000
 vz = vz / 1000
 
-spsiz = kudaketagarasu_spsiz
-local sppt = kudaketagarasu_sppt or 1
-local LimL = kudaketagarasu_LimL or 0.7
-kudaketagarasu_zoom = kudaketagarasu_zoom or 1
+local spsiz = track_limit_size
+local sppt = track_split_pattern
+local LimL = (100 - track_light_scatter) * 0.01
+local glass_zoom = track_scale * 0.01
 
 frd = fvrd[1]
 refp = refp * 0.01
@@ -390,17 +440,17 @@ else
 end
 
 --------
-if kudaketagarasu_zoom then
+if glass_zoom then
     for i = 0, NN - 1 do
-        xx[i][0] = xx[i][0] * kudaketagarasu_zoom
-        xx[i][1] = xx[i][1] * kudaketagarasu_zoom
-        xx[i][2] = xx[i][2] * kudaketagarasu_zoom
-        xx[i][3] = xx[i][3] * kudaketagarasu_zoom
+        xx[i][0] = xx[i][0] * glass_zoom
+        xx[i][1] = xx[i][1] * glass_zoom
+        xx[i][2] = xx[i][2] * glass_zoom
+        xx[i][3] = xx[i][3] * glass_zoom
 
-        yy[i][0] = yy[i][0] * kudaketagarasu_zoom
-        yy[i][1] = yy[i][1] * kudaketagarasu_zoom
-        yy[i][2] = yy[i][2] * kudaketagarasu_zoom
-        yy[i][3] = yy[i][3] * kudaketagarasu_zoom
+        yy[i][0] = yy[i][0] * glass_zoom
+        yy[i][1] = yy[i][1] * glass_zoom
+        yy[i][2] = yy[i][2] * glass_zoom
+        yy[i][3] = yy[i][3] * glass_zoom
     end
 end
 
@@ -646,9 +696,3 @@ end
 
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
-
-kudaketagarasu_file = nil
-kudaketagarasu_zoom = nil
-kudaketagarasu_sppt = nil
-kudaketagarasu_spsiz = nil
-kudaketagarasu_LimL = nil

@@ -381,8 +381,6 @@ scripts:
     label: な〜さりい☆らいむ風TA.anm
   - path: "./lua/GlassSd/砕けたガラス(砕け散る).lua"
     label: 砕けたガラス(砕け散る)
-  - path: "./lua/GlassSd/砕けたガラス(拡張).lua"
-    label: 砕けたガラス(拡張)
   - path: "./lua/k1-TwisterV2/ツイスター.anm.lua"
     label: ツイスター.anm
   - path: "./lua/TraSpe/透明度指定.anm.lua"

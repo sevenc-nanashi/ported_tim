@@ -24,46 +24,76 @@ local track_refractive_index = 25
 local track_move_speed = 10
 
 ---$check:オリジナル表示
-local chk = 0
+local chk = false
 
----$value:回転速度
+---$track:回転速度
+---min=0
+---max=100
+---step=0.1
 local rotv = 5
 
----$value:ぼかし
+---$track:ぼかし
+---min=0
+---max=500
+---step=0.1
 local blur = 25
 
----$value:透明度[%]
+---$track:透明度[%]
+---min=0
+---max=100
+---step=0.1
 local alpha = 20
 
----$value:厚さ
+---$track:厚さ
+---min=0
+---max=100
+---step=0.1
 local d = 3
 
 ---$value:光線方向
 local L = { 1, 0, 1 }
 
----$value:正反射強度[%]
+---$track:正反射強度[%]
+---min=0
+---max=200
+---step=0.1
 local refp = 75
 
----$value:形状ランダム性[%]
+---$track:形状ランダム性[%]
+---min=0
+---max=200
+---step=0.1
 local frd = 100
 
----$value:サイズランダム性[%]
+---$track:サイズランダム性[%]
+---min=0
+---max=100
+---step=0.1
 local zornM = 0
 
----$value:小サイズ出現度
+---$track:小サイズ出現度
+---min=10
+---max=500
+---step=0.1
 local Sbeki = 100
 
----$value:速度ランダム性[%]
+---$track:速度ランダム性[%]
+---min=0
+---max=200
+---step=0.1
 local vrd = 100
 
----$value:乱数パターン
+---$track:乱数パターン
+---min=0
+---max=10000
+---step=1
 local rnd = 100
 
 w, h = obj.getpixel()
 
 obj.setoption("drawtarget", "tempbuffer", w, h)
 
-if chk == 1 then
+if chk then
     obj.draw()
 end
 
