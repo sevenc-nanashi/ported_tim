@@ -5,16 +5,10 @@ build:
 scripts:
 - name: tim2.anm2
   sources:
-  - path: "./lua/GlpAst/グループ補助1.lua"
-    label: グループ補助1
   - path: "./lua/OutLPur/輪郭追跡(表示).lua"
     label: 輪郭追跡(表示)
   - path: "./lua/OutLPur/輪郭追跡拡張機能.lua"
     label: 輪郭追跡拡張機能
-  - path: "./lua/GlpAst/グループ補助2.lua"
-    label: グループ補助2
-  - path: "./lua/GlpAst/グループ補助3.lua"
-    label: グループ補助3
   - path: "./lua/SkyDome/スカイドーム.lua"
     label: スカイドーム
   - path: "./lua/SkyDome/通常画像用前処理.lua"
