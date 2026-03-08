@@ -5,7 +5,7 @@
 ---step=0.1
 local track_luminance = 100
 
----$track:ｺﾝﾄﾗｽﾄ
+---$track:コントラスト
 ---min=0
 ---max=100
 ---step=0.1
@@ -32,10 +32,23 @@ local chk = 0
 ---$value:発光中心
 local Cpos = { 0, 0 }
 
----$value:合成モード[1-9]
+---$select:合成モード
+---通常=0
+---加算=1
+---減算=2
+---乗算=3
+---スクリーン=4
+---オーバーレイ=5
+---比較(明)=6
+---比較(暗)=7
+---輝度=8
+---陰影=9
 local Gmode = 1
 
----$value:追加合成数
+---$track:追加合成数
+---min=0
+---max=100
+---step=1
 local RC = 0
 
 local w, h = obj.getpixel()
