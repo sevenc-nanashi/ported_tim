@@ -1,22 +1,5 @@
-#[derive(Clone, Copy)]
-struct LegacyRand {
-    holdrand: u32,
-}
-
-impl LegacyRand {
-    fn seeded(seed: i32) -> Self {
-        let s = (seed as i64)
-            .wrapping_mul(seed as i64)
-            .wrapping_mul(seed as i64)
-            .wrapping_mul(0x9fbf1);
-        Self { holdrand: s as u32 }
-    }
-
-    fn rand15(&mut self) -> u32 {
-        self.holdrand = self.holdrand.wrapping_mul(0x343fd).wrapping_add(0x269ec3);
-        (self.holdrand >> 16) & 0x7fff
-    }
-}
+use rand::rngs::StdRng;
+use rand::{RngExt, SeedableRng};
 
 /// Ghidra 解析ベースの `T_LineFill_Module.LineFill(...)` 互換実装。
 /// 対応元: FUN_10001000 + FUN_1000a180/a1f0/a2e0/a370/a400
@@ -104,10 +87,12 @@ pub fn line_fill(
     }
 
     if random_x > 0.0 || random_y > 0.0 {
-        let mut rng = LegacyRand::seeded(seed);
+        let s = seed as i64;
+        let rng_seed = s.wrapping_mul(s).wrapping_mul(s).wrapping_mul(0x9fbf1) as u64;
+        let mut rng = StdRng::seed_from_u64(rng_seed);
         for i in 0..n {
-            let rx = (((rng.rand15() % 10_000) as f64) * 0.0001 - 0.5) * random_x * 2.0;
-            let ry = (((rng.rand15() % 10_000) as f64) * 0.0001 - 0.5) * random_y * 2.0;
+            let rx = ((rng.random_range(0..10_000) as f64) * 0.0001 - 0.5) * random_x * 2.0;
+            let ry = ((rng.random_range(0..10_000) as f64) * 0.0001 - 0.5) * random_y * 2.0;
             pts[i * 2] += rx;
             pts[i * 2 + 1] += ry;
         }

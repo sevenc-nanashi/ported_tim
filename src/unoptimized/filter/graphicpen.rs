@@ -1,21 +1,5 @@
-struct LcgRand {
-    state: u32,
-}
-
-impl LcgRand {
-    fn new(seed: u32) -> Self {
-        Self { state: seed }
-    }
-
-    fn next_u32(&mut self) -> u32 {
-        self.state = self.state.wrapping_mul(214013).wrapping_add(2531011);
-        (self.state >> 16) & 0x7fff
-    }
-
-    fn next_f64(&mut self) -> f64 {
-        (self.next_u32() % 10_000) as f64 / 10_000.0
-    }
-}
+use rand::rngs::StdRng;
+use rand::{RngExt, SeedableRng};
 
 pub fn graphicpen(
     image_buffer: &mut [u8],
@@ -84,10 +68,12 @@ pub fn graphicpen(
     let white_adj = 1.0 - white_line_amount * 2.0;
     let black_adj = 1.0 - black_line_amount * 2.0;
 
-    let mut rng = LcgRand::new((seed as i64 * seed as i64 * seed as i64 * 654_321) as u32);
+    let s = seed as i64;
+    let rng_seed = 654_321i64.wrapping_mul(s.wrapping_mul(s).wrapping_mul(s)) as u64;
+    let mut rng = StdRng::seed_from_u64(rng_seed);
     let mut random_table = vec![0.0f64; 100_000];
     for v in &mut random_table {
-        *v = rng.next_f64();
+        *v = (rng.random_range(0..10_000) as f64) / 10_000.0;
     }
 
     let mut out = gray.clone();
