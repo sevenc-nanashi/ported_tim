@@ -23,59 +23,143 @@ local track_line_spacing = 10
 ---step=1
 local track_area_adjust = 0
 
----$value:表示モード[0..5]
+---$select:表示モード
+---通常(本体→ライン)=0
+---通常(ライン→本体)=1
+---アルファ減算(本体→ライン)=2
+---アルファ減算(ライン→本体)=3
+---反転+アルファ減算(本体→ライン)=4
+---反転+アルファ減算(ライン→本体)=5
 local Md = 0
 
----$value:角度
-local K = 20
+---$track:角度
+---min=-3600
+---max=3600
+---step=0.1
+local track_angle = 20
 
 ---$color:線色
 local col = 0xffffff
 
----$value:本体α[0..100]
-local OgA = 100
+---$track:本体α
+---min=0
+---max=100
+---step=0.1
+local track_alpha = 100
 
----$value:ﾗｲﾝα[0..100]
-local LnA = 100
+---$track:ラインα
+---min=0
+---max=100
+---step=0.1
+local track_alpha_2 = 100
 
----$value:ぼかし
-local B = 0
+---$track:ぼかし
+---min=0
+---max=500
+---step=1
+local track_blur = 0
 
----$value:水平ランダム
+--group:ディスプレイスメント,false
+
+---$track:MAPレイヤ
+---min=0
+---max=100
+---step=1
+local track_map = 0
+
+---$track:変形X
+---min=-500
+---max=500
+---step=0.1
+local track_deform_x = 10
+
+---$track:変形Y
+---min=-500
+---max=500
+---step=0.1
+local track_deform_y = 10
+
+---$track:変形方法
+---min=0
+---max=2
+---step=1
+local track_deform_method = 0
+
+---$track:ディスプレイスメントぼかし
+---min=0
+---max=500
+---step=1
+local dsp_blur = 5
+
+---$track:領域拡張X
+---min=-500
+---max=500
+---step=1
+local dsp_expand_x = 0
+
+---$track:領域拡張Y
+---min=-500
+---max=500
+---step=1
+local dsp_expand_y = 0
+
+---$check:MAPサイズ調整
+local check_map_resize = false
+
+--group:
+
+---$track:水平ランダム
+---min=0
+---max=1000
+---step=0.1
 local RX = 0
 
----$value:垂直ランダム
+---$track:垂直ランダム
+---min=0
+---max=1000
+---step=0.1
 local RY = 0
 
----$value:シード
+---$track:シード
+---min=-100000
+---max=100000
+---step=1
 local Sd = 0
 
----$value:└変動ﾌﾚｰﾑ長
+---$track:└変動フレーム長
+---min=0
+---max=1000
+---step=1
 local Cf = 0
 
----$value:αしきい値
+---$track:αしきい値
+---min=0
+---max=255
+---step=1
 local T = 127
 
 ---$check:距離∝時間ﾓｰﾄﾞ
 local CV = 1
 
----$value:イージング
+---$track:イージング
+---min=0
+---max=10
+---step=0.1
 local EZ = 0
 
 ---$check:角丸なし
 local check0 = false
 
-require("T_LineFill_Module")
+local tim2 = obj.module("tim2")
 local P = track_progress / 100
 local D = math.floor(track_size)
 local S = math.floor(track_line_spacing)
 local E = math.floor(track_area_adjust)
-TLF = T_LineFill or {}
-K = TLF.K or K
+local K = track_angle
 local R = math.rad(K)
-OgA = (TLF.OgA or OgA) / 100
-LnA = (TLF.LnA or LnA) / 100
-B = TLF.B or B
+local OgA = track_alpha / 100
+local LnA = track_alpha_2 / 100
+local B = track_blur
 Cf = math.abs(Cf)
 EZ = 1 + math.abs((EZ or 0))
 if Cf > 1 then
@@ -105,8 +189,8 @@ elseif E < 0 then
     obj.copybuffer("obj", "tmp")
     obj.setoption("blend", 0)
 end
-local userdata, wc, hc = obj.getpixeldata()
-local ws, hs, N, PS = T_LineFill_Module.LineFill(userdata, wc, hc, S, R, T, RX, RY, Sd)
+local userdata, wc, hc = obj.getpixeldata("object", "bgra")
+local ws, hs, N, PS = tim2.linefill_line_fill(userdata, wc, hc, S, R, T, RX, RY, Sd)
 ws, hs = math.max(ws + D, w), math.max(hs + D, h)
 ws = ws + (ws - w) % 2
 hs = hs + (hs - h) % 2
@@ -171,12 +255,12 @@ if P > 0 and N > 0 then
         x0, y0 = x1, y1
     end
 end
-if TLF.Ly then
-    local DX, DY = math.abs(TLF.DX), math.abs(TLF.DY)
+if track_map > 0 then
+    local DX, DY = math.abs(dsp_expand_x), math.abs(dsp_expand_y)
     ws, hs = ws + 2 * DX, hs + 2 * DY
     obj.copybuffer("cache:LT_LIN", "tmp")
-    obj.load("layer", TLF.Ly, true)
-    if TLF.RS then
+    obj.load("layer", math.floor(track_map), true)
+    if check_map_resize then
         obj.setoption("drawtarget", "tempbuffer", ws, hs)
         obj.draw()
     else
@@ -187,11 +271,11 @@ if TLF.Ly then
     obj.effect(
         "ディスプレイスメントマップ",
         "param0",
-        TLF.X,
+        track_deform_x,
         "param1",
-        TLF.Y,
+        track_deform_y,
         "ぼかし",
-        TLF.BL,
+        dsp_blur,
         "元のサイズに合わせる",
         1,
         "type",
@@ -201,7 +285,7 @@ if TLF.Ly then
         "mode",
         0,
         "calc",
-        TLF.C
+        track_deform_method
     )
     obj.effect("ぼかし", "範囲", B)
     obj.copybuffer("cache:LT_LIN", "obj")
@@ -235,4 +319,3 @@ end
 obj.draw(0, 0, 0, 1, A1)
 obj.copybuffer("obj", "tmp")
 obj.setoption("blend", 0)
-T_LineFill = nil

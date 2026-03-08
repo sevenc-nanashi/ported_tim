@@ -181,12 +181,8 @@ scripts:
     label: ストローク(反復)
   - path: "./lua/Stroke/ストローク(配置__変動).lua"
     label: ストローク(配置:変動)
-  - path: "./lua/LinFil/ジグザグ塗りT(設定).lua"
-    label: ジグザグ塗りT(設定)
-  - path: "./lua/LinFil/ジグザグ塗りT(ﾃﾞｨｽﾌﾟﾚｲｽﾒﾝﾄﾏｯﾌﾟ).lua"
-    label: ジグザグ塗りT(ﾃﾞｨｽﾌﾟﾚｲｽﾒﾝﾄﾏｯﾌﾟ)
-  - path: "./lua/LinFil/ジグザグ塗りT(表示).lua"
-    label: ジグザグ塗りT(表示)
+  - path: "./lua/LinFil/ジグザグ塗りT.lua"
+    label: ジグザグ塗りT
   - path: "./lua/LinFil/ジグザグ塗りT(先端座標).lua"
     label: ジグザグ塗りT(先端座標)
   - path: "./lua/Stroke/ストローク用アンカー.lua"
