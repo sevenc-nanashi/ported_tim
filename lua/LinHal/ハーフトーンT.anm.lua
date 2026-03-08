@@ -24,22 +24,22 @@ local track_tone_large = 100
 local track_rotation = 0
 
 ---$color:シャドウ色
-local col2 = "0x0"
+local col2 = 0x0
 
 ---$color:ハイライト色
-local col1 = "0xffffff"
+local col1 = 0xffffff
 
 ---$figure:トーン形状
 local fig = "円"
 
 ---$check:段違い
-local fzs = 1
+local fzs = true
 
 ---$check:背景色非表示
-local bkap = 0
+local bkap = false
 
 ---$check:トーン反転
-local tnrep = 0
+local tnrep = false
 
 ---$check:自分自身で型抜き
 local check0 = true
@@ -54,14 +54,14 @@ local si_y = si_x
 local figsz = si_x
 gm = gm or 0
 ogchk = ogchk or 1
-if fzs == 1 then
+if fzs then
     si_x = math.sqrt(2) * si_x
     si_y = si_x * 0.5
 end
 local nx = math.floor(w / (2 * si_x)) + 1
 local ny = math.floor(h / (2 * si_y))
 
-if tnrep == 1 then
+if tnrep then
     obj.effect("反転", "輝度反転", 1)
     col1, col2 = col2, col1
 end
@@ -78,7 +78,7 @@ for i = -nx, nx do
     posy[i] = {}
     for j = -ny, ny do
         local dx = 0
-        if fzs == 1 then
+        if fzs then
             dx = si_y * (j % 2)
         end
         posx[i][j] = i * si_x + dx
@@ -91,7 +91,7 @@ for i = -nx, nx do
     end
 end
 obj.setoption("drawtarget", "tempbuffer", w, h)
-if bkap == 0 then
+if not bkap then
     obj.effect("単色化", "color", col1, "輝度を保持する", 0)
     obj.draw()
 end
