@@ -5,7 +5,7 @@
 ---step=0.1
 local track_size = 50
 
----$track:境界ﾎﾞｶｼ
+---$track:境界ぼかし
 ---min=0.1
 ---max=500
 ---step=0.1
@@ -33,18 +33,27 @@ local col1 = 0xffffff
 local col2 = 0x0
 
 ---$check:距離グラデ
-local Lgr = 0
+local Lgr = false
 
 ---$check:錯覚補正
-local Mis = 0
+local Mis = false
 
----$value:└色ぼかし量%
+---$track:└色ぼかし量%
+---min=0
+---max=200
+---step=0.1
 local MiV = 25
 
----$value:└αぼかし量%
+---$track:└αぼかし量%
+---min=0
+---max=200
+---step=0.1
 local MiA = 25
 
----$value:ﾓｰﾄﾞ[0〜2]
+---$select:モード
+---外側=0
+---両方=1
+---内側=2
 local mode = 0
 
 local Sz = track_size
@@ -53,7 +62,6 @@ local sh = track_alpha_base
 local Gal = track_blend_amount / 100
 local col1 = col1 or 0xffffff
 local col2 = col2 or 0x0
-local Lgr = Lgr or 0
 local iSz = -math.floor(-Sz)
 MiV = Sz * (MiV or 0) / 100
 MiA = bl * (MiA or 0) / 100
@@ -69,33 +77,33 @@ else
     obj.effect("反転", "透明度反転", 1)
 end
 
-require("T_Framing_Module")
-local userdata, w, h = obj.getpixeldata()
+local tim2 = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
 
 if check0 then
-    T_Framing_Module.FramingHi(userdata, w, h, Sz, bl, sh, col1, col2, Lgr)
+    tim2.framing_framing_hi(userdata, w, h, Sz, bl, sh, col1, col2, Lgr)
 else
-    T_Framing_Module.Framing(userdata, w, h, Sz, bl, sh, col1, col2, Lgr)
+    tim2.framing_framing(userdata, w, h, Sz, bl, sh, col1, col2, Lgr)
 end
-obj.putpixeldata(userdata)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 
-if Mis == 1 then
+if Mis then
     if MiV > 0 then
-        local userdata, w, h = obj.getpixeldata()
-        T_Framing_Module.ReAlpha(userdata, w, h)
-        obj.putpixeldata(userdata)
+        local userdata, w, h = obj.getpixeldata("object", "bgra")
+        tim2.framing_re_alpha(userdata, w, h)
+        obj.putpixeldata("object", userdata, w, h, "bgra")
         obj.effect("ぼかし", "範囲", MiV, "サイズ固定", 1)
-        userdata, w, h = obj.getpixeldata()
-        T_Framing_Module.SetAlpha(userdata, w, h)
-        obj.putpixeldata(userdata)
+        userdata, w, h = obj.getpixeldata("object", "bgra")
+        tim2.framing_set_alpha(userdata, w, h)
+        obj.putpixeldata("object", userdata, w, h, "bgra")
     end
     if MiA > 0 then
-        local userdata, w, h = obj.getpixeldata()
-        T_Framing_Module.SetImage(userdata, w, h)
+        local userdata, w, h = obj.getpixeldata("object", "bgra")
+        tim2.framing_set_image(userdata, w, h)
         obj.effect("ぼかし", "範囲", MiA, "サイズ固定", 1)
-        userdata, w, h = obj.getpixeldata()
-        T_Framing_Module.SetColor(userdata, w, h)
-        obj.putpixeldata(userdata)
+        userdata, w, h = obj.getpixeldata("object", "bgra")
+        tim2.framing_set_color(userdata, w, h)
+        obj.putpixeldata("object", userdata, w, h, "bgra")
     end
 end
 
