@@ -1,4 +1,4 @@
---label:tim2\配置\モーションパスA-V2.anm
+--label:tim2\配置\モーションパスA.anm
 ---$track:X座標
 ---min=-10000
 ---max=10000
@@ -23,31 +23,47 @@ local track_z_coord = 0
 ---step=0.1
 local track_twist = 0
 
----$value:分割数
+---$track:分割数
+---min=1
+---max=200
+---step=1
 local BN = 20
 
----$value:描画方法(0-4)
+---$select:描画方法
+---タイプ0=0
+---タイプ1=1
+---タイプ2=2
+---タイプ3=3
+---タイプ4=4
 local CHA = 0
 
----$value:相対/絶対(0/1)
+---$select:相対/絶対
+---相対=0
+---絶対=1
 local TY = 0
 
----$value:パス描画(0/1)
+---$check:パス描画
 local APP = 0
 
----$value:パス描画色1
+---$color:パス描画色1
 local PCOL = 0xff0000
 
----$value:パス描画色2
+---$color:パス描画色2
 local QCOL = 0x0000ff
 
----$value:フォーカス
+---$track:フォーカス
+---min=0
+---max=999
+---step=1
 local foc = 0
 
----$value:先頭表示
+---$check:先頭表示
 local TOPA = 0
 
----$value:内部
+---$select:内部
+---タイプ0=0
+---タイプ1=1
+---タイプ2=2
 local SEC = 0
 
 -- 関数共通

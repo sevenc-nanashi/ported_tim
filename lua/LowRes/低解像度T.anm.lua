@@ -64,7 +64,7 @@ if D ~= 0 then
     obj.setoption("drawtarget", "tempbuffer", iw + S, ih + S)
     obj.effect("領域拡張", "上", S, "下", S, "左", S, "右", S, "塗りつぶし", 1)
     obj.draw(0, 0, 0, 1, 1, 0, 0, -D)
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
 end
 w, h = obj.getpixel()
 local nx2 = 2 * math.ceil(0.5 * w / S)
@@ -80,7 +80,7 @@ else
     obj.effect("ぼかし", "範囲", S * N, "サイズ固定", 1)
 end
 if L ~= 0 or Ap == 1 then
-    obj.copybuffer("cache:ORGL", "obj")
+    obj.copybuffer("cache:ORGL", "object")
     obj.setoption("drawtarget", "tempbuffer", w, h)
     obj.load("figure", "四角形", col2, 100)
     obj.effect("グラデーション", "type", ty, "強さ", 75, "幅", tw, "color", col1, "color2", col2)
@@ -101,14 +101,14 @@ if L ~= 0 or Ap == 1 then
     end
     obj.effect("画像ループ", "横回数", nx2, "縦回数", ny2)
     obj.draw()
-    obj.copybuffer("obj", "cache:ORGL")
+    obj.copybuffer("object", "cache:ORGL")
     obj.effect("反転", "透明度反転", 1)
     obj.setoption("blend", "alpha_sub")
     obj.draw()
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
 
     if Ap == 0 then
-        obj.copybuffer("tmp", "cache:ORGL")
+        obj.copybuffer("tempbuffer", "cache:ORGL")
         obj.setoption("blend", 5)
         if L <= 1 then
             obj.draw(0, 0, 0, 1, L)
@@ -117,11 +117,11 @@ if L ~= 0 or Ap == 1 then
             obj.draw(0, 0, 0, 1, L - 1)
         end
     end
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
     obj.setoption("blend", 0)
 end
 if D ~= 0 then
     obj.setoption("drawtarget", "tempbuffer", w0, h0)
     obj.draw(0, 0, 0, 1, 1, 0, 0, D)
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
 end

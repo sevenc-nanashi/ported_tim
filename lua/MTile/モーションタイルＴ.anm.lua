@@ -23,7 +23,10 @@ local track_percent = 150
 ---step=0.1
 local track_phase = 0
 
----$value:速度方向(度)
+---$track:速度方向(度)
+---min=-3600
+---max=3600
+---step=0.01
 local deg = 0
 
 ---$check:X反転配置
