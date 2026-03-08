@@ -29,13 +29,22 @@ local col1 = 0xffffff
 ---$color:背景色
 local col2 = 0xccccff
 
----$value:追加幅
+---$track:追加幅
+---min=-5000
+---max=5000
+---step=0.1
 local pw = 0
 
----$value:追加高さ
+---$track:追加高さ
+---min=-5000
+---max=5000
+---step=0.1
 local ph = 0
 
----$value:平滑度[%]
+---$track:平滑度[%]
+---min=0
+---max=100
+---step=0.1
 local par = 20
 
 ---$value:雲横位置[%]
@@ -47,13 +56,24 @@ local xpar = { 10, 40 }
 ---$value:雲高さ[%]
 local hpar = { 70, 90 }
 
----$value:回転
+---$track:回転
+---min=-360
+---max=360
+---step=0.1
 local crot = 35
 
----$value:変形[1-5]
+---$select:変形
+---1=1
+---2=2
+---3=3
+---4=4
+---5=5
 local hei = 1
 
----$value:精度
+---$track:精度
+---min=0.1
+---max=10
+---step=0.1
 local bai = 1
 
 ---$value:基準
@@ -89,11 +109,7 @@ pt = pt * 0.5
 
 local backC = track_density_2 * 0.01
 
-if T_ryouikiwaku_w == nil then
-    w, h = pw + w + 2 * lw, ph + h + 2 * lw
-else
-    w, h = T_ryouikiwaku_w + w + 2 * lw, T_ryouikiwaku_h + h + 2 * lw
-end
+w, h = pw + w + 2 * lw, ph + h + 2 * lw
 
 w = ((w > 0) and w) or 0
 h = ((h > 0) and h) or 0
@@ -189,5 +205,3 @@ obj.load("tempbuffer")
 obj.setoption("blend", 0)
 obj.cx = obj.cx + w * base[1] * 0.01
 obj.cy = obj.cy + h * base[2] * 0.01
-T_ryouikiwaku_w = nil
-T_ryouikiwaku_h = nil

@@ -203,8 +203,6 @@ scripts:
     label: ストローク(配置)
   - path: "./lua/RgLine/ラフ画線T.anm.lua"
     label: ラフ画線T.anm
-  - path: "./lua/Frame2/領域枠(サイズ補助).lua"
-    label: 領域枠(サイズ補助)
   - path: "./lua/Frame2/領域枠(角落ち).lua"
     label: 領域枠(角落ち)
   - path: "./lua/Frame2/領域枠(雲形).lua"

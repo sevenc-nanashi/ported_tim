@@ -5,10 +5,11 @@
 ---step=0.1
 local track_stroke_width = 10
 
----$track:形状
----min=1
----max=4
----step=1
+---$select:形状
+---斜め=1
+---円=2
+---四角=3
+---角丸=4
 local track_shape = 1
 
 ---$track:切込量
@@ -29,10 +30,16 @@ local col1 = 0xffffff
 ---$color:背景色
 local col2 = 0xccccff
 
----$value:追加幅
+---$track:追加幅
+---min=-5000
+---max=5000
+---step=0.1
 local pw = 0
 
----$value:追加高さ
+---$track:追加高さ
+---min=-5000
+---max=5000
+---step=0.1
 local ph = 0
 
 ---$value:基準
@@ -121,11 +128,7 @@ local pt = track_shape
 local s = track_notch_amount
 local backC = track_density * 0.01
 base = base or { 0, 0 }
-if T_ryouikiwaku_w == nil then
-    w, h = pw + w + 2 * lw, ph + h + 2 * lw
-else
-    w, h = T_ryouikiwaku_w + w + 2 * lw, T_ryouikiwaku_h + h + 2 * lw
-end
+w, h = pw + w + 2 * lw, ph + h + 2 * lw
 
 w = ((w > 0) and w) or 0
 h = ((h > 0) and h) or 0
@@ -180,5 +183,3 @@ obj.load("tempbuffer")
 obj.setoption("blend", 0)
 obj.cx = obj.cx + w * base[1] * 0.01
 obj.cy = obj.cy + h * base[2] * 0.01
-T_ryouikiwaku_w = nil
-T_ryouikiwaku_h = nil
