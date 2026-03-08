@@ -1,4 +1,4 @@
---label:tim2\オブジェクト制御\輪郭追跡.anm
+--label:tim2\オブジェクト制御
 ---$track:描画度
 ---min=0
 ---max=100
@@ -38,8 +38,60 @@ local Rover = 0
 ---$check:中心補正
 local reC = 1
 
----$value:ｽｷｬﾝ粗さ
+---$track:スキャン粗さ
+---min=1
+---max=100
+---step=1
 local Scsp = 1
+
+--group:拡張機能,false
+
+---$check:拡張機能を使用
+local use_extension = 0
+
+---$track:破線周期
+---min=0
+---max=100
+---step=0.01
+local track_line_period = 5
+
+---$track:破線間隔
+---min=0
+---max=100
+---step=0.01
+local track_line_spacing = 2.5
+
+---$track:滑らかさ
+---min=0
+---max=1000
+---step=1
+local track_smoothness = 0
+
+---$track:本体透明度
+---min=0
+---max=100
+---step=0.1
+local track_opacity = 0
+
+---$figure:形状
+local extension_figure = "円"
+
+---$check:進行方向
+local extension_direction = 0
+
+---$check:先端表示
+local extension_tip_enabled = 0
+
+---$figure:先端図形
+local extension_tip_figure = "三角形"
+
+---$track:先端サイズ
+---min=0
+---max=1000
+---step=1
+local extension_tip_size = 50
+
+--group:
 
 local icx = obj.cx
 local icy = obj.cy
@@ -47,7 +99,17 @@ reC = reC or 0
 
 local fig, ivf, ivl, td, sm, halp, senp, senz, sens
 
-if Trin_ehn == nil then
+if use_extension == 1 then
+    fig = extension_figure
+    ivf = track_line_period * 0.01
+    ivl = track_line_spacing * 0.01
+    td = extension_direction
+    sm = math.floor(track_smoothness)
+    halp = 1 - track_opacity * 0.01
+    senp = extension_tip_enabled
+    senz = extension_tip_figure
+    sens = extension_tip_size
+elseif Trin_ehn == nil then
     fig = "円"
     ivf = 1
     ivl = 0
@@ -215,5 +277,3 @@ if reC == 1 then
     obj.cx = icx
     obj.cy = icy
 end
-
-Trin_ehn = nil

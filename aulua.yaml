@@ -5,10 +5,8 @@ build:
 scripts:
 - name: tim2.anm2
   sources:
-  - path: "./lua/OutLPur/輪郭追跡(表示).lua"
-    label: 輪郭追跡(表示)
-  - path: "./lua/OutLPur/輪郭追跡拡張機能.lua"
-    label: 輪郭追跡拡張機能
+  - path: "./lua/OutLPur/輪郭追跡.lua"
+    label: 輪郭追跡.anm
   - path: "./lua/SkyDome/スカイドーム.lua"
     label: スカイドーム
   - path: "./lua/SkyDome/通常画像用前処理.lua"
