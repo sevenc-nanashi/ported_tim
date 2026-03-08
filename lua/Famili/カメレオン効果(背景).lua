@@ -27,12 +27,15 @@ local track_height = 5000
 local check0 = false
 
 ---$color:枠色
-local col = oxffffff
+local col = 0xffffff
 
----$value:枠幅
+---$track:枠幅
+---min=0
+---max=100
+---step=1
 local Lw = 2
 
-require("T_Familiar_Module")
-local userdata, w, h = obj.getpixeldata()
-T_Familiar_Module.SetColor(userdata, w, h, track_center_x, track_center_y, track_width, track_height, check0, col, Lw)
-obj.putpixeldata(userdata)
+local tim2 = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+tim2.famili_set_color(userdata, w, h, track_center_x, track_center_y, track_width, track_height, check0, col, Lw)
+obj.putpixeldata("object", userdata, w, h, "bgra")

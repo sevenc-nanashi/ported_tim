@@ -23,31 +23,37 @@ local track_backlight_intensity = 0
 ---step=0.1
 local track_backlight_diffusion = 15
 
----$check:ﾌﾚｰﾑﾊﾞｯﾌｧを背景
+---$check:フレームバッファを背景
 local check0 = false
 
 ---$check:輝度補正
-local CkV = 1
+local CkV = true
 
 ---$check:彩度補正
-local CkS = 1
+local CkS = true
 
 ---$color:逆光色
-local col = ""
+local col = nil
 
 ---$check:逆光自動調整
-local BLA = 0
+local BLA = false
 
----$value:逆光強度補正
+---$track:逆光強度補正
+---min=0
+---max=300
+---step=0.1
 local BLL = 100
 
 ---$check:事前無彩色補正
-local reC = 0
+local reC = false
 
----$value:└強度
+---$track:└強度
+---min=0
+---max=100
+---step=0.1
 local reH = 30
 
-require("T_Familiar_Module")
+local tim2 = obj.module("tim2")
 
 local P = track_adapt_rate / 100
 local L = track_lightness_adjust / 100
@@ -61,28 +67,28 @@ if check0 then
         { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
     obj.copybuffer("cache:org", "obj")
     obj.load("framebuffer")
-    local userdata, w, h = obj.getpixeldata()
-    T_Familiar_Module.SetColor(userdata, w, h, 0, 0, w, h, false, 0, 0)
+    local userdata, w, h = obj.getpixeldata("object", "bgra")
+    tim2.famili_set_color(userdata, w, h, 0, 0, 5000, 5000, false, 0, 0)
     obj.copybuffer("obj", "cache:org")
     obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect = unpack(Pr)
 end
 
-if reC == 1 then
+if reC then
     reH = (reH or 30)
-    local r, g, b = T_Familiar_Module.GetColor()
+    local r, g, b = tim2.famili_get_color()
     local col = RGB(r, g, b)
     obj.effect("単色化", "強さ", reH, "color", col)
 end
 
-local userdata, w, h = obj.getpixeldata()
-T_Familiar_Module.Familiar(userdata, w, h, P, L, CkS, CkV)
-obj.putpixeldata(userdata)
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+tim2.famili_familiar(userdata, w, h, P, L, CkS, CkV)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 
 if GL > 0 and GD > 0 then
     local r, g, b
-    if col == "" then
-        r, g, b = T_Familiar_Module.GetColor()
-        if BLA == 1 then
+    if col == nil then
+        r, g, b = tim2.famili_get_color()
+        if BLA then
             local mx = math.max(r, g, b)
             if mx == 0 then
                 r, g, b = 0, 0, 0
