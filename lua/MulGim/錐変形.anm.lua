@@ -35,14 +35,17 @@ local rev = 0
 ---$check:星型化
 local star = 0
 
----$value:くびれ率
+---$track:くびれ率
+---min=0
+---max=100
+---step=0.1
 local cst = 50
 
----$value:角を整数化[0/1]
+---$check:角を整数化
 local int = 0
 
----$value:ｱﾝﾁｴｲﾘｱｽ[0/1]
-local ant = 0
+-- ---$check:アンチエイリアス
+-- local ant = 0
 
 local zoom = obj.getvalue("zoom") * 0.01
 local N = track_sides
@@ -51,7 +54,7 @@ local R1 = track_upper_radius * zoom
 local R2 = track_lower_radius * zoom
 local obh = obj.h
 local iso = Futa and math.pi * 0.5 or 0
-ant = ant or 1
+-- ant = ant or 1
 int = int or 0
 Futa = Futa or 0
 cchk = cchk or 1
@@ -62,7 +65,7 @@ local uX = {}
 local uZ = {}
 local dX = {}
 local dZ = {}
-obj.setoption("antialias", ant)
+-- obj.setoption("antialias", ant)
 if int == 1 then
     N = math.floor(N)
 end
