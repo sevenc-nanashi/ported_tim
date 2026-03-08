@@ -11,7 +11,7 @@ local track_distortion_amount = 50
 ---step=1
 local track_smooth = 5
 
----$track:周期/ｻｲｽﾞ
+---$track:周期/サイズ
 ---min=1
 ---max=100
 ---step=0.1
@@ -23,30 +23,41 @@ local track_period_size = 20
 ---step=0.1
 local track_divide = 0
 
----$value:形状[1..3]
+---$select:形状
+---ノイズ四角=1
+---四角ガラス=2
+---円ガラス=3
 local fig = 1
 
----$value:変化速度
-local nv = 0
+---$track:変化速度
+---min=-1000
+---max=1000
+---step=0.1
+local track_change_speed = 0
 
----$value:乱数シード
-local seed = 0
+---$track:乱数シード
+---min=0
+---max=100000
+---step=1
+local track_seed = 0
 
-require("T_Filter_Module")
+local T_Filter_Module = obj.module("tim2")
 local size = track_distortion_amount
 local per = track_period_size
+local seed = track_seed
+local nv = track_change_speed
 fig = ((fig or 1) - 1) % 3 + 1
 obj.effect("領域拡張", "塗りつぶし", 1, "上", size, "下", size, "左", size, "右", size)
-obj.copybuffer("cache:ori", "obj")
+obj.copybuffer("cache:ori", "object")
 local w, h = obj.getpixel()
 
 if fig == 1 then
     obj.setoption("drawtarget", "tempbuffer", w, h)
     obj.load("figure", "四角形", 0xffffff, math.max(w, h))
     obj.effect("ノイズ", "周期X", per, "周期Y", per, "type", 0, "mode", 1, "seed", seed, "変化速度", nv)
-    local userdata, w0, h0 = obj.getpixeldata()
-    T_Filter_Module.FlatRGB(userdata, w0, h0, 1)
-    obj.putpixeldata(userdata)
+    local userdata, w0, h0 = obj.getpixeldata("object", "bgra")
+    T_Filter_Module.filter_flat_rgb(userdata, w0, h0, 1)
+    obj.putpixeldata("object", userdata, w0, h0, "bgra")
     obj.setoption("blend", 5)
     obj.draw()
     obj.load("figure", "四角形", 0xffffff, math.max(w, h))
@@ -56,27 +67,27 @@ if fig == 1 then
         per,
         "周期Y",
         per,
-        "type",
-        0,
-        "mode",
-        1,
-        "seed",
+        "ノイズの種類",
+        "Type1",
+        "合成モード",
+        "明るさと乗算",
+        "シード",
         seed + 100,
         "変化速度",
         nv
     )
-    local userdata, w0, h0 = obj.getpixeldata()
-    T_Filter_Module.FlatRGB(userdata, w0, h0, 2)
-    obj.putpixeldata(userdata)
+    local userdata, w0, h0 = obj.getpixeldata("object", "bgra")
+    T_Filter_Module.filter_flat_rgb(userdata, w0, h0, 2)
+    obj.putpixeldata("object", userdata, w0, h0, "bgra")
     obj.setoption("blend", 5)
     obj.draw()
     obj.setoption("blend", 0)
 elseif fig == 2 then
     local siz = per * 2.5
     obj.load("figure", "四角形", 0x808080, 50)
-    local userdata, w0, h0 = obj.getpixeldata()
-    T_Filter_Module.GlassSQ(userdata, w0, h0)
-    obj.putpixeldata(userdata)
+    local userdata, w0, h0 = obj.getpixeldata("object", "bgra")
+    T_Filter_Module.filter_glass_sq(userdata, w0, h0)
+    obj.putpixeldata("object", userdata, w0, h0, "bgra")
     obj.effect("ぼかし", "範囲", 2, "サイズ固定", 1)
     local pp = siz / 50 * 100
     obj.effect("リサイズ", "拡大率", pp)
@@ -110,9 +121,9 @@ else
 end
 obj.setoption("drawtarget", "tempbuffer", w, h)
 
-local userdata, w, h = obj.getpixeldata()
-T_Filter_Module.Flattening(userdata, w, h, track_divide * 0.01)
-obj.putpixeldata(userdata)
+local userdata, w, h = obj.getpixeldata("tempbuffer", "bgra")
+T_Filter_Module.filter_flattening(userdata, w, h, track_divide * 0.01)
+obj.putpixeldata("tempbuffer", userdata, w, h, "bgra")
 obj.draw()
 
 obj.copybuffer("obj", "cache:ori")

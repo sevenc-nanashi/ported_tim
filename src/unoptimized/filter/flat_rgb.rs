@@ -5,31 +5,20 @@ pub fn flat_rgb(image_buffer: &mut [u8], width: usize, height: usize, mode: i32)
         return;
     }
 
-    for i in 0..pixel_count {
-        let p = i * 4;
-        let b = image_buffer[p];
-        let g = image_buffer[p + 1];
-        let r = image_buffer[p + 2];
-
-        match mode {
-            // Keep R as displacement channel, center others.
-            1 => {
-                image_buffer[p] = 0x80;
-                image_buffer[p + 1] = 0x80;
-                image_buffer[p + 2] = r;
-            }
-            // Keep G as displacement channel, center others.
-            2 => {
-                image_buffer[p] = 0x80;
-                image_buffer[p + 1] = g;
-                image_buffer[p + 2] = 0x80;
-            }
-            // Keep B as displacement channel, center others.
-            _ => {
-                image_buffer[p] = b;
-                image_buffer[p + 1] = 0x80;
-                image_buffer[p + 2] = 0x80;
-            }
-        }
+    for px in image_buffer.chunks_exact_mut(4).take(pixel_count) {
+        let packed = u32::from_le_bytes([px[0], px[1], px[2], px[3]]);
+        let converted = match mode {
+            // mode=1: (A,R) を保持し B/G を 0x80 固定
+            1 => (packed & 0xff00_0000) | (packed & 0x00ff_0000) | 0x0000_8080,
+            // mode=2: (A,G) を保持し B/R を 0x80 固定
+            2 => (packed & 0xff00_0000) | (packed & 0x0000_ff00) | 0x0080_0080,
+            // mode=other: (A,B) を保持し G/R を 0x80 固定
+            _ => (packed & 0xff00_80ff) | 0x0080_8000,
+        };
+        let bytes = converted.to_le_bytes();
+        px[0] = bytes[0];
+        px[1] = bytes[1];
+        px[2] = bytes[2];
+        px[3] = bytes[3];
     }
 }

@@ -102,7 +102,7 @@
 | T_Filter_Module.anm       | チョーク・木炭T                           | :o:      | :o: | :o:              | :x:                  |
 | T_Filter_Module.anm       | ブラスターT                               | :o:      | :o: | :o:              | :x:                  |
 | T_Filter_Module.anm       | モザイクタイルT                           | :o:      | :o: | :o:              | :x:                  |
-| T_Filter_Module.anm       | ガラスT                                   | ？       | :x: | :x:              | :x:                  |
+| T_Filter_Module.anm       | ガラスT                                   | :o:      | :o: | :o:              | :x:                  |
 | T_Filter_Module.anm       | エンボスT                                 | :o:      | :o: | :o:              | :x:                  |
 | T_Filter_Module.anm       | シャープT                                 | :o:      | :o: | :o:              | :x:                  |
 | -                         | はためき.anm                              | ？       | -   | :x:              | :x:                  |
