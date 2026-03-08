@@ -1,5 +1,5 @@
 --label:tim2\変形
----$track:ﾂﾏﾐ量％
+---$track:ツマミ量％
 ---min=-1000
 ---max=1000
 ---step=0.1
@@ -17,7 +17,10 @@ local track_radius_percent = 100
 ---step=0.1
 local track_horizontal_ratio_percent = 100
 
----$value:分割量
+---$track:分割量
+---min=2
+---max=200
+---step=1
 local N = 30
 
 ---$value:中心
