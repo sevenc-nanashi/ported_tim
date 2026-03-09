@@ -1,4 +1,6 @@
 --label:tim2\アニメーション効果
+--group:基本,true
+
 ---$track:水位
 ---min=-5000
 ---max=5000
@@ -23,35 +25,61 @@ local track_wavelength = 100
 ---step=0.1
 local track_alpha = 100
 
----$value:波─α
-local Ta = 100
+--group:波,false
 
----$color:└色
+---$track:波α
+---min=0
+---max=100
+---step=0.1
+local track_wave_alpha = 100
+
+---$color:波色
 local col = 0x80ffff
 
----$value:└振動速度
-local S = 0
+---$track:振動速度
+---min=-10
+---max=10
+---step=0.001
+local track_vibration_speed = 0
 
----$value:└位相ズレ
-local D = 0
+---$track:位相ズレ
+---min=-5000
+---max=5000
+---step=0.1
+local track_phase_offset = 0
 
----$value:└位相速度
-local V = 0
+---$track:位相速度
+---min=-1000
+---max=1000
+---step=0.1
+local track_phase_speed = 0
 
----$check:反転波─表示
-local Rw = 0
+--group:反転波,false
 
----$color:└色
+---$check:表示
+local Rw = false
+
+---$color:反転色
 local colr = 0x53c9c9
 
----$color:枠─色
+--group:枠,false
+
+---$color:枠色
 local colw = 0xffffff
 
----$value:└幅
-local ws = 6
+---$track:幅
+---min=0
+---max=100
+---step=0.1
+local track_frame_width = 6
 
----$value:└ぼかし
-local wb = 4
+---$track:ぼかし
+---min=0
+---max=100
+---step=0.1
+local track_frame_blur = 4
+
+--group:
 
 local pi = math.pi
 local Pr = { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
@@ -59,6 +87,12 @@ local Z = -track_water_level
 local A = track_width
 local L = math.floor(track_wavelength)
 local T = track_alpha / 100
+local Ta = track_wave_alpha
+local S = track_vibration_speed
+local D = track_phase_offset
+local V = track_phase_speed
+local ws = track_frame_width
+local wb = track_frame_blur
 local SG = 1
 A = A * math.cos(obj.time * 2 * pi * S)
 if A < 0 then
@@ -68,7 +102,7 @@ local w0, h0 = obj.getpixel()
 local w, h = w0 + 20, math.floor(4 * math.ceil(A))
 local w2, h2 = w / 2, h / 2
 D = D + V * obj.time
-if Rw == 1 then
+if Rw then
     col, colr = colr, col
 end
 obj.copybuffer("cache:OrgW", "obj")
@@ -103,12 +137,12 @@ obj.effect(
     0
 )
 obj.setoption("drawtarget", "tempbuffer", w0, h0)
-obj.draw(0, Z, 0, 1, 1, 0, Rw * 180, 0)
-obj.draw(0, Z + h2 / 2, 0, 1, 1, 0, Rw * 180, 0)
+obj.draw(0, Z, 0, 1, 1, 0, (Rw and 1 or 0) * 180, 0)
+obj.draw(0, Z + h2 / 2, 0, 1, 1, 0, (Rw and 1 or 0) * 180, 0)
 obj.load("figure", "四角形", col, 1)
 h1, h2 = Z + A + 0.5, h0 / 2
 obj.drawpoly(-w2, h1, 0, w2, h1, 0, w2, h2, 0, -w2, h2, 0)
-if Rw == 1 then
+if Rw then
     obj.copybuffer("cache:WaveW", "tmp")
     obj.copybuffer("obj", "cache:WaveW")
     obj.effect("単色化", "輝度を保持する", 0, "color", colr)

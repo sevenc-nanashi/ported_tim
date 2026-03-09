@@ -1,4 +1,6 @@
 --label:tim2\アニメーション効果
+--group:基本,true
+
 ---$track:枠サイズ
 ---min=0
 ---max=500
@@ -23,50 +25,88 @@ local track_rotation = 0
 ---step=0.1
 local track_deform_speed = 100
 
----$value:波数
-local Num = 4
+--group:波形,false
 
----$value:波形分割
-local spN = 20
+---$track:波数
+---min=1
+---max=32
+---step=1
+local track_wave_count = 4
 
----$value:凹凸ﾗﾝﾀﾞﾑ性%
-local RgRnd = 30
+---$track:波形分割
+---min=2
+---max=200
+---step=1
+local track_wave_division = 20
 
----$value:中心＆ﾏｽｸ座標
+---$track:凹凸ランダム性%
+---min=0
+---max=100
+---step=0.1
+local track_roughness_random = 30
+
+---$value:中心＆マスク座標
 local Cen = { 0, 0, 50, 0 }
 
----$figure:マスク形状
+--group:マスク,false
+
+---$figure:形状
 local Mfg = "円"
 
----$color:マスク色
+---$color:色
 local Mcl = 0xff0000
 
----$value:マスクサイズ
-local StR = 0
+---$track:サイズ
+---min=0
+---max=5000
+---step=0.1
+local track_mask_size = 0
 
----$value:ﾏｽｸ縦横比%
-local Asp = 0
+---$track:縦横比%
+---min=-100
+---max=100
+---step=0.1
+local track_mask_aspect = 0
 
----$value:マスク回転
-local MsRt = 0
+---$track:マスク回転
+---min=-3600
+---max=3600
+---step=0.1
+local track_mask_rotation = 0
 
----$value:ﾏｽｸ境界ブラー
-local Blur = 0
+---$track:境界ブラー
+---min=0
+---max=1000
+---step=0.1
+local track_mask_blur = 0
 
----$value:マップサイズ
-local MS = 256
+--group:マップ,false
 
----$value:滑らかさ
-local BL = 1
+---$track:マップサイズ
+---min=32
+---max=4096
+---step=1
+local track_map_size = 256
 
----$value:乱数シード
-local seed = 0
+---$track:滑らかさ
+---min=0
+---max=100
+---step=0.1
+local track_smoothness = 1
+
+---$track:乱数シード
+---min=0
+---max=100000
+---step=1
+local track_seed = 0
 
 ---$check:マップ表示
-local MapAP = 0
+local check_map_display = false
 
 ---$check:マスク表示
-local check0 = false
+local check_mask_display = false
+
+--group:
 
 local Ratio = function(a, b, t)
     local s = (2 * t + 1) * (t - 1) ^ 2
@@ -77,10 +117,21 @@ local Cor = 1 + track_size * 0.01
 local Tra = track_deform_amount
 local Rot = track_rotation % 360
 local SpC = track_deform_speed * 0.01
+local Num = math.floor(track_wave_count)
+local spN = math.floor(track_wave_division)
+local RgRnd = track_roughness_random
+local StR = track_mask_size
+local Asp = track_mask_aspect
+local MsRt = track_mask_rotation
+local Blur = track_mask_blur
+local MS = math.floor(track_map_size)
+local BL = track_smoothness
+local seed = math.floor(track_seed)
+local MapAP = check_map_display
+local check0 = check_mask_display
 
 RgRnd = RgRnd * 0.01
 seed = math.abs(seed)
-spN = math.floor(spN)
 
 obj.setanchor("Cen", 2)
 
@@ -159,7 +210,7 @@ if StR > 0 then
     obj.draw(Dx, Dy, 0, MSC / maxwh, 1, 0, 0, MsRt)
 end
 
-if MapAP == 0 then
+if not MapAP then
     obj.copybuffer("obj", "cache:ORI")
     local Rf = Tra * Cor
     obj.effect(
