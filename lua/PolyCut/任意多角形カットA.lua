@@ -1,15 +1,17 @@
 --label:tim2\変形\任意多角形カット.anm
----$track:頂点X
----min=-50000
----max=50000
----step=0.1
-local track_vertex_x = 0
-
----$track:頂点Y
----min=-50000
----max=50000
----step=0.1
-local track_vertex_y = 0
+-- ---$track:頂点X
+-- ---min=-50000
+-- ---max=50000
+-- ---step=0.1
+-- local track_vertex_x = 0
+--
+-- ---$track:頂点Y
+-- ---min=-50000
+-- ---max=50000
+-- ---step=0.1
+-- local track_vertex_y = 0
+--track0:頂点X,-50000,50000,0
+--track1:頂点Y,-50000,50000,0
 
 ---$track:頂点数
 ---min=0
@@ -24,13 +26,18 @@ local track_vertex_count = 4
 local track_thickness = 0
 
 ---$color:側面色
-local wcol = ""
+local wcol = nil
 
 ---$value:領域
 local are = { -100, -100, 100, -100, 100, 100, -100, 100 }
 
----$value:アンチエイリアス
-local ANT = 0
+-- ---$value:アンチエイリアス
+-- local ANT = 0
+
+while #are / 2 < track_vertex_count do
+    are[#are + 1] = 0
+    are[#are + 1] = 0
+end
 
 function muki(ax, ay, bx, by)
     if ax * by - ay * bx > 0 then
@@ -39,10 +46,12 @@ function muki(ax, ay, bx, by)
         return -1
     end
 end
+
 function intersectM(p1, p2, p3, p4)
     return ((p1.x - p2.x) * (p3.y - p1.y) + (p1.y - p2.y) * (p1.x - p3.x))
         * ((p1.x - p2.x) * (p4.y - p1.y) + (p1.y - p2.y) * (p1.x - p4.x))
 end
+
 function PosIncludeTriEx(tp1, tp2, tp3, xp)
     if (tp1.x - tp3.x) * (tp1.y - tp2.y) == (tp1.x - tp2.x) * (tp1.y - tp3.y) then
         return 0
@@ -56,6 +65,7 @@ function PosIncludeTriEx(tp1, tp2, tp3, xp)
         return 1
     end
 end
+
 function mydp(p1, p2, p3)
     if TC == 0 then
         obj.drawpoly(
@@ -148,7 +158,7 @@ if TC == 0 then
     obj.setoption("blend", "alpha_add")
 end
 
-obj.setoption("antialias", ANT)
+-- obj.setoption("antialias", ANT)
 pos = {}
 pos2 = {}
 
@@ -157,12 +167,12 @@ if N == 0 then
     N = obj.getoption("section_num") + 1
     for i = 1, N - 1 do
         pos[i] = {}
-        pos[i].x = obj.getvalue("track.track_vertex_x", 0, i - 1)
-        pos[i].y = obj.getvalue("track.track_vertex_y", 0, i - 1)
+        pos[i].x = obj.getvalue(0, 0, i - 1)
+        pos[i].y = obj.getvalue(1, 0, i - 1)
     end
     pos[N] = {}
-    pos[N].x = obj.getvalue("track.track_vertex_x", 0, -1)
-    pos[N].y = obj.getvalue("track.track_vertex_y", 0, -1)
+    pos[N].x = obj.getvalue(0, 0, -1)
+    pos[N].y = obj.getvalue(1, 0, -1)
 else
     obj.setanchor("are", N, "loop")
     for i = 1, N do
@@ -241,7 +251,7 @@ if TC ~= 0 then
     obj.setoption("drawtarget", "framebuffer")
     if wcol ~= "" and wcol ~= nil then
         obj.load("figure", "四角形", wcol, 100)
-        obj.setoption("antialias", ANT)
+        -- obj.setoption("antialias", ANT)
     end
     for i = 1, N2 do
         obj.drawpoly(
