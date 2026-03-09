@@ -1,14 +1,18 @@
 --label:tim2\変形
+--group:基本,true
+
 ---$track:サイズ
 ---min=0
 ---max=5000
 ---step=0.1
 local track_size = 200
 
----$track:タイプ
----min=1
----max=5
----step=1
+---$select:タイプ
+---正四面体=1
+---立方体=2
+---正八面体=3
+---正二十面体=4
+---正十二面体=5
 local track_type = 1
 
 ---$track:枠％
@@ -21,10 +25,10 @@ local track_percent = 0
 local col = 0xffffff
 
 ---$check:縮尺補正
-local aspchk = 0
+local aspchk = false
 
 ---$check:90度回転
-local rotchk = 0
+local rotchk = false
 
 obj.setoption("blend", 0) --念のため
 
@@ -128,7 +132,7 @@ local create_DP = function(c72, c36, s72, s36, Stype)
 end
 
 local size = track_size --内接球の半径
-local Stype = math.floor(track_type)
+local Stype = track_type
 local N = { 4, 8, 6, 20, 12 }
 local c72, c36, s72, s36 = 0, 0, 0, 0
 local PT = {}
@@ -205,7 +209,7 @@ else --(Stype==5)
 end
 
 --縦横比補正
-if aspchk == 1 then
+if aspchk then
     local a, b
     local w, h = obj.getpixel()
     if Stype == 2 then
@@ -307,9 +311,9 @@ end
 
 --回転
 if Stype == 4 then
-    rotchk = 1 - rotchk
+    rotchk = not rotchk
 end
-if rotchk == 1 then
+if rotchk then
     for i = 1, N[Stype] do
         PT[i][2], PT[i][3] = -PT[i][3], PT[i][2]
     end
