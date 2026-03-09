@@ -1,8 +1,10 @@
 --label:tim2\変形
----$track:配置
----min=1
----max=3
----step=1
+--group:基本,true
+
+---$select:配置
+---配置1=1
+---配置2=2
+---配置3=3
 local track_placement = 1
 
 ---$track:サイズ
@@ -17,26 +19,34 @@ local track_size = 100
 ---step=0.1
 local track_interval_percent = 10
 
----$value:事前回転位置
+--group:回転手順,false
+
+---$string:事前回転位置
 local pPOS = ""
 
----$value:事前回転方向
+---$string:事前回転方向
 local pROT = ""
 
----$value:回転位置
+---$string:回転位置
 local POS = "1251"
 
----$value:回転方向
+---$string:回転方向
 local ROT = "0010"
 
+--group:表示,false
+
 ---$check:内部表示
-local SHO = 1
+local SHO = true
+
+--group:
 
 function p_rot(p1, p2, rs, rc)
     return p1 * rc + p2 * rs, -p1 * rs + p2 * rc
 end
 
-local SHO = SHO or 1
+if SHO == nil then
+    SHO = true
+end
 local POS = POS or "0"
 local ROT = ROT or "0"
 local pPOS = pPOS or ""
@@ -341,7 +351,7 @@ for i = -1, 1 do
                 end
 
                 if n == NowN + 1 then
-                    if SHO == 0 then
+                    if not SHO then
                         for s = 0, 5 do
                             if
                                 (s == 0 and k == -1)
