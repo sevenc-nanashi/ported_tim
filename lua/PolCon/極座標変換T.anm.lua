@@ -17,13 +17,13 @@ local track_apply_amount = 100
 ---step=1
 local track_inverse_transform = 0
 
-require("T_PolarConversion_Module")
-local userdata, w, h = obj.getpixeldata()
-local work = obj.getpixeldata("work")
-local LUD
+local tim2 = obj.module("tim2")
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+obj.clearbuffer("cache:work", w, h)
+local work = obj.getpixeldata("cache:work", "bgra")
 if track_inverse_transform == 0 then
-    LUD = T_PolarConversion_Module.PolarConversion(userdata, work, w, h, track_range * 0.01, track_apply_amount * 0.01)
+    tim2.polcon_polar_conversion(userdata, work, w, h, track_range * 0.01, track_apply_amount * 0.01)
 else
-    LUD = T_PolarConversion_Module.PolarInversion(userdata, work, w, h, track_range * 0.01, track_apply_amount * 0.01)
+    tim2.polcon_polar_inversion(userdata, work, w, h, track_range * 0.01, track_apply_amount * 0.01)
 end
-obj.putpixeldata(LUD)
+obj.putpixeldata("object", userdata, w, h, "bgra")

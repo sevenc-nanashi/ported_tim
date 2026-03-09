@@ -7,3 +7,4 @@ pub mod filter;
 pub mod framing;
 pub mod lineextra;
 pub mod linefill;
+pub mod polcon;

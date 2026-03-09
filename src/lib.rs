@@ -1933,6 +1933,60 @@ impl PortedTimMod2 {
         )
     }
 
+    fn polcon_polar_conversion(
+        image_buffer: NonNull<u8>,
+        work_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        range: f64,
+        apply_amount: f64,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let work_buffer =
+            unsafe { std::slice::from_raw_parts_mut(work_buffer.as_ptr(), buffer_size) };
+        unoptimized::polcon::polar_conversion(
+            image_buffer,
+            work_buffer,
+            width,
+            height,
+            range,
+            apply_amount,
+        );
+        Ok(())
+    }
+
+    fn polcon_polar_inversion(
+        image_buffer: NonNull<u8>,
+        work_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        range: f64,
+        apply_amount: f64,
+    ) -> anyhow::Result<()> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        let work_buffer =
+            unsafe { std::slice::from_raw_parts_mut(work_buffer.as_ptr(), buffer_size) };
+        unoptimized::polcon::polar_inversion(
+            image_buffer,
+            work_buffer,
+            width,
+            height,
+            range,
+            apply_amount,
+        );
+        Ok(())
+    }
+
     fn custom_flare_load_image(name: String) -> anyhow::Result<(*const u8, usize, usize)> {
         let image_data = unoptimized::custom_flare::load_image(&name)?;
         Ok(image_data)
