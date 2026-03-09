@@ -17,43 +17,43 @@ local track_center_x = 0
 ---step=0.1
 local track_center_y = 0
 
----$track:表示
+---$check:表示
+local show_guide = 0
+
+---$color:色1
+local col1 = 0x00ff00
+
+---$color:色2
+local col2 = 0xffff00
+
+---$color:色3
+local col3 = 0xff0000
+
+---$color:色4
+local col4 = 0x0000ff
+
+---$color:色5
+local col5 = nil
+
+---$color:色6
+local col6 = nil
+
+---$color:色7
+local col7 = nil
+
+---$color:色8
+local col8 = nil
+
+---$track:ガイド半径
 ---min=0
----max=1
----step=0.1
-local track_display = 0
-
----$value:色1
-local col1 = "0x00ff00"
-
----$value: 色2
-local col2 = "0xffff00"
-
----$value: 色3
-local col3 = "0xff0000"
-
----$value: 色4
-local col4 = "0x0000ff"
-
----$value: 色5
-local col5 = ""
-
----$value: 色6
-local col6 = ""
-
----$value: 色7
-local col7 = ""
-
----$value: 色8
-local col8 = ""
-
----$value: ガイド半径
+---max=1000
+---step=1
 local size = 100
 
----$value: ガイド色
-local colG = "0xffffff"
+---$color:ガイド色
+local colG = 0xffffff
 
-if track_display == 1 then
+if show_guide == 1 then
     obj.load("figure", "円", colG, size)
     obj.effect("縁取り")
 

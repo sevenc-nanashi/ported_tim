@@ -2,7 +2,7 @@
 ---$track:番号
 ---min=1
 ---max=8
----step=0.1
+---step=1
 local track_index = 1
 
 ---$track:幅

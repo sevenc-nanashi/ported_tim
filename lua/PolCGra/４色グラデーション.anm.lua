@@ -5,34 +5,34 @@
 ---step=0.1
 local track_width = 0
 
----$track:中心ｽﾞﾚ1
+---$track:中心ズレ1
 ---min=-100
 ---max=100
 ---step=0.1
 local track_center_offset_1 = 0
 
----$track:中心ｽﾞﾚ2
+---$track:中心ズレ2
 ---min=-100
 ---max=100
 ---step=0.1
 local track_center_offset_2 = 0
 
----$track:中心ｽﾞﾚ3
+---$track:中心ズレ3
 ---min=-100
 ---max=100
 ---step=0.1
 local track_center_offset_3 = 0
 
----$value:色1
+---$color:色1
 local col1 = 0x00ff00
 
----$value:色2
+---$color:色2
 local col2 = 0xffff00
 
----$value:色3
+---$color:色3
 local col3 = 0xff0000
 
----$value:色4
+---$color:色4
 local col4 = 0x0000ff
 
 local haba = track_width * obj.h / 100
