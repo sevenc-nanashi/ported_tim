@@ -1,15 +1,16 @@
 --label:tim2\アニメーション効果
----$track:開位置％
+
+---$track:開始位置％
 ---min=0
 ---max=5000
 ---step=0.1
 local track_open_position_percent = 200
 
----$track:ｵｰﾊﾞｰ量％
+---$track:オーバー量％
 ---min=0
 ---max=100
 ---step=0.1
-local track_percent = 10
+local track_over_percent = 10
 
 ---$track:方向
 ---min=-360
@@ -23,29 +24,55 @@ local track_direction = -180
 ---step=0.1
 local track_blur = 100
 
----$value:開ｵｰﾊﾞｰ補正％
-local sdy1 = 100
-
----$value:終ｵｰﾊﾞｰ補正％
-local sdy2 = 100
-
----$value:開始ｵｰﾊﾞｰﾀｲﾑ％
-local dt1 = 10
-
----$value:終了ｵｰﾊﾞｰﾀｲﾑ％
-local dt2 = 10
-
----$value:オフセット％
-local ofs = 0
-
----$value:時間範囲％
-local TM = { 0, 100 }
-
----$check:横基準
-local baseChk = 0
+---$select:基準軸
+---縦=0
+---横=1
+local select_base_axis = 0
 
 ---$check:開始位置角度自動調整
-local check0 = false
+local chk_auto_adjust_start_angle = false
+
+---$track:開始オーバー補正％
+---min=0
+---max=500
+---step=0.1
+local track_start_over_correction_percent = 100
+
+---$track:終了オーバー補正％
+---min=0
+---max=500
+---step=0.1
+local track_end_over_correction_percent = 100
+
+---$track:開始オーバー時間％
+---min=0
+---max=100
+---step=0.1
+local track_start_over_time_percent = 10
+
+---$track:終了オーバー時間％
+---min=0
+---max=100
+---step=0.1
+local track_end_over_time_percent = 10
+
+---$track:オフセット％
+---min=-5000
+---max=5000
+---step=0.1
+local track_offset_percent = 0
+
+---$track:時間範囲開始％
+---min=0
+---max=100
+---step=0.1
+local track_time_range_start_percent = 0
+
+---$track:時間範囲終了％
+---min=0
+---max=100
+---step=0.1
+local track_time_range_end_percent = 100
 
 local norm_pos = function(t)
     return t * t * (3 - 2 * t)
@@ -58,15 +85,15 @@ local w, h = obj.getpixel()
 local t = obj.time / obj.totaltime
 
 local y0 = track_open_position_percent * 0.01
-local dy = track_percent * 0.01
+local dy = track_over_percent * 0.01
 local deg = track_direction
 local bl = track_blur * 0.01
 
 local cos = math.cos(deg * math.pi / 180)
 local sin = math.sin(-deg * math.pi / 180)
-local bs = (baseChk == 1) and w or h
+local bs = (select_base_axis == 1) and w or h
 
-if check0 then
+if chk_auto_adjust_start_angle then
     local x = bs * y0 * sin
     local y = bs * y0 * cos
     x = w * math.floor((x + w * 0.5) / w)
@@ -79,29 +106,19 @@ if check0 then
     deg = 180 - deg * 180 / math.pi
 end
 
-local dy1 = dy * sdy1 * 0.01
-local dy2 = dy * sdy2 * 0.01
+local dy1 = dy * track_start_over_correction_percent * 0.01
+local dy2 = dy * track_end_over_correction_percent * 0.01
 
-dt1 = dt1 * 0.01
-dt2 = dt2 * 0.01
-TM = TM or { 0, 100 }
-local TM1 = TM[1] * 0.01
-local TM2 = TM[2] * 0.01
-if TM1 < 0 then
-    TM1 = 0
-elseif TM1 > 1 then
-    TM1 = 1
-end
-if TM2 < 0 then
-    TM2 = 0
-elseif TM2 > 1 then
-    TM2 = 1
-end
-t = TM1 * (1 - t) + t * TM2
+local dt1 = track_start_over_time_percent * 0.01
+local dt2 = track_end_over_time_percent * 0.01
 
-ofs = ofs * 0.01
+local tm1 = math.max(0, math.min(1, track_time_range_start_percent * 0.01))
+local tm2 = math.max(0, math.min(1, track_time_range_end_percent * 0.01))
+t = tm1 * (1 - t) + t * tm2
 
-bl = bl * (TM2 - TM1) / (obj.totaltime * obj.framerate)
+local ofs = track_offset_percent * 0.01
+
+bl = bl * (tm2 - tm1) / (obj.totaltime * obj.framerate)
 
 local pos
 if t < dt1 and dt1 ~= 0 then
@@ -131,4 +148,4 @@ obj.draw(posx, posy - h)
 obj.draw(posx - w, posy)
 obj.draw(posx - w, posy - h)
 obj.load("tempbuffer")
-obj.effect("方向ブラー", "角度", deg, "範囲", bl * bs, "サイズ固定", 1)
+obj.effect("方向ブラー", "角度", deg, "範囲", bl * bs, "サイズ固定", 1)
