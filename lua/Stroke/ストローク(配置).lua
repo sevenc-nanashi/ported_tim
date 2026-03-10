@@ -17,7 +17,7 @@ local track_progress_2 = 0
 ---step=1
 local track_count = 10
 
----$track:ﾗﾝﾀﾞﾑ性
+---$track:ランダム性
 ---min=0
 ---max=100
 ---step=0.1
@@ -29,7 +29,10 @@ local apchk = 0
 ---$check:環状軌道
 local CirObt = 0
 
----$value:軌道[0_2]
+---$select:軌道
+---曲線=0
+---円=1
+---直線=2
 local richk = 1
 
 ---$check:進行方向
@@ -38,13 +41,22 @@ local vecchk = 0
 ---$check:先頭表示
 local topOnly = 0
 
----$value:位置ランダム性
+---$track:位置ランダム性
+---min=0
+---max=10000
+---step=1
 local Gosa = 200
 
----$value:領域拡大
+---$track:領域拡大
+---min=-5000
+---max=5000
+---step=1
 local dScr = 0
 
----$value:精度
+---$track:精度
+---min=1
+---max=1000
+---step=1
 local smN = 20
 
 local t1 = track_progress_1 * 0.01

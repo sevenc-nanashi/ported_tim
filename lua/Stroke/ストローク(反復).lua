@@ -17,19 +17,24 @@ local track_keep_left_edge = 0
 ---step=1
 local track_keep_right_edge = 0
 
----$track:繰返ﾓｰﾄﾞ
----min=1
----max=3
----step=1
+---$select:繰返モード
+---根本固定=1
+---先端固定=2
+---ランダム=3
 local track_mode = 1
 
----$value:軌道精度
+---$track:軌道精度
+---min=1
+---max=1000
+---step=1
 local smN = 30
 
 ---$check:環状軌道
 local CirObt = 0
 
----$value:軌道[0-1]
+---$select:軌道
+---曲線=0
+---円=1
 local richk = 1
 
 ---$check:先頭調整
@@ -41,13 +46,19 @@ local fat = { 100, 100, 100 }
 ---$value:z軸方向
 local posZ = { 0, 0, 0 }
 
----$value:最大ﾗﾝﾀﾞﾑ長[%]
+---$track:最大ランダム長[%]
+---min=5
+---max=100
+---step=1
 local RnD = 50
 
----$value:乱数シード
+---$track:乱数シード
+---min=0
+---max=100000
+---step=1
 local seed = 0
 
----$check:ﾌﾚｰﾑﾊﾞｯﾌｧ表示
+---$check:フレームバッファ表示
 local fbapp = 0
 
 local sp1 = track_keep_left_edge
