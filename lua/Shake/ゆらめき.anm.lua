@@ -11,11 +11,17 @@ local track_size = 50
 ---step=0.1
 local track_change = 0
 
----$value:ランダム形状
-local Rpat = 20
+---$track:ランダム形状[%]
+---min=0
+---max=100
+---step=0.1
+local track_random_shape_percent = 20
 
----$value:形状乱数シード
-local seed1 = 0
+---$track:形状乱数シード
+---min=0
+---max=100000
+---step=1
+local track_shape_seed = 0
 
 local px = {}
 local py = {}
@@ -29,11 +35,11 @@ local ss = math.floor(tt)
 tt = tt - ss
 local tti = 1 - tt
 
-Rpat = math.abs(Rpat) * 0.01
-if Rpat > 1 then
-    Rpat = 1
+local random_shape_ratio = math.abs(track_random_shape_percent) * 0.01
+if random_shape_ratio > 1 then
+    random_shape_ratio = 1
 end
-Rpat = Rpat / 2.3
+random_shape_ratio = random_shape_ratio / 2.3
 
 obj.setoption("drawtarget", "tempbuffer", xl, yl)
 obj.setoption("antialias", 1)
@@ -53,13 +59,13 @@ elseif h > yl then
     h = yl
 end
 
-local pw = xl / w * Rpat
-local ph = yl / h * Rpat
+local pw = xl / w * random_shape_ratio
+local ph = yl / h * random_shape_ratio
 
-sd1 = seed1 + ss
-sd2 = sd1 + 1
-sd3 = 1000 + sd1
-sd4 = 1000 + sd2
+local sd1 = track_shape_seed + ss
+local sd2 = sd1 + 1
+local sd3 = 1000 + sd1
+local sd4 = 1000 + sd2
 
 for x = 0, w do
     px[x] = {}
