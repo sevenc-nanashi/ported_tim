@@ -234,7 +234,7 @@ Out_morph_T.fig = fig
 Out_morph_T.col = col
 Out_morph_T.td = td
 
-if obj.getoption("script_name", 1, true) ~= "モーフィング(輪郭)-オプション@モーフィング" then
+if obj.getoption("script_name", 1, true) ~= "モーフィング(輪郭)-オプション@tim.anm2" then
     Outlinemorphing_T(Out_morph_T)
     Outlinemorphing_T = nil
     Out_morph_T = nil

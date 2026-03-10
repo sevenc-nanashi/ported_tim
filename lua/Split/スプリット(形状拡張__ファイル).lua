@@ -1,13 +1,31 @@
 --label:tim2\変形\スプリット.anm
---track0:オフセット,0,100,30
---track1:繰り返し,1,50,1,1
---track2:傾斜,-100,100,0
---check0:滑らかに,1
---file:
+---$track:オフセット
+---min=0
+---max=100
+---step=0.1
+local track_offset = 30
 
-local of = obj.track0 * 0.01
-local rp = obj.track1
-local a = obj.track2 * 0.01
+---$track:繰り返し
+---min=1
+---max=50
+---step=1
+local track_repeat = 1
+
+---$track:傾斜
+---min=-100
+---max=100
+---step=0.1
+local track_slope = 0
+
+---$check:滑らかに
+local check_smooth = true
+
+---$file:ファイル
+local file = ""
+
+local of = track_offset * 0.01
+local rp = track_repeat
+local a = track_slope * 0.01
 
 T_line_data = {}
 local one = io.input(file)
@@ -41,7 +59,7 @@ for i = 1, #T_line_data do
     T_line_data[i] = (T_line_data[i] - Min) / (Max - Min) * (1 - of) + of
 end
 
-if obj.check0 then
+if check_smooth then
     T_line_data_fl = 1
 else
     T_line_data_fl = 2

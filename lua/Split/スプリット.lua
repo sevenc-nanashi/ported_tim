@@ -1,11 +1,11 @@
 --label:tim2\変形\スプリット.anm
----$track:ｽﾌﾟﾘｯﾄ1
+---$track:スプリット1
 ---min=0
 ---max=100
 ---step=0.1
 local track_n_1 = 30
 
----$track:ｽﾌﾟﾘｯﾄ2
+---$track:スプリット2
 ---min=0
 ---max=100
 ---step=0.1
@@ -29,16 +29,25 @@ local spC = 0
 ---$check:穴だけ開ける
 local hoC = 0
 
----$value:横分割数
+---$track:横分割数
+---min=2
+---max=100
+---step=1
 local spN = 30
 
----$value:縦分割数
+---$track:縦分割数
+---min=2
+---max=100
+---step=1
 local spNy = 30
 
 ---$value:位置
 local pos = { -100, 0, 100, 0 }
 
----$value:透明度境界ボカシ
+---$track:透明度境界ボカシ
+---min=0
+---max=500
+---step=0.1
 local bl = 1
 
 local sp1 = track_n_1 * 0.01

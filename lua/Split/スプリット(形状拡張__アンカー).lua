@@ -1,17 +1,40 @@
 --label:tim2\変形\スプリット.anm
---track0:オフセット,0,100,30
---track1:繰り返し,1,50,1,1
---track2:傾斜,-100,100,0
---track3:ｱﾝｶｰ数,2,16,3,1
---check0:滑らかに,1
---dialog:座標,T_POS={-100,0,0,0,100,0};
+---$track:オフセット
+---min=0
+---max=100
+---step=0.1
+local track_offset = 30
 
-local An = obj.track3
+---$track:繰り返し
+---min=1
+---max=50
+---step=1
+local track_repeat = 1
+
+---$track:傾斜
+---min=-100
+---max=100
+---step=0.1
+local track_slope = 0
+
+---$track:アンカー数
+---min=2
+---max=16
+---step=1
+local track_anchor_count = 3
+
+---$check:滑らかに
+local check_smooth = true
+
+---$value:座標
+local T_POS = { -100, 0, 0, 0, 100, 0 }
+
+local An = track_anchor_count
 obj.setanchor("T_POS", An)
 
-local of = obj.track0 * 0.01
-local rp = obj.track1
-local a = obj.track2 * 0.01
+local of = track_offset * 0.01
+local rp = track_repeat
+local a = track_slope * 0.01
 
 T_line_data = {}
 
@@ -50,7 +73,7 @@ for i = 1, #T_line_data do
     T_line_data[i] = (T_line_data[i] - Min) / (Max - Min) * (1 - of) + of
 end
 
-if obj.check0 then
+if check_smooth then
     T_line_data_fl = 1
 else
     T_line_data_fl = 2
