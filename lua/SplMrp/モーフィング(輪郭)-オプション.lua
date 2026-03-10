@@ -17,7 +17,7 @@ local track_rotation = 0
 ---step=1
 local track_threshold = 128
 
----$track:対応点ｽﾞﾚ
+---$track:対応点ズレ
 ---min=-2000
 ---max=2000
 ---step=0.1

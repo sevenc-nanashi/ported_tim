@@ -5,22 +5,22 @@
 ---step=0.1
 local track_change_amount = 50
 
----$track:ﾎﾟｲﾝﾄｻｲｽﾞ
+---$track:ポイントサイズ
 ---min=0
 ---max=500
 ---step=1
 local track_point_size = 30
 
----$track:ﾌｫﾝﾄｻｲｽﾞ
+---$track:フォントサイズ
 ---min=0
 ---max=500
 ---step=1
 local track_size = 30
 
----$check:ﾚｲﾔｰｽｸﾘﾌﾟﾄ1
+---$check:レイヤースクリプト1
 local Lsc1 = 1
 
----$check:ﾚｲﾔｰｽｸﾘﾌﾟﾄ2
+---$check:レイヤースクリプト2
 local Lsc2 = 1
 
 ---$check:ライン表示
@@ -29,7 +29,10 @@ local lchk = 1
 ---$color:線色
 local Lcol = 0xffffff
 
----$value:線幅
+---$track:線幅
+---min=0
+---max=1000
+---step=0.1
 local Lw = 3
 
 ---$check:ポイント表示

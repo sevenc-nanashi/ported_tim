@@ -1,5 +1,5 @@
 --label:tim2\変形\モーフィング.anm
----$track:ﾎﾟｲﾝﾄ数
+---$track:ポイント数
 ---min=1
 ---max=16
 ---step=1

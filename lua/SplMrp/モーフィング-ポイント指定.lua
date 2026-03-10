@@ -1,23 +1,22 @@
 --label:tim2\変形\モーフィング.anm
----$track:ﾎﾟｲﾝﾄ数
+---$track:ポイント数
 ---min=1
 ---max=14
 ---step=1
 local track_point_count = 3
 
----$track:画像番号
----min=1
----max=2
----step=1
+---$select:画像種別
+---変化前=1
+---変化後=2
 local track_image_index = 1
 
----$track:ﾎﾟｲﾝﾄｻｲｽﾞ
+---$track:ポイントサイズ
 ---min=0
 ---max=500
 ---step=1
 local track_point_size = 30
 
----$track:ﾌｫﾝﾄｻｲｽﾞ
+---$track:フォントサイズ
 ---min=0
 ---max=500
 ---step=1

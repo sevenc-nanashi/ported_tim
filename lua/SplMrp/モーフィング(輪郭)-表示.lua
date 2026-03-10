@@ -17,16 +17,19 @@ local track_size = 10
 ---step=1
 local track_point_count = 120
 
----$track:ｵﾌｾｯﾄ
+---$track:オフセット
 ---min=-2000
 ---max=2000
 ---step=0.1
 local track_offset = 0
 
----$value:変形前画像ﾚｲﾔｰ
+---$track:変形前画像レイヤー
+---min=0
+---max=100
+---step=1
 local inum = 0
 
----$check:ｴﾌｪｸﾄ取得
+---$check:エフェクト取得
 local GE = 1
 
 ---$figure:形状
@@ -158,6 +161,7 @@ Outlinemorphing_T = function(OT)
         GE = GE == 1 and true or false
         obj.load("layer", inum, GE)
     else
+        error("extbufferは未実装です")
         require("extbuffer")
         extbuffer.read(inum)
     end
