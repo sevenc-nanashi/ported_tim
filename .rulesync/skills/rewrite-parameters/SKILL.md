@@ -1,5 +1,5 @@
 ---
-name: rewrite-paramters
+name: rewrite-parameters
 description: "Rewrite Parameters from AviUtl1 to AviUtl2"
 targets: ["*"]
 ---

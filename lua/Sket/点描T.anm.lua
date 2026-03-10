@@ -5,17 +5,17 @@
 ---step=1
 local track_size = 10
 
----$track:位置ｽﾞﾚ%
+---$track:位置ズレ[%]
 ---min=0
 ---max=100
 ---step=0.1
 local track_position_offset_percent = 50
 
----$track:ピッチ%
+---$track:ピッチ[%]
 ---min=50
 ---max=100
 ---step=0.1
-local track_percent = 75
+local track_pitch_percent = 75
 
 ---$track:色幅
 ---min=0
@@ -24,72 +24,101 @@ local track_percent = 75
 local track_color_width = 32
 
 ---$check:背景に着色
-local _1 = 0
+local check_colorize_background = false
 
 ---$color:└背景色
-local _2 = 0xffffff
+local color_background = 0xffffff
 
 ---$check:└背景を元絵に
-local _3 = 0
+local check_use_original_background = false
 
----$check:3D的表示
-local _4 = 0
+---$check:3D表示
+local check_enable_3d = false
 
----$value:└環境光
-local _5 = 20
+---$track:└環境光[%]
+---min=0
+---max=100
+---step=1
+local track_ambient_light = 20
 
----$value:└拡散光
-local _6 = 80
+---$track:└拡散光[%]
+---min=0
+---max=100
+---step=1
+local track_diffuse_light = 80
 
----$value:└鏡面光
-local _7 = 60
+---$track:└鏡面光[%]
+---min=0
+---max=100
+---step=1
+local track_specular_light = 60
 
----$value:　└光沢度
-local _8 = 30
+---$track:└光沢度
+---min=0
+---max=100
+---step=1
+local track_shininess = 30
 
----$value:シード
-local _9 = 0
+---$track:乱数シード
+---min=0
+---max=1000000
+---step=1
+local track_random_seed = 0
 
----$value:└変化間隔
-local _10 = 0
+---$track:└変化間隔
+---min=0
+---max=1000
+---step=1
+local track_seed_change_interval = 0
 
 ---$value: PI
 local _0 = nil
 
 ---$check:色参照位置固定
-local check0 = false
+local check_lock_color_reference = false
 
-require("T_Sketch_Module")
-_0 = _0 or {}
-local Sz = _0[1] or track_size
-local Dx = _0[2] or track_position_offset_percent
-local Pt = _0[3] or track_percent
-local Cw = _0[4] or track_color_width
-local Oc = _0[0] == nil and check0 or _0[0]
-_0 = nil
-local ck1 = _1 or 0
-local Bol = _2 or 0xffffff
-local ck2 = _3 or 0
-local ck3 = _4 or 0
-local La = _5 or 20
-local Ld = _6 or 80
-local Ls = _7 or 60
-local Ns = _8 or 30
-local SD = _9 or 0
-local sR = _10 or 0
-_1 = nil
-_2 = nil
-_3 = nil
-_4 = nil
-_5 = nil
-_6 = nil
-_7 = nil
-_8 = nil
-_9 = nil
-_10 = nil
-if sR > 0 then
-    SD = SD + math.floor(obj.time * obj.framerate / sR)
+local tim2 = obj.module("tim2")
+local is_enabled = function(value)
+    return value == true or value == 1
 end
-local userdata, w, h = obj.getpixeldata()
-T_Sketch_Module.Sketch(userdata, w, h, Sz, Dx, Pt, Cw, ck1 + 2 * ck2, Bol, ck3, La, Ld, Ls, Ns, SD, Oc)
-obj.putpixeldata(userdata)
+
+_0 = _0 or {}
+local size = _0[1] or track_size
+local position_offset_percent = _0[2] or track_position_offset_percent
+local pitch_percent = _0[3] or track_pitch_percent
+local color_width = _0[4] or track_color_width
+local lock_color_reference = _0[0] == nil and is_enabled(check_lock_color_reference) or is_enabled(_0[0])
+_0 = nil
+local background_mode = (is_enabled(check_colorize_background) and 1 or 0)
+    + (is_enabled(check_use_original_background) and 2 or 0)
+local background_color = color_background or 0xffffff
+local enable_3d = is_enabled(check_enable_3d) and 1 or 0
+local ambient_light = track_ambient_light
+local diffuse_light = track_diffuse_light
+local specular_light = track_specular_light
+local shininess = track_shininess
+local random_seed = track_random_seed
+local seed_change_interval = track_seed_change_interval
+if seed_change_interval > 0 then
+    random_seed = random_seed + math.floor(obj.time * obj.framerate / seed_change_interval)
+end
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+tim2.sketch_sketch(
+    userdata,
+    w,
+    h,
+    size,
+    position_offset_percent,
+    pitch_percent,
+    color_width,
+    background_mode,
+    background_color,
+    enable_3d,
+    ambient_light,
+    diffuse_light,
+    specular_light,
+    shininess,
+    random_seed,
+    lock_color_reference
+)
+obj.putpixeldata("object", userdata, w, h, "bgra")

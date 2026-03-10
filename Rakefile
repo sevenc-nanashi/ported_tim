@@ -287,7 +287,7 @@ task :current_progress do
     end
 
   puts "動作確認: #{num_checked}/#{num_scripts} (#{(num_checked.to_f / num_scripts * 100).round(1)}%)"
-  puts "DLL化: #{num_dll_ported}/#{num_dll_all} (#{num_dll_all > 0 ? (num_dll_ported.to_f / num_dll_all * 100).round(1) : "N/A"}%)"
+  puts "DLL移植: #{num_dll_ported}/#{num_dll_all} (#{num_dll_all > 0 ? (num_dll_ported.to_f / num_dll_all * 100).round(1) : "N/A"}%)"
   puts "パラメーター改善: #{num_parameter_improved}/#{num_scripts} (#{(num_parameter_improved.to_f / num_scripts * 100).round(1)}%)"
   puts "シェーダー化/最適化: #{num_shader_ported}/#{num_shader_all} (#{num_shader_all > 0 ? (num_shader_ported.to_f / num_shader_all * 100).round(1) : "N/A"}%)"
 end
