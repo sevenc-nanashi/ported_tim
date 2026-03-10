@@ -32,10 +32,20 @@ local chk = 1
 ---$check:光のみ
 local Lonly = 0
 
----$value:形状[1-5]
+---$select:形状
+---通常=0
+---クロス(4本)=1
+---クロス(6本)=2
+---クロス(8本)=3
+---クロス(10本)=4
+---クロス(12本)=5
+---ライン=6
 local fig = 1
 
----$value:ぼかし
+---$track:ぼかし
+---min=0
+---max=50
+---step=1
 local blur = 1
 
 local w, h = obj.getpixel()
@@ -54,6 +64,16 @@ obj.setoption("drawtarget", "tempbuffer", w0, h0)
 obj.draw(0, 0, 0, 1, 1, 0, 0, -deg)
 obj.copybuffer("obj", "tmp")
 
+local fig_map = {
+    [0] = "通常",
+    [1] = "クロス(4本)",
+    [2] = "クロス(6本)",
+    [3] = "クロス(8本)",
+    [4] = "クロス(10本)",
+    [5] = "クロス(12本)",
+    [6] = "ライン",
+}
+
 obj.effect(
     "グロー",
     "強さ",
@@ -64,14 +84,12 @@ obj.effect(
     track_threshold,
     "ぼかし",
     blur,
-    "type",
-    fig,
+    "形状",
+    fig_map[fig] or "通常",
     "光成分のみ",
     1,
-    "no_color",
-    chk,
-    "color",
-    col
+    "光色",
+    chk == 0 and col or ""
 )
 if Lonly == 0 then
     obj.copybuffer("tmp", "cache:ori_img")
