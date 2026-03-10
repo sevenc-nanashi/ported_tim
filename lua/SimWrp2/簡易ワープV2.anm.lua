@@ -23,44 +23,65 @@ local track_move_x = 100
 ---step=0.1
 local track_move_y = 100
 
----$value:影響範囲
-local ATp = 200
+---$track:影響範囲
+---min=0
+---max=10000
+---step=1
+local track_affect_radius = 200
 
----$value:被影響範囲
-local DFp = 200
+---$track:被影響範囲
+---min=0
+---max=10000
+---step=1
+local track_falloff_radius = 200
 
----$check:絶対/相対
-local POS = 1
+---$select:移動座標
+---絶対=0
+---相対=1
+local select_move_coordinates = 1
 
----$value:分割数
-local M = 30
+---$track:分割数
+---min=1
+---max=300
+---step=1
+local track_division_count = 30
 
 ---$check:境界固定
-local BS = 0
+local check_fix_boundary = false
 
 ---$check:パス表示
-local PSA = 0
+local check_show_path = false
 
 ---$color:移動色
-local mcol = 0xff0000
+local move_color = 0xff0000
 
 ---$color:影響範囲色
-local acol = 0x00ff00
+local affect_color = 0x00ff00
 
 ---$color:被影響範囲色
-local dcol = 0x0000ff
+local falloff_color = 0x0000ff
 
 ---$color:文字色
-local fcol = 0xff00ff
+local text_color = 0xff00ff
 
----$value:表示サイズ
-local sz = 50
+---$track:表示サイズ
+---min=1
+---max=500
+---step=1
+local track_display_size = 50
 
----$value:線幅
-local lw = 3
+---$track:線幅
+---min=1
+---max=100
+---step=1
+local track_line_width = 3
 
 ---$check:中心XY基準
-local check0 = false
+local check_center_xy_base = false
+
+local is_enabled = function(value)
+    return value == true or value == 1
+end
 
 local TK = function(Z)
     if Z >= 1 then
@@ -86,12 +107,12 @@ SwarpT_X0[SwarpT_N] = track_base_x
 SwarpT_Y0[SwarpT_N] = track_base_y
 SwarpT_X1[SwarpT_N] = track_move_x
 SwarpT_Y1[SwarpT_N] = track_move_y
-if POS == 1 then
+if select_move_coordinates == 1 then
     SwarpT_X1[SwarpT_N] = SwarpT_X1[SwarpT_N] + SwarpT_X0[SwarpT_N]
     SwarpT_Y1[SwarpT_N] = SwarpT_Y1[SwarpT_N] + SwarpT_Y0[SwarpT_N]
 end
-SwarpT_AT[SwarpT_N] = ATp
-SwarpT_DF[SwarpT_N] = DFp
+SwarpT_AT[SwarpT_N] = track_affect_radius
+SwarpT_DF[SwarpT_N] = track_falloff_radius
 
 if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
     local w, h = obj.getpixel()
@@ -105,7 +126,7 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
     local w2 = w / 2
     local h2 = h / 2
 
-    if check0 then
+    if is_enabled(check_center_xy_base) then
         for k = 1, SwarpT_N do
             SwarpT_X0[k] = SwarpT_X0[k] + cx
             SwarpT_Y0[k] = SwarpT_Y0[k] + cy
@@ -117,24 +138,24 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
     obj.setoption("drawtarget", "tempbuffer", w, h)
     obj.setoption("blend", "alpha_add")
 
-    local dw = w / M
-    local dh = h / M
+    local dw = w / track_division_count
+    local dh = h / track_division_count
 
     local dx = {}
     local dy = {}
-    for i = 0, M do
+    for i = 0, track_division_count do
         dx[i] = {}
         dy[i] = {}
-        for j = 0, M do
+        for j = 0, track_division_count do
             dx[i][j] = 0
             dy[i][j] = 0
         end
     end
 
-    -- ｽﾞﾚ量を計算
-    for i = 0, M do
+    -- ズレ量を計算
+    for i = 0, track_division_count do
         local XX = i * dw - w2
-        for j = 0, M do
+        for j = 0, track_division_count do
             local rsumx = 0
             local rsumy = 0
 
@@ -143,7 +164,7 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
                 local RR = ((XX - SwarpT_X0[s]) ^ 2 + (YY - SwarpT_Y0[s]) ^ 2) ^ 0.5
 
                 local A = TK(RR / SwarpT_AT[s])
-                if BS == 1 then -- 境界補正
+                if is_enabled(check_fix_boundary) then -- 境界補正
                     if XX < SwarpT_X0[s] then
                         A = A * TK((SwarpT_X0[s] - XX) / (SwarpT_X0[s] + w2))
                     else
@@ -181,10 +202,10 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
     end
 
     -- 表示
-    for i = 0, M - 1 do
+    for i = 0, track_division_count - 1 do
         local u0 = i * dw
         local u1 = (i + 1) * dw
-        for j = 0, M - 1 do
+        for j = 0, track_division_count - 1 do
             local v0 = j * dh
             local v1 = (j + 1) * dh
 
@@ -203,18 +224,18 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
     end
 
     -- 枠表示
-    if PSA == 1 and obj.getinfo("saving") == false then
+    if is_enabled(check_show_path) and obj.getinfo("saving") == false then
         for i = 1, SwarpT_N do
-            obj.load("figure", "円", mcol, sz)
+            obj.load("figure", "円", move_color, track_display_size)
             obj.draw(SwarpT_X1[i], SwarpT_Y1[i], 0)
 
             local sr = ((SwarpT_X0[i] - SwarpT_X1[i]) ^ 2 + (SwarpT_Y0[i] - SwarpT_Y1[i]) ^ 2) ^ 0.5
-            local u1 = sz / 2 * (SwarpT_Y0[i] - SwarpT_Y1[i]) / sr + SwarpT_X0[i]
-            local v1 = sz / 2 * (SwarpT_X1[i] - SwarpT_X0[i]) / sr + SwarpT_Y0[i]
-            local u2 = -sz / 2 * (SwarpT_Y0[i] - SwarpT_Y1[i]) / sr + SwarpT_X0[i]
-            local v2 = -sz / 2 * (SwarpT_X1[i] - SwarpT_X0[i]) / sr + SwarpT_Y0[i]
+            local u1 = track_display_size / 2 * (SwarpT_Y0[i] - SwarpT_Y1[i]) / sr + SwarpT_X0[i]
+            local v1 = track_display_size / 2 * (SwarpT_X1[i] - SwarpT_X0[i]) / sr + SwarpT_Y0[i]
+            local u2 = -track_display_size / 2 * (SwarpT_Y0[i] - SwarpT_Y1[i]) / sr + SwarpT_X0[i]
+            local v2 = -track_display_size / 2 * (SwarpT_X1[i] - SwarpT_X0[i]) / sr + SwarpT_Y0[i]
 
-            obj.load("figure", "四角形", mcol, 100)
+            obj.load("figure", "四角形", move_color, 100)
             obj.drawpoly(
                 u1,
                 v1,
@@ -238,14 +259,14 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
                 h
             )
 
-            obj.setfont("", sz * 2, 1, fcol, 0x0)
+            obj.setfont("", track_display_size * 2, 1, text_color, 0x0)
             obj.load("text", i)
             obj.draw(SwarpT_X0[i], SwarpT_Y0[i], 0)
 
-            obj.load("figure", "円", acol, 2 * SwarpT_AT[i], lw)
+            obj.load("figure", "円", affect_color, 2 * SwarpT_AT[i], track_line_width)
             obj.draw(SwarpT_X0[i], SwarpT_Y0[i], 0)
 
-            obj.load("figure", "円", dcol, 2 * SwarpT_DF[i], lw)
+            obj.load("figure", "円", falloff_color, 2 * SwarpT_DF[i], track_line_width)
             obj.draw(SwarpT_X0[i], SwarpT_Y0[i], 0)
         end
     end

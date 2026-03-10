@@ -227,10 +227,6 @@ scripts:
         label: 正多面体.anm
       - path: "./lua/RCube2/ルービックキューブ配置V2.anm.lua"
         label: ルービックキューブ配置V2.anm
-      - path: "./lua/SimWrp/簡易ワープ(パス).lua"
-        label: 簡易ワープ(パス)
-      - path: "./lua/SimWrp/簡易ワープ(表示).lua"
-        label: 簡易ワープ(表示)
       - path: "./lua/SimWrp2/簡易ワープV2.anm.lua"
         label: 簡易ワープV2.anm
       - path: "./lua/SplMrp/モーフィング-ポイント指定.lua"

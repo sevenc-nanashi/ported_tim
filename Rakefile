@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-EXCLUDED = %w[k1-Twister ColAdj5 MtnPas]
+EXCLUDED = %w[k1-Twister ColAdj5 MtnPas SimWrp]
 prefix = "tim2"
 task :download do
   require "open-uri"
