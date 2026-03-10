@@ -36,7 +36,6 @@ local t = 100 - track_ratio
 TS = TS * 0.01
 local ATS = math.abs(TS)
 
-
 obj.copybuffer("cache:original", "object")
 t = t * 0.01
 local spw = track_width

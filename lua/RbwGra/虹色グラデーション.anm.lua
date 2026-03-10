@@ -33,7 +33,6 @@ local rev = 0
 ---$check:繰返し
 local rep = 0
 
-
 ---$track:彩度
 ---min=0
 ---max=100
@@ -97,4 +96,4 @@ if chk_position_correction == 1 then
     obj.oy = ioy
     obj.cx = icx
     obj.cy = icy
-end
+end
