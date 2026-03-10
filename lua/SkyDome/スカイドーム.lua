@@ -24,13 +24,16 @@ local track_rotation_3 = 0
 ---step=0.1
 local track_fov = 30
 
----$value:分割数
+---$track:分割数
+---min=1
+---max=300
+---step=1
 local N = 30
 
 ---$check:描画処理
 local chk = 1
 
----$check:親カメラデータを取得
+---$check:親カメラデータを使用
 local check0 = false
 
 local chgRP = function(t, f)

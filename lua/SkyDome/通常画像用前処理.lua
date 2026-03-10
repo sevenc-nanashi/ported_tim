@@ -1,20 +1,20 @@
 --label:tim2\カスタムオブジェクト\スカイドーム.anm
----$track:H範囲
+---$track:水平範囲
 ---min=0
 ---max=360
 ---step=0.1
 local track_h_range = 120
 
----$track:V範囲
+---$track:垂直範囲
 ---min=0
 ---max=180
 ---step=0.1
 local track_v_range = 60
 
----$check:領域調整
+---$check:画像サイズ調整
 local resize = 1
 
----$check:HとVをリンク
+---$check:水平と垂直をリンク
 local check0 = true
 
 if resize == 1 then
