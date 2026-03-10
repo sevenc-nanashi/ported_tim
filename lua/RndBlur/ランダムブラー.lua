@@ -1,5 +1,5 @@
 --label:tim2\ぼかし\T_RandomBlur_Module.anm
----$track:最大ｽﾞﾚ量
+---$track:最大ズレ量
 ---min=0
 ---max=5000
 ---step=0.1
@@ -21,29 +21,28 @@ local track_base_position = 0
 ---min=0
 ---max=1000
 ---step=1
-local track_change = 0
+local track_change_seed = 0
 
 ---$check:サイズ保持
-local ck = 1
+local check_keep_size = true
 
-local zure = track_max_offset
-local deg = track_angle
-local RC = track_change
+local max_offset = track_max_offset
+local angle = track_angle
+local change_seed = track_change_seed
 local userdata, w, h
 w, h = obj.getpixel()
-if ck == 0 then
+if not check_keep_size then
     obj.setoption(
         "drawtarget",
         "tempbuffer",
-        w + math.abs(2 * zure * math.cos(math.pi * deg / 180)),
-        h + math.abs(2 * zure * math.sin(math.pi * deg / 180))
+        w + math.abs(2 * max_offset * math.cos(math.pi * angle / 180)),
+        h + math.abs(2 * max_offset * math.sin(math.pi * angle / 180))
     )
     obj.draw()
     obj.load("tempbuffer")
     obj.setoption("drawtarget", "framebuffer")
 end
-require("T_RandomBlur_Module")
-userdata, w, h = obj.getpixeldata()
-work = obj.getpixeldata("work")
-local LUD = T_RandomBlur_Module.PalRandBlur(userdata, work, w, h, zure, deg, RC, track_base_position * 0.01)
-obj.putpixeldata(LUD)
+local tim2 = obj.module("tim2")
+userdata, w, h = obj.getpixeldata("object", "bgra")
+tim2.rndblur_pal_rand_blur(userdata, w, h, max_offset, angle, change_seed, track_base_position * 0.01)
+obj.putpixeldata("object", userdata, w, h, "bgra")

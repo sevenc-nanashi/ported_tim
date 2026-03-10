@@ -152,9 +152,9 @@
 | -                         | 虹色グラデーション.anm          | :o:      | :o: | :o:              | :x:                  |
 | -                         | リール回転T.anm                 | :o:      | -   | :o:              | :x:                  |
 | -                         | ラフ画線T.anm                   | :o:      | :o: | :o:              | :x:                  |
-| T_RandomBlur_Module.anm   | ランダムブラー                  | ？       | :x: | :x:              | :x:                  |
-| T_RandomBlur_Module.anm   | 回転ランダムブラー              | ？       | :x: | :x:              | :x:                  |
-| T_RandomBlur_Module.anm   | 放射ランダムブラー              | ？       | :x: | :x:              | :x:                  |
+| T_RandomBlur_Module.anm   | ランダムブラー                  | :o:      | :o: | :o:              | :x:                  |
+| T_RandomBlur_Module.anm   | 回転ランダムブラー              | :o:      | :o: | :o:              | :x:                  |
+| T_RandomBlur_Module.anm   | 放射ランダムブラー              | :o:      | :o: | :o:              | :x:                  |
 | T_RotBlur_Module.anm      | 回転ブラー                      | ？       | :x: | :x:              | :x:                  |
 | T_RotBlur_Module.anm      | 放射ブラー                      | ？       | :x: | :x:              | :x:                  |
 | T_RotBlur_Module.anm      | ハードブラー拡張                | ？       | -   | :x:              | :x:                  |
