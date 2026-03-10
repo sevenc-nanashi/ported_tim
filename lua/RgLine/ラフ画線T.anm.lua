@@ -1,9 +1,28 @@
 --label:tim2\装飾
+--group:基本,true
+
 ---$track:長さ
 ---min=0
 ---max=500
 ---step=1
 local track_length = 10
+
+---$check:画線のみ
+local check_line_only = false
+
+---$check:スクリーン合成
+local check_screen_blend = true
+
+---$track:画線ガンマ
+---min=1
+---max=500
+---step=1
+local track_line_gamma = 100
+
+--group:線,false
+
+---$color:線色
+local color_line = 0x0
 
 ---$track:強度上限
 ---min=0
@@ -23,118 +42,142 @@ local track_intensity_min = 0
 ---step=1
 local track_threshold = 0
 
----$color:線色
-local _1 = 0x0
+--group:背景,false
 
----$color:背景−色
-local _2 = 0xffffff
+---$color:背景色
+local color_background = 0xffffff
 
----$value:└元絵比率%
-local _3 = 0
+---$track:元絵比率
+---min=0
+---max=100
+---step=1
+local track_original_ratio = 0
 
----$value:└透明度%
-local _4 = 0
+---$track:背景透明度
+---min=0
+---max=100
+---step=1
+local track_background_alpha = 0
 
----$value:画線ガンマ
-local _5 = 100
+--group:境界補正,false
 
----$check:スクリーン合成
-local _6 = 1
+---$check:有効
+local check_boundary_adjust = false
 
----$check:境界補正
-local _7 = 0
+---$color:補正色
+local color_boundary_adjust = 0xffffff
 
----$color:└追加色
-local _8 = 0xffffff
+--group:抽出,false
 
----$value:方向表示指定
-local _9 = "11110000"
+---$track:抽出サイズ
+---min=0
+---max=500
+---step=1
+local track_extract_size = 1
 
----$value:長さMAPﾚｲﾔｰ
-local _10 = 0
+---$track:抽出強度
+---min=0
+---max=1000
+---step=1
+local track_extract_strength = 300
 
----$value:抽出−サイズ
-local _11 = 1
+---$track:抽出しきい値
+---min=0
+---max=255
+---step=1
+local track_extract_threshold = 0
 
----$value:└強度
-local _12 = 300
+--group:長さマップ,false
 
----$value:└しきい値
-local _13 = 0
+---$track:参照レイヤー
+---min=0
+---max=100
+---step=1
+local track_map_layer = 0
+
+---$string:方向マスク
+local value_direction_mask = "11110000"
+
+--group:
 
 ---$value:PI
-local _0 = nil
+local param_override = {}
 
----$check:画線のみ
-local check0 = false
-
-_0 = _0 or {}
-local pw = _0[1] or track_length
-local Lu = _0[2] or track_intensity_max
-local Ld = _0[3] or track_intensity_min
-local Ls = _0[4] or track_threshold
-local Is = _0[0] == nil and check0 or _0[0]
-local col1 = _1 or 0x0
-local col2 = _2 or 0xffffff
-local Oal = _3 or 0
-local Bal = _4 or 0
-local LG = _5 or 100
-local SSy = _6 or 1
-local OutC = _7 or 0
-local col3 = _8 or 0xffffff
-local Did = _9 or "11111111"
-local Lay = _10 or 0
-local BL = _11 or 1
-local BS = _12 or 300
-local BH = _13 or 0
-_0 = nil
-_1 = nil
-_2 = nil
-_3 = nil
-_4 = nil
-_5 = nil
-_6 = nil
-_7 = nil
-_8 = nil
-_9 = nil
-_10 = nil
-_11 = nil
-_12 = nil
-_13 = nil
-if OutC == 1 then
-    obj.effect("縁取り", "サイズ", pw, "color", col3, "ぼかし", 1)
+local is_enabled = function(v)
+    return v == true or v == 1
 end
-require("T_RoughLine_Module")
+
+param_override = param_override or {}
+local length = param_override[1] or track_length
+local intensity_upper = param_override[2] or track_intensity_max
+local intensity_lower = param_override[3] or track_intensity_min
+local line_threshold = param_override[4] or track_threshold
+local line_only = param_override[0] == nil and check_line_only or param_override[0]
+local line_color = color_line or 0x0
+local background_color = color_background or 0xffffff
+local original_ratio = track_original_ratio or 0
+local background_alpha = track_background_alpha or 0
+local line_gamma = track_line_gamma or 100
+local screen_blend = check_screen_blend
+local boundary_adjust = check_boundary_adjust
+local boundary_color = color_boundary_adjust or 0xffffff
+local direction_mask_bits = value_direction_mask or "11110000"
+local map_layer = track_map_layer or 0
+local extract_size = track_extract_size or 1
+local extract_strength = track_extract_strength or 300
+local extract_threshold = track_extract_threshold or 0
+
+if is_enabled(boundary_adjust) then
+    obj.effect("縁取り", "サイズ", length, "color", boundary_color, "ぼかし", 1)
+end
+local tim2 = obj.module("tim2")
 local SeD = 0
-local RoughLine = T_RoughLine_Module.LineExt
 local t = 1
-for i in string.gmatch(Did, "[0-1]") do
+for i in string.gmatch(direction_mask_bits, "[0-1]") do
     SeD = SeD + i * t
     t = t * 2
 end
-Lay = Lay or 0
-if Lay > 0 and Lay <= 100 then
-    local Lck = obj.getvalue("layer" .. Lay .. ".x") and 1 or 0
+map_layer = map_layer or 0
+if map_layer > 0 and map_layer <= 100 then
+    local Lck = obj.getvalue("layer" .. map_layer .. ".x") and 1 or 0
     if Lck == 1 then
         local Pr =
             { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
         local w0, h0 = obj.getpixel()
         obj.copybuffer("tmp", "obj")
-        obj.load("layer", Lay, true)
-        if OutC == 1 then
-            obj.effect("領域拡張", "上", pw, "下", pw, "左", pw, "右", pw, "塗りつぶし", 0)
+        obj.load("layer", map_layer, true)
+        if is_enabled(boundary_adjust) then
+            obj.effect("領域拡張", "上", length, "下", length, "左", length, "右", length, "塗りつぶし", 0)
         end
         obj.effect("リサイズ", "X", w0, "Y", h0, "ドット数でサイズ指定", 1)
-        local userdata, w, h = obj.getpixeldata()
-        T_RoughLine_Module.SetMapImage(userdata, w, h)
+        local userdata, w, h = obj.getpixeldata("object", "bgra")
+        tim2.rgline_set_map_image(userdata, w, h)
         obj.copybuffer("obj", "tmp")
         obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect =
             unpack(Pr)
     end
 end
-local userdata, w, h = obj.getpixeldata()
-T_RoughLine_Module.SetPublicImage(userdata, w, h)
-obj.effect("ぼかし", "範囲", BL, "サイズ固定", 1)
-userdata, w, h = obj.getpixeldata()
-RoughLine(userdata, w, h, pw, Lu, Ld, Ls, BS, BH, Is, Oal, Bal, col1, col2, SSy, LG, SeD)
-obj.putpixeldata(userdata)
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+tim2.rgline_set_public_image(userdata, w, h)
+obj.effect("ぼかし", "範囲", extract_size, "サイズ固定", 1)
+userdata, w, h = obj.getpixeldata("object", "bgra")
+tim2.rgline_line_ext(
+    userdata,
+    w,
+    h,
+    length,
+    intensity_upper,
+    intensity_lower,
+    line_threshold,
+    extract_strength,
+    extract_threshold,
+    is_enabled(line_only),
+    original_ratio,
+    background_alpha,
+    line_color,
+    background_color,
+    is_enabled(screen_blend),
+    line_gamma,
+    SeD
+)
+obj.putpixeldata("object", userdata, w, h, "bgra")

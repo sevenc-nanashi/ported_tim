@@ -9,3 +9,4 @@ pub mod lineextra;
 pub mod linefill;
 pub mod polcon;
 pub mod rbwgra;
+pub mod rgline;

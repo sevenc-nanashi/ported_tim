@@ -150,8 +150,8 @@
 | -                         | ぷよぷよT.anm                   | :o:      | -   | :o:              | :x:                  |
 | -                         | ルービックキューブ配置V2.anm    | :o:      | -   | :o:              | :x:                  |
 | -                         | 虹色グラデーション.anm          | :o:      | :o: | :o:              | :x:                  |
-| -                         | リール回転T.anm                 | ？       | -   | :x:              | :x:                  |
-| -                         | ラフ画線T.anm                   | ？       | :x: | :x:              | :x:                  |
+| -                         | リール回転T.anm                 | :o:      | -   | :o:              | :x:                  |
+| -                         | ラフ画線T.anm                   | :o:      | :o: | :o:              | :x:                  |
 | T_RandomBlur_Module.anm   | ランダムブラー                  | ？       | :x: | :x:              | :x:                  |
 | T_RandomBlur_Module.anm   | 回転ランダムブラー              | ？       | :x: | :x:              | :x:                  |
 | T_RandomBlur_Module.anm   | 放射ランダムブラー              | ？       | :x: | :x:              | :x:                  |
