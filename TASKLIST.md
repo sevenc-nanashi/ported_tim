@@ -162,7 +162,7 @@
 | T_RotBlur_Module.anm      | 放射ハードブラー                | :o:      | :o: | :o:              | :x:                  |
 | T_RotBlur_Module.anm      | 方向ハードブラー                | :o:      | :o: | :o:              | :x:                  |
 | T_RotBlur_Module.anm      | 渦                              | :o:      | :o: | :o:              | :x:                  |
-| -                         | ラフエッジ.anm                  | ？       | -   | :x:              | :x:                  |
+| -                         | ラフエッジ.anm                  | :o:      | -   | :o:              | :x:                  |
 | 罫線T.anm                 | 罫線T(Type1)                    | ？       | -   | :x:              | :x:                  |
 | 罫線T.anm                 | 罫線T(Type2)                    | ？       | -   | :x:              | :x:                  |
 | 罫線T.anm                 | 罫線T(斜線)                     | ？       | -   | :x:              | :x:                  |
