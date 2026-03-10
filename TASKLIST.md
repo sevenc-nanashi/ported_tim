@@ -188,8 +188,8 @@
 | ストロークT.anm           | ストローク(反復)                | :o:      | -   | :o:              | :x:                  |
 | ストロークT.anm           | ストローク(配置:変動)           | :o:      | -   | :o:              | :x:                  |
 | ストロークT.anm           | ストローク(配置)                | :o:      | -   | :o:              | :x:                  |
-| TrackingラインEasy.anm    | TrackingラインEasy              | ？       | -   | :x:              | :x:                  |
-| TrackingラインEasy.anm    | TrackingラインEasy(頂点追加)    | ？       | -   | :x:              | :x:                  |
+| TrackingラインEasy.anm    | TrackingラインEasy              | :o:      | -   | :o:              | :x:                  |
+| TrackingラインEasy.anm    | TrackingラインEasy(頂点追加)    | :o:      | -   | :o:              | :x:                  |
 | -                         | 透明塗り.anm                    | ？       | :x: | :x:              | :x:                  |
 | -                         | 透明度指定.anm                  | ？       | :x: | :x:              | :x:                  |
 | -                         | twitchっぽいものT.anm           | ？       | -   | :x:              | :x:                  |

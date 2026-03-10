@@ -1,5 +1,5 @@
 --label:tim2\配置\TrackingラインEasy.anm
----$track:開始/ｼﾌﾄ
+---$track:開始/シフト
 ---min=0
 ---max=100
 ---step=0.01
@@ -23,16 +23,25 @@ local track_vertex_count = 2
 ---step=0.1
 local track_interval = 5
 
----$value:描画方法[0-2]
+---$select:描画方法
+---直線=0
+---曲線=1
+---方法2=2
 local dm = 1
 
----$value:定数(方法2のみ)
+---$track:定数(方法2のみ)
+---min=0
+---max=100
+---step=0.1
 local C = 35
 
 ---$check:等速度_等間隔
 local ec = 0
 
----$value:精度
+---$track:精度
+---min=1
+---max=1000
+---step=1
 local Ac = 20
 
 ---$check:環状にする
@@ -48,7 +57,7 @@ local sp = 0
 local Lw = { 100, 100, 100 }
 
 ---$color:変化色
-local col = ""
+local col = nil
 
 ---$value:領域拡張
 local dSI = { 0, 0 }
@@ -417,7 +426,7 @@ for i = 1, num do
     Tracking.X[1][i] = pos[2 * i - 1]
     Tracking.Y[1][i] = pos[2 * i]
 end
-if obj.getoption("script_name", 1) ~= "TrackingラインEasy(頂点追加)@TrackingラインEasy" then
+if obj.getoption("script_name", 1) ~= "TrackingラインEasy(頂点追加)@tim.anm2" then
     Tracking.DoTrackingLineEasy(Tracking)
     Tracking = nil
 end
