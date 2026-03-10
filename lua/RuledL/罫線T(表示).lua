@@ -5,13 +5,13 @@
 ---step=1
 local track_line_width = 6
 
----$track:1行目高比
+---$track:1行目高さ比[%]
 ---min=0
 ---max=500
 ---step=0.1
 local track_n_1_ratio = 100
 
----$track:1列目幅比
+---$track:1列目幅比[%]
 ---min=0
 ---max=500
 ---step=0.1
@@ -24,19 +24,23 @@ local track_n_1_width_ratio = 100
 local track_opacity = 0
 
 ---$color:線色
-local wcl = 0xffffff
+local line_color = 0xffffff
 
 ---$check:座標保存
-local SvC = 1
+local check_save_coordinates = true
 
 ---$check:エッジ調整
-local check0 = false
+local check_edge_adjust = false
+
+local is_enabled = function(value)
+    return value == true or value == 1
+end
 
 local RL = RuledlineT
 local Lw = track_line_width
 local balp = 1 - track_opacity * 0.01
-local wcl = wcl or 0xffffff
-local EGC = check0 and 1 or 0
+local wcl = line_color or 0xffffff
+local EGC = is_enabled(check_edge_adjust) and 1 or 0
 local LPX = RL.LPX
 local LPY = RL.LPY
 local ACX = RL.ACX or {}
@@ -243,7 +247,7 @@ else
     CY = -CY + 0.5 * ((Lw - obj.screen_h) % 2) * EGC
 end
 obj.cx, obj.cy = CX, CY
-if SvC == 1 then
+if is_enabled(check_save_coordinates) then
     RuledlineTcrd = {}
     RuledlineTcrd.X = LPX
     RuledlineTcrd.Y = LPY

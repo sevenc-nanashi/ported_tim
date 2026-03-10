@@ -17,7 +17,7 @@ local track_horizontal_count = 4
 ---step=1
 local track_vertical_count = 4
 
----$track:縦横比%
+---$track:縦横比[%]
 ---min=-100
 ---max=100
 ---step=0.1
