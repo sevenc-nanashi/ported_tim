@@ -11,3 +11,4 @@ pub mod polcon;
 pub mod rbwgra;
 pub mod rgline;
 pub mod rndblur;
+pub mod rotblur;

@@ -1,15 +1,20 @@
 --label:tim2\ぼかし\T_RotBlur_Module.anm
----$track:中心X
----min=-5000
----max=5000
----step=0.1
-local track_center_x = 0
 
----$track:中心Y
----min=-5000
----max=5000
----step=0.1
-local track_center_y = 0
+-- ---$track:中心X
+-- ---min=-5000
+-- ---max=5000
+-- ---step=0.1
+-- local track_center_x = 0
+--
+-- ---$track:中心Y
+-- ---min=-5000
+-- ---max=5000
+-- ---step=0.1
+-- local track_center_y = 0
+--track0:中心X,-5000,5000,0
+--track1:中心Y,-5000,5000,0
+local track_center_x = obj.track0
+local track_center_y = obj.track1
 
 ---$track:ブラー量
 ---min=0
@@ -24,63 +29,107 @@ local track_blur_amount = 20
 local track_bump_amount = 40
 
 ---$check:サイズ保持
-local ck = 1
+local check_keep_size = true
 
----$value:基準[-100〜100]
-local BasP = 0
+---$track:基準位置
+---min=-100
+---max=100
+---step=0.1
+local track_base_position = 0
 
----$value:幅ランダム%
-local AmpR = 50
+---$track:幅ランダム[%]
+---min=0
+---max=100
+---step=0.1
+local track_width_random_percent = 50
 
----$value:丸み[-100〜100]
-local EG = 0
+---$track:丸み
+---min=-100
+---max=100
+---step=0.1
+local track_roundness = 0
 
 ---$check:簡易補正
-local BM = 0
+local check_blur_correction = false
 
----$value:└係数%
-local BMC = 100
+---$track:補正係数[%]
+---min=0
+---max=500
+---step=0.1
+local track_blur_correction_scale = 100
 
----$value:パターン
-local rnds = 1
+---$track:変化固定
+---min=0
+---max=1000
+---step=1
+local track_change_seed = 1
 
-local Br = track_blur_amount
-if Bx ~= 0 then
-    local dx = track_center_x
-    local dy = track_center_y
-    local NN = track_bump_amount
-    local BasP = RotBlur_BasP or (BasP or 0)
-    local AmpR = RotBlur_AmpR or (AmpR or 100)
-    local EG = RotBlur_EG or (EG or 0)
-    BasP = 0.01 * math.max(-100, math.min(100, BasP))
-    AmpR = 1 - 0.01 * math.max(0, math.min(100, AmpR))
-    EG = 0.01 * math.max(-100, math.min(100, EG))
-    local BM = BM or 0
-    local BMC = BMC or 100
-    rnds = math.abs(math.floor(rnds))
+local is_enabled = function(value)
+    return value == true or value == 1
+end
+
+local blur_amount = track_blur_amount
+if blur_amount ~= 0 then
     obj.setanchor("track", 0, "line")
+    local center_x = track_center_x
+    local center_y = track_center_y
+    local bump_amount = track_bump_amount
+    local base_position = RotBlur_BasePosition or track_base_position
+    local amplitude_base = RotBlur_WidthRandomPercent or track_width_random_percent
+    local roundness = RotBlur_Roundness or track_roundness
+    base_position = 0.01 * math.max(-100, math.min(100, base_position))
+    amplitude_base = 1 - 0.01 * math.max(0, math.min(100, amplitude_base))
+    roundness = 0.01 * math.max(-100, math.min(100, roundness))
+    local blur_correction_scale = track_blur_correction_scale
+    local change_seed = math.abs(math.floor(track_change_seed))
 
     local userdata, w, h
     w, h = obj.getpixel()
     local r = math.sqrt(w * w + h * h)
-    if ck == 0 then
+    if not is_enabled(check_keep_size) then
         local addX, addY = math.ceil((r - w) / 2 + 1), math.ceil((r - h) / 2 + 1)
         obj.effect("領域拡張", "上", addY, "下", addY, "右", addX, "左", addX)
     end
-    require("T_RotBlur_Module")
-    userdata, w, h = obj.getpixeldata()
-    if rnds == 0 then
-        rnds = math.floor(obj.time * obj.framerate)
+
+    local tim2 = obj.module("tim2")
+    userdata, w, h = obj.getpixeldata("object", "bgra")
+    if change_seed == 0 then
+        change_seed = math.floor(obj.time * obj.framerate)
     end
-    if BM == 1 then
-        T_RotBlur_Module.RotBlur_L(userdata, w, h, Br * NN / r * BMC * 0.015, dx, dy, 0, 1)
-        obj.putpixeldata(userdata)
-        userdata, w, h = obj.getpixeldata()
+    if is_enabled(check_blur_correction) then
+        tim2.rotblur_rot_blur_l(
+            userdata,
+            w,
+            h,
+            blur_amount * bump_amount / r * blur_correction_scale * 0.015,
+            center_x,
+            center_y,
+            0,
+            1
+        )
+        obj.putpixeldata("object", userdata, w, h, "bgra")
+        userdata, w, h = obj.getpixeldata("object", "bgra")
     end
-    work = obj.getpixeldata("work")
-    local LUD = T_RotBlur_Module.RotHardBlur(userdata, work, w, h, Br, r / 2, dx, dy, NN, AmpR, EG, BasP, rnds)
-    obj.putpixeldata(LUD)
-    RotBlur_BasP = nil
-    RotBlur_AmpR = nil
-    RotBlur_EG = nil
+
+    obj.clearbuffer("cache:work", w, h)
+    local work = obj.getpixeldata("cache:work", "bgra")
+    tim2.rotblur_rot_hard_blur(
+        userdata,
+        work,
+        w,
+        h,
+        blur_amount,
+        r / 2,
+        center_x,
+        center_y,
+        bump_amount,
+        amplitude_base,
+        roundness,
+        base_position,
+        change_seed
+    )
+    obj.putpixeldata("object", work, w, h, "bgra")
+    RotBlur_BasePosition = nil
+    RotBlur_WidthRandomPercent = nil
+    RotBlur_Roundness = nil
 end
