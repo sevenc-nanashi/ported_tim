@@ -23,8 +23,17 @@ local track_rotation = 45
 ---step=0.1
 local track_aspect_ratio_percent = 5
 
----$value:ﾜｲﾌﾟﾀｲﾌﾟ[0-8]
-local wtp = 0
+---$select:ワイプタイプ
+---扉=0
+---放射(十字)=1
+---矩形(十字)=2
+---十字線=3
+---菱形(十字)=4
+---放射=5
+---矩形=6
+---直線=7
+---菱形=8
+local select_wipe_type = 0
 
 ---$check:反転
 local rev = 0
@@ -139,7 +148,8 @@ end
 local wipe_crossline = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy, repN)
     local T = (L + S / A) * b
     local P = T * A
-    obj.setoption("drawtarget", "tempbuffer")
+    local width, height = obj.getpixel()
+    obj.setoption("drawtarget", "tempbuffer", width, height)
     obj.copybuffer("tmp", "cache:ori")
     obj.setoption("blend", "alpha_sub")
     obj.load("figure", "四角形", 0xffffff, L)
@@ -208,23 +218,23 @@ local L = 2 * Lh
 local cos = math.cos(R)
 local sin = math.sin(R)
 
-obj.copybuffer("cache:ori", "obj")
+obj.copybuffer("cache:ori", "object")
 
-if wtp == 0 then
+if select_wipe_type == 0 then
     wipe_door(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2])
-elseif wtp == 1 then
+elseif select_wipe_type == 1 then
     wipe_radial(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 2)
-elseif wtp == 2 then
+elseif select_wipe_type == 2 then
     wipe_rectangular(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 2)
-elseif wtp == 3 then
+elseif select_wipe_type == 3 then
     wipe_crossline(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 2)
-elseif wtp == 4 then
+elseif select_wipe_type == 4 then
     wipe_diamond(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 2)
-elseif wtp == 5 then
+elseif select_wipe_type == 5 then
     wipe_radial(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 1)
-elseif wtp == 6 then
+elseif select_wipe_type == 6 then
     wipe_rectangular(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 1)
-elseif wtp == 7 then
+elseif select_wipe_type == 7 then
     wipe_crossline(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 1)
 else
     wipe_diamond(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 1)
