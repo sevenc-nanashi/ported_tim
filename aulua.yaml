@@ -7,10 +7,6 @@ scripts:
     sources:
       - path: "./lua/OutLPur/輪郭追跡.lua"
         label: 輪郭追跡.anm
-      - path: "./lua/SkyDome/スカイドーム.lua"
-        label: スカイドーム
-      - path: "./lua/SkyDome/通常画像用前処理.lua"
-        label: 通常画像用前処理
       - path: "./lua/ColAdj6/しきい値.lua"
         label: しきい値
       - path: "./lua/ColAdj6/イコライズ.lua"
@@ -115,10 +111,6 @@ scripts:
         label: 方向ハードブラー
       - path: "./lua/RotBlurV3/渦.lua"
         label: 渦
-      - path: "./lua/AuraDcg/オーラ放出.anm.lua"
-        label: オーラ放出.anm
-      - path: "./lua/ChromaV2/色収差.anm.lua"
-        label: 色収差.anm
       - path: "./lua/CstFlaV3/2色リング(単).lua"
         label: 2色リング(単)
       - path: "./lua/CstFlaV3/ゆらめき.lua"
@@ -157,6 +149,10 @@ scripts:
         label: ライトバースト
       - path: "./lua/LBurst/ライトバースト(拡張機能).lua"
         label: ライトバースト(拡張機能)
+      - path: "./lua/AuraDcg/オーラ放出.anm.lua"
+        label: オーラ放出.anm
+      - path: "./lua/ChromaV2/色収差.anm.lua"
+        label: 色収差.anm
       - path: "./lua/StarBst/スターバースト.anm.lua"
         label: スターバースト.anm
       - path: "./lua/Frame2/領域枠.lua"
@@ -169,14 +165,10 @@ scripts:
         label: 領域枠(角落ち)
       - path: "./lua/Frame2/領域枠(雲形).lua"
         label: 領域枠(雲形)
-      - path: "./lua/Framing/縁取りT.anm.lua"
-        label: 縁取りT.anm
       - path: "./lua/LinFil/ジグザグ塗りT.lua"
         label: ジグザグ塗りT
       - path: "./lua/LinFil/ジグザグ塗りT(先端座標).lua"
         label: ジグザグ塗りT(先端座標)
-      - path: "./lua/RgLine/ラフ画線T.anm.lua"
-        label: ラフ画線T.anm
       - path: "./lua/RuledL/罫線T(Type1).lua"
         label: 罫線T(Type1)
       - path: "./lua/RuledL/罫線T(Type2).lua"
@@ -197,6 +189,10 @@ scripts:
         label: ストローク(配置)
       - path: "./lua/Stroke/ストローク(配置__変動).lua"
         label: ストローク(配置:変動)
+      - path: "./lua/Framing/縁取りT.anm.lua"
+        label: 縁取りT.anm
+      - path: "./lua/RgLine/ラフ画線T.anm.lua"
+        label: ラフ画線T.anm
       - path: "./lua/ColEdge/色付きエッジ抽出.anm.lua"
         label: 色付きエッジ抽出.anm
       - path: "./lua/ColExt/色抽出T.anm.lua"
@@ -205,30 +201,16 @@ scripts:
         label: ライン抽出T.anm
       - path: "./lua/RoughE/ラフエッジ.anm.lua"
         label: ラフエッジ.anm
-      - path: "./lua/26Poly/二十六面体.anm.lua"
-        label: 二十六面体.anm
-      - path: "./lua/Hexahed/直方体展開.anm.lua"
-        label: 直方体展開.anm
-      - path: "./lua/MulGim/錐変形.anm.lua"
-        label: 錐変形.anm
-      - path: "./lua/PickUp/つまむ.anm.lua"
-        label: つまむ.anm
-      - path: "./lua/PolCon/ぼかしミラー.anm.lua"
-        label: ぼかしミラー.anm
-      - path: "./lua/PolCon/極座標変換T.anm.lua"
-        label: 極座標変換T.anm
       - path: "./lua/PolyCut/任意多角形カットA.lua"
         label: 任意多角形カットA
       - path: "./lua/PolyCut/任意多角形カットB(表示).lua"
         label: 任意多角形カットB(表示)
       - path: "./lua/PolyCut/任意多角形カットB(追加アンカー).lua"
         label: 任意多角形カットB(追加アンカー)
-      - path: "./lua/Polyhed/正多面体.anm.lua"
-        label: 正多面体.anm
-      - path: "./lua/RCube2/ルービックキューブ配置V2.anm.lua"
-        label: ルービックキューブ配置V2.anm
-      - path: "./lua/SimWrp2/簡易ワープV2.anm.lua"
-        label: 簡易ワープV2.anm
+      - path: "./lua/SkyDome/スカイドーム.lua"
+        label: スカイドーム
+      - path: "./lua/SkyDome/通常画像用前処理.lua"
+        label: 通常画像用前処理
       - path: "./lua/SplMrp/モーフィング-ポイント指定.lua"
         label: モーフィング-ポイント指定
       - path: "./lua/SplMrp/モーフィング-ポイント追加.lua"
@@ -247,22 +229,34 @@ scripts:
         label: スプリット(形状拡張:ｱﾝｶｰ)
       - path: "./lua/Split/スプリット(形状拡張__ファイル).lua"
         label: スプリット(形状拡張:ﾌｧｲﾙ)
-      - path: "./lua/VanishP1_V2/バニシングポイント.anm.lua"
-        label: バニシングポイント.anm
-      - path: "./lua/VanishP2_V2/バニシングポイント2.anm.lua"
-        label: バニシングポイント2.anm
       - path: "./lua/Wire3D/ワイヤー3D(マップ).lua"
         label: ワイヤー3D(マップ)
       - path: "./lua/Wire3D/ワイヤー3D(表示).lua"
         label: ワイヤー3D(表示)
+      - path: "./lua/26Poly/二十六面体.anm.lua"
+        label: 二十六面体.anm
+      - path: "./lua/Hexahed/直方体展開.anm.lua"
+        label: 直方体展開.anm
+      - path: "./lua/MulGim/錐変形.anm.lua"
+        label: 錐変形.anm
+      - path: "./lua/PickUp/つまむ.anm.lua"
+        label: つまむ.anm
+      - path: "./lua/PolCon/ぼかしミラー.anm.lua"
+        label: ぼかしミラー.anm
+      - path: "./lua/PolCon/極座標変換T.anm.lua"
+        label: 極座標変換T.anm
+      - path: "./lua/Polyhed/正多面体.anm.lua"
+        label: 正多面体.anm
+      - path: "./lua/RCube2/ルービックキューブ配置V2.anm.lua"
+        label: ルービックキューブ配置V2.anm
+      - path: "./lua/SimWrp2/簡易ワープV2.anm.lua"
+        label: 簡易ワープV2.anm
+      - path: "./lua/VanishP1_V2/バニシングポイント.anm.lua"
+        label: バニシングポイント.anm
+      - path: "./lua/VanishP2_V2/バニシングポイント2.anm.lua"
+        label: バニシングポイント2.anm
       - path: "./lua/k5-CurTra/曲面変形.anm.lua"
         label: 曲面変形.anm
-      - path: "./lua/Beehive/蜂の巣モザイク.anm.lua"
-        label: 蜂の巣モザイク.anm
-      - path: "./lua/EmbTile/エンボスタイル.anm.lua"
-        label: エンボスタイル.anm
-      - path: "./lua/FilmScr/フィルム焦げ.anm.lua"
-        label: フィルム焦げ.anm
       - path: "./lua/FltSet/エンボスT.lua"
         label: エンボスT
       - path: "./lua/FltSet/ガラスT.lua"
@@ -283,6 +277,12 @@ scripts:
         label: 網点分解(CMY)
       - path: "./lua/HalfRes/網点分解(特色).lua"
         label: 網点分解(特色)
+      - path: "./lua/Beehive/蜂の巣モザイク.anm.lua"
+        label: 蜂の巣モザイク.anm
+      - path: "./lua/EmbTile/エンボスタイル.anm.lua"
+        label: エンボスタイル.anm
+      - path: "./lua/FilmScr/フィルム焦げ.anm.lua"
+        label: フィルム焦げ.anm
       - path: "./lua/LinHal/ハーフトーンT.anm.lua"
         label: ハーフトーンT.anm
       - path: "./lua/LinHal/ライントーンT.anm.lua"
@@ -291,8 +291,6 @@ scripts:
         label: 低解像度T.anm
       - path: "./lua/Sket/点描T.anm.lua"
         label: 点描T.anm
-      - path: "./lua/Access/ミラーT.anm.lua"
-        label: ミラーT.anm
       - path: "./lua/EsyRpt/リピーター(+時間).lua"
         label: リピーター(+時間)
       - path: "./lua/EsyRpt/リピーター(基準).lua"
@@ -301,8 +299,6 @@ scripts:
         label: リピーター(変化率)
       - path: "./lua/EsyRpt/リピーター(表示).lua"
         label: リピーター(表示)
-      - path: "./lua/MTile/モーションタイルＴ.anm.lua"
-        label: モーションタイルＴ.anm
       - path: "./lua/MtnPasI/MP-A1.lua"
         label: MP-A1
       - path: "./lua/MtnPasI/MP-A2(複数可).lua"
@@ -323,12 +319,20 @@ scripts:
         label: TrackingラインEasy
       - path: "./lua/TraEasy/TrackingラインEasy(頂点追加).lua"
         label: TrackingラインEasy(頂点追加)
+      - path: "./lua/Access/ミラーT.anm.lua"
+        label: ミラーT.anm
+      - path: "./lua/MTile/モーションタイルＴ.anm.lua"
+        label: モーションタイルＴ.anm
       - path: "./lua/DiaSha/斜めブラインド(改).anm.lua"
         label: 斜めブラインド(改).anm
       - path: "./lua/k2-GrdWipe/グリッドワイプ.anm.lua"
         label: グリッドワイプ.anm
       - path: "./lua/k3-BriWipe/輝度ワイプ.anm.lua"
         label: 輝度ワイプ.anm
+      - path: "./lua/GlassSd/砕けたガラス(エンドレス).lua"
+        label: 砕けたガラス(エンドレス)
+      - path: "./lua/GlassSd/砕けたガラス(砕け散る).lua"
+        label: 砕けたガラス(砕け散る)
       - path: "./lua/BloLus/ブロックラスターT.anm.lua"
         label: ブロックラスターT.anm
       - path: "./lua/BomPuz21/砕け散るパズル.anm.lua"
@@ -345,10 +349,6 @@ scripts:
         label: ひび割れガラスT.anm
       - path: "./lua/Flutter/はためき.anm.lua"
         label: はためき.anm
-      - path: "./lua/GlassSd/砕けたガラス(エンドレス).lua"
-        label: 砕けたガラス(エンドレス)
-      - path: "./lua/GlassSd/砕けたガラス(砕け散る).lua"
-        label: 砕けたガラス(砕け散る)
       - path: "./lua/Pour/注ぎT.anm.lua"
         label: 注ぎT.anm
       - path: "./lua/PyoPyo/ぷよぷよT.anm.lua"
@@ -391,12 +391,24 @@ scripts:
         label: 保存画像の読込
       - path: "./lua/TmpPre/保存画像の読込(4面).lua"
         label: 保存画像の読込(4面)
-      - path: "./lua/26Poly/二十六面体.obj.lua"
-        label: 二十六面体.obj
       - path: "./lua/Access/ティーカップ.lua"
         label: ティーカップ
       - path: "./lua/Access/律部屋テーブル.lua"
         label: 律部屋テーブル
+      - path: "./lua/ConLine/集中線T1.lua"
+        label: 集中線T1
+      - path: "./lua/ConLine/集中線T2.lua"
+        label: 集中線T2
+      - path: "./lua/Polygon/任意多角形.lua"
+        label: 任意多角形
+      - path: "./lua/Polygon/任意多角形分離指定（座標).lua"
+        label: 任意多角形分離指定（座標)
+      - path: "./lua/Polygon/任意多角形分離指定（表示）.lua"
+        label: 任意多角形分離指定（表示）
+      - path: "./lua/Polygon/凸多角形.lua"
+        label: 凸多角形
+      - path: "./lua/26Poly/二十六面体.obj.lua"
+        label: 二十六面体.obj
       - path: "./lua/BarCode/バーコードT.obj.lua"
         label: バーコードT.obj
       - path: "./lua/BezSpe/ベジエ軌道Ｔ.obj.lua"
@@ -405,10 +417,6 @@ scripts:
         label: パズルピース.obj
       - path: "./lua/Bubble/泡.obj.lua"
         label: 泡.obj
-      - path: "./lua/ConLine/集中線T1.lua"
-        label: 集中線T1
-      - path: "./lua/ConLine/集中線T2.lua"
-        label: 集中線T2
       - path: "./lua/HevBunR/ヘブバン風音声波形T.obj.lua"
         label: ヘブバン風音声波形T.obj
       - path: "./lua/InkV2/ひょうたんTM.obj.lua"
@@ -421,14 +429,6 @@ scripts:
         label: 稲妻.obj
       - path: "./lua/MltLine/マルチラインT.obj.lua"
         label: マルチラインT.obj
-      - path: "./lua/Polygon/任意多角形.lua"
-        label: 任意多角形
-      - path: "./lua/Polygon/任意多角形分離指定（座標).lua"
-        label: 任意多角形分離指定（座標)
-      - path: "./lua/Polygon/任意多角形分離指定（表示）.lua"
-        label: 任意多角形分離指定（表示）
-      - path: "./lua/Polygon/凸多角形.lua"
-        label: 凸多角形
       - path: "./lua/moja2F/もじゃもじゃT.obj.lua"
         label: もじゃもじゃT.obj
       - path: "./lua/ColAdj6/簡易トーンカーブ.obj.lua"

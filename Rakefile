@@ -260,6 +260,10 @@ task :tasklist do
   end
 end
 
+task "tasklist:reorder" do
+  sh "ruby ./scripts/reorder_tasklist.rb"
+end
+
 task :current_progress do
   tasklist = File.read("./TASKLIST.md")
   # | カテゴリ                  | スクリプト                                | 動作確認 | DLL | パラメーター改善 | シェーダー化 |
