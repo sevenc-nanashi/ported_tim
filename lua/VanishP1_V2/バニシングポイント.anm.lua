@@ -23,8 +23,12 @@ local track_up_x = 0
 ---step=0.1
 local track_up_y = 0
 
----$value:反転[0..3]
-local ReI = 0
+---$select:反転
+---なし=0
+---左右=1
+---上下=2
+---上下左右=3
+local select_reverse = 0
 
 ---$check:参照領域
 local tar = 1
@@ -32,11 +36,14 @@ local tar = 1
 ---$check:オリジナル表示
 local ora = 1
 
----$value:分割数
-local N = 10
+---$track:分割数
+---min=1
+---max=300
+---step=1
+local track_division_count = 10
 
----$check:アンチエイリアス
-local ANT = 1
+-- ---$check:アンチエイリアス
+-- local ANT = 1
 
 ---$value:領域
 local are = { -80, -100, 80, -105, 100, 105, -100, 100 }
@@ -67,7 +74,8 @@ function cal_pos(p1, p2)
     return x + flx * hi, y + fly * hi
 end
 
-local ReI = ReI or 0
+local reverse_mode = select_reverse or 0
+local division_count = math.max(1, track_division_count or 10)
 obj.setanchor("are", 4, "loop")
 w, h = obj.getpixel()
 w2 = w / 2
@@ -166,7 +174,7 @@ cx = (tpw_max + tpw_min) / 2
 cy = (tph_max + tph_min) / 2
 
 obj.setoption("drawtarget", "tempbuffer", tpw, tph)
-obj.setoption("antialias", ANT)
+-- obj.setoption("antialias", ANT)
 
 if ora == 1 then
     obj.draw(-cx, -cy, 0)
@@ -180,22 +188,22 @@ if tar == 1 then
     u0, v0, u1, v1, u2, v2, u3, v3 =
         ps[1].x + w2, ps[1].y + h2, ps[2].x + w2, ps[2].y + h2, ps[3].x + w2, ps[3].y + h2, ps[4].x + w2, ps[4].y + h2
 
-    if AND(ReI, 1) == 1 then
+    if AND(reverse_mode, 1) == 1 then
         u0, v0, u1, v1 = u1, v1, u0, v0
         u2, v2, u3, v3 = u3, v3, u2, v2
     end
 
-    if AND(ReI, 2) == 2 then
+    if AND(reverse_mode, 2) == 2 then
         u0, v0, u3, v3 = u3, v3, u0, v0
         u2, v2, u1, v1 = u1, v1, u2, v2
     end
 
     obj.drawpoly(x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, u0, v0, u1, v1, u2, v2, u3, v3)
 else
-    for i = 0, N - 1 do
-        for j = 0, N - 1 do
-            lx1 = (1 - ss ^ (dx + i / N)) / (1 - ss)
-            lx2 = (1 - ss ^ (dx + (i + 1) / N)) / (1 - ss)
+    for i = 0, division_count - 1 do
+        for j = 0, division_count - 1 do
+            lx1 = (1 - ss ^ (dx + i / division_count)) / (1 - ss)
+            lx2 = (1 - ss ^ (dx + (i + 1) / division_count)) / (1 - ss)
             qx = {}
 
             if bmuki > 0 then
@@ -206,8 +214,8 @@ else
                 qx[1] = { x = ps[2].x + (ps[1].x - ps[2].x) * lx2, y = ps[2].y + (ps[1].y - ps[2].y) * lx2 }
             end
 
-            ly1 = (1 - tt ^ (dy + j / N)) / (1 - tt)
-            ly2 = (1 - tt ^ (dy + (j + 1) / N)) / (1 - tt)
+            ly1 = (1 - tt ^ (dy + j / division_count)) / (1 - tt)
+            ly2 = (1 - tt ^ (dy + (j + 1) / division_count)) / (1 - tt)
             qy = {}
 
             if cmuki > 0 then
@@ -224,29 +232,29 @@ else
             x3, y3 = cal_pos(qx[1], qy[2])
 
             if bmuki < 0 then
-                u1 = w * (1 - i / N)
-                u0 = w * (1 - (i + 1) / N)
+                u1 = w * (1 - i / division_count)
+                u0 = w * (1 - (i + 1) / division_count)
             else
-                u0 = w * i / N
-                u1 = w * (i + 1) / N
+                u0 = w * i / division_count
+                u1 = w * (i + 1) / division_count
             end
 
             if cmuki > 0 then
-                v0 = h * j / N
-                v1 = h * (j + 1) / N
+                v0 = h * j / division_count
+                v1 = h * (j + 1) / division_count
             else
-                v1 = h * (1 - j / N)
-                v0 = h * (1 - (j + 1) / N)
+                v1 = h * (1 - j / division_count)
+                v0 = h * (1 - (j + 1) / division_count)
             end
 
             x0, x1, x2, x3 = x0 - cx, x1 - cx, x2 - cx, x3 - cx
             y0, y1, y2, y3 = y0 - cy, y1 - cy, y2 - cy, y3 - cy
 
-            if AND(ReI, 1) == 1 then
+            if AND(reverse_mode, 1) == 1 then
                 u0, u1, u2, u3 = w - u0, w - u1, w - u2, w - u3
             end
 
-            if AND(ReI, 2) == 2 then
+            if AND(reverse_mode, 2) == 2 then
                 v0, v1, v2, v3 = h - v0, h - v1, h - v2, h - v3
             end
 

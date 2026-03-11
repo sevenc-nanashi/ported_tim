@@ -5,11 +5,11 @@
 ---step=0.1
 local track_size_adjust = 200
 
----$track:表示
----min=0
----max=2
----step=1
-local track_display = 0
+---$select:表示モード
+---ガイド=0
+---プレビュー=1
+---変形=2
+local display_mode = 0
 
 ---$track:視X/深度
 ---min=-10000
@@ -23,20 +23,29 @@ local track_view_x_depth = 100
 ---step=0.1
 local track_view_point_y = 100
 
----$value:分割数
+---$track:分割数
+---min=1
+---max=300
+---step=1
 local N = 30
 
 ---$value:領域
 local are = { -100, -100, 100, 100, 0, 0 }
 
----$value:ガイド径
+---$track:ガイド径
+---min=1
+---max=500
+---step=1
 local gr = 40
 
----$value:ライン幅
+---$track:ライン幅
+---min=1
+---max=100
+---step=1
 local lw = 4
 
----$value:アンチエイリアス
-local ANT = 1
+-- ---$check:アンチエイリアス
+-- local ANT = 1
 
 function LineDraw(p1, p2)
     local dx = p2.x - p1.x
@@ -111,14 +120,16 @@ function dtd(a, b)
 end
 
 obj.setanchor("are", 3)
-local t = (track_size_adjust + 100) / 200
-local s = (track_display + 100) / 200
 local Rsize = track_size_adjust / 100
-local va = track_display
+local va = display_mode or 0
 local w, h = obj.getpixel()
-if ANT == nil then
-    ANT = 0
-end
+-- if ANT == nil then
+--     ANT = 0
+-- elseif ANT == false then
+--     ANT = 0
+-- elseif ANT == true then
+--     ANT = 1
+-- end
 ps = {}
 ps[1] = { x = are[1], y = are[2] }
 ps[2] = { x = are[3], y = are[2] }
@@ -183,7 +194,7 @@ if va == 0 then
     obj.cy = obj.cy - cp.y
 elseif va == 1 then
     obj.load("tempbuffer")
-    obj.setoption("antialias", ANT)
+    -- obj.setoption("antialias", ANT)
     vx = track_view_x_depth
     vy = track_view_point_y
     bvx = Rsize * vx
@@ -221,7 +232,7 @@ elseif va == 1 then
     obj.cy = obj.cy - cp.y
 else
     obj.load("tempbuffer")
-    obj.setoption("antialias", ANT)
+    -- obj.setoption("antialias", ANT)
     w, h = obj.getpixel()
     obj.setoption("drawtarget", "framebuffer")
     zoom = obj.getvalue("zoom") * 0.01
