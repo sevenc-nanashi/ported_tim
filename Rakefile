@@ -61,6 +61,7 @@ task :seed do
       root = "./lua/#{script_name}/"
       if filename.start_with?("@")
         content = File.read(file, encoding: "SHIFT_JIS").encode("UTF-8")
+        script_label = "@#{filename[1..]}"
         current_script = nil
         current_script_lines = []
         content
@@ -72,7 +73,7 @@ task :seed do
                 path = File.join(root, current_script.gsub("/", "__") + ".lua")
                 File.write(
                   path,
-                  "--label:#{prefix}\\#{filename[1..]}\n" +
+                  "--label:#{prefix}\\#{script_label}\n" +
                     current_script_lines.join("\n")
                 )
                 sources[extension] << {
@@ -92,7 +93,7 @@ task :seed do
           path = File.join(root, current_script.gsub("/", "__") + ".lua")
           File.write(
             path,
-            "--label:#{prefix}\\#{filename[1..]}\n" +
+            "--label:#{prefix}\\#{script_label}\n" +
               current_script_lines.join("\n")
           )
           sources[extension] << {
@@ -239,8 +240,7 @@ end
 task :tasklist do
   require "yaml"
   project = YAML.load_file("aulua.yaml")
-  puts "| カテゴリ | スクリプト | 動作確認 | DLL | パラメーター最適化 | シェーダー化 |"
-  puts "|---|---|---|---|---|---|"
+  rows = []
   project["scripts"].each do |script|
     script["sources"].each do |source|
       content = File.read(source["path"])
@@ -251,12 +251,38 @@ task :tasklist do
         else
           dll = "-"
         end
-        filename = File.basename(source["path"]).delete_suffix(".lua")
-        label.gsub!(/#{prefix}\\?/, "")
-        label = "-" if label.empty?
-        puts "| #{label} | #{filename} | ？ | #{dll} | :x: | ？ |"
+        effect = source["label"]
+        label = label.delete_prefix("#{prefix}\\")
+        category, script_name = label.split("\\", 2)
+        category ||= "-"
+        script_name = "-" if script_name.nil? || script_name.empty?
+        if script_name == "-" &&
+             effect.match?(/\A.+\.(?:anm|obj|cam|tra|scn)\z/)
+          script_name = effect
+          effect = "-"
+        end
+        rows << [category, script_name, effect, "？", dll, ":x:", ":x:"]
       end
     end
+  end
+
+  header = [
+    "カテゴリ",
+    "スクリプト",
+    "エフェクト名",
+    "動作確認",
+    "DLL",
+    "パラメーター改善",
+    "シェーダー化・最適化"
+  ]
+  widths = header.map.with_index do |cell, index|
+    ([cell] + rows.map { |row| row[index] }).map(&:length).max
+  end
+
+  puts "| #{header.each_with_index.map { |cell, index| cell.ljust(widths[index]) }.join(" | ")} |"
+  puts "| #{widths.map { |width| "-" * width }.join(" | ")} |"
+  rows.each do |row|
+    puts "| #{row.each_with_index.map { |cell, index| cell.ljust(widths[index]) }.join(" | ")} |"
   end
 end
 

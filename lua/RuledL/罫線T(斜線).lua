@@ -1,4 +1,4 @@
---label:tim2\装飾\罫線T.anm
+--label:tim2\装飾\@罫線T.anm
 ---$track:斜線数
 ---min=1
 ---max=16

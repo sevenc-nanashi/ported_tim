@@ -5,8 +5,6 @@ build:
 scripts:
   - name: tim2.anm2
     sources:
-      - path: "./lua/OutLPur/輪郭追跡.lua"
-        label: 輪郭追跡.anm
       - path: "./lua/ColAdj6/しきい値.lua"
         label: しきい値
       - path: "./lua/ColAdj6/イコライズ.lua"
@@ -191,6 +189,8 @@ scripts:
         label: ストローク(配置:変動)
       - path: "./lua/Framing/縁取りT.anm.lua"
         label: 縁取りT.anm
+      - path: "./lua/OutLPur/輪郭追跡.lua"
+        label: 輪郭追跡.anm
       - path: "./lua/RgLine/ラフ画線T.anm.lua"
         label: ラフ画線T.anm
       - path: "./lua/ColEdge/色付きエッジ抽出.anm.lua"

@@ -1,4 +1,4 @@
---label:tim2\光効果\カスタムフレア.anm
+--label:tim2\光効果\@カスタムフレア.anm
 ---$track:長さ
 ---min=0
 ---max=3000

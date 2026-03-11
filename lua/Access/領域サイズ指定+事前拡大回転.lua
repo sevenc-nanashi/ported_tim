@@ -1,4 +1,4 @@
---label:tim2\基本効果\サイズ修正T.anm
+--label:tim2\基本効果\@サイズ修正T.anm
 ---$track:幅
 ---min=0
 ---max=5000

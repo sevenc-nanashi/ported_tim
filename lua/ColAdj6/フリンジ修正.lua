@@ -1,4 +1,4 @@
---label:tim2\色調整\T_Color_Module.anm
+--label:tim2\色調整\@T_Color_Module.anm
 --filter
 ---$select:補正法
 ---アルファ値の変更=0

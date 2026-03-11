@@ -1,4 +1,4 @@
---label:tim2\変形\スプリット.anm
+--label:tim2\変形\@スプリット.anm
 ---$track:中心X
 ---min=-5000
 ---max=5000

@@ -1,4 +1,4 @@
---label:tim2\オブジェクト制御
+--label:tim2\装飾
 ---$track:描画度
 ---min=0
 ---max=100

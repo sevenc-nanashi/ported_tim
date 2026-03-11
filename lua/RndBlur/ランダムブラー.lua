@@ -1,4 +1,4 @@
---label:tim2\ぼかし\T_RandomBlur_Module.anm
+--label:tim2\ぼかし\@T_RandomBlur_Module.anm
 ---$track:最大ズレ量
 ---min=0
 ---max=5000

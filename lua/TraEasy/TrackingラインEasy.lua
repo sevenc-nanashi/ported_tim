@@ -1,4 +1,4 @@
---label:tim2\配置\TrackingラインEasy.anm
+--label:tim2\配置\@TrackingラインEasy.anm
 ---$track:開始/シフト
 ---min=0
 ---max=100

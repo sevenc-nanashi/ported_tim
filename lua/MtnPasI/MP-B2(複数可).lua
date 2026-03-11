@@ -1,4 +1,4 @@
---label:tim2\配置\モーションパスB.anm
+--label:tim2\配置\@モーションパスB.anm
 ---$track:R座標
 ---min=0
 ---max=10000

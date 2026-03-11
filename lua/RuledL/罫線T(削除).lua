@@ -1,4 +1,4 @@
---label:tim2\装飾\罫線T.anm
+--label:tim2\装飾\@罫線T.anm
 ---$track:削除点数
 ---min=2
 ---max=16

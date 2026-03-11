@@ -1,4 +1,4 @@
---label:tim2\装飾\ジグザグ塗りT.anm
+--label:tim2\装飾\@ジグザグ塗りT.anm
 ---$track:進捗
 ---min=0
 ---max=100

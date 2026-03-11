@@ -1,4 +1,4 @@
---label:tim2\色調整\カメレオン効果.anm
+--label:tim2\色調整\@カメレオン効果.anm
 ---$track:適応率
 ---min=0
 ---max=100

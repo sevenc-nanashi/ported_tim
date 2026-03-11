@@ -1,4 +1,4 @@
---label:tim2\装飾\ストロークT.anm
+--label:tim2\装飾\@ストロークT.anm
 ---$track:アンカー数
 ---min=1
 ---max=12

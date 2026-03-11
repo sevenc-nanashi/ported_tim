@@ -1,4 +1,4 @@
---label:tim2\ぼかし\T_RotBlur_Module.anm
+--label:tim2\ぼかし\@T_RotBlur_Module.anm
 
 -- ---$track:中心X
 -- ---min=-5000

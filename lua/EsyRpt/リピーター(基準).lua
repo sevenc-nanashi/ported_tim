@@ -1,4 +1,4 @@
---label:tim2\配置\簡易リピーター.anm
+--label:tim2\配置\@簡易リピーター.anm
 -- ---$track:X
 -- ---min=-5000
 -- ---max=5000
