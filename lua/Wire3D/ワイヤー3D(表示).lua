@@ -38,7 +38,10 @@ local ant = 1
 ---$check:高精度(線のみ)
 local PC = 0
 
----$value:高精度間隔
+---$track:高精度間隔
+---min=0.5
+---max=200
+---step=0.1
 local Pst = 2
 
 ---$figure:高精度形状
@@ -47,16 +50,31 @@ local fig = "円"
 ---$check:高精度自動向き
 local adi = 1
 
----$value:縦横幅
-local cc = { 10, 10, 2 }
+---$track:単体横分割数
+---min=1
+---max=100
+---step=1
+local fallback_horizontal_split_count = 10
+
+---$track:単体縦分割数
+---min=1
+---max=100
+---step=1
+local fallback_vertical_split_count = 10
+
+---$track:単体ライン幅
+---min=1
+---max=1000
+---step=0.1
+local fallback_line_width = 2
 
 ---$check:YZ反転
 local check0 = false
 
 if WireT_c_nw == nil then
-    WireT_c_nw = cc[1] or 10
-    WireT_c_nh = cc[2] or 10
-    WireT_line = cc[3] or 2
+    WireT_c_nw = math.floor(fallback_horizontal_split_count or 10)
+    WireT_c_nh = math.floor(fallback_vertical_split_count or 10)
+    WireT_line = fallback_line_width or 2
     local w, h = obj.getpixel()
     obj.pixeloption("type", "yc")
     obj.pixeloption("get", "obj")
