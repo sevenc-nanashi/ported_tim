@@ -192,7 +192,7 @@
 | TrackingラインEasy.anm    | TrackingラインEasy(頂点追加)    | :o:      | -   | :o:              | :x:                  |
 | -                         | 透明塗り.anm                    | :o:      | :o: | :o:              | :x:                  |
 | -                         | 透明度指定.anm                  | :o:      | :o: | :o:              | :x:                  |
-| -                         | twitchっぽいものT.anm           | ？       | -   | :x:              | :x:                  |
+| -                         | twitchっぽいものT.anm           | :o:      | -   | :o:              | :x:                  |
 | -                         | バニシングポイント.anm          | ？       | -   | :x:              | :x:                  |
 | -                         | バニシングポイント2.anm         | ？       | -   | :x:              | :x:                  |
 | -                         | 風揺れT.anm                     | ？       | -   | :x:              | :x:                  |

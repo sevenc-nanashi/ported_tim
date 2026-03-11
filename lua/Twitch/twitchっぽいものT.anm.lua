@@ -1,57 +1,120 @@
 --label:tim2\アニメーション効果
----$track:間隔ﾐﾘ秒
+---$track:間隔ミリ秒
 ---min=1
 ---max=10000
 ---step=0.1
 local track_interval_ms = 200
 
----$track:ｽﾞｰﾑﾌﾞﾗｰ
+---$track:ズームブラー
 ---min=0
 ---max=200
 ---step=0.1
 local track_zoom_blur = 100
 
----$track:ｽﾗｲﾄﾞﾌﾞﾗｰ
+---$track:スライドブラー
 ---min=0
 ---max=200
 ---step=0.1
 local track_slide_blur = 100
 
----$track:色ｽﾞﾚ補正
+---$track:色ずれ補正
 ---min=0
 ---max=200
 ---step=0.1
 local track_color_offset_adjust = 100
 
----$value:ぼかし{量，%}
-local blur = { 5, 20 }
+---$track:ぼかし量
+---min=0
+---max=100
+---step=0.1
+local track_blur_amount = 5
 
----$value:色{量，%}
-local color = { 5, 20 }
+---$track:ぼかし発生率％
+---min=0
+---max=100
+---step=0.1
+local track_blur_probability = 20
 
----$value:明るさ{量，%}
-local light = { 20, 20 }
+---$track:色量
+---min=0
+---max=100
+---step=0.1
+local track_color_amount = 5
 
----$value:ズーム{量，%}
-local zoom = { 20, 20 }
+---$track:色発生率％
+---min=0
+---max=100
+---step=0.1
+local track_color_probability = 20
 
----$value:スライド{量，%}
-local slide = { 10, 20 }
+---$track:明るさ量
+---min=0
+---max=100
+---step=0.1
+local track_light_amount = 20
+
+---$track:明るさ発生率％
+---min=0
+---max=100
+---step=0.1
+local track_light_probability = 20
+
+---$track:ズーム量
+---min=0
+---max=100
+---step=0.1
+local track_zoom_amount = 20
+
+---$track:ズーム発生率％
+---min=0
+---max=100
+---step=0.1
+local track_zoom_probability = 20
+
+---$track:スライド量
+---min=0
+---max=100
+---step=0.1
+local track_slide_amount = 10
+
+---$track:スライド発生率％
+---min=0
+---max=100
+---step=0.1
+local track_slide_probability = 20
 
 ---$check:方向指定
 local dirchk = 0
 
----$value:指定方向(度)
-local Drad = 0
+---$track:指定方向（度）
+---min=-360
+---max=360
+---step=0.1
+local track_direction_deg = 0
 
----$value:色ずれタイプ[0-5]
+---$select:色ずれタイプ
+---赤緑A=0
+---赤青A=1
+---緑青A=2
+---赤緑B=3
+---赤青B=4
+---緑青B=5
 local Cdir = 0
 
 ---$value:シード
 local seed = 0
 
----$check:└ﾚｲﾔｰ依存なし
+---$check:└レイヤー依存なし
 local Lset = 1
+
+local function clamp_percentage(value)
+    if value < 0 then
+        return 0
+    elseif value > 100 then
+        return 100
+    end
+    return value
+end
 
 local Cal = (function(LS)
     if LS == 0 then
@@ -88,56 +151,40 @@ local Cal = (function(LS)
         end
     end
 end)(Lset or 0)
-for i = 1, 2 do
-    if blur[i] < 0 then
-        blur[i] = 0
-    elseif blur[i] > 100 then
-        blur[i] = 100
-    end
-    if color[i] < 0 then
-        color[i] = 0
-    elseif color[i] > 100 then
-        color[i] = 100
-    end
-    if light[i] < 0 then
-        light[i] = 0
-    elseif light[i] > 100 then
-        light[i] = 100
-    end
-    if zoom[i] < 0 then
-        zoom[i] = 0
-    elseif zoom[i] > 100 then
-        zoom[i] = 100
-    end
-    if slide[i] < 0 then
-        slide[i] = 0
-    elseif slide[i] > 100 then
-        slide[i] = 100
-    end
-end
-local bl = blur[1]
-local cl = 360 * color[1] * 0.01
-local li = light[1]
-local zm = zoom[1]
-local sl0 = slide[1] * 0.01
+local blur_amount = clamp_percentage(track_blur_amount)
+local blur_probability = clamp_percentage(track_blur_probability)
+local color_amount = clamp_percentage(track_color_amount)
+local color_probability = clamp_percentage(track_color_probability)
+local light_amount = clamp_percentage(track_light_amount)
+local light_probability = clamp_percentage(track_light_probability)
+local zoom_amount = clamp_percentage(track_zoom_amount)
+local zoom_probability = clamp_percentage(track_zoom_probability)
+local slide_amount = clamp_percentage(track_slide_amount)
+local slide_probability = clamp_percentage(track_slide_probability)
+
+local bl = blur_amount
+local cl = 360 * color_amount * 0.01
+local li = light_amount
+local zm = zoom_amount
+local sl0 = slide_amount * 0.01
 dirchk = dirchk or 0
-Drad = (Drad or 0) * math.pi / 180
+local Drad = (track_direction_deg or 0) * math.pi / 180
 Cdir = Cdir or 0
 local w, h = obj.getpixel()
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.setoption("blend", "alpha_add")
 local t = obj.time
-zm = zm * Cal(t, zoom[2], 0, 1, seed)
+zm = zm * Cal(t, zoom_probability, 0, 1, seed)
 local slx, sly
 local cosDrad = math.cos(Drad)
 local sinDrad = math.sin(Drad)
 if dirchk == 1 then
-    local r = w * sl0 * Cal(t, slide[2], -1, 1, seed + 1000)
+    local r = w * sl0 * Cal(t, slide_probability, -1, 1, seed + 1000)
     slx = r * cosDrad
     sly = r * sinDrad
 else
-    slx = w * sl0 * Cal(t, slide[2], -1, 1, seed + 1000)
-    sly = h * sl0 * Cal(t, slide[2], -1, 1, seed + 2000)
+    slx = w * sl0 * Cal(t, slide_probability, -1, 1, seed + 1000)
+    sly = h * sl0 * Cal(t, slide_probability, -1, 1, seed + 2000)
 end
 local slxZ, slyZ = slx, sly
 slx = (slx + w * 0.5) % w - w * 0.5
@@ -156,9 +203,9 @@ obj.draw(slx, sly + dh, 0, zmp, 1, 180, 0, 0)
 obj.draw(slx + dw, sly + dh, 0, zmp, 1, 0, 0, 180)
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
-bl = bl * Cal(t, blur[2], 0, 1, seed + 3000)
-cl = cl * Cal(t, color[2], -1, 1, seed + 4000)
-li = li * Cal(t, light[2], 0, 1, seed + 5000)
+bl = bl * Cal(t, blur_probability, 0, 1, seed + 3000)
+cl = cl * Cal(t, color_probability, -1, 1, seed + 4000)
+li = li * Cal(t, light_probability, 0, 1, seed + 5000)
 obj.effect("ぼかし", "範囲", bl, "サイズ固定", 1)
 obj.effect("色調補正", "明るさ", 100 + li, "色相", cl)
 obj.effect(
@@ -175,17 +222,17 @@ obj.effect(
 local slx1, sly1, slx2, sly2
 local dt = 0.5 / obj.framerate
 if dirchk == 1 then
-    local r = w * sl0 * Cal(t - dt, slide[2], -1, 1, seed + 1000)
+    local r = w * sl0 * Cal(t - dt, slide_probability, -1, 1, seed + 1000)
     slx1 = r * cosDrad
     sly1 = r * sinDrad
-    r = w * sl0 * Cal(t + dt, slide[2], -1, 1, seed + 1000)
+    r = w * sl0 * Cal(t + dt, slide_probability, -1, 1, seed + 1000)
     slx2 = r * cosDrad
     sly2 = r * sinDrad
 else
-    slx1 = w * sl0 * Cal(t - dt, slide[2], -1, 1, seed + 1000)
-    slx2 = w * sl0 * Cal(t + dt, slide[2], -1, 1, seed + 1000)
-    sly1 = h * sl0 * Cal(t - dt, slide[2], -1, 1, seed + 2000)
-    sly2 = h * sl0 * Cal(t + dt, slide[2], -1, 1, seed + 2000)
+    slx1 = w * sl0 * Cal(t - dt, slide_probability, -1, 1, seed + 1000)
+    slx2 = w * sl0 * Cal(t + dt, slide_probability, -1, 1, seed + 1000)
+    sly1 = h * sl0 * Cal(t - dt, slide_probability, -1, 1, seed + 2000)
+    sly2 = h * sl0 * Cal(t + dt, slide_probability, -1, 1, seed + 2000)
 end
 local dx = slx2 - slx1
 local dy = sly2 - sly1
@@ -195,7 +242,15 @@ dr = dr * track_slide_blur * 0.01
 local dc = dr * track_color_offset_adjust * 0.0025
 obj.effect("方向ブラー", "角度", deg, "範囲", dr, "サイズ固定", 1)
 obj.effect("領域拡張", "上", dc, "右", dc, "下", dc, "左", dc, "塗りつぶし", 1)
-obj.effect("色ずれ", "ずれ幅", dc, "角度", deg, "type", Cdir)
+local dir_name_map = {
+    [0] = "赤緑A",
+    [1] = "赤青A",
+    [2] = "緑青A",
+    [3] = "赤緑B",
+    [4] = "赤青B",
+    [5] = "緑青B"
+}
+obj.effect("色ずれ", "ずれ幅", dc, "角度", deg, "色ずれの種類", dir_name_map[Cdir] or "赤緑A")
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 obj.load("tempbuffer")
