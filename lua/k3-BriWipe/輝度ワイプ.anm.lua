@@ -20,7 +20,7 @@ local track_load_target = 0
 ---$check:暗い所から透過
 local check0 = false
 
-require("T_Color_Module")
+local tim2 = obj.module("tim2")
 
 local T = track_wipe_amount
 local bl = track_blur
@@ -31,6 +31,7 @@ obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 
 if id > 0 then
+    error("extbufferは未実装です")
     require("extbuffer")
     extbuffer.read(id)
 end
@@ -48,11 +49,11 @@ else
     obj.effect("単色化", "color", 0xffffff, "輝度を保持する", 0, "強さ", 2 * T - 100)
 end
 
-local userdata, w, h = obj.getpixeldata()
-T_Color_Module.ShiftChannels(userdata, w, h, 1, 1, 2, 3)
-obj.putpixeldata(userdata)
+local userdata, w, h = obj.getpixeldata("object", "bgra")
+tim2.color_shift_channels(userdata, w, h, 1, 1, 2, 3)
+obj.putpixeldata("object", userdata, w, h, "bgra")
 
 obj.effect("ぼかし", "範囲", bl, "サイズ固定", 1)
 obj.setoption("blend", "alpha_sub")
 obj.draw()
-obj.copybuffer("obj", "tmp")
+obj.copybuffer("object", "tempbuffer")
