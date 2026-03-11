@@ -260,13 +260,9 @@ task :tasklist do
   end
 end
 
-task "tasklist:reorder" do
-  sh "ruby ./scripts/reorder_tasklist.rb"
-end
-
 task :current_progress do
+  require "csv"
   tasklist = File.read("./TASKLIST.md")
-  # | カテゴリ                  | スクリプト                                | 動作確認 | DLL | パラメーター改善 | シェーダー化 |
   num_checked = 0
   num_dll_ported = 0
   num_dll_all = 0
@@ -274,21 +270,26 @@ task :current_progress do
   num_shader_ported = 0
   num_shader_all = 0
   num_scripts = 0
-  tasklist
-    .scan(/\| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \| (.*?) \|/)
-    .each do |category, script, confirmed, dll, parameter, shader|
-      next if category.include?("カテゴリ") || category.include?("----")
-      num_checked += 1 if confirmed.include?("o")
-      num_dll_ported += 1 if dll.include?("o")
-      num_dll_all += 1 unless dll.include?("-")
-      num_parameter_improved += 1 if parameter.include?("o")
-      if shader.include?("o")
-        num_shader_ported += 1
-        num_shader_all += 1
-      end
-      num_shader_all += 1 if shader.include?("x")
-      num_scripts += 1
+  lines = tasklist.scan(/^\| (.*?) \|$/m)
+  lines.delete_at(1)
+  loaded =
+    CSV.parse(lines.join("\n").gsub(" ", ""), col_sep: "|", headers: :first_row)
+  loaded.each do |row|
+    confirmed = row.fetch("動作確認").strip
+    dll = row.fetch("DLL").strip
+    parameter = row.fetch("パラメーター改善").strip
+    shader = row.fetch("シェーダー化・最適化").strip
+    num_checked += 1 if confirmed.include?("o")
+    num_dll_ported += 1 if dll.include?("o")
+    num_dll_all += 1 unless dll.include?("-")
+    num_parameter_improved += 1 if parameter.include?("o")
+    if shader.include?("o")
+      num_shader_ported += 1
+      num_shader_all += 1
     end
+    num_shader_all += 1 if shader.include?("x")
+    num_scripts += 1
+  end
 
   puts "動作確認: #{num_checked}/#{num_scripts} (#{(num_checked.to_f / num_scripts * 100).round(1)}%)"
   puts "DLL移植: #{num_dll_ported}/#{num_dll_all} (#{num_dll_all > 0 ? (num_dll_ported.to_f / num_dll_all * 100).round(1) : "N/A"}%)"
