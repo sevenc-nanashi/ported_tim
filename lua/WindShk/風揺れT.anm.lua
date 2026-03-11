@@ -23,13 +23,22 @@ local track_sway_offset = 90
 ---step=0.1
 local track_center = 0
 
----$value:分割
+---$track:分割数
+---min=2
+---max=300
+---step=1
 local N = 10
 
----$value:上固定長％
+---$track:上固定長％
+---min=0
+---max=100
+---step=0.1
 local dL = 10
 
----$value:下固定長％
+---$track:下固定長％
+---min=0
+---max=100
+---step=0.1
 local dL2 = 10
 
 ---$check:下を基準
@@ -38,19 +47,31 @@ local UB = 0
 ---$check:ランダム揺れ量
 local rndF = 0
 
----$value:ランダム揺れﾊﾟﾀｰﾝ
+---$track:ランダム揺れパターン
+---min=0
+---max=10000
+---step=1
 local seed = 0
 
----$value:時間ずれ
+---$track:時間ずれ
+---min=-10
+---max=10
+---step=0.01
 local sft = 0.1
 
 ---$check:横に繰り返す
 local rep = 0
 
----$value:繰り返し個数
+---$track:繰り返し個数
+---min=1
+---max=50
+---step=1
 local repN = 3
 
----$value:間隔
+---$track:間隔
+---min=0
+---max=1000
+---step=0.1
 local stepX = 50
 
 ---$check:破綻軽減
@@ -267,7 +288,7 @@ if UB == 1 then
     obj.effect("反転", "上下反転", 1)
 end
 if alp == 1 then
-    obj.setoption("drawtarget", "tempbuffer")
+    obj.setoption("drawtarget", "tempbuffer", w, h)
     obj.copybuffer("cache:org", "obj")
     obj.copybuffer("tmp", "obj")
     obj.effect("反転", "透明度反転", 1)
