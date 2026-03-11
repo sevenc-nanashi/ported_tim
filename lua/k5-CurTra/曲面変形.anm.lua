@@ -15,31 +15,52 @@ local track_deform_2 = 25
 ---min=0
 ---max=10000
 ---step=1
-local track_count = 0
+local track_object_count = 0
 
----$value:分割数
-local N = 8
+---$track:分割数
+---min=1
+---max=300
+---step=1
+local track_division_count = 8
 
----$value:領域サイズX
-local ARX = 2000
+---$track:領域サイズX
+---min=1
+---max=50000
+---step=1
+local track_area_size_x = 2000
 
----$value:領域サイズY
-local ARY = 2000
+---$track:領域サイズY
+---min=1
+---max=50000
+---step=1
+local track_area_size_y = 2000
 
----$value:領域サイズZ
-local ARZ = 2000
+---$track:領域サイズZ
+---min=1
+---max=50000
+---step=1
+local track_area_size_z = 2000
 
----$value:移動速度
-local divV = 100
+---$track:移動速度
+---min=0
+---max=1000
+---step=0.1
+local track_move_speed = 100
 
----$value:移動方向誤差
-local dpos = 12
+---$track:移動方向誤差
+---min=0
+---max=90
+---step=0.1
+local track_move_direction_error = 12
 
----$value:回転速度
-local rotV = 10
+---$track:回転速度
+---min=0
+---max=100
+---step=0.1
+local track_rotation_speed = 10
 
----$value:アンチエイリアス
-local ANT = 0
+---$check:アンチエイリアス
+local antialias = 0
 
 ---$check:重心を中心にする
 local check0 = false
@@ -152,7 +173,7 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
         end
     end
 
-    obj.setoption("antialias", ANT)
+    obj.setoption("antialias", antialias)
 
     for i = -Nh, Nh - 1 do
         for j = 0, N - 1 do
@@ -185,31 +206,37 @@ end
 local w, h = obj.getpixel()
 w = w * obj.getvalue("zoom") * 0.01
 h = h * obj.getvalue("zoom") * 0.01
-dpos = math.max(100 - dpos, 10)
+local division_count = math.max(1, track_division_count or 8)
+local area_size_x = math.max(1, track_area_size_x or 2000)
+local area_size_y = math.max(1, track_area_size_y or 2000)
+local area_size_z = math.max(1, track_area_size_z or 2000)
+local move_speed = track_move_speed or 100
+local move_direction_error = math.max(10, 100 - (track_move_direction_error or 12))
+local rotation_speed = track_rotation_speed or 10
 local thx_max = math.pi * track_deform_1 * 0.01
 local thy_max = math.pi * track_deform_2 * 0.01
-local M = track_count
+local object_count = track_object_count
 
 local T = obj.time
 
-if M == 0 then
-    set3Dimg(N, w, h, thx_max, thy_max, 0, 0, 0, 0, 0, 0)
+if object_count == 0 then
+    set3Dimg(division_count, w, h, thx_max, thy_max, 0, 0, 0, 0, 0, 0)
 else
-    for i = 1, M do
-        local rx = obj.rand(0, 360, i, 1000) + rotV * T * obj.rand(0, 1000, i, 7000) * 0.001
-        local ry = obj.rand(0, 360, i, 2000) + rotV * T * obj.rand(0, 1000, i, 8000) * 0.001
-        local rz = obj.rand(0, 360, i, 3000) + rotV * T * obj.rand(0, 1000, i, 9000) * 0.001
+    for i = 1, object_count do
+        local rx = obj.rand(0, 360, i, 1000) + rotation_speed * T * obj.rand(0, 1000, i, 7000) * 0.001
+        local ry = obj.rand(0, 360, i, 2000) + rotation_speed * T * obj.rand(0, 1000, i, 8000) * 0.001
+        local rz = obj.rand(0, 360, i, 3000) + rotation_speed * T * obj.rand(0, 1000, i, 9000) * 0.001
 
-        local divVx = divV * obj.rand(dpos, 100, i, 10000) * 0.01
-        local dvyz = math.sqrt(divV * divV - divVx * divVx)
+        local divVx = move_speed * obj.rand(move_direction_error, 100, i, 10000) * 0.01
+        local dvyz = math.sqrt(move_speed * move_speed - divVx * divVx)
         local radi = math.rad(obj.rand(0, 3600, i, 11000) * 0.1)
         local divVy = dvyz * math.cos(radi)
         local divVz = dvyz * math.sin(radi)
 
-        local cx = (obj.rand(0, ARX, i, 4000) + divVx * T) % ARX - ARX * 0.5
-        local cy = obj.rand(0, ARY, i, 5000) + divVy * T - ARY * 0.5
-        local cz = obj.rand(0, ARZ, i, 6000) + divVz * T
+        local cx = (obj.rand(0, area_size_x, i, 4000) + divVx * T) % area_size_x - area_size_x * 0.5
+        local cy = obj.rand(0, area_size_y, i, 5000) + divVy * T - area_size_y * 0.5
+        local cz = obj.rand(0, area_size_z, i, 6000) + divVz * T
 
-        set3Dimg(N, w, h, thx_max, thy_max, math.rad(rx), math.rad(ry), math.rad(rz), cx, cy, cz)
+        set3Dimg(division_count, w, h, thx_max, thy_max, math.rad(rx), math.rad(ry), math.rad(rz), cx, cy, cz)
     end
 end
