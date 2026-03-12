@@ -1,55 +1,54 @@
 --label:tim2\カメラ制御
----$track:ｻｲｽﾞ補正
----min=0
+---$track:サイズ補正
+---min=1
 ---max=10000
 ---step=0.01
-local rename_me_track0 = 100
+local track_size_correction = 100
 
----$track:ﾌﾚｰﾑｵﾌｾｯﾄ
+---$track:フレームオフセット
 ---min=0
 ---max=10000
 ---step=1
-local rename_me_track1 = 0
+local track_frame_offset = 0
 
----$track:自動視野角
----min=0
----max=1
----step=1
-local rename_me_track2 = 1
+---$check:自動視野角
+local check_auto_view_angle = true
 
 ---$file:ファイル
-local rename_me_file = ""
-file = rename_me_file
+local file_path = ""
 
-require("MMD2AviUtl")
+local function is_enabled(value)
+    return value == true or value == 1
+end
 
-local mmd_h = MMD2AviUtl.ReadData(file)
+local tim2 = obj.module("tim2")
+local loaded_camera_count = tim2.mmdcam_read_data(file_path)
 
-if mmd_h.count ~= 0 then
-    local cam_t = MMD2AviUtl.GetCameraData(
-        obj.frame + rename_me_track1,
-        obj.totalframe + rename_me_track1,
-        3000 / rename_me_track0
+if loaded_camera_count ~= 0 then
+    local x, y, z, tx, ty, tz, rz, view_angle, srvt = tim2.mmdcam_get_camera_data(
+        obj.frame + track_frame_offset,
+        obj.totalframe + track_frame_offset,
+        3000 / track_size_correction
     )
 
     local cam = obj.getoption("camera_param")
 
-    cam.x = cam_t.x
-    cam.y = cam_t.y
-    cam.z = cam_t.z
-    cam.tx = cam_t.tx
-    cam.ty = cam_t.ty
-    cam.tz = cam_t.tz
-    cam.rz = cam.rz + cam_t.rz
+    cam.x = x
+    cam.y = y
+    cam.z = z
+    cam.tx = tx
+    cam.ty = ty
+    cam.tz = tz
+    cam.rz = cam.rz + rz
 
-    if cam_t.srvt < 0 then
+    if srvt < 0 then
         cam.ux = -cam.ux
         cam.uy = -cam.uy
         cam.uz = -cam.uz
     end
 
-    if rename_me_track2 == 1 then
-        cam.d = obj.screen_h / math.tan(cam_t.viewAngle * math.pi / 360) / 2
+    if is_enabled(check_auto_view_angle) then
+        cam.d = obj.screen_h / math.tan(view_angle * math.pi / 360) / 2
     end
 
     obj.setoption("camera_param", cam)
