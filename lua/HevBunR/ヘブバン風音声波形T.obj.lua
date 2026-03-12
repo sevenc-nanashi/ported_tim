@@ -1,5 +1,5 @@
 --label:tim2\カスタムオブジェクト
----$track:外円ｻｲｽﾞ
+---$track:外円サイズ
 ---min=0
 ---max=5000
 ---step=1
@@ -11,7 +11,7 @@ local track_size = 300
 ---step=1
 local track_split_amount = 120
 
----$track:MAX長%
+---$track:最大長%
 ---min=0
 ---max=2000
 ---step=0.1
@@ -23,50 +23,62 @@ local track_max_percent = 30
 ---step=1
 local track_upper_limit = 30000
 
----$color:色W1
-local _1 = 0xc19ec1
+---$color:波形色1
+local wave_color_1 = 0xc19ec1
 
----$color:色W2
-local _2 = 0x40acac
+---$color:波形色2
+local wave_color_2 = 0x40acac
 
----$color:色W3
-local _3 = 0x5a72ec
+---$color:波形色3
+local wave_color_3 = 0x5a72ec
 
----$color:色C1
-local _4 = 0x40acac
+---$color:円色1
+local circle_color_1 = 0x40acac
 
----$color:色C2
-local _5 = 0xed7aff
+---$color:円色2
+local circle_color_2 = 0xed7aff
 
----$value:音量下限
-local _6 = 0
+---$track:音量下限
+---min=0
+---max=100000
+---step=1
+local track_lower_limit = 0
 
----$value:境界補正
-local _7 = 2
+---$track:境界補正
+---min=0
+---max=20
+---step=1
+local track_boundary_adjust = 2
 
 ---$value:サイズ配列
-local _8 = { 4, 3, 4, 4, 1 }
+local size_array = { 4, 3, 4, 4, 1 }
 
 ---$value:個数配列
-local _9 = { 100, 230, 180 }
+local count_array = { 100, 230, 180 }
 
 ---$value:速度配列
-local _10 = { 2, 2.8, 0 }
+local speed_array = { 2, 2.8, 0 }
 
----$check: ｵﾘｼﾞﾅﾙ背景設定
-local _11 = 0
+---$check:オリジナル背景設定
+local check_original_background = false
 
----$value:└波形透明度％
-local _12 = 35
+---$track:└波形透明度％
+---min=0
+---max=100
+---step=0.1
+local track_wave_opacity_percent = 35
 
----$value:└時間オフセット
-local _13 = 1000
+---$track:└時間オフセット
+---min=-10000
+---max=10000
+---step=1
+local track_time_offset = 1000
 
----$value: PI
+---$value:PI
 local _0 = nil
 
 ---$check:波形反転
-local check0 = false
+local check_reverse_waveform = false
 
 local floor = math.floor
 local abs = math.abs
@@ -81,38 +93,39 @@ local aoi = _0
 if _0[1] == "蒼井" then
     _0 = {}
 end
-local Rev = _0[0] == nil and check0 or _0[0]
+local Rev = _0[0] == nil and check_reverse_waveform or _0[0]
 local Siz = math.floor(_0[1] or track_size)
 local SpN = floor(_0[2] or track_split_amount)
 local MxL = (_0[3] or track_max_percent) * Siz / 100
 local SdU = floor(_0[4] or track_upper_limit)
-local SdD = floor(_6 or 0)
-local col1 = _1 or 0xc19ec1
-local col2 = _2 or 0x40acac
-local col3 = _3 or 0x5a72ec
-local col4 = _4 or 0x40acac
-local col5 = _5 or 0xed7aff
-local Bor = _7 or 2
-local S1, S2, S3, S4, S5 = unpack(_8 or { 4, 1, 4, 3, 4 })
-local N1, N2, N3 = unpack(_9 or { 100, 230, 180 })
-local V1, V2, V3 = unpack(_10 or { 2, 2.8, 0 })
-local Bap = _11 == 1
-local Wal = (_12 or 35) / 100
-local Tof = (_13 or 1000) + obj.time
+local SdD = floor(track_lower_limit or 0)
+local col1 = wave_color_1 or 0xc19ec1
+local col2 = wave_color_2 or 0x40acac
+local col3 = wave_color_3 or 0x5a72ec
+local col4 = circle_color_1 or 0x40acac
+local col5 = circle_color_2 or 0xed7aff
+local Bor = track_boundary_adjust or 2
+local S1, S2, S3, S4, S5 = unpack(size_array or { 4, 3, 4, 4, 1 })
+local N1, N2, N3 = unpack(count_array or { 100, 230, 180 })
+local V1, V2, V3 = unpack(speed_array or { 2, 2.8, 0 })
+local Bap = check_original_background
+local Wal = (track_wave_opacity_percent or 35) / 100
+local Tof = (track_time_offset or 1000) + obj.time
 _0 = nil
-_1 = nil
-_2 = nil
-_3 = nil
-_4 = nil
-_5 = nil
-_6 = nil
-_7 = nil
-_8 = nil
-_9 = nil
-_10 = nil
-_11 = nil
-_12 = nil
-_13 = nil
+wave_color_1 = nil
+wave_color_2 = nil
+wave_color_3 = nil
+circle_color_1 = nil
+circle_color_2 = nil
+track_lower_limit = nil
+track_boundary_adjust = nil
+size_array = nil
+count_array = nil
+speed_array = nil
+check_original_background = nil
+track_wave_opacity_percent = nil
+track_time_offset = nil
+check_reverse_waveform = nil
 local SizH = Siz / 300
 local dt = -obj.time / 180
 S1 = (S1 or 4) * SizH
@@ -134,6 +147,7 @@ V3 = (V3 or 0) * dt
 local N, rate, buf = obj.getaudio(nil, "audiobuffer", "pcm", 5000)
 local Mus = {}
 local SN = 3 * SpN
+Bor = min(Bor, SpN - 1)
 for i = 1, SN do
     local k = floor(1 + (i - 1) * (N - 1) / (SN - 1))
     local L = abs(buf[k])
@@ -237,20 +251,24 @@ if aoi[1] == "蒼井" then
     local sf = { aoi[2] or "", Lw, aoi[4] or 3, aoi[5] or 0xffffff, aoi[6] or 0x0 }
     local txt1 = "前は・・・だれもまもれなかった・・・"
     local txt2 = "こんどはまもれましたか・・・？"
-    local t = 2 * floor(6 * (obj.time - 2))
+    local t = 3 * floor(6 * (obj.time - 2))
     obj.setfont(unpack(sf))
-    obj.load(txt1)
+    obj.load("text", txt1)
     local w0 = obj.getpixel()
     txt1 = txt1:sub(1, max(t, 0))
     txt2 = txt2:sub(1, max(t - 54, 0))
     local w
-    obj.setfont(unpack(sf))
-    obj.load(txt1)
-    w = obj.getpixel()
-    obj.draw(-w0 / 2 + w / 2, -Lw / 2 * 1.2)
-    obj.setfont(unpack(sf))
-    obj.load(txt2)
-    w = obj.getpixel()
-    obj.draw(-w0 / 2 + w / 2, Lw / 2 * 1.2)
+    if txt1 ~= "" then
+        obj.setfont(unpack(sf))
+        obj.load("text", txt1)
+        w = obj.getpixel()
+        obj.draw(-w0 / 2 + w / 2, -Lw / 2 * 1.2)
+        if txt2 ~= "" then
+            obj.setfont(unpack(sf))
+            obj.load("text", txt2)
+            w = obj.getpixel()
+            obj.draw(-w0 / 2 + w / 2, Lw / 2 * 1.2)
+        end
+    end
 end
-obj.copybuffer("obj", "tmp")
+obj.copybuffer("object", "tempbuffer")

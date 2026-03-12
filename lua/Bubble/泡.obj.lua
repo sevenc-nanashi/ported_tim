@@ -71,7 +71,12 @@ h = obj.screen_h * track_display_area_correction / 2 + obj.h
 if not check_after_effect then
     obj.effect()
 else
-    obj.setoption("dst", "tmp", obj.screen_w * track_display_area_correction, obj.screen_h * track_display_area_correction)
+    obj.setoption(
+        "dst",
+        "tmp",
+        obj.screen_w * track_display_area_correction,
+        obj.screen_h * track_display_area_correction
+    )
 end
 s = track_speed / 10
 sp = track_direction * obj.w
