@@ -29,32 +29,49 @@ local col1 = 0xffff00
 ---$color:色2
 local col2 = 0xffffff
 
----$value:最終拡大率
-local zV = 50
+---$track:最終拡大率[%]
+---min=0
+---max=1000
+---step=0.1
+local track_final_zoom_percent = 50
 
----$value:最終透過度
-local aV = 20
+---$track:最終透過度[%]
+---min=0
+---max=1000
+---step=0.1
+local track_final_alpha_percent = 20
 
----$value:拡散角度
-local Fai = { -180, 180 }
+---$track:拡散角度開始
+---min=-180
+---max=180
+---step=0.1
+local track_scatter_angle_start = -180
+
+---$track:拡散角度終了
+---min=-180
+---max=180
+---step=0.1
+local track_scatter_angle_end = 180
 
 local T = obj.time
-local dn = track_output_frequency
-local V = track_speed
-local R0 = track_radius
-local Life = track_lifetime * 0.01
-local dS = 1 / dn
-local i1 = math.max(math.floor(1 + (T - Life) * dn), 0)
-local i2 = math.floor(T * dn)
-zV = zV * 0.01
-aV = aV * 0.01
+local output_frequency = track_output_frequency
+local speed = track_speed
+local initial_radius = track_radius
+local lifetime = track_lifetime * 0.01
+local spawn_interval = 1 / output_frequency
+local first_index = math.max(math.floor(1 + (T - lifetime) * output_frequency), 0)
+local last_index = math.floor(T * output_frequency)
+local final_zoom = track_final_zoom_percent * 0.01
+local final_alpha = track_final_alpha_percent * 0.01
+local scatter_angle_start = math.min(track_scatter_angle_start or -180, track_scatter_angle_end or 180)
+local scatter_angle_end = math.max(track_scatter_angle_start or -180, track_scatter_angle_end or 180)
 
-for i = i1, i2 do
-    local T0 = i * dS
+for i = first_index, last_index do
+    local T0 = i * spawn_interval
     local dTi = T - T0
 
-    if dTi < Life then
-        local p1 = dTi / Life
+    if dTi < lifetime then
+        local p1 = dTi / lifetime
         local p2 = 1 - p1
         local r1, g1, b1 = RGB(col1)
         local r2, g2, b2 = RGB(col2)
@@ -73,18 +90,19 @@ for i = i1, i2 do
         local ddx = dx - obj.getvalue("x", T0 - 1 / obj.framerate, 0)
         local ddy = dy - obj.getvalue("y", T0 - 1 / obj.framerate, 0)
 
-        local th = math.atan2(ddx, ddy) + math.rad(obj.rand(10 * Fai[1] + 1800, 10 * Fai[2] + 1800, i, 1000) * 0.1)
+        local th = math.atan2(ddx, ddy)
+            + math.rad(obj.rand(10 * scatter_angle_start + 1800, 10 * scatter_angle_end + 1800, i, 1000) * 0.1)
 
         local Pth = math.rad(obj.rand(0, 3600, i, 2000) * 0.1)
-        local iR0 = R0 * obj.rand(0, 1000, i, 3000) * 0.001
+        local iR0 = initial_radius * obj.rand(0, 1000, i, 3000) * 0.001
 
-        local vx = V * math.sin(th)
-        local vy = V * math.cos(th)
+        local vx = speed * math.sin(th)
+        local vy = speed * math.cos(th)
 
         local x = vx * dTi + dx - obj.getvalue("x") + iR0 * math.cos(Pth)
         local y = vy * dTi + dy - obj.getvalue("y") + iR0 * math.sin(Pth)
-        local zoom = p2 + zV * p1
-        local alpha = p2 + aV * p1
+        local zoom = p2 + final_zoom * p1
+        local alpha = p2 + final_alpha * p1
         obj.draw(x, y, 0, zoom, alpha)
     end
 end
