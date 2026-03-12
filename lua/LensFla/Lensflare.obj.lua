@@ -23,14 +23,24 @@ local track_offset_x = 640
 ---step=0.1
 local track_offset_y = 360
 
---param:bb=5;fh=0.1
+---$track:ぼかし
+---min=0
+---max=1000
+---step=0.1
+local track_blur = 5
+
+---$track:点滅幅
+---min=0
+---max=1
+---step=0.01
+local track_flicker = 0.1
 
 Cx = track_light_center_x
 Cy = track_light_center_y
 dx = track_offset_x
 dy = track_offset_y
 
-YR = 1 - fh + fh * obj.rand(0, 100) / 100
+YR = 1 - track_flicker + track_flicker * obj.rand(0, 100) / 100
 
 function MkLt(X, Y, fsize, CHS)
     obj.load("figure", "四角形", 0xffffff, 8 * fsize / 9)
@@ -48,7 +58,7 @@ function MkLt(X, Y, fsize, CHS)
     obj.effect("ぼかし", "範囲", fsize / 10)
     obj.ox = X
     obj.oy = Y
-    obj.effect("ぼかし", "範囲", bb)
+    obj.effect("ぼかし", "範囲", track_blur)
     obj.draw()
     MkDC(X, Y, fsize, 120, 70, 70, 1, 0.2)
 end
@@ -62,14 +72,14 @@ function MkDC(X, Y, fsize, R, G, B, ALP1, ALP2)
     obj.effect("極座標変換", "中心幅", 0.175 * fsize)
     obj.ox = X
     obj.oy = Y
-    obj.effect("ぼかし", "範囲", bb)
+    obj.effect("ぼかし", "範囲", track_blur)
     obj.draw()
 
     obj.load("figure", "円", R * 256 ^ 2 + G * 256 + B, 0.964 * fsize)
     obj.alpha = ALP2 * YR
     obj.ox = X
     obj.oy = Y
-    obj.effect("ぼかし", "範囲", bb)
+    obj.effect("ぼかし", "範囲", track_blur)
     obj.draw()
 end
 
