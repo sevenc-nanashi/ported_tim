@@ -23,7 +23,7 @@ local track_left_right = 30
 ---step=1
 local track_up_down = 20
 
----$value:データ
+---$string:データ
 local TXT = "AviUtl"
 
 ---$color:線色
