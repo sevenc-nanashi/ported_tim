@@ -169,7 +169,6 @@ impl RotBlurModule {
     }
 
     #[allow(clippy::too_many_arguments)]
-
     fn rotblur_rad_hard_blur(
         image_buffer: NonNull<u8>,
         work_buffer: NonNull<u8>,
@@ -210,7 +209,6 @@ impl RotBlurModule {
     }
 
     #[allow(clippy::too_many_arguments)]
-
     fn rotblur_dir_hard_blur(
         image_buffer: NonNull<u8>,
         work_buffer: NonNull<u8>,

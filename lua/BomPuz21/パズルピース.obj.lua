@@ -17,14 +17,19 @@ local track_p = 1
 ---step=1
 local track_bump = 1
 
----$color:0xffffff
-local color = false
-color = color
+---$color:色
+local color = 0xffffff
 
 local Pfig = track_p
 local SI = math.floor(track_size)
 
+-- NOTE: AviUtl2 beta36a現在、alpha_subで描画した部分のアルファ値がマイナスになると描画がおかしくなるので、u8の範囲で飽和させてから描画するようにする
+local function fix_alpha_sub_workaround(target)
+    obj.putpixeldata(target, obj.getpixeldata(target))
+end
+
 local DrawUnitBase = function(SI2, ROT, ...)
+    local arg = { ... }
     if arg[1] == 1 then
         obj.draw(0, -SI2, 0, 1, 1, 0, 0, ROT)
     end
@@ -40,6 +45,7 @@ local DrawUnitBase = function(SI2, ROT, ...)
 end
 
 local MakeUnitBase1 = function(SI, SI2, ...)
+    local arg = { ... }
     obj.setoption("drawtarget", "tempbuffer", 2 * SI, 2 * SI)
     obj.load("figure", "四角形", 0xffffff, 1)
     obj.setoption("blend", "alpha_add")
@@ -53,6 +59,7 @@ local MakeUnitBase1 = function(SI, SI2, ...)
 end
 
 local MakeUnitBase2 = function(SI, SI2, ...)
+    local arg = { ... }
     MakeUnitBase1(SI, SI2, unpack(arg, 1, 8))
 
     obj.copybuffer("obj", "cache:Img2")
@@ -86,7 +93,7 @@ end
 
 local SI2 = SI / 2
 local SI4 = SI / 4
-local SID = 2 * SI + SI % 2 -- 四隅に隙間ができることがあるのを防止
+local SID = 2 * SI + SI % 2                  -- 四隅に隙間ができることがあるのを防止
 local comSI2 = 2 * math.floor((SI2 + 1) / 2) -- 余分な線が入るのを防止
 
 if Pfig >= 1 and Pfig <= 4 then
@@ -94,7 +101,7 @@ if Pfig >= 1 and Pfig <= 4 then
     local se = 2
     local bai = SI / 200
     obj.load("figure", "円", 0xffffff, 78 * bai * se)
-    obj.setoption("blend", "alpha_add")
+    obj.setoption("blend", "none")
     x0 = -39 * bai
     y0 = (-138 - 39 * 0.79 + 100) * bai
     y2 = (-138 + 39 * 0.79 + 100 + 2) * bai
@@ -107,7 +114,7 @@ if Pfig >= 1 and Pfig <= 4 then
     x6, y6 = (32 + DS) * bai, (104 - math.sqrt(21 * 21 / 4 - DS * DS)) * bai - 100 * bai
 
     obj.load("figure", "四角形", 0xffffff, 1)
-    obj.setoption("blend", "alpha_add")
+    obj.setoption("blend", "none")
     obj.drawpoly(-x4, -y4, 0, x4, -y4, 0, x5, -y5, 0, -x5, -y5, 0)
     obj.drawpoly(-x5, -y5, 0, x5, -y5, 0, x6, -y6, 0, -x6, -y6, 0)
 
@@ -121,23 +128,27 @@ if Pfig >= 1 and Pfig <= 4 then
     obj.draw(32 * bai, -104 * bai + 100 * bai, 0, 1 / se)
     obj.draw(-32 * bai, -104 * bai + 100 * bai, 0, 1 / se)
 
-    obj.copybuffer("cache:Img2", "tmp")
+    fix_alpha_sub_workaround("tempbuffer")
+
+    obj.copybuffer("cache:Img2", "tempbuffer")
 
     obj.load("figure", "四角形", 0xffffff, 1)
     obj.setoption("blend", "alpha_sub")
     obj.drawpoly(-SI2, 0, 0, SI2, 0, 0, SI2, SI2, 0, -SI2, SI2, 0)
 
-    obj.copybuffer("cache:Img1", "tmp")
+    fix_alpha_sub_workaround("tempbuffer")
 
-    obj.copybuffer("tmp", "cache:Img2")
+    obj.copybuffer("cache:Img1", "tempbuffer")
+
+    obj.copybuffer("tempbuffer", "cache:Img2")
     obj.load("figure", "四角形", 0xffffff, 1)
     obj.setoption("blend", "alpha_add")
     obj.drawpoly(-SI2, 0, 0, SI2, 0, 0, SI2, -SI2, 0, -SI2, -SI2, 0)
 
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
     obj.effect("反転", "透明度反転", 1)
     obj.effect("ローテーション", "90度回転", 2)
-    obj.copybuffer("cache:Img2", "obj")
+    obj.copybuffer("cache:Img2", "object")
 
     MakeUnit(SI, SI2, Pfig)
 elseif Pfig >= 5 and Pfig <= 8 then
@@ -213,3 +224,5 @@ then
 end
 obj.copybuffer("obj", "tmp")
 obj.effect("単色化", "輝度を保持する", 0, "color", color)
+
+fix_alpha_sub_workaround("object")

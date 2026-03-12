@@ -131,6 +131,12 @@ local FBR = 0
 ---$check:マップ反転
 local check0 = false
 
+
+-- NOTE: AviUtl2 beta36a現在、alpha_subで描画した部分のアルファ値がマイナスになると描画がおかしくなるので、u8の範囲で飽和させてから描画するようにする
+local function fix_alpha_sub_workaround(target)
+    obj.putpixeldata(target, obj.getpixeldata(target))
+end
+
 local Ct = { track_scatter_center_x, track_scatter_center_y }
 local Gr = { track_gravity_x, track_gravity_y, track_gravity_z }
 local Cmap = { track_map_center_x, track_map_center_y }
@@ -231,6 +237,8 @@ if Pfig == 0 then
         obj.draw(SI * se, 0, 0, 1, 1, 0, 0, 90)
         obj.draw(-SI * se, 0, 0, 1, 1, 0, 0, 90)
 
+        fix_alpha_sub_workaround("tempbuffer")
+
         obj.copybuffer("object", "tempbuffer")
         obj.effect("縁取り", "サイズ", spt, "ぼかし", 0)
         local w2, h2 = obj.getpixel()
@@ -253,6 +261,8 @@ if Pfig == 0 then
                 obj.draw(i * SI, j * SI, 0, 1, 1, 0, 0, rot)
             end
         end
+
+        fix_alpha_sub_workaround("tempbuffer")
         obj.copybuffer("object", "tempbuffer")
 
         obj.setoption("drawtarget", "framebuffer")
@@ -327,7 +337,8 @@ if Pfig == 0 then
                 end, --斜め十字
             })[mapnum]
 
-            local RR = ({ math.sqrt(nx * nx + ny * ny), math.max(nx, ny), nx + ny, math.min(nx, ny), math.max(nx, ny) })[mapnum]
+            local RR = ({ math.sqrt(nx * nx + ny * ny), math.max(nx, ny), nx + ny, math.min(nx, ny), math.max(nx, ny) })
+                [mapnum]
 
             for i = -nx, nx do
                 T[i] = {}
@@ -546,6 +557,8 @@ else
         else
             obj.draw()
         end
+
+        fix_alpha_sub_workaround("tempbuffer")
         obj.copybuffer("cache:PC1", "tmp")
         if Pfig ~= 2 and Pfig ~= 6 and Pfig ~= 10 and Pfig ~= 14 and Pfig ~= 19 and Pfig ~= 17 and Pfig ~= 22 then
             obj.setoption("drawtarget", "tempbuffer", SID, SID)
@@ -562,6 +575,8 @@ else
             obj.draw(SI, 0, 0)
             obj.draw(0, -SI, 0)
             obj.draw(0, SI, 0)
+
+            fix_alpha_sub_workaround("tempbuffer")
             obj.copybuffer("cache:PC2", "tmp")
             obj.load("figure", "四角形", 0xffffff, SI * 2)
             obj.setoption("drawtarget", "tempbuffer", SID, SID)
@@ -570,6 +585,8 @@ else
             obj.copybuffer("obj", "cache:PC2")
             obj.setoption("blend", "alpha_sub")
             obj.draw()
+
+            fix_alpha_sub_workaround("tempbuffer")
         end
         obj.copybuffer("cache:PC2", "tmp")
     end
@@ -577,9 +594,9 @@ else
         local SI = SI
         local SI2 = SI / 2
         local SI4 = SI / 4
-        local SID = 2 * SI + SI % 2 -- 四隅に隙間ができることがあるのを防止
+        local SID = 2 * SI + SI % 2                  -- 四隅に隙間ができることがあるのを防止
         local comSI2 = 2 * math.floor((SI2 + 1) / 2) -- 余分な線が入るのを防止
-        if Pfig < 0 then --レイヤー読み込み
+        if Pfig < 0 then                             --レイヤー読み込み
             obj.copybuffer("tmp", "cache:LayImg")
         elseif Pfig >= 1 and Pfig <= 4 then
             obj.setoption("drawtarget", "tempbuffer", SI, SI)
@@ -606,10 +623,14 @@ else
             obj.setoption("blend", "alpha_sub")
             obj.draw(32 * bai, -104 * bai + 100 * bai, 0, 1 / se)
             obj.draw(-32 * bai, -104 * bai + 100 * bai, 0, 1 / se)
+
+            fix_alpha_sub_workaround("tempbuffer")
             obj.copybuffer("cache:Img2", "tmp")
             obj.load("figure", "四角形", 0xffffff, 1)
             obj.setoption("blend", "alpha_sub")
             obj.drawpoly(-SI2, 0, 0, SI2, 0, 0, SI2, SI2, 0, -SI2, SI2, 0)
+
+            fix_alpha_sub_workaround("tempbuffer")
             obj.copybuffer("cache:Img1", "tmp")
             obj.copybuffer("tmp", "cache:Img2")
             obj.load("figure", "四角形", 0xffffff, 1)
@@ -637,6 +658,8 @@ else
             elseif Pfig == 8 then
                 obj.draw(0, SI + 1, 0)
             end
+
+            fix_alpha_sub_workaround("tempbuffer")
         elseif Pfig >= 9 and Pfig <= 22 then
             local x0, x1, x2, x3
             local y0, y1, y2, y3
@@ -842,6 +865,8 @@ else
                     obj.draw(i * SI, j * SI, 0)
                 end
             end
+
+            fix_alpha_sub_workaround("tempbuffer")
             obj.copybuffer("obj", "tmp")
             obj.setoption("drawtarget", "framebuffer")
             obj.setoption("blend", 0)
