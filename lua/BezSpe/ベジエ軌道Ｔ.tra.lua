@@ -6,8 +6,10 @@
 --]]
 
 local index, ratio = math.modf(obj.getpoint("index"))
+local original_ratio = ratio
 local s = obj.getpoint(index)
-local e = obj.getpoint(index + 1)
+local num = obj.getpoint("num")
+local e = index == num and obj.getpoint(index) or obj.getpoint(index + 1)
 local n = obj.getpoint("param")
 local L = obj.getpoint("link")
 
@@ -55,6 +57,7 @@ else
     if obt == L + 1 then
         return s + (e - s) * ratio
     else
-        return obj.getpoint("default")
+        -- return obj.getpoint("default")
+        return s + (e - s) * original_ratio
     end
 end
