@@ -38,19 +38,19 @@ local Bap = 1
 ---$check:輝度表示
 local check0 = true
 
+local function is_enabled(value)
+    return value == true or value == 1
+end
+
 Lw = Lw or 3
 local w = track_width
 local h = track_height
-efR = efR or 1
-Rap = Rap or 1
-Gap = Gap or 1
-Bap = Bap or 1
-require("T_Color_Module")
-obj.load("layer", track_layer, efR == 1)
+local T_Color_Module = obj.module("tim2")
+obj.load("layer", track_layer, is_enabled(efR))
 local w0, h0 = obj.getpixel()
 obj.effect("領域拡張", "右", 256 - w0, "下", h - h0)
-local userdata, w1, h1 = obj.getpixeldata()
-T_Color_Module.CreateHistogram(
+local userdata, w1, h1 = obj.getpixeldata("object", "bgra")
+T_Color_Module.color_create_histogram(
     userdata,
     256,
     h,
@@ -59,12 +59,12 @@ T_Color_Module.CreateHistogram(
     w1,
     h1,
     track_vertical_scale_percent / 100,
-    check0,
-    Rap,
-    Gap,
-    Bap
+    is_enabled(check0),
+    is_enabled(Rap),
+    is_enabled(Gap),
+    is_enabled(Bap)
 )
-obj.putpixeldata(userdata)
+obj.putpixeldata("object", userdata, w1, h1, "bgra")
 obj.effect(
     "クリッピング",
     "中心の位置を変更",

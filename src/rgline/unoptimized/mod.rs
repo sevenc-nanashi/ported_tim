@@ -137,10 +137,11 @@ fn extract_edge_strength(
 fn map_length(base_length: i32, map_sum: Option<&[u16]>, idx: usize) -> i32 {
     let base = base_length.max(0);
     if let Some(map) = map_sum
-        && idx < map.len() {
-            let s = map[idx] as i32;
-            return (base * s) / 0x2fd;
-        }
+        && idx < map.len()
+    {
+        let s = map[idx] as i32;
+        return (base * s) / 0x2fd;
+    }
     base
 }
 

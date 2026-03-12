@@ -5,14 +5,12 @@ pub(crate) static FAMILIAR_STATE: LazyLock<Mutex<crate::familiar::unoptimized::F
 
 use anyhow::{Result, ensure};
 
-#[derive(Debug, Clone, Copy)]
-#[derive(Default)]
+#[derive(Debug, Clone, Copy, Default)]
 pub struct FamiliarState {
     target_r: u8,
     target_g: u8,
     target_b: u8,
 }
-
 
 impl FamiliarState {
     pub fn get_color(&self) -> (u8, u8, u8) {

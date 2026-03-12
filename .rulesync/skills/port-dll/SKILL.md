@@ -74,11 +74,11 @@ local userdata, width, height = obj.getpixeldata("cache:work", "bgra")
 移植前は`T_${moduleName}_Module.${functionName}`のように命名されていましたが、移植後は、`${moduleName}_${functionName}`のように命名します。
 例：`T_Filter_Module.some_function` -> `filter_some_function`
 
-また、移植時は、`src/unoptimized/${moduleName}/${functionName}.rs`のように、モジュールごと・関数ごとにファイルを分割して実装します。
-例：`T_Filter_Module.some_function` -> `src/unoptimized/filter/some_function.rs`
+また、移植時は、`src/${moduleName}/${unoptimized}/${functionName}.rs`のように、モジュールごと・関数ごとにファイルを分割して実装します。
+例：`T_Filter_Module.some_function` -> `src/filter/unoptimized/some_function.rs`
 
 ## 注意点
 
-- `src/lib.rs`には実装の呼び出しのみを記述し、実装は`src/unoptimized`以下に分割して記述してください。
+- `src/${moduleName}/mod.rs`には実装の呼び出しのみを記述し、実装は`src/${moduleName}/unoptimized`以下に分割して記述してください。
 - 現時点ではとりあえず動くコードを目指すため、シングルスレッドに落としてください。
 - 乱数は`rand`クレートを使用してください。

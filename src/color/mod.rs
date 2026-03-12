@@ -803,6 +803,45 @@ impl ColorModule {
         Ok(())
     }
 
+    fn color_create_histogram(
+        image_buffer: NonNull<u8>,
+        histogram_width: usize,
+        histogram_height: usize,
+        source_width: usize,
+        source_height: usize,
+        buffer_width: usize,
+        buffer_height: usize,
+        vertical_scale: f64,
+        show_luminance: bool,
+        show_red: bool,
+        show_green: bool,
+        show_blue: bool,
+    ) -> anyhow::Result<()> {
+        let buffer_size = buffer_width
+            .checked_mul(buffer_height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
+        crate::color::unoptimized::histogram::create_histogram(
+            image_buffer,
+            crate::color::unoptimized::histogram::CreateHistogramParams {
+                histogram_width,
+                histogram_height,
+                source_width,
+                source_height,
+                buffer_width,
+                buffer_height,
+                vertical_scale,
+                show_luminance,
+                show_red,
+                show_green,
+                show_blue,
+            },
+        )?;
+        Ok(())
+    }
+
     fn color_save_g_image(
         image_buffer: NonNull<u8>,
         width: usize,

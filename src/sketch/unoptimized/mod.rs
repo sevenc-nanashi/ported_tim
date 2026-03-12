@@ -65,10 +65,7 @@ pub fn sketch(
 
     let mut position_noise = Vec::with_capacity(grid_count);
     for _ in 0..grid_count {
-        position_noise.push([
-            rng.random_range(0..0x1000),
-            rng.random_range(0..0x1000),
-        ]);
+        position_noise.push([rng.random_range(0..0x1000), rng.random_range(0..0x1000)]);
     }
     let mut color_noise = Vec::with_capacity(grid_count);
     for _ in 0..grid_count {

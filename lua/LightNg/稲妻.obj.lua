@@ -80,7 +80,7 @@ local AS = { -180, -180, 180, 180 }
 ---$check:枠表示
 local check_show_frame = true
 
-function Lightning(stx, sty, enx, eny, c_d, c_s)
+function Lightning(stx, sty, enx, eny, c_d, c_s, stl, f_n, gr)
     if c_d < 0.3 then
         return
     end
@@ -140,7 +140,7 @@ function Lightning(stx, sty, enx, eny, c_d, c_s)
                 frnd = frnd + 1
                 f_n = f_n - 1
                 local gx = obj.rand(-gr, gr, i, 13 + frnd) * 0.01 * Ly
-                Lightning(stx + ox, sty + oy, enx + gx, eny, c_d * 0.8 * gen, c_s * 0.8 * gen)
+                Lightning(stx + ox, sty + oy, enx + gx, eny, c_d * 0.8 * gen, c_s * 0.8 * gen, stl, f_n, gr)
                 bl[j] = nil
             end
         end
@@ -187,7 +187,7 @@ obj.setoption("drawtarget", "tempbuffer", math.abs(ASx1 - ASx0), math.abs(ASy1 -
 
 obj.load("figure", "円", c_col, Ac_s)
 
-Lightning(stx - cx, sty - cy, enx - cx, eny - cy, c_d, Ac_s)
+Lightning(stx - cx, sty - cy, enx - cx, eny - cy, c_d, Ac_s, stl, f_n, gr)
 
 if obj.getoption("gui") == true and obj.getinfo("saving") == false and check_show_frame then
     obj.load("figure", "四角形", 0xffffff, 100)
