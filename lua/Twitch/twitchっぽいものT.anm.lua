@@ -248,7 +248,7 @@ local dir_name_map = {
     [2] = "緑青A",
     [3] = "赤緑B",
     [4] = "赤青B",
-    [5] = "緑青B"
+    [5] = "緑青B",
 }
 obj.effect("色ずれ", "ずれ幅", dc, "角度", deg, "色ずれの種類", dir_name_map[Cdir] or "赤緑A")
 obj.setoption("drawtarget", "tempbuffer", w, h)
