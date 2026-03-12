@@ -11,7 +11,7 @@ local track_twist_amount = 50
 ---step=0.1
 local track_rotation = 0
 
----$track:中心ｽﾞﾚ
+---$track:中心ズレ
 ---min=-5000
 ---max=5000
 ---step=0.1
@@ -26,20 +26,38 @@ local track_switch_video = 0
 ---$check:レイヤー読込
 local check0 = true
 
----$value:分割
-local N = 25
+---$track:分割数
+---min=5
+---max=300
+---step=1
+local track_division_count = 25
 
----$value:収束半径
-local dr = 0.1
+---$track:収束半径
+---min=0
+---max=5000
+---step=0.01
+local track_convergence_radius = 0.1
 
----$value:シェーディング[%]
-local sdg = 100
+---$track:シェーディング[%]
+---min=0
+---max=100
+---step=0.1
+local track_shading_strength = 100
 
----$check:ｼｪｰﾃﾞｨﾝｸﾞを逆に
-local srev = 0
+---$check:シェーディングを逆に
+local check_reverse_shading = 0
 
----$value:範囲拡張
-local dwh = { 0, 0 }
+---$track:範囲拡張X
+---min=-5000
+---max=5000
+---step=1
+local track_expand_x = 0
+
+---$track:範囲拡張Y
+---min=-5000
+---max=5000
+---step=1
+local track_expand_y = 0
 
 local Twister = function(
     posx,
@@ -248,6 +266,7 @@ local MakeShading = function(cx, cy, wd, hd, sin, cos, Cw, sdg, srev)
 end
 
 if check0 == false then
+    error("extbufferは未実装です")
     require("extbuffer")
 end
 
@@ -257,10 +276,11 @@ local Rt = math.rad(180 - Do)
 local Cw = track_center_offset
 local id = math.floor(track_switch_video)
 
-N = math.floor(math.max(N, 5))
-dr = math.abs(dr or 0.1) --前Verとの互換
-sdg = math.abs(sdg or 100) * 0.01 --前Verとの互換
-dwh = dwh or { 0, 0 } --前Verとの互換
+local division_count = math.floor(math.max(track_division_count or 25, 5))
+local convergence_radius = math.abs(track_convergence_radius or 0.1)
+local shading_strength = math.abs(track_shading_strength or 100) * 0.01
+local expand_x = track_expand_x or 0
+local expand_y = track_expand_y or 0
 
 local w, h = obj.getpixel()
 local w2, h2 = w * 0.5, h * 0.5
@@ -274,10 +294,10 @@ local wd = w * math.abs(cos) + h * math.abs(sin)
 local cx = Tw * hd * sin * 2
 local cy = Tw * hd * cos * 2
 
-if sdg > 0 then
+if shading_strength > 0 then
     obj.setoption("drawtarget", "tempbuffer", w, h)
     obj.draw()
-    MakeShading(cx, cy, wd, hd, sin, cos, Cw, sdg, srev)
+    MakeShading(cx, cy, wd, hd, sin, cos, Cw, shading_strength, check_reverse_shading)
     obj.copybuffer("cache:img0", "tmp")
 else
     obj.copybuffer("cache:img0", "obj")
@@ -290,10 +310,10 @@ if id > 0 then
         obj.load("layer", id, true)
     end
 
-    if sdg > 0 then
+    if shading_strength > 0 then
         obj.setoption("drawtarget", "tempbuffer", w, h)
         obj.draw()
-        MakeShading(cx, cy, wd, hd, sin, cos, Cw, sdg, srev)
+        MakeShading(cx, cy, wd, hd, sin, cos, Cw, shading_strength, check_reverse_shading)
         obj.copybuffer("cache:img1", "tmp")
     else
         obj.copybuffer("cache:img1", "obj")
@@ -306,12 +326,12 @@ else
     obj.copybuffer("cache:img1", "obj")
 end
 
-obj.setoption("drawtarget", "tempbuffer", w + dwh[1], h + dwh[2])
+obj.setoption("drawtarget", "tempbuffer", math.max(w + expand_x, 1), math.max(h + expand_y, 1))
 obj.setoption("blend", "alpha_add")
 
 local posx = {}
 local posy = {}
-for i = 0, N do
+for i = 0, division_count do
     posx[i] = {}
     posy[i] = {}
 end
@@ -375,7 +395,7 @@ if kasan == 3 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -386,7 +406,7 @@ if kasan == 3 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         num,
         muki,
         z[0],
@@ -406,7 +426,7 @@ if kasan == 3 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -417,7 +437,7 @@ if kasan == 3 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         1 - num,
         muki,
         w2,
@@ -439,7 +459,7 @@ elseif kasan == 6 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -450,7 +470,7 @@ elseif kasan == 6 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         num,
         muki,
         w2,
@@ -470,7 +490,7 @@ elseif kasan == 6 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -481,7 +501,7 @@ elseif kasan == 6 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         1 - num,
         muki,
         z[2],
@@ -503,7 +523,7 @@ elseif kasan == 12 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -514,7 +534,7 @@ elseif kasan == 12 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         num,
         muki,
         z[2],
@@ -534,7 +554,7 @@ elseif kasan == 12 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -545,7 +565,7 @@ elseif kasan == 12 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         1 - num,
         muki,
         -w2,
@@ -567,7 +587,7 @@ elseif kasan == 9 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -578,7 +598,7 @@ elseif kasan == 9 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         num,
         muki,
         -w2,
@@ -598,7 +618,7 @@ elseif kasan == 9 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -609,7 +629,7 @@ elseif kasan == 9 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         1 - num,
         muki,
         z[0],
@@ -631,7 +651,7 @@ elseif kasan == 5 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -642,7 +662,7 @@ elseif kasan == 5 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         num,
         muki,
         -w2,
@@ -660,7 +680,7 @@ elseif kasan == 5 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -671,7 +691,7 @@ elseif kasan == 5 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         1 - num,
         muki,
         w2,
@@ -695,7 +715,7 @@ elseif kasan == 10 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -706,7 +726,7 @@ elseif kasan == 10 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         num,
         muki,
         -w2,
@@ -724,7 +744,7 @@ elseif kasan == 10 then
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -735,7 +755,7 @@ elseif kasan == 10 then
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         1 - num,
         muki,
         w2,
@@ -759,7 +779,7 @@ else
         Tw,
         Rt,
         Cw,
-        N,
+        division_count,
         w,
         h,
         w2,
@@ -770,7 +790,7 @@ else
         hd,
         cx,
         cy,
-        dr,
+        convergence_radius,
         num,
         muki,
         -w2,
