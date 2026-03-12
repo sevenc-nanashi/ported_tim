@@ -24,49 +24,77 @@ local track_shape = 3000
 local track_unfold = 100
 
 ---$color:色
-local col = "0xffffff"
+local col = 0xffffff
 
----$value:本体拡大率%
-local Hzm = 100
+---$track:本体拡大率%
+---min=0
+---max=300
+---step=0.1
+local track_body_scale_percent = 100
 
----$value:飛沫数1
-local wN = 5
+---$track:飛沫数1
+---min=0
+---max=100
+---step=1
+local track_splash_count_1 = 5
 
----$value:飛沫数2
-local tN = 4
+---$track:飛沫数2
+---min=0
+---max=100
+---step=1
+local track_splash_count_2 = 4
 
----$value:飛散1幅拡大率%
-local zm1 = 100
+---$track:飛散1幅拡大率%
+---min=0
+---max=300
+---step=0.1
+local track_splash_1_width_scale_percent = 100
 
----$value:飛散2拡大率%
-local zm2 = 100
+---$track:飛散2拡大率%
+---min=0
+---max=300
+---step=0.1
+local track_splash_2_scale_percent = 100
 
----$value:飛散2歪み%
-local H2as = 0
+---$track:飛散2歪み%
+---min=0
+---max=100
+---step=0.1
+local track_splash_2_distortion_percent = 0
 
----$value:本体変化乱数
-local Hseed0 = 0
+---$track:本体変化乱数
+---min=0
+---max=100000
+---step=1
+local track_body_shape_seed = 0
 
----$value:飛散変化乱数1
-local Hseed1 = 0
+---$track:飛散変化乱数1
+---min=0
+---max=100000
+---step=1
+local track_splash_seed_1 = 0
 
----$value:飛散変化乱数2
-local Hseed2 = 0
+---$track:飛散変化乱数2
+---min=0
+---max=100000
+---step=1
+local track_splash_seed_2 = 0
 
 ---$check:新描画法
-local NewP = 1
+local check_use_new_rendering = true
 
-NewP = NewP or 0
+local use_new_rendering = check_use_new_rendering == true or check_use_new_rendering == 1
+local wN = math.floor(math.abs(track_splash_count_1 or 0))
+local tN = math.floor(math.abs(track_splash_count_2 or 0))
+local Hseed0 = math.floor(math.abs(track_body_shape_seed or 0))
+local Hseed1 = math.floor(math.abs(track_splash_seed_1 or 0))
+local Hseed2 = math.floor(math.abs(track_splash_seed_2 or 0))
+local Hzm = (track_body_scale_percent or 100) * 0.01
+local zm1 = (track_splash_1_width_scale_percent or 100) * 0.01
+local zm2 = (track_splash_2_scale_percent or 100) * 0.01
+local H2as = (track_splash_2_distortion_percent or 0) * 0.02
 
-if NewP == 1 then
-    Hseed0 = math.floor(math.abs(Hseed0 or 0))
-    Hseed1 = math.floor(math.abs(Hseed1 or 0))
-    Hseed2 = math.floor(math.abs(Hseed2 or 0))
-    Hzm = (Hzm or 100) * 0.01
-    zm1 = (zm1 or 100) * 0.01
-    zm2 = (zm2 or 100) * 0.01
-    H2as = (H2as or 0) * 0.02
-
+if use_new_rendering then
     local L = track_size
     local Cp = track_roundness * 0.01
     local Lh = L * 0.5

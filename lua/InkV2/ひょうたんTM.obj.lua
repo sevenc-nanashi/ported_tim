@@ -24,26 +24,33 @@ local track_neck = 10
 local track_squash = 40
 
 ---$color:色
-local col = "0xffffff"
+local col = 0xffffff
 
----$value:分割
-local N = 30
+---$track:分割数
+---min=1
+---max=200
+---step=1
+local track_segment_count = 30
 
----$value:繰り返し
-local rpN = 1
+---$track:繰り返し
+---min=1
+---max=180
+---step=1
+local track_repeat_count = 1
 
 ---$check:高精度
-local HA = 0
-
-HA = HA or 0
+local check_high_accuracy = false
 
 local r1 = track_height * 0.5
 local w = track_width * 0.5
 local q = track_neck * 0.5
 local asp = 1 - track_squash * 0.01
+local N = math.max(1, math.floor(track_segment_count or 30))
+local rpN = math.max(1, math.floor(track_repeat_count or 1))
+local use_high_accuracy = check_high_accuracy == true or check_high_accuracy == 1
 r1 = math.min(w, r1)
 q = math.min(q, r1)
-if HA == 1 then
+if use_high_accuracy then
     r1, w, q = 2 * r1, 2 * w, 2 * q
 end
 
@@ -61,8 +68,6 @@ end
 
 local N1 = N
 local N2 = N
-
-rpN = math.max(1, math.floor(rpN))
 
 obj.setoption("drawtarget", "tempbuffer", 2 * w, 2 * r1 * asp)
 
@@ -106,6 +111,6 @@ if rpN > 1 then
     obj.load("tempbuffer")
 end
 
-if HA == 1 then
+if use_high_accuracy then
     obj.effect("リサイズ", "拡大率", 50)
 end
