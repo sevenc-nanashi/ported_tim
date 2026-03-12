@@ -14,5 +14,5 @@ else
     obj.setoption("dst", "tmp")
 end
 obj.draw((((i - 1) % 2) - 0.5) * obj.screen_w, (math.floor((i - 1) / 2) - 0.5) * obj.screen_h, 0)
-obj.copybuffer("cache:__ichijitekinihozon__", "tmp")
+obj.copybuffer("cache:__ichijitekinihozon__", "tempbuffer")
 obj.alpha = 0

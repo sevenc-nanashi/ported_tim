@@ -9,7 +9,7 @@ local track_load_target = 1
 local check0 = true
 
 i = track_load_target
-obj.copybuffer("obj", "cache:__ichijitekinihozon__")
+obj.copybuffer("object", "cache:__ichijitekinihozon__")
 if not check0 then
     if i == 1 then
         obj.effect("クリッピング", "右", obj.screen_w, "下", obj.screen_h)
