@@ -1,7 +1,7 @@
 --label:tim2\アニメーション効果
 ---$track:αレイヤー
 ---min=1
----max=100
+---max=1000
 ---step=1
 local track_alpha_layer = 1
 

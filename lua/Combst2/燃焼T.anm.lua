@@ -60,7 +60,7 @@ local select_blend_mode = 1
 
 ---$track:レイヤー指定
 ---min=0
----max=100
+---max=1000
 ---step=1
 local track_layer_index = 0
 

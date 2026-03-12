@@ -1,60 +1,98 @@
 --label:tim2\カメラ制御
----$track:ﾀｰｹﾞｯﾄ
+---$track:ターゲット
 ---min=1
 ---max=100
 ---step=0.01
-local rename_me_track0 = 1
+local track_target_index = 1
 
----$track:ｶﾒﾗ距離
+---$track:カメラ距離
 ---min=0
 ---max=20000
 ---step=0.1
-local rename_me_track1 = 1024
+local camera_distance = 1024
 
 ---$track:イーズ
 ---min=0
 ---max=100
 ---step=0.1
-local rename_me_track2 = 20
+local easing = 20
 
 ---$track:なめらか
 ---min=0
 ---max=1
 ---step=0.1
-local rename_me_track3 = 1
+local smoothness = 1
 
----$value:ターゲット1
-local tar1 = nil
-
----$value:ターゲット2
-local tar2 = nil
-
----$value:ターゲット3
-local tar3 = nil
-
----$value:ターゲット4
-local tar4 = nil
-
----$value:ターゲット5
-local tar5 = nil
-
----$value:ターゲット6
-local tar6 = nil
-
----$value:ターゲット7
-local tar7 = nil
-
----$value:ターゲット8
-local tar8 = nil
-
----$value:ターゲット9
-local tar9 = nil
-
----$value:ターゲット10
-local tar10 = nil
-
----$value:指定方法
+---$select:指定方法
+---絶対値=0
+---カメラからの相対値=1
+---前ターゲットからの相対値=2
 local setM = 0
+
+--group:ターゲット指定
+
+---$value:ターゲット一覧
+local targets = {}
+
+---$track:ターゲット1
+---min=0
+---max=1000
+---step=1
+local tar1 = 0
+
+---$track:ターゲット2
+---min=0
+---max=1000
+---step=1
+local tar2 = 0
+
+---$track:ターゲット3
+---min=0
+---max=1000
+---step=1
+local tar3 = 0
+
+---$track:ターゲット4
+---min=0
+---max=1000
+---step=1
+local tar4 = 0
+
+---$track:ターゲット5
+---min=0
+---max=1000
+---step=1
+local tar5 = 0
+
+---$track:ターゲット6
+---min=0
+---max=1000
+---step=1
+local tar6 = 0
+
+---$track:ターゲット7
+---min=0
+---max=1000
+---step=1
+local tar7 = 0
+
+---$track:ターゲット8
+---min=0
+---max=1000
+---step=1
+local tar8 = 0
+
+---$track:ターゲット9
+---min=0
+---max=1000
+---step=1
+local tar9 = 0
+
+---$track:ターゲット10
+---min=0
+---max=1000
+---step=1
+local tar10 = 0
 
 local type = function(v)
     local v = v
@@ -84,8 +122,8 @@ setM = math.floor(setM)
 
 local target = {}
 local tarN
-if type(tar1) == "table" then
-    target = tar1
+if #targets > 0 then
+    target = targets
     tarN = #target
 else
     target = { tar1, tar2, tar3, tar4, tar5, tar6, tar7, tar8, tar9, tar10 }
@@ -98,9 +136,9 @@ else
     end
 end
 
-local tn = rename_me_track0
-local CL = rename_me_track1
-local ez = rename_me_track2 / 10
+local tn = track_target_index
+local CL = camera_distance
+local ez = easing / 10
 if tn > tarN then
     tn = tarN
 end
@@ -151,7 +189,7 @@ local cam = obj.getoption("camera_param")
 
 local crxd, cryd, crzd
 
-if rename_me_track3 == 0 then
+if smoothness == 0 then
     cam.tx = tni * tarData[tn1].x + tn * tarData[tn2].x
     cam.ty = tni * tarData[tn1].y + tn * tarData[tn2].y
     cam.tz = tni * tarData[tn1].z + tn * tarData[tn2].z

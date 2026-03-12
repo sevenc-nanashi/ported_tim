@@ -1,7 +1,7 @@
 --label:tim2\色調整
 ---$track:レイヤー
 ---min=1
----max=100
+---max=1000
 ---step=1
 local track_layer = 1
 

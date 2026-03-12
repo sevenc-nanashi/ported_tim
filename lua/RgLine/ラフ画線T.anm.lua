@@ -91,7 +91,7 @@ local track_extract_threshold = 0
 
 ---$track:参照レイヤー
 ---min=0
----max=100
+---max=1000
 ---step=1
 local track_map_layer = 0
 

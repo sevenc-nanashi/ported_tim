@@ -25,7 +25,7 @@ local track_offset = 0
 
 ---$track:変形前画像レイヤー
 ---min=0
----max=100
+---max=1000
 ---step=1
 local inum = 0
 
