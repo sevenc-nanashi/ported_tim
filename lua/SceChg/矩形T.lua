@@ -3,19 +3,25 @@
 ---min=5
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 100
+local track_width = 100
 
 ---$track:角度
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rename_me_track1 = 0
+local track_angle = 0
 
----$value:先端幅[0〜50]％
-local S2 = 35
+---$track:先端幅％
+---min=0
+---max=50
+---step=0.1
+local track_tip_width_percent = 35
 
----$value:高さ
-local D0 = 50
+---$track:高さ
+---min=1
+---max=1000
+---step=0.1
+local track_height = 50
 
 local ROT = function(x, y, cos, sin)
     return x * cos - y * sin, x * sin + y * cos
@@ -24,21 +30,22 @@ end
 local w = obj.w
 local h = obj.h
 
-if S2 > 50 then
-    S2 = 50
-elseif S2 < 0 then
-    S2 = 0
+if track_tip_width_percent > 50 then
+    track_tip_width_percent = 50
+elseif track_tip_width_percent < 0 then
+    track_tip_width_percent = 0
 end
 local t = 1 - obj.getvalue("scenechange")
 
-local S0 = rename_me_track0
-S2 = S0 * S2 * 0.01
+local S0 = track_width
+local S2 = S0 * track_tip_width_percent * 0.01
 local S1 = S0 - S2
 local S1h = S1 * 0.5
 local S2h = S2 * 0.5
+local D0 = track_height
 local D0h = D0 * 0.5
 
-local deg = rename_me_track1
+local deg = track_angle
 local rad = deg * math.pi / 180
 
 obj.copybuffer("cache:bf", "obj")
@@ -93,6 +100,9 @@ x2, y2 = ROT(w2, h2, cos, sin)
 x3, y3 = ROT(-w2, h2, cos, sin)
 obj.drawpoly(x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0)
 
-obj.copybuffer("obj", "tmp")
+-- NOTE: AviUtl2 beta36a現在、alpha_subで描画した部分のアルファ値がマイナスになると描画がおかしくなるので、u8の範囲で飽和させてから描画するようにする
+obj.putpixeldata("tempbuffer", obj.getpixeldata("tempbuffer"))
+
+obj.copybuffer("object", "tempbuffer")
 obj.setoption("drawtarget", "framebuffer")
 obj.draw()
