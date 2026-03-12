@@ -3,23 +3,29 @@
 ---min=10
 ---max=2000
 ---step=0.1
-local rename_me_track0 = 100
+local track_size = 100
 
 ---$track:開時間％
 ---min=0.1
 ---max=100
 ---step=0.1
-local rename_me_track1 = 10
+local track_open_duration_percent = 10
 
----$value:ランダム性％
-local rdp = 100
+---$track:ランダム性％
+---min=0
+---max=100
+---step=0.1
+local track_randomness_percent = 100
 
----$value:乱数シード
-local seed = 5
+---$track:乱数シード
+---min=0
+---max=100000
+---step=1
+local track_random_seed = 5
 
 local T = obj.getvalue("scenechange")
-local sz = rename_me_track0
-local opt = rename_me_track1 * 0.01
+local sz = track_size
+local opt = track_open_duration_percent * 0.01
 local clt = 1 - opt
 local w = obj.w
 local h = obj.h
@@ -29,11 +35,12 @@ local nx = math.ceil(w / sz)
 local ny = math.ceil(h / sz)
 local szh = sz
 local szb = 2 * sz
-rdp = rdp * 0.01
-if rdp < 0 then
-    rdp = 1
-elseif rdp > 1 then
-    rdp = 1
+local random_offset_rate = track_randomness_percent * 0.01
+local random_seed = math.floor(track_random_seed)
+if random_offset_rate < 0 then
+    random_offset_rate = 0
+elseif random_offset_rate > 1 then
+    random_offset_rate = 1
 end
 local x = {}
 local y = {}
@@ -43,8 +50,8 @@ for i = 0, nx do
     y[i] = {}
     local ix = i * sz
     for j = 0, ny do
-        x[i][j] = ix + obj.rand(-sz, sz, i, j + seed + 1000) * rdp
-        y[i][j] = j * sz + obj.rand(-sz, sz, i, j + seed + 2000) * rdp
+        x[i][j] = ix + obj.rand(-sz, sz, i, j + random_seed + 1000) * random_offset_rate
+        y[i][j] = j * sz + obj.rand(-sz, sz, i, j + random_seed + 2000) * random_offset_rate
     end
 end
 
@@ -64,7 +71,7 @@ local sttmin = 1000
 for i = 0, nx - 1 do
     stt[i] = {}
     for j = 0, ny - 1 do
-        stt[i][j] = obj.rand(0, 1000, i, j + seed + 3000)
+        stt[i][j] = obj.rand(0, 1000, i, j + random_seed + 3000)
         if sttmax < stt[i][j] then
             sttmax = stt[i][j]
         end
@@ -81,9 +88,8 @@ for i = 0, nx - 1 do
     end
 end
 
-obj.copybuffer("tmp", "obj")
-obj.setoption("drawtarget", "tempbuffer")
-obj.setoption("blend", "alpha_sub")
+obj.copybuffer("cache:original", "object")
+obj.setoption("drawtarget", "tempbuffer", obj.getpixel())
 
 obj.load("figure", "円", 0xffffff, szb)
 for i = 0, nx - 1 do
@@ -105,6 +111,12 @@ for i = 0, nx - 1 do
     end
 end
 
-obj.copybuffer("obj", "tmp")
+obj.copybuffer("cache:delete_area", "tempbuffer")
+obj.copybuffer("tempbuffer", "cache:original")
+obj.setoption("blend", "alpha_sub")
+obj.copybuffer("object", "cache:delete_area")
+obj.draw()
+obj.copybuffer("object", "tempbuffer")
 obj.setoption("drawtarget", "framebuffer")
+obj.setoption("blend", "none")
 obj.draw()
