@@ -3,7 +3,7 @@
 ---min=1
 ---max=1000
 ---step=0.1
-local rename_me_track0 = 50
+local size = 50
 
 ---$check:タイル風
 local te = 0
@@ -12,10 +12,10 @@ local te = 0
 local ho = 1
 
 ---$check:滑らか
-local rename_me_check0 = false
+local smooth = false
 
 local t = obj.getvalue("scenechange")
-if rename_me_check0 then
+if smooth then
     t = t * t * (3 - 2 * t)
 end
 local a = 4 * t - 1.5
@@ -24,7 +24,7 @@ if a < 0 then
 elseif a > 1 then
     a = 1
 end
-local s = (rename_me_track0 - 1) * (1 - math.abs(2 * t - 1)) + 1
+local s = (size - 1) * (1 - math.abs(2 * t - 1)) + 1
 if te == 1 and ho == 1 and s < 10 then
     obj.copybuffer("cache:bf", "obj")
 end
