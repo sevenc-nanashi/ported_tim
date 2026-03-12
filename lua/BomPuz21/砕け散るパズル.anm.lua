@@ -131,7 +131,6 @@ local FBR = 0
 ---$check:マップ反転
 local check0 = false
 
-
 -- NOTE: AviUtl2 beta36a現在、alpha_subで描画した部分のアルファ値がマイナスになると描画がおかしくなるので、u8の範囲で飽和させてから描画するようにする
 local function fix_alpha_sub_workaround(target)
     obj.putpixeldata(target, obj.getpixeldata(target))
@@ -337,8 +336,7 @@ if Pfig == 0 then
                 end, --斜め十字
             })[mapnum]
 
-            local RR = ({ math.sqrt(nx * nx + ny * ny), math.max(nx, ny), nx + ny, math.min(nx, ny), math.max(nx, ny) })
-                [mapnum]
+            local RR = ({ math.sqrt(nx * nx + ny * ny), math.max(nx, ny), nx + ny, math.min(nx, ny), math.max(nx, ny) })[mapnum]
 
             for i = -nx, nx do
                 T[i] = {}
@@ -594,9 +592,9 @@ else
         local SI = SI
         local SI2 = SI / 2
         local SI4 = SI / 4
-        local SID = 2 * SI + SI % 2                  -- 四隅に隙間ができることがあるのを防止
+        local SID = 2 * SI + SI % 2 -- 四隅に隙間ができることがあるのを防止
         local comSI2 = 2 * math.floor((SI2 + 1) / 2) -- 余分な線が入るのを防止
-        if Pfig < 0 then                             --レイヤー読み込み
+        if Pfig < 0 then --レイヤー読み込み
             obj.copybuffer("tmp", "cache:LayImg")
         elseif Pfig >= 1 and Pfig <= 4 then
             obj.setoption("drawtarget", "tempbuffer", SI, SI)

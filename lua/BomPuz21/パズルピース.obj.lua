@@ -93,7 +93,7 @@ end
 
 local SI2 = SI / 2
 local SI4 = SI / 4
-local SID = 2 * SI + SI % 2                  -- 四隅に隙間ができることがあるのを防止
+local SID = 2 * SI + SI % 2 -- 四隅に隙間ができることがあるのを防止
 local comSI2 = 2 * math.floor((SI2 + 1) / 2) -- 余分な線が入るのを防止
 
 if Pfig >= 1 and Pfig <= 4 then
