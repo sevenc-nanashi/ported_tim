@@ -1,5 +1,5 @@
 --label:tim2\カスタムオブジェクト
----$track:ｱﾝｶｰ数
+---$track:アンカー数
 ---min=1
 ---max=16
 ---step=1
@@ -26,7 +26,7 @@ local track_percent = 240
 ---$color:線色
 local line_col = 0xff0000
 
----$value:表示指示
+---$string:表示指示
 local po = "10"
 
 ---$check:角丸
@@ -35,17 +35,23 @@ local roc = 0
 ---$check:結合
 local alc = 0
 
----$value:Xスナップ
-local xsp = 0
+---$track:Xスナップ
+---min=1
+---max=500
+---step=1
+local track_snap_x = 30
 
----$value:Yスナップ
-local ysp = 0
+---$track:Yスナップ
+---min=1
+---max=500
+---step=1
+local track_snap_y = 30
 
 ---$value:座標
 local anc = { -150, -100, 150, -100, -150, 100, 150, 100 }
 
 ---$check:矢印位置反転
-local check0 = false
+local check_reverse_arrow_position = false
 
 --ver1.1
 
@@ -53,8 +59,8 @@ local line_col = line_col or 0xff0000
 local po = po or 1
 local roc = roc
 local alc = alc
-local xsp = math.abs(xsp or 0)
-local ysp = math.abs(ysp or 0)
+local snap_x = math.abs(track_snap_x or 0)
+local snap_y = math.abs(track_snap_y or 0)
 
 local acN = track_count
 
@@ -77,22 +83,22 @@ for i = 1, acN do
     X[i] = anc[2 * i - 1]
     Y[i] = anc[2 * i]
 
-    if xsp > 0 then
-        X[i] = X[i] + xsp * 0.5
-        local N = math.floor(X[i] / xsp)
-        X[i] = N * xsp
+    if snap_x > 0 then
+        X[i] = X[i] + snap_x * 0.5
+        local N = math.floor(X[i] / snap_x)
+        X[i] = N * snap_x
     end
-    if ysp > 0 then
-        Y[i] = Y[i] + ysp * 0.5
-        local N = math.floor(Y[i] / ysp)
-        Y[i] = N * ysp
+    if snap_y > 0 then
+        Y[i] = Y[i] + snap_y * 0.5
+        local N = math.floor(Y[i] / snap_y)
+        Y[i] = N * snap_y
     end
 
     j = ((i - 1) % DataL) + 1
     mset[i] = mset[j]
 end
 
-if check0 then
+if check_reverse_arrow_position then
     for i = 1, acN / 2 do
         X[i], X[acN + 1 - i] = X[acN + 1 - i], X[i]
         Y[i], Y[acN + 1 - i] = Y[acN + 1 - i], Y[i]
