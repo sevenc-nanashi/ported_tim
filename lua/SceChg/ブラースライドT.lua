@@ -3,16 +3,18 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 50
+local track_blur_amount = 50
 
----$track:流れ方向
----min=0
----max=1
+---$select:流れ方向
+---横=0
+---縦=1
+local select_flow_direction = 0
+
+---$track:分割数
+---min=1
+---max=100
 ---step=1
-local rename_me_track1 = 0
-
----$value:分割数
-local SC = 20
+local track_split_count = 20
 
 local calP = function(s, N)
     local t
@@ -37,29 +39,30 @@ local calP = function(s, N)
     return t
 end
 
-local range = rename_me_track0 * 0.5
-local stype = rename_me_track1
+local range = track_blur_amount * 0.5
+local stype = math.floor(select_flow_direction)
+local split_count = math.floor(track_split_count)
 
-local TF = obj.totalframe
+local TF = obj.totalframe - 1
 local N = (TF + 2) * 0.5
-local s = math.floor(obj.getvalue("scenechange") * (TF + 2) - 0.5)
+local s = obj.frame -- math.floor(obj.getvalue("scenechange") * TF)
 
 local w, h = obj.getpixel()
 local w2, h2 = w / 2, h / 2
 
-obj.copybuffer("cache:ch", "obj")
+obj.copybuffer("cache:ch", "object")
+obj.copybuffer("cache:after", "framebuffer")
 obj.setoption("drawtarget", "tempbuffer", w, h)
 
 if stype == 0 then
     obj.drawpoly(-w2, -h2, 0, 0, -h2, 0, 0, h2, 0, -w2, h2, 0)
-    obj.copybuffer("obj", "frm")
+    obj.copybuffer("object", "cache:after")
     obj.drawpoly(0, -h2, 0, w2, -h2, 0, w2, h2, 0, 0, h2, 0)
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
     obj.effect("方向ブラー", "範囲", range, "角度", -90, "サイズ固定", 1)
-    obj.setoption("antialias", 0)
-    local dx = 1 / SC
-    local dw = w / SC
-    for i = 0, SC - 1 do
+    local dx = 1 / split_count
+    local dw = w / split_count
+    for i = 0, split_count - 1 do
         local x0 = s * 0.5 + i * dx
         local x1 = x0 + dx
         local u0 = w * calP(x0, N)
@@ -84,10 +87,9 @@ else
     obj.drawpoly(-w2, 0, 0, w2, 0, 0, w2, h2, 0, -w2, h2, 0)
     obj.copybuffer("obj", "tmp")
     obj.effect("方向ブラー", "範囲", range, "角度", 0, "サイズ固定", 1)
-    obj.setoption("antialias", 0)
-    local dy = 1 / SC
-    local dh = h / SC
-    for i = 0, SC - 1 do
+    local dy = 1 / split_count
+    local dh = h / split_count
+    for i = 0, split_count - 1 do
         local y0 = s * 0.5 + i * dy
         local y1 = y0 + dy
         local v0 = h * calP(y0, N)
@@ -108,6 +110,6 @@ else
     end
 end
 
-obj.copybuffer("obj", "tmp")
+obj.copybuffer("object", "tempbuffer")
 obj.setoption("drawtarget", "framebuffer")
 obj.draw()
