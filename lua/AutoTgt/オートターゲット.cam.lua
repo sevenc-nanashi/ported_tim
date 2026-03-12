@@ -17,17 +17,14 @@ local camera_distance = 1024
 ---step=0.1
 local easing = 20
 
----$track:なめらか
----min=0
----max=1
----step=0.1
-local smoothness = 1
+---$check:なめらか
+local check_smooth = true
 
 ---$select:指定方法
 ---絶対値=0
 ---カメラからの相対値=1
 ---前ターゲットからの相対値=2
-local setM = 0
+local target_set_method = 0
 
 --group:ターゲット指定
 
@@ -118,7 +115,11 @@ local type = function(v)
     return "number"
 end
 
-setM = math.floor(setM)
+local function is_enabled(value)
+    return value == true or value == 1
+end
+
+target_set_method = math.floor(target_set_method)
 
 local target = {}
 local tarN
@@ -143,11 +144,11 @@ if tn > tarN then
     tn = tarN
 end
 
-if setM == 1 then
+if target_set_method == 1 then
     for i = 1, tarN do
         target[i] = target[i] + obj.layer
     end
-elseif setM == 2 then
+elseif target_set_method == 2 then
     local sum = obj.layer
     for i = 1, tarN do
         sum = sum + target[i]
@@ -189,7 +190,7 @@ local cam = obj.getoption("camera_param")
 
 local crxd, cryd, crzd
 
-if smoothness == 0 then
+if not is_enabled(check_smooth) then
     cam.tx = tni * tarData[tn1].x + tn * tarData[tn2].x
     cam.ty = tni * tarData[tn1].y + tn * tarData[tn2].y
     cam.tz = tni * tarData[tn1].z + tn * tarData[tn2].z
