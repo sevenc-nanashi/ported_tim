@@ -131,7 +131,7 @@ if orAP == 1 or fiAP == 1 then
     obj.putpixeldata("object", userdata, w, h, "bgra")
     obj.copybuffer("cache:dst", "object")
 
-    obj.effect("グロー", "強さ", 40, "拡散", 0, "しきい値", 0, "ぼかし", 1, "形状", "通常")
+    obj.effect("グロー", "強さ", 40, "拡散", 15, "しきい値", 0, "ぼかし", 1, "形状", "通常")
 
     -- NOTE: rgbをu8の範囲で飽和させる
     userdata, w, h = obj.getpixeldata("object", "bgra")
@@ -148,7 +148,9 @@ if orAP == 1 or fiAP == 1 then
         obj.effect("反転", "透明度反転", 1)
         obj.setoption("blend", "alpha_sub")
         obj.draw()
-        obj.draw()
+
+        -- NOTE: AviUtl2 beta36a現在、alpha_subで描画した部分のアルファ値がマイナスになると描画がおかしくなるので、u8の範囲で飽和させてから描画するようにする
+        -- obj.draw()
     end
 
     if fiAP == 1 then
@@ -159,7 +161,7 @@ if orAP == 1 or fiAP == 1 then
         T_burning_Module.burning_tritone(userdata, w, h, col1, col2)
 
         obj.putpixeldata("object", userdata, w, h, "bgra")
-        obj.effect("グロー", "強さ", 50 * ST, "拡散", 10, "しきい値", 40, "ぼかし", 3, "形状", "通常")
+        obj.effect("グロー", "強さ", 50 * ST, "拡散", 30, "しきい値", 40, "ぼかし", 3, "形状", "通常")
         obj.effect("斜めクリッピング", "幅", h0)
         obj.effect("斜めクリッピング", "幅", w0, "角度", 90)
         obj.setoption("blend", mode)
@@ -170,7 +172,7 @@ if orAP == 1 or fiAP == 1 then
         userdata, w, h = obj.getpixeldata("object", "bgra")
         T_burning_Module.burning_tritone(userdata, w, h, col1, col2)
         obj.putpixeldata("object", userdata, w, h, "bgra")
-        obj.effect("グロー", "強さ", 20 * ST, "拡散", 10, "しきい値", 40, "ぼかし", 3, "形状", "通常")
+        obj.effect("グロー", "強さ", 20 * ST, "拡散", 40, "しきい値", 40, "ぼかし", 3, "形状", "通常")
         obj.effect("斜めクリッピング", "幅", h0)
         obj.effect("斜めクリッピング", "幅", w0, "角度", 90)
         obj.setoption("blend", mode)
