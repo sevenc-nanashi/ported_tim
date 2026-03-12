@@ -1,15 +1,17 @@
 --label:tim2\カスタムオブジェクト\@任意多角形.obj
----$track:ｶﾞｲﾄﾞ表示
----min=0
----max=1
----step=1
-local track_guide_display = 0
 
----$track:ｶﾞｲﾄﾞｻｲｽﾞ
+---$color:色
+local col = 0xffffff
+
+--group:ガイド
+---$check:ガイド表示
+local check_show_guide = false
+
+---$track:ガイドサイズ
 ---min=0
 ---max=1000
 ---step=0.1
-local track_size = 50
+local track_guide_size = 50
 
 ---$track:厚み
 ---min=0
@@ -17,20 +19,17 @@ local track_size = 50
 ---step=0.1
 local track_thickness = 0
 
----$color:色
-local col = 0xffffff
-
 ---$color:ガイド色
 local colG = 0xff0000
 
 ---$figure:図形
 local fig = "円"
 
-size = track_size
+local guide_size = track_guide_size
 TC = track_thickness / 2
 N = obj.getoption("section_num") + 1
 N2 = N
-pos = {}
+local pos = {}
 for i = 1, N - 1 do
     pos[i] = {}
     pos[i].x = obj.getvalue("x", 0, i - 1)
@@ -43,19 +42,18 @@ pos[0] = {}
 pos[0] = pos[N]
 pos[N + 1] = {}
 pos[N + 1] = pos[1]
-mode = math.floor(track_guide_display)
 
-pos2 = {}
+local pos2 = {}
 for i = 0, N + 1 do
     pos2[i] = {}
     pos2[i].x = pos[i].x
     pos2[i].y = pos[i].y
 end
 
-obj.load("figure", fig, colG, size)
+obj.load("figure", fig, colG, guide_size)
 
-if mode == 1 then
-    obj.load("figure", fig, colG, size)
+if check_show_guide then
+    obj.load("figure", fig, colG, guide_size)
     obj.effect("縁取り")
     for i = 1, N do
         pos[i].x = pos[i].x - obj.getvalue("x")
@@ -63,8 +61,8 @@ if mode == 1 then
         obj.draw(pos[i].x, pos[i].y)
     end
 else
-    maxX = math.abs(pos[1].x)
-    maxY = math.abs(pos[1].y)
+    local maxX = math.abs(pos[1].x)
+    local maxY = math.abs(pos[1].y)
     for i = 2, N do
         maxX = math.max(math.abs(pos[i].x), maxX)
         maxY = math.max(math.abs(pos[i].y), maxY)
@@ -73,7 +71,8 @@ else
     obj.load("figure", "四角形", col, 2 * math.max(maxX, maxY) + 10)
 
     for i = 1, N do
-        st = math.atan2(pos[i + 1].y - pos[i].y, pos[i + 1].x - pos[i].x) * 180 / math.pi + 180
+        local st = math.atan2(pos[i + 1].y - pos[i].y, pos[i + 1].x - pos[i].x) * 180 / math.pi + 180
+        local cx, cy
         if math.abs(pos[i + 1].x - pos[i].x) > math.abs(pos[i + 1].y - pos[i].y) then
             cx = 0
             cy = -pos[i].x * (pos[i + 1].y - pos[i].y) / (pos[i + 1].x - pos[i].x) + pos[i].y
@@ -81,13 +80,13 @@ else
             cx = -pos[i].y * (pos[i + 1].x - pos[i].x) / (pos[i + 1].y - pos[i].y) + pos[i].x
             cy = 0
         end
-        obj.effect("斜めクリッピング", "角度", st, "中心X", cx, "中心Y", cy)
+        obj.effect("斜めクリッピング", "角度", st + 180, "中心X", cx, "中心Y", cy)
     end
     obj.ox = -obj.getvalue("x")
     obj.oy = -obj.getvalue("y")
 
     if TC ~= 0 then
-        obj.setoption("dst", "frm")
+        obj.setoption("drawtarget", "framebuffer")
         obj.oz = TC
         obj.draw()
         obj.oz = -TC

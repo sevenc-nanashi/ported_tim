@@ -41,6 +41,10 @@ end
 
 TC = track_thickness / 2
 
+if NTBS_N < 3 then
+    return
+end
+
 N = NTBS_N
 pos = {}
 N2 = N
@@ -116,6 +120,7 @@ if TC ~= 0 then
     obj.draw()
     obj.oz = -TC
     obj.draw()
+
     obj.load("figure", "四角形", col, 500)
     for i = 1, N2 do
         obj.drawpoly(

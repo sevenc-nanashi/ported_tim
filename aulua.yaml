@@ -401,8 +401,8 @@ scripts:
     label: 集中線T2
   - path: "./lua/Polygon/任意多角形.lua"
     label: 任意多角形
-  - path: "./lua/Polygon/任意多角形分離指定（座標).lua"
-    label: 任意多角形分離指定（座標)
+  - path: "./lua/Polygon/任意多角形分離指定（座標）.lua"
+    label: 任意多角形分離指定（座標）
   - path: "./lua/Polygon/任意多角形分離指定（表示）.lua"
     label: 任意多角形分離指定（表示）
   - path: "./lua/Polygon/凸多角形.lua"
