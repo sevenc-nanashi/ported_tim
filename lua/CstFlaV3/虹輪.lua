@@ -116,7 +116,7 @@ if fig < 1 then
     fig = 1
 end
 
--- obj.load("image", obj.getinfo("script_path") .. "CF-image\\hoop" .. fig .. ".png")
+-- obj.load("image", obj.getinfo("script_path") .. "CF-image\\hoop" .. fig .. ".webp")
 local tim2_images = obj.module("tim2")
 local data, w, h = tim2_images.custom_flare_load_image("hoop" .. fig)
 obj.putpixeldata("object", data, w, h)
