@@ -32,32 +32,53 @@ local c_col = 0xffffff
 ---$color:発光色
 local g_col = 0x0000ff
 
----$value:発光強さ
-local g_s = 40
+---$track:発光強さ
+---min=0
+---max=200
+---step=0.1
+local track_glow_strength = 40
 
----$value:発光拡散
-local g_k = 300
+---$track:発光拡散
+---min=0
+---max=1000
+---step=0.1
+local track_glow_diffusion = 300
 
----$value:発光しきい値
-local g_th = 0
+---$track:発光しきい値
+---min=0
+---max=200
+---step=0.1
+local track_glow_threshold = 0
 
----$value:発光拡散速度
-local g_kv = 10
+---$track:発光拡散速度
+---min=0
+---max=100
+---step=0.1
+local track_glow_diffusion_speed = 10
 
----$value:軌道フォーク数
-local f_n = 8
+---$track:軌道フォーク数
+---min=0
+---max=25
+---step=1
+local track_fork_count = 8
 
----$value:軌道直進性
-local stl = 8
+---$track:軌道直進性
+---min=1
+---max=100
+---step=1
+local track_straightness = 8
 
----$value:軌道設置範囲
-local gr = 30
+---$track:軌道設置範囲
+---min=0
+---max=100
+---step=0.1
+local track_branch_range = 30
 
 ---$value:領域サイズ
 local AS = { -180, -180, 180, 180 }
 
 ---$check:枠表示
-local chk = 1
+local check_show_frame = true
 
 function Lightning(stx, sty, enx, eny, c_d, c_s)
     if c_d < 0.3 then
@@ -135,6 +156,13 @@ at = 100 - track_unfold_amount
 at = (math.exp(0.10 * at) - 1) / 62
 
 Ac_s = track_size
+local f_n = math.floor(track_fork_count or 0)
+local stl = math.floor(track_straightness or 1)
+local gr = track_branch_range or 30
+local g_s = track_glow_strength or 40
+local g_k = track_glow_diffusion or 300
+local g_th = track_glow_threshold or 0
+local g_kv = track_glow_diffusion_speed or 10
 
 c_d = track_interval
 
@@ -161,7 +189,7 @@ obj.load("figure", "円", c_col, Ac_s)
 
 Lightning(stx - cx, sty - cy, enx - cx, eny - cy, c_d, Ac_s)
 
-if obj.getoption("gui") == true and obj.getinfo("saving") == false and chk == 1 then
+if obj.getoption("gui") == true and obj.getinfo("saving") == false and check_show_frame then
     obj.load("figure", "四角形", 0xffffff, 100)
     ASx0 = ASx0 - cx
     ASx1 = ASx1 - cx
