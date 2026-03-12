@@ -29,35 +29,62 @@ local color = 0xffffff
 ---$value:中心位置
 local CC = { 0, 0 }
 
----$value:中心ランダム度
-local rnd = 30
+---$track:中心ランダム度
+---min=0
+---max=1000
+---step=0.1
+local track_center_randomness = 30
 
----$value:局所ジャンプ率％
-local Ljp = 15
+---$track:局所ジャンプ率[%]
+---min=0
+---max=100
+---step=0.1
+local track_local_jump_probability = 15
 
----$value:変化速度
-local sp = 0
+---$track:変化速度
+---min=-100
+---max=100
+---step=0.1
+local track_change_speed = 0
 
----$value:ぼかし
-local blur = 0
+---$track:ぼかし
+---min=0
+---max=1000
+---step=0.1
+local track_blur = 0
 
----$value:最大本数
-local maxN = 500
+---$track:最大本数
+---min=1
+---max=5000
+---step=1
+local track_max_line_count = 500
 
----$value:シード
-local seed = 0
+---$track:シード
+---min=0
+---max=1000000
+---step=1
+local track_seed = 0
 
----$value:幅
-local w = nil
+---$track:幅
+---min=0
+---max=10000
+---step=1
+local track_width = 0
 
----$value:高さ
-local h = nil
+---$track:高さ
+---min=0
+---max=10000
+---step=1
+local track_height = 0
 
----$value:中心追尾
-local ad = 0
+---$track:中心追尾レイヤー
+---min=0
+---max=1000
+---step=1
+local track_follow_center_layer = 0
 
 ---$check:最大本数自動計算
-local check0 = false
+local check_auto_max_line_count = false
 
 local CalXY = function(x0, y0, x1, y1, a, b)
     local AA = ((x1 - x0) / a) ^ 2 + ((y1 - y0) / b) ^ 2
@@ -71,29 +98,31 @@ end
 
 local Cx
 local Cy
-if ad == nil or ad == 0 then
+if track_follow_center_layer == nil or track_follow_center_layer == 0 then
     obj.setanchor("CC", 1)
     Cx = CC[1]
     Cy = CC[2]
 else
-    Cx = obj.getvalue("layer" .. ad .. ".x")
-    Cy = obj.getvalue("layer" .. ad .. ".y")
+    Cx = obj.getvalue("layer" .. track_follow_center_layer .. ".x")
+    Cy = obj.getvalue("layer" .. track_follow_center_layer .. ".y")
 end
 
 local P = track_spawn_probability
 local ws = track_line_width
 local Cen = track_center * 0.01
 local Lt = 1 - math.log(track_locality + 1) / math.log(101)
-local screen_w = w or obj.screen_w
-local screen_h = h or obj.screen_h
+local screen_w = track_width > 0 and track_width or obj.screen_w
+local screen_h = track_height > 0 and track_height or obj.screen_h
+local maxN = track_max_line_count
 local size = math.sqrt(screen_w * screen_w + screen_h * screen_h)
-if check0 then
+if check_auto_max_line_count then
     maxN = math.floor(200 * math.pi / ws)
 end
-rnd = rnd * 0.01
+local rnd = track_center_randomness * 0.01
+local Ljp = track_local_jump_probability
 ws = ws * size / 1000
 Cen = Cen * size
-seed = seed + math.floor(obj.time * obj.framerate * sp)
+local seed = track_seed + math.floor(obj.time * obj.framerate * track_change_speed)
 obj.load("figure", "四角形", color, 1)
 obj.setoption("drawtarget", "tempbuffer", screen_w, screen_h)
 local calP = {}
@@ -151,4 +180,4 @@ for i = 1, maxN do
     end
 end
 obj.load("tempbuffer")
-obj.effect("ぼかし", "範囲", blur, "サイズ固定", 1)
+obj.effect("ぼかし", "範囲", track_blur, "サイズ固定", 1)
