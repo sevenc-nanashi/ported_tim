@@ -1,4 +1,4 @@
---label:tim2\変形\@任意多角形カット.anm
+--label:tim2\変形\@任意多角形カット
 ---$track:頂点数
 ---min=1
 ---max=16

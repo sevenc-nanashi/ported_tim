@@ -1,4 +1,4 @@
---label:tim2\ぼかし\@T_RotBlur_Module.anm
+--label:tim2\ぼかし\@T_RotBlur_Module
 ---$track:基準位置
 ---min=-100
 ---max=100

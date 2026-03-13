@@ -1,4 +1,4 @@
---label:tim2\装飾\@ストロークT.anm
+--label:tim2\装飾\@ストロークT
 ---$track:誤差X
 ---min=0
 ---max=10000

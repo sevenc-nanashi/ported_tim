@@ -1,4 +1,4 @@
---label:tim2\加工\@T_Filter_Module.anm
+--label:tim2\加工\@T_Filter_Module
 ---$track:サイズ
 ---min=0
 ---max=2000

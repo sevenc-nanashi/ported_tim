@@ -1,4 +1,4 @@
---label:tim2\光効果\@ライトバースト.anm
+--label:tim2\光効果\@ライトバースト
 ---$track:輝度
 ---min=0
 ---max=200

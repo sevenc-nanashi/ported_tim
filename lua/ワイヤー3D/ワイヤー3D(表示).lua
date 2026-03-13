@@ -1,4 +1,4 @@
---label:tim2\変形\@ワイヤー3D.anm
+--label:tim2\変形\@ワイヤー3D
 ---$track:横サイズ
 ---min=0
 ---max=10000

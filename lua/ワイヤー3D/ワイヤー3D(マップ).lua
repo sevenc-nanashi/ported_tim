@@ -1,4 +1,4 @@
---label:tim2\変形\@ワイヤー3D.anm
+--label:tim2\変形\@ワイヤー3D
 ---$track:横分割数
 ---min=1
 ---max=100

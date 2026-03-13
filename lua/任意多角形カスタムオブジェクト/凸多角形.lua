@@ -1,4 +1,4 @@
---label:tim2\カスタムオブジェクト\@任意多角形.obj
+--label:tim2\カスタムオブジェクト\@任意多角形
 
 ---$color:色
 local col = 0xffffff

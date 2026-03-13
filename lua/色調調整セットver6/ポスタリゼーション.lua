@@ -1,4 +1,4 @@
---label:tim2\色調整\@T_Color_Module.anm
+--label:tim2\色調整\@T_Color_Module
 --filter
 ---$track:R階調数
 ---min=2

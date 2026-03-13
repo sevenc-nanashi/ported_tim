@@ -1,4 +1,4 @@
---label:tim2\装飾\@罫線T.anm
+--label:tim2\装飾\@罫線T
 ---$track:サイズ
 ---min=0
 ---max=500

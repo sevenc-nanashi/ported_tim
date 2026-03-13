@@ -1,4 +1,4 @@
---label:tim2\配置\@簡易リピーター.anm
+--label:tim2\配置\@簡易リピーター
 ---$track:X変化率
 ---min=-100
 ---max=100

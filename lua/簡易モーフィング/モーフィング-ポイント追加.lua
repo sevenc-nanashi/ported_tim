@@ -1,4 +1,4 @@
---label:tim2\変形\@モーフィング.anm
+--label:tim2\変形\@モーフィング
 ---$track:ポイント数
 ---min=1
 ---max=16

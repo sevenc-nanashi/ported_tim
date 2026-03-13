@@ -1,4 +1,4 @@
---label:tim2\加工\@網点分解T.anm
+--label:tim2\加工\@網点分解T
 ---$track:サイズ
 ---min=5
 ---max=1000

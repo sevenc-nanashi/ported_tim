@@ -1,4 +1,4 @@
---label:tim2\ぼかし\@T_RotBlur_Module.anm
+--label:tim2\ぼかし\@T_RotBlur_Module
 ---$track:ブラー量
 ---min=0
 ---max=2000

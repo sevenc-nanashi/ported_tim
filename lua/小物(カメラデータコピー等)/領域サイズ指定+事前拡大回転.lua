@@ -1,4 +1,4 @@
---label:tim2\変形\@サイズ修正T.anm
+--label:tim2\変形\@サイズ修正T
 ---$track:幅
 ---min=0
 ---max=5000
