@@ -2,7 +2,6 @@ pub mod dir_hard_blur;
 pub mod rad_blur;
 pub mod rad_hard_blur;
 pub mod rot_blur_l;
-pub mod rot_blur_s;
 pub mod rot_hard_blur;
 pub mod whirlpool;
 
@@ -38,13 +37,6 @@ pub(super) fn shaped_fraction(frac: f64, roundness: f64) -> f64 {
         (direction * shaped + 1.0) * 0.5
     };
     shaped.clamp(0.0, 1.0)
-}
-
-#[derive(Clone, Copy, Default)]
-pub(super) struct BilinearContribution {
-    pub alpha: f64,
-    pub premul: [f64; 3],
-    pub raw: [f64; 3],
 }
 
 pub(super) fn rotation_blur_iterations(
@@ -170,49 +162,6 @@ fn sample_bilinear(
         out[channel] = ((value >> 16).clamp(0, 255)) as u8;
     }
     out
-}
-
-pub(super) fn sample_bilinear_legacy(
-    src: &[u8],
-    width: usize,
-    height: usize,
-    x: f64,
-    y: f64,
-) -> BilinearContribution {
-    if width == 0 || height == 0 {
-        return BilinearContribution::default();
-    }
-
-    let base_x = x.floor() as isize;
-    let base_y = y.floor() as isize;
-    let frac_x = x - base_x as f64;
-    let frac_y = y - base_y as f64;
-    let x0 = clamp_index(base_x, width);
-    let x1 = clamp_index(base_x + 1, width);
-    let y0 = clamp_index(base_y, height);
-    let y1 = clamp_index(base_y + 1, height);
-    let pixels = [
-        (
-            pixel_at(src, width, x0, y0),
-            (1.0 - frac_x) * (1.0 - frac_y),
-        ),
-        (pixel_at(src, width, x1, y0), frac_x * (1.0 - frac_y)),
-        (pixel_at(src, width, x1, y1), frac_x * frac_y),
-        (pixel_at(src, width, x0, y1), (1.0 - frac_x) * frac_y),
-    ];
-
-    let mut contribution = BilinearContribution::default();
-    for (pixel, weight) in pixels {
-        let alpha = pixel[3] as f64;
-        contribution.alpha += alpha * weight;
-        contribution.premul[0] += pixel[0] as f64 * alpha * weight;
-        contribution.premul[1] += pixel[1] as f64 * alpha * weight;
-        contribution.premul[2] += pixel[2] as f64 * alpha * weight;
-        contribution.raw[0] += pixel[0] as f64 * weight;
-        contribution.raw[1] += pixel[1] as f64 * weight;
-        contribution.raw[2] += pixel[2] as f64 * weight;
-    }
-    contribution
 }
 
 #[inline]

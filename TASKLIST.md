@@ -65,7 +65,7 @@
 | ぼかし               | @T_RandomBlur_Module.anm     | 回転ランダムブラー              | :o:      | :o: | :o:              | :o:                  |
 | ぼかし               | @T_RandomBlur_Module.anm     | 放射ランダムブラー              | :o:      | :o: | :o:              | :o:                  |
 | ぼかし               | @T_RotBlur_Module.anm        | 回転ハードブラー                | :o:      | :o: | :o:              | :x:                  |
-| ぼかし               | @T_RotBlur_Module.anm        | 回転ブラー                      | :o:      | :o: | :o:              | :x:                  |
+| ぼかし               | @T_RotBlur_Module.anm        | 回転ブラー                      | :o:      | :o: | :o:              | :o:                  |
 | ぼかし               | @T_RotBlur_Module.anm        | 放射ハードブラー                | :o:      | :o: | :o:              | :x:                  |
 | ぼかし               | @T_RotBlur_Module.anm        | 放射ブラー                      | :o:      | :o: | :o:              | :x:                  |
 | ぼかし               | @T_RotBlur_Module.anm        | 方向ハードブラー                | :o:      | :o: | :o:              | :x:                  |

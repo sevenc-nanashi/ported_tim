@@ -37,35 +37,6 @@ impl RotBlurModule {
         Ok(())
     }
 
-    fn rotblur_rot_blur_s(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        blur_amount_deg: f64,
-        center_x: f64,
-        center_y: f64,
-        base_position: f64,
-        angle_resolution_down: f64,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::rotblur::unoptimized::rot_blur_s::rot_blur_s(
-            image_buffer,
-            width,
-            height,
-            blur_amount_deg,
-            center_x,
-            center_y,
-            base_position,
-            angle_resolution_down,
-        );
-        Ok(())
-    }
-
     fn rotblur_rad_blur(
         image_buffer: NonNull<u8>,
         width: usize,
