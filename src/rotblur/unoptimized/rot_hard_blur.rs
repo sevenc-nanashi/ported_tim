@@ -1,6 +1,6 @@
 use std::f64::consts::PI;
 
-use super::{copy_to_work, hard_pattern, rotate_point, sample_bilinear_transparent, write_pixel};
+use super::{copy_to_work, hard_pattern, rotate_point, sample_bilinear_clamped, write_pixel};
 
 #[allow(clippy::too_many_arguments)]
 pub fn rot_hard_blur(
@@ -39,16 +39,9 @@ pub fn rot_hard_blur(
             let dx = x as f64 - cx;
             let phase = (dx * dx + dy * dy).sqrt() * count as f64 / radius;
             let angle = blur_rad
-                * hard_pattern(
-                    seed,
-                    phase,
-                    Some(count),
-                    amplitude_base,
-                    roundness,
-                    base_position,
-                );
+                * hard_pattern(seed, phase, None, amplitude_base, roundness, base_position);
             let (sample_x, sample_y) = rotate_point(cx, cy, dx, dy, angle);
-            let pixel = sample_bilinear_transparent(&src, width, height, sample_x, sample_y);
+            let pixel = sample_bilinear_clamped(&src, width, height, sample_x, sample_y);
             write_pixel(work_buffer, width, x, y, pixel);
         }
     }

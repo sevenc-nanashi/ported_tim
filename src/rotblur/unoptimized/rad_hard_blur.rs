@@ -1,6 +1,6 @@
-use std::f64::consts::TAU;
+use std::f64::consts::PI;
 
-use super::{copy_to_work, hard_pattern, sample_bilinear_transparent, write_pixel};
+use super::{copy_to_work, hard_pattern, sample_nearest_transparent, write_pixel};
 
 #[allow(clippy::too_many_arguments)]
 pub fn rad_hard_blur(
@@ -29,25 +29,26 @@ pub fn rad_hard_blur(
     let cx = width as f64 * 0.5 + center_x;
     let cy = height as f64 * 0.5 + center_y;
     let count = count.max(1) as usize;
+    let period = count.saturating_mul(2);
 
     for y in 0..height {
         let dy = y as f64 - cy;
         for x in 0..width {
             let dx = x as f64 - cx;
-            let angle_phase = dy.atan2(dx).rem_euclid(TAU) * count as f64 / TAU;
+            let phase = (dy.atan2(dx) / PI + 1.0) * count as f64;
             let scale = 1.0
-                + blur_amount
+                - blur_amount
                     * hard_pattern(
                         seed,
-                        angle_phase,
-                        Some(count),
+                        phase,
+                        Some(period),
                         amplitude_base,
                         roundness,
                         base_position,
                     );
             let sample_x = cx + dx * scale;
             let sample_y = cy + dy * scale;
-            let pixel = sample_bilinear_transparent(&src, width, height, sample_x, sample_y);
+            let pixel = sample_nearest_transparent(&src, width, height, sample_x, sample_y);
             write_pixel(work_buffer, width, x, y, pixel);
         }
     }

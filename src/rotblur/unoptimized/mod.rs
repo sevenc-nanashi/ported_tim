@@ -11,26 +11,33 @@ pub(super) fn lerp(a: f64, b: f64, t: f64) -> f64 {
     a + (b - a) * t
 }
 
-#[inline]
-pub(super) fn smoothstep(t: f64) -> f64 {
-    let t = t.clamp(0.0, 1.0);
-    t * t * (3.0 - 2.0 * t)
-}
-
 pub(super) fn shaped_fraction(frac: f64, roundness: f64) -> f64 {
-    let t = frac.clamp(0.0, 1.0);
+    let frac = frac.clamp(0.0, 1.0);
     let roundness = roundness.clamp(-1.0, 1.0);
-    if roundness >= 0.0 {
-        lerp(t, smoothstep(t), roundness)
-    } else {
-        let power = 1.0 + (-roundness) * 4.0;
-        let shaped = if t < 0.5 {
-            0.5 * (2.0 * t).powf(power)
-        } else {
-            1.0 - 0.5 * (2.0 * (1.0 - t)).powf(power)
-        };
-        lerp(t, shaped, -roundness)
+    if roundness == 0.0 {
+        return frac;
     }
+
+    let direction = if frac <= 0.5 { -1.0 } else { 1.0 };
+    let mirrored = (frac * 2.0 - 1.0).abs();
+    let base = 1.0 - roundness.abs();
+    let shaped = if base <= mirrored {
+        let denom = 1.0 - base * base;
+        if denom <= f64::EPSILON {
+            1.0
+        } else {
+            1.0 - (mirrored - 1.0).powi(2) / denom
+        }
+    } else {
+        (mirrored * 2.0) / (base + 1.0)
+    };
+
+    let shaped = if roundness <= 0.0 {
+        (direction * (mirrored * 2.0 - shaped) + 1.0) * 0.5
+    } else {
+        (direction * shaped + 1.0) * 0.5
+    };
+    shaped.clamp(0.0, 1.0)
 }
 
 #[derive(Clone, Copy, Default)]
@@ -72,6 +79,48 @@ pub(super) fn sample_bilinear_transparent(
     y: f64,
 ) -> [u8; 4] {
     sample_bilinear(src, width, height, x, y, true)
+}
+
+pub(super) fn sample_bilinear_clamped(
+    src: &[u8],
+    width: usize,
+    height: usize,
+    x: f64,
+    y: f64,
+) -> [u8; 4] {
+    if width == 0 || height == 0 {
+        return [0, 0, 0, 0];
+    }
+
+    let base_x = x.floor() as isize;
+    let base_y = y.floor() as isize;
+    let x0 = clamp_index(base_x, width);
+    let y0 = clamp_index(base_y, height);
+    let x1 = clamp_index(base_x + 1, width);
+    let y1 = clamp_index(base_y + 1, height);
+    let fx = ((x - base_x as f64) * 256.0).floor().clamp(0.0, 255.0) as i32;
+    let fy = ((y - base_y as f64) * 256.0).floor().clamp(0.0, 255.0) as i32;
+    let wx1 = ((fx * 256) + 127) / 255;
+    let wy1 = ((fy * 256) + 127) / 255;
+    let wx0 = 256 - wx1;
+    let wy0 = 256 - wy1;
+    let idx00 = (y0 * width + x0) * 4;
+    let idx10 = (y0 * width + x1) * 4;
+    let idx01 = (y1 * width + x0) * 4;
+    let idx11 = (y1 * width + x1) * 4;
+    let w00 = ((wx0 * wy0) + 127) >> 8;
+    let w10 = ((wx1 * wy0) + 127) >> 8;
+    let w01 = ((wx0 * wy1) + 127) >> 8;
+    let w11 = ((wx1 * wy1) + 127) >> 8;
+    let mut out = [0u8; 4];
+    for channel in 0..4 {
+        let value = src[idx00 + channel] as i32 * w00
+            + src[idx10 + channel] as i32 * w10
+            + src[idx01 + channel] as i32 * w01
+            + src[idx11 + channel] as i32 * w11;
+        out[channel] = ((value >> 8).clamp(0, 255)) as u8;
+    }
+    out
 }
 
 fn sample_bilinear(
@@ -172,6 +221,11 @@ fn clamp_index(index: isize, len: usize) -> usize {
 }
 
 #[inline]
+fn legacy_nearest_index(value: f64) -> isize {
+    (value + 0.5).trunc() as isize
+}
+
+#[inline]
 fn pixel_at(src: &[u8], width: usize, x: usize, y: usize) -> [u8; 4] {
     let index = (y * width + x) * 4;
     [src[index], src[index + 1], src[index + 2], src[index + 3]]
@@ -191,9 +245,25 @@ pub(super) fn sample_nearest_legacy(
     x: f64,
     y: f64,
 ) -> [u8; 4] {
-    let x = clamp_index((x + 0.5).floor() as isize, width);
-    let y = clamp_index((y + 0.5).floor() as isize, height);
+    let x = clamp_index(legacy_nearest_index(x), width);
+    let y = clamp_index(legacy_nearest_index(y), height);
     pixel_at(src, width, x, y)
+}
+
+#[inline]
+pub(super) fn sample_nearest_transparent(
+    src: &[u8],
+    width: usize,
+    height: usize,
+    x: f64,
+    y: f64,
+) -> [u8; 4] {
+    let x = legacy_nearest_index(x);
+    let y = legacy_nearest_index(y);
+    if x < 0 || y < 0 || x >= width as isize || y >= height as isize {
+        return [0, 0, 0, 0];
+    }
+    pixel_at(src, width, x as usize, y as usize)
 }
 
 #[inline]
@@ -252,12 +322,14 @@ pub(super) fn hard_pattern(
     let amplitude_base = amplitude_base.clamp(0.0, 1.0);
     let amp0 = amplitude_base + (1.0 - amplitude_base) * segment_random(seed, seg0, period);
     let amp1 = amplitude_base + (1.0 - amplitude_base) * segment_random(seed, seg1, period);
+    let neg_amp0 = 1.0 - (1.0 - amplitude_base) * segment_random(seed, seg0, period);
+    let neg_amp1 = 1.0 - (1.0 - amplitude_base) * segment_random(seed, seg1, period);
     let neg_scale = 0.5 * (1.0 - base_position.clamp(-1.0, 1.0));
     let pos_scale = 0.5 * (1.0 + base_position.clamp(-1.0, 1.0));
     let (start, end) = if seg0 & 1 == 0 {
-        (-amp0 * neg_scale, amp1 * pos_scale)
+        (-neg_amp0 * neg_scale, amp1 * pos_scale)
     } else {
-        (amp0 * pos_scale, -amp1 * neg_scale)
+        (amp0 * pos_scale, -neg_amp1 * neg_scale)
     };
     lerp(start, end, shaped_fraction(frac, roundness))
 }

@@ -64,10 +64,6 @@ local track_blur_correction_scale = 100
 ---step=1
 local track_change_seed = 1
 
-local is_enabled = function(value)
-    return value == true or value == 1
-end
-
 local blur_amount = track_blur_amount
 if blur_amount ~= 0 then
     obj.setanchor("track", 0, "line")
@@ -86,7 +82,7 @@ if blur_amount ~= 0 then
     local userdata, w, h
     w, h = obj.getpixel()
     local r = math.sqrt(w * w + h * h)
-    if not is_enabled(check_keep_size) then
+    if not check_keep_size then
         local addX, addY = math.ceil((r - w) / 2 + 1), math.ceil((r - h) / 2 + 1)
         obj.effect("領域拡張", "上", addY, "下", addY, "右", addX, "左", addX)
     end
@@ -96,7 +92,7 @@ if blur_amount ~= 0 then
     if change_seed == 0 then
         change_seed = math.floor(obj.time * obj.framerate)
     end
-    if is_enabled(check_blur_correction) then
+    if check_blur_correction then
         tim2.rotblur_rot_blur_l(
             userdata,
             w,
@@ -129,7 +125,4 @@ if blur_amount ~= 0 then
         change_seed
     )
     obj.putpixeldata("object", work, w, h, "bgra")
-    RotBlur_BasePosition = nil
-    RotBlur_WidthRandomPercent = nil
-    RotBlur_Roundness = nil
 end
