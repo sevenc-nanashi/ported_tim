@@ -8,3 +8,9 @@ stylua = "latest"
 
 [settings]
 npm = { package_manager = "bun" }
+
+[tasks.build]
+run = ["aulua build"]
+
+[tasks.dev]
+run = ["mise watch -w aulua.yaml -w Rakefile -w lua -e yaml,lua,hlsl build"]

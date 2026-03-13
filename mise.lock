@@ -13,6 +13,10 @@ backend = "core:bun"
 "platforms.windows-x64" = { checksum = "sha256:7a77b3e245e2e26965c93089a4a1332e8a326d3364c89fae1d1fd99cdd3cd73d", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.10/bun-windows-x64.zip"}
 "platforms.windows-x64-baseline" = { checksum = "sha256:715709c69b176e20994533d3292bd0b7c32de9c0c5575b916746ec6b2aa38346", url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.10/bun-windows-x64-baseline.zip"}
 
+[[tools."cargo:naga-cli"]]
+version = "28.0.0"
+backend = "cargo:naga-cli"
+
 [[tools."github:karoterra/aviutl2-aulua"]]
 version = "0.5.0"
 backend = "github:karoterra/aviutl2-aulua"

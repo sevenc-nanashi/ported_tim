@@ -186,37 +186,6 @@ impl ColorModule {
         Ok(())
     }
 
-    fn color_threshold(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        threshold_1: f64,
-        threshold_2: f64,
-        detect_method: i32,
-        opacity: f64,
-        replace_color: u32,
-        invert_range: bool,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::threshold::threshold(
-            image_buffer,
-            width,
-            height,
-            threshold_1,
-            threshold_2,
-            detect_method,
-            opacity,
-            replace_color,
-            invert_range,
-        )?;
-        Ok(())
-    }
-
     fn color_channel_mixer(
         image_buffer: NonNull<u8>,
         width: usize,

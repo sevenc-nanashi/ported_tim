@@ -36,18 +36,55 @@ local col = 0x0
 ---$check:範囲を反転
 local invert_range = false
 
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_threshold(
-    userdata,
-    w,
-    h,
-    track_threshold_1,
-    track_threshold_2,
-    track_detect_method,
-    track_opacity,
-    col,
-    invert_range
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+--[[pixelshader@threshold
+---$include "./shaders/threshold.hlsl"
+]]
+
+if track_threshold_1 > track_threshold_2 then
+    track_threshold_1, track_threshold_2 = track_threshold_2, track_threshold_1
+end
+
+local threshold_1 = track_threshold_1 / 255
+local threshold_2 = track_threshold_2 / 255
+local col_r, col_g, col_b = RGB(col)
+
+local weight_r, weight_g, weight_b = 0, 0, 0
+if track_detect_method == 0 then
+    weight_r = 0.33
+    weight_g = 0.34
+    weight_b = 0.33
+elseif track_detect_method == 1 then
+    weight_r = 0.298
+    weight_g = 0.588
+    weight_b = 0.114
+elseif track_detect_method == 2 then
+    weight_r = 1.0
+elseif track_detect_method == 3 then
+    weight_g = 1.0
+elseif track_detect_method == 4 then
+    weight_b = 1.0
+else
+    error("unreachable")
+end
+
+local out_scale = 1.0
+local in_scale = 1.0
+if track_opacity <= 0 then
+    out_scale = 1.0 + (track_opacity / 100.0)
+else
+    in_scale = 1.0 - (track_opacity / 100.0)
+end
+
+obj.pixelshader("threshold", "object", "object", {
+    threshold_1,
+    threshold_2,
+    weight_r,
+    weight_g,
+    weight_b,
+    in_scale,
+    out_scale,
+    col_r / 255,
+    col_g / 255,
+    col_b / 255,
+    invert_range and 1 or 0
+})
