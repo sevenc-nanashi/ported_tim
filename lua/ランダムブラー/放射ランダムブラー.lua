@@ -35,29 +35,31 @@ local check_keep_size = true
 ---step=1
 local track_change_seed = 0
 
-local userdata, w, h
+--[[pixelshader@rad_rand_blur
+---$include "./shaders/rad_rand_blur.hlsl"
+]]
+
+local w, h
 w, h = obj.getpixel()
 local radius = math.sqrt(w * w + h * h)
+local change_seed = math.abs(math.floor(track_change_seed))
+if change_seed == 0 then
+    change_seed = math.floor(obj.time * obj.framerate)
+end
 if not check_keep_size then
     obj.setoption("drawtarget", "tempbuffer", radius, radius)
     obj.draw()
     obj.load("tempbuffer")
     obj.setoption("drawtarget", "framebuffer")
 end
-local tim2 = obj.module("tim2")
-userdata, w, h = obj.getpixeldata("object", "bgra")
 obj.setanchor("track", 0, "line")
 local center_x = obj.track0
 local center_y = obj.track1
-tim2.rndblur_rad_rand_blur(
-    userdata,
-    w,
-    h,
+obj.pixelshader("rad_rand_blur", "object", { "object", "random" }, {
     track_max_offset,
     radius / 2,
     center_x,
     center_y,
-    track_change_seed,
-    track_base_position * 0.01
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+    change_seed,
+    track_base_position * 0.01,
+})

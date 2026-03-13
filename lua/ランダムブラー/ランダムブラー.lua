@@ -26,9 +26,16 @@ local track_change_seed = 0
 ---$check:サイズ保持
 local check_keep_size = true
 
+--[[pixelshader@pal_rand_blur
+---$include "./shaders/pal_rand_blur.hlsl"
+]]
+
 local max_offset = track_max_offset
 local angle = track_angle
-local change_seed = track_change_seed
+local change_seed = math.abs(math.floor(track_change_seed))
+if change_seed == 0 then
+    change_seed = math.floor(obj.time * obj.framerate)
+end
 local userdata, w, h
 w, h = obj.getpixel()
 if not check_keep_size then
@@ -42,7 +49,16 @@ if not check_keep_size then
     obj.load("tempbuffer")
     obj.setoption("drawtarget", "framebuffer")
 end
-local tim2 = obj.module("tim2")
-userdata, w, h = obj.getpixeldata("object", "bgra")
-tim2.rndblur_pal_rand_blur(userdata, w, h, max_offset, angle, change_seed, track_base_position * 0.01)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+local angle_radians = math.pi * angle / 180
+obj.pixelshader(
+    "pal_rand_blur",
+    "object",
+    { "object", "random" },
+    {
+        max_offset,
+        math.cos(angle_radians),
+        math.sin(angle_radians),
+        change_seed,
+        track_base_position * 0.01
+    }
+)

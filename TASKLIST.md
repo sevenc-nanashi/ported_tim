@@ -61,9 +61,9 @@
 | 色調整               | @多色グラデーション.anm      | 多色グラデーション拡張          | :o:      | -   | :o:              | :x:                  |
 | 色調整               | ４色グラデーション.anm       | -                               | :o:      | -   | :o:              | :x:                  |
 | 色調整               | 虹色グラデーション.anm       | -                               | :o:      | :o: | :o:              | :x:                  |
-| ぼかし               | @T_RandomBlur_Module.anm     | ランダムブラー                  | :o:      | :o: | :o:              | :x:                  |
-| ぼかし               | @T_RandomBlur_Module.anm     | 回転ランダムブラー              | :o:      | :o: | :o:              | :x:                  |
-| ぼかし               | @T_RandomBlur_Module.anm     | 放射ランダムブラー              | :o:      | :o: | :o:              | :x:                  |
+| ぼかし               | @T_RandomBlur_Module.anm     | ランダムブラー                  | :o:      | :o: | :o:              | :o:                  |
+| ぼかし               | @T_RandomBlur_Module.anm     | 回転ランダムブラー              | :o:      | :o: | :o:              | :o:                  |
+| ぼかし               | @T_RandomBlur_Module.anm     | 放射ランダムブラー              | :o:      | :o: | :o:              | :o:                  |
 | ぼかし               | @T_RotBlur_Module.anm        | ハードブラー拡張                | :o:      | -   | :o:              | :x:                  |
 | ぼかし               | @T_RotBlur_Module.anm        | 回転ハードブラー                | :o:      | :o: | :o:              | :x:                  |
 | ぼかし               | @T_RotBlur_Module.anm        | 回転ブラー                      | :o:      | :o: | :o:              | :x:                  |
