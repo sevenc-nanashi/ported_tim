@@ -94,7 +94,7 @@ for i = 1, AN do
     MP[Np + i].y = pos[2 * i]
 end
 
-if obj.getoption("script_name", 1, true) ~= "モーフィング-ポイント追加@tim.anm2" then
+if obj.getoption("script_name", 1, true) ~= "モーフィング-ポイント追加@モーフィング@モーフィング@tim.anm2" then
     Morphing_drawANC()
     Morphing_drawANC = nil
 end

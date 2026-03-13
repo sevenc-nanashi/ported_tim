@@ -32,7 +32,7 @@ Out_morph_T.Deg = track_rotation
 Out_morph_T.T = track_threshold
 Out_morph_T.SF = track_offset
 Out_morph_T.col2 = col2
-if obj.getoption("script_name", 1, true) ~= "モーフィング(輪郭)-表示@tim.anm2" then
+if obj.getoption("script_name", 1, true) ~= "モーフィング(輪郭)-表示@モーフィング@tim.anm2" then
     Outlinemorphing_T(Out_morph_T)
     Outlinemorphing_T = nil
     Out_morph_T = nil
