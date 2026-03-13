@@ -31,8 +31,8 @@ obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 
 if id > 0 then
-    error("extbufferは未実装です")
-    require("extbuffer")
+    ---$embed
+    local extbuffer = require("extbuffer")
     extbuffer.read(id)
 end
 

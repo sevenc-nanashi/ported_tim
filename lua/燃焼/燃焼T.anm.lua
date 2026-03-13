@@ -67,8 +67,8 @@ local track_layer_index = 0
 ---$check:エフェクト取得
 local GE = 1
 
--- ---$check:一時保存EXT
--- local IE = 0
+---$check:一時保存EXT
+local IE = 0
 
 ---$check:展開を調整
 local check0 = false
@@ -115,8 +115,8 @@ if orAP == 1 or fiAP == 1 then
         if IE == 0 then
             obj.load("layer", map, GE == 1)
         else
-            error("extbufferは未実装です。")
-            require("extbuffer")
+            ---$embed
+            local extbuffer = require("extbuffer")
             extbuffer.read(map)
         end
         local w, h = obj.getpixel()

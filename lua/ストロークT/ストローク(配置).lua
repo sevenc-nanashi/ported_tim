@@ -313,7 +313,9 @@ T_stroke_f = function()
     obj.cy = obj.cy - ch
 end
 
-if obj.getoption("script_name", 1, true):sub(-4, -1) ~= obj.getoption("script_name"):sub(-4, -1) then
+---$embed
+local common = require("common")
+if common.is_last_chain() then
     T_stroke_f()
     T_strokeTM_ancB = nil
     T_strokeTM_N = nil

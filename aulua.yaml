@@ -1,10 +1,18 @@
----
+# yaml-language-server: $schema=https://raw.githubusercontent.com/karoterra/aviutl2-aulua/refs/heads/main/schema/aulua.schema.json
 project: {}
 build:
   out_dir: build
+  embed_search_dirs:
+    - "../extbuffer"
 scripts:
 - name: tim2.anm2
   sources:
+  - path: "./lua/extbuffer/一時的に保存EXT.anm2.lua"
+    label: 一時的に保存EXT@一時保存読込EXT
+  - path: "./lua/extbuffer/保存画像の読込EXT.anm2.lua"
+    label: 保存画像の読込EXT@一時保存読込EXT
+  - path: "./lua/extbuffer/保存画像のクリアEXT.anm2.lua"
+    label: 保存画像のクリアEXT@一時保存読込EXT
   - path: "./lua/色調調整セットver6/しきい値.lua"
     label: しきい値@T_Color_Module
   - path: "./lua/色調調整セットver6/イコライズ.lua"

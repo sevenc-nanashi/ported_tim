@@ -27,7 +27,7 @@ if not check0 then
     end
 end
 
-if obj.getoption("script_name", 1) ~= "TrackingラインEasy(頂点追加)@tim.anm2" then
+if obj.getoption("script_name", 1) ~= "TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2" then
     Tracking.DoTrackingLineEasy(Tracking)
     Tracking = nil
 end

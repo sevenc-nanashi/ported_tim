@@ -55,7 +55,9 @@ T_strokeTM_rott = rott
 T_strokeTM_alpt = alpt
 T_strokeTM_rnd = 1
 
-if obj.getoption("script_name", 1, true):sub(-4, -1) ~= obj.getoption("script_name"):sub(-4, -1) then
+---$embed
+local common = require("common")
+if common.is_last_chain() then
     T_stroke_f()
     T_strokeTM_ancB = nil
     T_strokeTM_N = nil

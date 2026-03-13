@@ -19,7 +19,7 @@ local track_center_offset = 0
 
 ---$track:切替映像
 ---min=-1
----max=100
+---max=1000
 ---step=1
 local track_switch_video = 0
 
@@ -265,11 +265,6 @@ local MakeShading = function(cx, cy, wd, hd, sin, cos, Cw, sdg, srev)
     )
 end
 
-if check0 == false then
-    error("extbufferは未実装です")
-    require("extbuffer")
-end
-
 local Tw = track_twist_amount * 0.01 - 0.5
 local Do = track_rotation
 local Rt = math.rad(180 - Do)
@@ -305,6 +300,8 @@ end
 
 if id > 0 then
     if check0 == false then
+        ---$embed
+        local extbuffer = require("extbuffer")
         extbuffer.read(id)
     else
         obj.load("layer", id, true)

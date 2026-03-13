@@ -6,6 +6,7 @@ mod burning;
 mod color;
 mod cracked_glass;
 mod custom_flare;
+mod extbuffer;
 mod familiar;
 mod filter;
 mod framing;
@@ -43,6 +44,7 @@ impl ScriptModuleFunctions for PortedTimMod2 {
         functions.extend(color::ColorModule::functions());
         functions.extend(cracked_glass::CrackedGlassModule::functions());
         functions.extend(custom_flare::CustomFlareModule::functions());
+        functions.extend(extbuffer::ExtbufferModule::functions());
         functions.extend(familiar::FamiliarModule::functions());
         functions.extend(filter::FilterModule::functions());
         functions.extend(framing::FramingModule::functions());

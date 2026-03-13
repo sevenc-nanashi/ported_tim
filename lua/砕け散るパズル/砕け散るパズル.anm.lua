@@ -365,6 +365,8 @@ if Pfig == 0 then
     end
 
     local GmakeMapDataF = function(mapnum, nx, ny, T)
+        ---$embed
+        local extbuffer = require("extbuffer")
         extbuffer.read(mapnum)
         local w, h = obj.getpixel()
 
@@ -383,16 +385,10 @@ if Pfig == 0 then
 
     local zoom = obj.getvalue("zoom") * 0.01
 
-    local CKFN1 = io.open(obj.getinfo("script_path") .. "extbuffer.lua", "r")
-    local CKFN2 = io.open(obj.getinfo("script_path") .. "extbuffer_core.dll", "r")
-    if CKFN1 and CKFN2 then
-        require("extbuffer")
-    end
-
     obj.setanchor("Ct", 1)
-    local apt = track0 * 0.01
-    local Vs = track1 * 7.5
-    local dir = -math.rad(track2)
+    local apt = track_unfold * 0.01
+    local Vs = track_speed * 7.5
+    local dir = -math.rad(track_direction)
 
     rv = rv * 0.03
     Gr[1] = Gr[1] * 30
@@ -401,7 +397,7 @@ if Pfig == 0 then
 
     limap = limap * 0.01
 
-    local SI = math.floor(track3)
+    local SI = math.floor(track_size)
     local w, h = obj.getpixel()
     local nx = math.floor((w / SI + 1) * 0.5)
     local ny = math.floor((h / SI + 1) * 0.5)

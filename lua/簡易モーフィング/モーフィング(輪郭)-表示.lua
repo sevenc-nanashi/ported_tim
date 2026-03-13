@@ -161,8 +161,8 @@ Outlinemorphing_T = function(OT)
         GE = GE == 1 and true or false
         obj.load("layer", inum, GE)
     else
-        error("extbufferは未実装です")
-        require("extbuffer")
+        ---$embed
+        local extbuffer = require("extbuffer")
         extbuffer.read(inum)
     end
 
