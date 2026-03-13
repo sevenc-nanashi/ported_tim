@@ -79,9 +79,9 @@ if blur_amount ~= 0 then
     local center_x = track_center_x
     local center_y = track_center_y
     local sample_count = track_count
-    local base_position = RotBlur_BasePosition or track_base_position
-    local amplitude_base = RotBlur_WidthRandomPercent or track_width_random_percent
-    local roundness = RotBlur_Roundness or track_roundness
+    local base_position = track_base_position
+    local amplitude_base = track_width_random_percent
+    local roundness = track_roundness
     base_position = 0.01 * math.max(-100, math.min(100, base_position))
     amplitude_base = 1 - 0.01 * math.max(0, math.min(100, amplitude_base))
     roundness = 0.01 * math.max(-100, math.min(100, roundness))
@@ -146,7 +146,4 @@ if blur_amount ~= 0 then
         change_seed
     )
     obj.putpixeldata("object", work, w, h, "bgra")
-    RotBlur_BasePosition = nil
-    RotBlur_WidthRandomPercent = nil
-    RotBlur_Roundness = nil
 end

@@ -103,8 +103,6 @@ scripts:
     label: 回転ランダムブラー@T_RandomBlur_Module
   - path: "./lua/ランダムブラー/放射ランダムブラー.lua"
     label: 放射ランダムブラー@T_RandomBlur_Module
-  - path: "./lua/回転ブラー/ハードブラー拡張.lua"
-    label: ハードブラー拡張@T_RotBlur_Module
   - path: "./lua/回転ブラー/回転ハードブラー.lua"
     label: 回転ハードブラー@T_RotBlur_Module
   - path: "./lua/回転ブラー/回転ブラー.lua"
