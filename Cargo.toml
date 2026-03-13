@@ -14,3 +14,4 @@ dashmap = "6.1.0"
 image = { version = "0.25.9", default-features = false, features = ["webp"] }
 include_dir = "0.7.4"
 rand = "0.10.0"
+rayon = "1.11.0"

@@ -939,8 +939,8 @@ pub fn minimax_rot(
     let cy = (params.original_height as f64 - 1.0) * 0.5;
 
     let blend_max_alpha = |dst: u32, src_px: u32| -> u32 {
-        let da = ((dst >> 24) & 0xFF);
-        let sa = ((src_px >> 24) & 0xFF);
+        let da = (dst >> 24) & 0xFF;
+        let sa = (src_px >> 24) & 0xFF;
         let out_a = da.max(sa);
         if out_a == 0 {
             return 0;

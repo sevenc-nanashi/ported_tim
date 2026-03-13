@@ -38,18 +38,36 @@ local col1 = 0xff0000
 ---$color:暗部色
 local col2 = 0x0000ff
 
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_binarization(
-    userdata,
-    w,
-    h,
-    track_threshold,
+--[[pixelshader@color_binarization
+---$include "./shaders/binarization.hlsl"
+]]
+
+local threshold = track_threshold / 255
+if track_auto_detect ~= 0 then
+    local T_Color_Module = obj.module("tim2")
+    local userdata, w, h = obj.getpixeldata("object", "bgra")
+    threshold = T_Color_Module.color_binarization_threshold(
+        userdata,
+        w,
+        h,
+        track_threshold,
+        track_gray_process,
+        track_auto_detect
+    ) / 255
+end
+
+local bright_color = colorize and col1 or 0xffffff
+local dark_color = colorize and col2 or 0x000000
+local bright_r, bright_g, bright_b = RGB(bright_color)
+local dark_r, dark_g, dark_b = RGB(dark_color)
+
+obj.pixelshader("color_binarization", "object", "object", {
+    threshold,
     track_gray_process,
-    track_auto_detect,
-    colorize,
-    col1,
-    col2
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+    bright_r / 255,
+    bright_g / 255,
+    bright_b / 255,
+    dark_r / 255,
+    dark_g / 255,
+    dark_b / 255,
+})

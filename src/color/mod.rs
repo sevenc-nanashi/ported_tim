@@ -1,6 +1,7 @@
 use aviutl2::anyhow;
 use std::ptr::NonNull;
 
+mod binarization;
 pub mod unoptimized;
 
 pub(crate) struct ColorModule;
@@ -126,36 +127,28 @@ impl ColorModule {
         Ok(())
     }
 
-    fn color_binarization(
+    fn color_binarization_threshold(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
         threshold: u8,
         gray_mode: u8,
         auto_detect_method: u8,
-        colorize: bool,
-        color1: u32,
-        color2: u32,
-    ) -> anyhow::Result<()> {
+    ) -> anyhow::Result<f64> {
         let buffer_size = width
             .checked_mul(height)
             .and_then(|v| v.checked_mul(4))
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::binarization::binarization(
+            unsafe { std::slice::from_raw_parts(image_buffer.as_ptr() as *const u8, buffer_size) };
+        crate::color::binarization::calculate_threshold(
             image_buffer,
             width,
             height,
             threshold,
             gray_mode,
             auto_detect_method,
-            colorize,
-            color1,
-            color2,
-        )?;
-
-        Ok(())
+        )
     }
 
     fn color_binarization_rgb(
