@@ -54,7 +54,7 @@
 | 色調整               | @T_Color_Module.anm          | 金属質                          | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 黄金質                          | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | ２値化                          | :o:      | :o: | :o:              | :o:                  |
-| 色調整               | @T_Color_Module.anm          | ２値化RGB                       | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | ２値化RGB                       | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @カメレオン効果.anm          | カメレオン効果(背景)            | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @カメレオン効果.anm          | カメレオン効果(適応)            | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @多色グラデーション.anm      | 多色グラデーション              | :o:      | -   | :o:              | :x:                  |

@@ -2,6 +2,7 @@ use aviutl2::anyhow;
 use std::ptr::NonNull;
 
 mod binarization;
+mod binarization_rgb;
 pub mod unoptimized;
 
 pub(crate) struct ColorModule;
@@ -151,7 +152,7 @@ impl ColorModule {
         )
     }
 
-    fn color_binarization_rgb(
+    fn color_binarization_rgb_thresholds(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
@@ -159,14 +160,14 @@ impl ColorModule {
         g_threshold: u8,
         b_threshold: u8,
         auto_detect_method: u8,
-    ) -> anyhow::Result<()> {
+    ) -> anyhow::Result<Vec<i32>> {
         let buffer_size = width
             .checked_mul(height)
             .and_then(|v| v.checked_mul(4))
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::binarization_rgb::binarization_rgb(
+            unsafe { std::slice::from_raw_parts(image_buffer.as_ptr() as *const u8, buffer_size) };
+        let thresholds = crate::color::binarization_rgb::calculate_thresholds(
             image_buffer,
             width,
             height,
@@ -174,9 +175,8 @@ impl ColorModule {
             g_threshold,
             b_threshold,
             auto_detect_method,
-        );
-
-        Ok(())
+        )?;
+        Ok(thresholds.into_iter().map(i32::from).collect())
     }
 
     fn color_channel_mixer(

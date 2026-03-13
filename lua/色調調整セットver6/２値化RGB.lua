@@ -28,16 +28,33 @@ local track_b_threshold = 128
 ---ラプラシアン・ヒストグラム法=6
 local track_auto_detect = 0
 
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_binarization_rgb(
-    userdata,
-    w,
-    h,
-    track_r_threshold,
-    track_g_threshold,
-    track_b_threshold,
-    track_auto_detect
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+--[[pixelshader@color_binarization_rgb
+---$include "./shaders/binarization_rgb.hlsl"
+]]
+
+local threshold_r = track_r_threshold / 255
+local threshold_g = track_g_threshold / 255
+local threshold_b = track_b_threshold / 255
+
+if track_auto_detect ~= 0 then
+    local T_Color_Module = obj.module("tim2")
+    local userdata, w, h = obj.getpixeldata("object", "bgra")
+    local thresholds = T_Color_Module.color_binarization_rgb_thresholds(
+        userdata,
+        w,
+        h,
+        track_r_threshold,
+        track_g_threshold,
+        track_b_threshold,
+        track_auto_detect
+    )
+    threshold_r = thresholds[1] / 255
+    threshold_g = thresholds[2] / 255
+    threshold_b = thresholds[3] / 255
+end
+
+obj.pixelshader("color_binarization_rgb", "object", "object", {
+    threshold_r,
+    threshold_g,
+    threshold_b,
+})
