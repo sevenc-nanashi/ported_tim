@@ -16,7 +16,6 @@ mod mmdcam;
 mod polcon;
 mod rbwgra;
 mod rgline;
-mod rotblur;
 mod sketch;
 
 #[aviutl2::plugin(ScriptModule)]
@@ -53,7 +52,6 @@ impl ScriptModuleFunctions for PortedTimMod2 {
         functions.extend(polcon::PolConModule::functions());
         functions.extend(rbwgra::RbwGraModule::functions());
         functions.extend(rgline::RgLineModule::functions());
-        functions.extend(rotblur::RotBlurModule::functions());
         functions.extend(sketch::SketchModule::functions());
         functions
     }

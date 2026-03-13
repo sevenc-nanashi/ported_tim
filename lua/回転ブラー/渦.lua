@@ -29,6 +29,10 @@ local select_change_mode = 0
 ---$check:サイズ保持
 local check_keep_size = true
 
+--[[pixelshader@whirlpool
+---$include "./shaders/whirlpool.hlsl"
+]]
+
 local is_enabled = function(value)
     return value == true or value == 1
 end
@@ -38,17 +42,20 @@ local center_x = track_center_x
 local center_y = track_center_y
 local swirl_amount = track_swirl_amount
 local change_mode = select_change_mode
-local userdata, w, h
-w, h = obj.getpixel()
+local w, h = obj.getpixel()
 local r = math.sqrt(w * w + h * h)
 if not is_enabled(check_keep_size) then
     local addX, addY = math.ceil((r - w) / 2 + 1), math.ceil((r - h) / 2 + 1)
     obj.effect("領域拡張", "上", addY, "下", addY, "右", addX, "左", addX)
 end
 
-local tim2 = obj.module("tim2")
-userdata, w, h = obj.getpixeldata("object", "bgra")
-obj.clearbuffer("cache:work", w, h)
-local work = obj.getpixeldata("cache:work", "bgra")
-tim2.rotblur_whirlpool(userdata, work, w, h, swirl_amount, r / 2, center_x, center_y, change_mode)
-obj.putpixeldata("object", work, w, h, "bgra")
+w, h = obj.getpixel()
+if w > 0 and h > 0 then
+    obj.pixelshader("whirlpool", "object", "object", {
+        swirl_amount,
+        r / 2,
+        center_x,
+        center_y,
+        change_mode,
+    })
+end

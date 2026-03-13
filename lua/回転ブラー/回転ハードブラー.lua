@@ -64,6 +64,32 @@ local track_blur_correction_scale = 100
 ---step=1
 local track_change_seed = 1
 
+--[[pixelshader@rot_blur
+---$include "./shaders/rot_blur.hlsl"
+]]
+
+--[[pixelshader@rot_hard_blur
+---$include "./shaders/rot_hard_blur.hlsl"
+]]
+
+local log2 = math.log(2)
+
+local rotation_blur_iterations = function(width, height, center_x, center_y, blur_rad, resolution_down)
+    local max_dx = math.max(math.abs(center_x), math.abs(width - center_x))
+    local max_dy = math.max(math.abs(center_y), math.abs(height - center_y))
+    local arc_length = math.sqrt(max_dx * max_dx + max_dy * max_dy) * math.abs(blur_rad)
+    if arc_length <= 0 or arc_length ~= arc_length or arc_length == math.huge then
+        return 2
+    end
+
+    local exponent = math.ceil(math.log(arc_length) / log2 - math.abs(resolution_down))
+    local iterations = 2 ^ exponent
+    if iterations ~= iterations or iterations == math.huge or iterations < 2 then
+        return 2
+    end
+    return math.floor(iterations)
+end
+
 local blur_amount = track_blur_amount
 if blur_amount ~= 0 then
     obj.setanchor("track", 0, "line")
@@ -79,50 +105,56 @@ if blur_amount ~= 0 then
     local blur_correction_scale = track_blur_correction_scale
     local change_seed = math.abs(math.floor(track_change_seed))
 
-    local userdata, w, h
-    w, h = obj.getpixel()
+    local w, h = obj.getpixel()
     local r = math.sqrt(w * w + h * h)
     if not check_keep_size then
         local addX, addY = math.ceil((r - w) / 2 + 1), math.ceil((r - h) / 2 + 1)
         obj.effect("領域拡張", "上", addY, "下", addY, "右", addX, "左", addX)
     end
 
-    local tim2 = obj.module("tim2")
-    userdata, w, h = obj.getpixeldata("object", "bgra")
+    w, h = obj.getpixel()
     if change_seed == 0 then
         change_seed = math.floor(obj.time * obj.framerate)
     end
-    if check_blur_correction then
-        tim2.rotblur_rot_blur_l(
-            userdata,
-            w,
-            h,
-            blur_amount * bump_amount / r * blur_correction_scale * 0.015,
-            center_x,
-            center_y,
-            0,
-            1
-        )
-        obj.putpixeldata("object", userdata, w, h, "bgra")
-        userdata, w, h = obj.getpixeldata("object", "bgra")
+    if check_blur_correction and w > 0 and h > 0 then
+        local correction_blur_amount = blur_amount * bump_amount / r * blur_correction_scale * 0.015
+        local correction_blur_rad = correction_blur_amount * math.pi / 180
+        local iterations =
+            rotation_blur_iterations(w, h, w * 0.5 + center_x, h * 0.5 + center_y, correction_blur_rad, 1)
+        local step = correction_blur_rad / iterations
+        local current = math.floor(iterations / 2)
+
+        while true do
+            local half = math.floor(current / 2)
+            local delta = half * step
+            obj.pixelshader("rot_blur", "object", "object", {
+                center_x,
+                center_y,
+                math.sin(delta),
+                math.cos(delta),
+                -math.sin(delta),
+                math.cos(delta),
+                0,
+            })
+
+            if current < 2 then
+                break
+            end
+            current = half
+        end
     end
 
-    obj.clearbuffer("cache:work", w, h)
-    local work = obj.getpixeldata("cache:work", "bgra")
-    tim2.rotblur_rot_hard_blur(
-        userdata,
-        work,
-        w,
-        h,
-        blur_amount,
-        r / 2,
-        center_x,
-        center_y,
-        bump_amount,
-        amplitude_base,
-        roundness,
-        base_position,
-        change_seed
-    )
-    obj.putpixeldata("object", work, w, h, "bgra")
+    if w > 0 and h > 0 then
+        obj.pixelshader("rot_hard_blur", "object", "object", {
+            blur_amount,
+            r / 2,
+            center_x,
+            center_y,
+            bump_amount,
+            amplitude_base,
+            roundness,
+            base_position,
+            change_seed,
+        })
+    end
 end

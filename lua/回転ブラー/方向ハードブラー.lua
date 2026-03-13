@@ -59,6 +59,10 @@ local track_change_seed = 1
 ---step=0.1
 local track_display_limit_scale = 3
 
+--[[pixelshader@dir_hard_blur
+---$include "./shaders/dir_hard_blur.hlsl"
+]]
+
 local is_enabled = function(value)
     return value == true or value == 1
 end
@@ -69,6 +73,8 @@ if blur_amount ~= 0 then
     local angle_degrees = track_angle
     local roundness = track_roundness * 0.01
     local angle_radians = angle_degrees * math.pi / 180
+    local cos_theta = math.cos(angle_radians)
+    local sin_theta = math.sin(angle_radians)
     local base_position = track_base_position
     local amplitude_base = track_width_random_percent
     local blur_correction_scale = track_blur_correction_scale
@@ -79,16 +85,14 @@ if blur_amount ~= 0 then
         change_seed = math.floor(obj.time * obj.framerate)
     end
 
-    local userdata, w, h
-    w, h = obj.getpixel()
+    local w, h = obj.getpixel()
     if not is_enabled(check_keep_size) then
-        local cos, sin = math.cos(angle_radians), math.sin(angle_radians)
         local display_limit_scale = math.max(0, (track_display_limit_scale - 1) / 2)
         local iw, ih = w * display_limit_scale, h * display_limit_scale
         local ds1 = blur_amount * (1 - base_position) / 2
         local ds2 = -blur_amount * (1 + base_position) / 2
-        local addX1, addY1 = ds1 * cos, ds1 * sin
-        local addX2, addY2 = ds2 * cos, ds2 * sin
+        local addX1, addY1 = ds1 * cos_theta, ds1 * sin_theta
+        local addX2, addY2 = ds2 * cos_theta, ds2 * sin_theta
         addX1, addX2 = math.max(addX1, addX2), -math.min(addX1, addX2)
         addY1, addY2 = math.max(addY1, addY2), -math.min(addY1, addY2)
         addX1 = (addX1 > iw) and iw or addX1
@@ -111,21 +115,17 @@ if blur_amount ~= 0 then
         )
     end
 
-    local tim2 = obj.module("tim2")
-    userdata, w, h = obj.getpixeldata("object", "bgra")
-    local work = obj.getpixeldata("work", "bgra")
-    tim2.rotblur_dir_hard_blur(
-        userdata,
-        work,
-        w,
-        h,
-        blur_amount,
-        bump_size,
-        angle_radians,
-        amplitude_base,
-        roundness,
-        base_position,
-        change_seed
-    )
-    obj.putpixeldata("object", work, w, h, "bgra")
+    w, h = obj.getpixel()
+    if w > 0 and h > 0 then
+        obj.pixelshader("dir_hard_blur", "object", "object", {
+            blur_amount,
+            bump_size,
+            cos_theta,
+            sin_theta,
+            amplitude_base,
+            roundness,
+            base_position,
+            change_seed,
+        })
+    end
 end
