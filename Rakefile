@@ -242,6 +242,52 @@ task :format do
   sh "cargo fmt"
 end
 
+task :check_setanchor_variables do
+  issues = []
+
+  Dir.glob("./lua/**/*.lua").sort.each do |file|
+    lines = File.readlines(file, chomp: true)
+    anchorable_variables = {}
+    pending_kind = nil
+
+    lines.each_with_index do |line, index|
+      if (match = line.match(/^---\$(track|value):/))
+        pending_kind = match[1]
+        next
+      end
+
+      if pending_kind
+        if (match = line.match(/^\s*local\s+([A-Za-z_][A-Za-z0-9_]*)\s*=/))
+          anchorable_variables[match[1]] = pending_kind
+          pending_kind = nil
+          next
+        end
+
+        next if line.strip.empty? || line.start_with?("---")
+
+        pending_kind = nil
+      end
+
+      next unless (match = line.match(/obj\.setanchor\("([^"]+)"/))
+
+      variable_names =
+        match[1].split(",").map(&:strip).reject(&:empty?)
+
+      variable_names.each do |variable_name|
+        next if anchorable_variables.key?(variable_name)
+
+        issues << "#{file}:#{index + 1}: setanchor target `#{variable_name}` is not declared as ---$track or ---$value"
+      end
+    end
+  end
+
+  if issues.empty?
+    puts "All setanchor targets are declared as ---$track or ---$value."
+  else
+    abort(issues.join("\n"))
+  end
+end
+
 task :tasklist do
   require "yaml"
   project = YAML.load_file("aulua.yaml")
