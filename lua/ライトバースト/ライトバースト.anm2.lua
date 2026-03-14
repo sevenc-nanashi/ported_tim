@@ -62,11 +62,21 @@ local Gmode = 1
 ---step=1
 local RC = 0
 
+---$track:サイズ補正X
+---min=0
+---max=5000
+---step=1
+local track_size_adjust_x = 0
+
+---$track:サイズ補正Y
+---min=0
+---max=5000
+---step=1
+local track_size_adjust_y = 0
+
 local w, h = obj.getpixel()
 
-if komorebikakutyou == 1 then
-    w, h = w + dw, h + dh
-end
+w, h = w + track_size_adjust_x, h + track_size_adjust_y
 
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()

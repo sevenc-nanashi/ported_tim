@@ -149,10 +149,8 @@ scripts:
         label: 発光@カスタムフレア
       - path: "./lua/カスタムフレア/虹輪.lua"
         label: 虹輪@カスタムフレア
-      - path: "./lua/ライトバースト/ライトバースト.lua"
-        label: ライトバースト@ライトバースト
-      - path: "./lua/ライトバースト/ライトバースト(拡張機能).lua"
-        label: ライトバースト(拡張機能)@ライトバースト
+      - path: "./lua/ライトバースト/ライトバースト.anm2.lua"
+        label: ライトバースト
       - path: "./lua/オーラ放出/オーラ放出.anm.lua"
         label: オーラ放出
       - path: "./lua/色収差/色収差.anm.lua"
