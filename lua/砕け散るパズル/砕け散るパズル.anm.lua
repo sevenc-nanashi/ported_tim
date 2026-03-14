@@ -47,6 +47,7 @@ local track_scatter_center_x = 0
 ---max=2000
 ---step=0.1
 local track_scatter_center_y = 0
+--trackgroup@track_scatter_center_x,track_scatter_center_y
 
 --group
 
@@ -74,6 +75,7 @@ local track_gravity_y = 100
 ---max=1000
 ---step=0.1
 local track_gravity_z = 0
+--trackgroup@track_gravity_x,track_gravity_y,track_gravity_z
 
 --group
 
@@ -92,18 +94,8 @@ local mapnum = 1
 ---step=0.1
 local mapdeg = 0
 
---group:マップ中心
----$track:マップ中心X
----min=-2000
----max=2000
----step=0.1
-local track_map_center_x = 0
-
----$track:マップ中心Y
----min=-2000
----max=2000
----step=0.1
-local track_map_center_y = 0
+--value:マップ中心
+local Cmap = { 0, 0 }
 
 --group
 
@@ -385,7 +377,7 @@ if Pfig == 0 then
 
     local zoom = obj.getvalue("zoom") * 0.01
 
-    obj.setanchor("Ct", 1)
+    obj.setanchor("track_scatter_center_x,track_scatter_center_y", 1)
     local apt = track_unfold * 0.01
     local Vs = track_speed * 7.5
     local dir = -math.rad(track_direction)
@@ -784,7 +776,7 @@ else
     mapdeg = (mapdeg or 0) * math.pi / 180
     FBR = FBR or 0
     obj.setanchor("Cmap", #Cmap / 2, "line")
-    obj.setanchor("Ct", 1)
+    obj.setanchor("track_scatter_center_x,track_scatter_center_y", 1)
     if #Cmap > 3 then
         mapdeg = -math.atan2(Cmap[3] - Cmap[1], Cmap[4] - Cmap[2])
     end
