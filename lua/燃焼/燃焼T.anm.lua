@@ -74,12 +74,19 @@ local IE = 0
 local check0 = false
 
 --[[pixelshader@saturate_brightness
----$include "./saturate_brightness.hlsl"
+---$include "./shaders/saturate_brightness.hlsl"
+]]
+--[[pixelshader@extended_contrast
+---$include "./shaders/extended_contrast.hlsl"
+]]
+--[[pixelshader@tritone
+---$include "./shaders/tritone.hlsl"
+]]
+--[[pixelshader@shift_and_reverse_channels
+---$include "./shaders/shift_and_reverse_channels.hlsl"
 ]]
 
 if orAP == 1 or fiAP == 1 then
-    local T_burning_Module = obj.module("tim2")
-    local userdata, w, h
     local T = (track_unfold * 0.02 - 1) * 128
     local Si = track_period_width * 0.01
     local ST, Sh
@@ -130,39 +137,33 @@ if orAP == 1 or fiAP == 1 then
         T = (1 + 1 / kaku) * T
     end
 
-    userdata, w, h = obj.getpixeldata("object", "bgra")
-    T_burning_Module.burning_extended_contrast(userdata, w, h, T, ECW)
-    obj.putpixeldata("object", userdata, w, h, "bgra")
+    obj.pixelshader("extended_contrast", "object", "object", { T, ECW })
     obj.copybuffer("cache:dst", "object")
 
     obj.effect("グロー", "強さ", 4, "拡散", 15, "しきい値", 0, "ぼかし", 1, "形状", "通常")
     obj.copybuffer("cache:alp", "obj")
 
-    obj.setoption("drawtarget", "tempbuffer", w, h)
+    obj.setoption("drawtarget", "tempbuffer", obj.getpixel())
 
     if orAP == 1 then
         obj.copybuffer("tempbuffer", "cache:ori")
-        userdata, w, h = obj.getpixeldata("object", "bgra")
-        T_burning_Module.burning_shift_channels(userdata, w, h)
-        obj.putpixeldata("object", userdata, w, h, "bgra")
-        obj.effect("反転", "透明度反転", 1)
+        obj.pixelshader("shift_and_reverse_channels", "object", "object")
         obj.setoption("blend", "alpha_sub")
         obj.draw()
-
-        -- NOTE: AviUtl2 beta36a現在、alpha_subで描画した部分のアルファ値がマイナスになると描画がおかしくなるので、
-        -- 1回しか描画しないようにする
-        -- obj.draw()
+        obj.draw()
     end
 
     if fiAP == 1 then
         obj.copybuffer("object", "cache:alp")
+        -- NOTE: AviUtl1の内部フォーマット（YUY2）っぽく輝度を飽和させる
         obj.pixelshader("saturate_brightness", "object", "object")
         obj.effect("エッジ抽出", "輝度エッジを抽出", 1, "しきい値", 73 * Sh, "強さ", 100)
         obj.copybuffer("cache:test", "object")
 
-        userdata, w, h = obj.getpixeldata("object", "bgra")
-        T_burning_Module.burning_tritone(userdata, w, h, col1, col2)
-        obj.putpixeldata("object", userdata, w, h, "bgra")
+        local col1_r, col1_g, col1_b = RGB(col1)
+        local col2_r, col2_g, col2_b = RGB(col2)
+        obj.pixelshader("tritone", "object", "object",
+            { col1_r / 255, col1_g / 255, col1_b / 255, col2_r / 255, col2_g / 255, col2_b / 255 })
         obj.effect("グロー", "強さ", 2 * ST, "拡散", 30, "しきい値", 40, "ぼかし", 3, "形状", "通常")
         obj.effect("グロー", "強さ", 1 * ST, "拡散", 3, "しきい値", 60, "ぼかし", 3, "形状", "通常")
         obj.effect("斜めクリッピング", "幅", h0)
@@ -172,9 +173,8 @@ if orAP == 1 or fiAP == 1 then
 
         obj.copybuffer("object", "cache:dst")
         obj.effect("エッジ抽出", "輝度エッジを抽出", 1, "しきい値", 38 * Sh, "強さ", 330)
-        userdata, w, h = obj.getpixeldata("object", "bgra")
-        T_burning_Module.burning_tritone(userdata, w, h, col1, col2)
-        obj.putpixeldata("object", userdata, w, h, "bgra")
+        obj.pixelshader("tritone", "object", "object",
+            { col1_r / 255, col1_g / 255, col1_b / 255, col2_r / 255, col2_g / 255, col2_b / 255 })
         obj.effect("グロー", "強さ", 2 * ST, "拡散", 40, "しきい値", 60, "ぼかし", 3, "形状", "通常")
         obj.effect("斜めクリッピング", "幅", h0)
         obj.effect("斜めクリッピング", "幅", w0, "角度", 90)

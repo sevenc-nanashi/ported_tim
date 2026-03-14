@@ -2,7 +2,6 @@
 use aviutl2::module::ScriptModuleFunctions;
 
 mod alpha;
-mod burning;
 mod color;
 mod cracked_glass;
 mod custom_flare;
@@ -38,7 +37,6 @@ impl ScriptModuleFunctions for PortedTimMod2 {
     fn functions() -> Vec<aviutl2::module::ModuleFunction> {
         let mut functions = Vec::new();
         functions.extend(alpha::AlphaModule::functions());
-        functions.extend(burning::BurningModule::functions());
         functions.extend(color::ColorModule::functions());
         functions.extend(cracked_glass::CrackedGlassModule::functions());
         functions.extend(custom_flare::CustomFlareModule::functions());
