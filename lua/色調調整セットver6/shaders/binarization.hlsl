@@ -32,7 +32,8 @@ float4 color_binarization(float4 pos : SV_Position, float2 uv : TEXCOORD0)
     : SV_TARGET {
   float4 rgba = srcTex.Sample(srcSmp, uv);
   float gray = grayscale(rgba.rgb);
-  float3 bright = float3(constants.brightR, constants.brightG, constants.brightB);
+  float3 bright =
+      float3(constants.brightR, constants.brightG, constants.brightB);
   float3 dark = float3(constants.darkR, constants.darkG, constants.darkB);
   float isBright = gray > constants.threshold ? 1.0 : 0.0;
 

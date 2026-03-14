@@ -31,14 +31,12 @@ float shaped_fraction(float frac, float roundness) {
   }
 
   float result = clampedRoundness <= 0.0
-      ? (direction * (mirrored * 2.0 - shaped) + 1.0) * 0.5
-      : (direction * shaped + 1.0) * 0.5;
+                     ? (direction * (mirrored * 2.0 - shaped) + 1.0) * 0.5
+                     : (direction * shaped + 1.0) * 0.5;
   return clamp(result, 0.0, 1.0);
 }
 
-int c_rand(int seed) {
-  return seed * 214013 + 2531011;
-}
+int c_rand(int seed) { return seed * 214013 + 2531011; }
 
 float segment_random(float seedValue, int index) {
   int seed = (int)round(seedValue);
@@ -51,15 +49,20 @@ float segment_random(float seedValue, int index) {
   return frac(randBucket * 0.001);
 }
 
-float hard_pattern(float seed, float phase, float amplitudeBase, float roundness, float basePosition) {
+float hard_pattern(float seed, float phase, float amplitudeBase,
+                   float roundness, float basePosition) {
   int seg0 = (int)floor(phase);
   int seg1 = seg0 + 1;
   float frac = phase - seg0;
   float clampedAmplitudeBase = clamp(amplitudeBase, 0.0, 1.0);
-  float amp0 = clampedAmplitudeBase + (1.0 - clampedAmplitudeBase) * segment_random(seed, seg0);
-  float amp1 = clampedAmplitudeBase + (1.0 - clampedAmplitudeBase) * segment_random(seed, seg1);
-  float negAmp0 = 1.0 - (1.0 - clampedAmplitudeBase) * segment_random(seed, seg0);
-  float negAmp1 = 1.0 - (1.0 - clampedAmplitudeBase) * segment_random(seed, seg1);
+  float amp0 = clampedAmplitudeBase +
+               (1.0 - clampedAmplitudeBase) * segment_random(seed, seg0);
+  float amp1 = clampedAmplitudeBase +
+               (1.0 - clampedAmplitudeBase) * segment_random(seed, seg1);
+  float negAmp0 =
+      1.0 - (1.0 - clampedAmplitudeBase) * segment_random(seed, seg0);
+  float negAmp1 =
+      1.0 - (1.0 - clampedAmplitudeBase) * segment_random(seed, seg1);
   float clampedBasePosition = clamp(basePosition, -1.0, 1.0);
   float negScale = 0.5 * (1.0 - clampedBasePosition);
   float posScale = 0.5 * (1.0 + clampedBasePosition);
@@ -75,25 +78,31 @@ float hard_pattern(float seed, float phase, float amplitudeBase, float roundness
   return lerp(startValue, endValue, shaped_fraction(frac, roundness));
 }
 
-float4 sample_bilinear_transparent(float2 samplePixel, uint width, uint height) {
+float4 sample_bilinear_transparent(float2 samplePixel, uint width,
+                                   uint height) {
   if (samplePixel.x < 0.0 || samplePixel.y < 0.0 ||
-      samplePixel.x > (float)width - 1.0 || samplePixel.y > (float)height - 1.0) {
+      samplePixel.x > (float)width - 1.0 ||
+      samplePixel.y > (float)height - 1.0) {
     return float4(0.0, 0.0, 0.0, 0.0);
   }
 
-  float2 clamped = clamp(samplePixel, float2(0.0, 0.0), float2((float)width - 1.0, (float)height - 1.0));
+  float2 clamped = clamp(samplePixel, float2(0.0, 0.0),
+                         float2((float)width - 1.0, (float)height - 1.0));
   int2 base = int2(floor(clamped));
   int x0 = base.x;
   int y0 = base.y;
   int x1 = min(x0 + 1, (int)width - 1);
   int y1 = min(y0 + 1, (int)height - 1);
   float2 frac = clamped - base;
-  float4 top = lerp(srcTex.Load(int3(x0, y0, 0)), srcTex.Load(int3(x1, y0, 0)), frac.x);
-  float4 bottom = lerp(srcTex.Load(int3(x0, y1, 0)), srcTex.Load(int3(x1, y1, 0)), frac.x);
+  float4 top =
+      lerp(srcTex.Load(int3(x0, y0, 0)), srcTex.Load(int3(x1, y0, 0)), frac.x);
+  float4 bottom =
+      lerp(srcTex.Load(int3(x0, y1, 0)), srcTex.Load(int3(x1, y1, 0)), frac.x);
   return lerp(top, bottom, frac.y);
 }
 
-float4 dir_hard_blur(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
+float4 dir_hard_blur(float4 pos : SV_Position, float2 uv : TEXCOORD0)
+    : SV_TARGET {
   uint width, height;
   srcTex.GetDimensions(width, height);
 
@@ -101,17 +110,14 @@ float4 dir_hard_blur(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGE
   float xFromCenter = pixel.x - width * 0.5;
   float yFromCenter = pixel.y - height * 0.5;
   float safeBumpSize = max(abs(constants.bumpSize), 1.0);
-  float phase = (xFromCenter * constants.sinTheta - yFromCenter * constants.cosTheta) / safeBumpSize;
+  float phase =
+      (xFromCenter * constants.sinTheta - yFromCenter * constants.cosTheta) /
+      safeBumpSize;
   float offset = constants.blurAmount *
-      hard_pattern(
-          constants.seed,
-          phase,
-          constants.amplitudeBase,
-          constants.roundness,
-          constants.basePosition);
-  float2 samplePixel = float2(
-      pixel.x + constants.cosTheta * offset,
-      pixel.y + constants.sinTheta * offset);
+                 hard_pattern(constants.seed, phase, constants.amplitudeBase,
+                              constants.roundness, constants.basePosition);
+  float2 samplePixel = float2(pixel.x + constants.cosTheta * offset,
+                              pixel.y + constants.sinTheta * offset);
 
   return sample_bilinear_transparent(samplePixel, width, height);
 }

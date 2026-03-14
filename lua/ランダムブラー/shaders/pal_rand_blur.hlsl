@@ -14,22 +14,30 @@ uint wrap_coord(uint value, uint modulus) {
   return value - (value / modulus) * modulus;
 }
 
-uint hash_coord(uint x, uint y, uint seed, uint a, uint b, uint c, uint modulus) {
+uint hash_coord(uint x, uint y, uint seed, uint a, uint b, uint c,
+                uint modulus) {
   return wrap_coord(x * a + y * b + seed * c, modulus);
 }
 
-float random_value_at(uint2 pixel, uint seed, uint randomWidth, uint randomHeight) {
-  uint2 random_pixel1 = uint2(
-      hash_coord(pixel.x, pixel.y, seed, 73u, 151u, 37u, randomWidth),
-      hash_coord(pixel.x, pixel.y, seed, 199u, 101u, 89u, randomHeight));
+float random_value_at(uint2 pixel, uint seed, uint randomWidth,
+                      uint randomHeight) {
+  uint2 random_pixel1 =
+      uint2(hash_coord(pixel.x, pixel.y, seed, 73u, 151u, 37u, randomWidth),
+            hash_coord(pixel.x, pixel.y, seed, 199u, 101u, 89u, randomHeight));
   uint2 random_pixel2 = uint2(
-      wrap_coord(hash_coord(pixel.x, pixel.y, seed, 41u, 61u, 17u, randomWidth) + 97u, randomWidth),
-      wrap_coord(hash_coord(pixel.x, pixel.y, seed, 17u, 29u, 53u, randomHeight) + 193u, randomHeight));
+      wrap_coord(
+          hash_coord(pixel.x, pixel.y, seed, 41u, 61u, 17u, randomWidth) + 97u,
+          randomWidth),
+      wrap_coord(
+          hash_coord(pixel.x, pixel.y, seed, 17u, 29u, 53u, randomHeight) +
+              193u,
+          randomHeight));
   return frac(randomTex.Load(int3((int2)random_pixel1, 0)).r +
               randomTex.Load(int3((int2)random_pixel2, 0)).r * 0.754877666);
 }
 
-float4 pal_rand_blur(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
+float4 pal_rand_blur(float4 pos : SV_Position, float2 uv : TEXCOORD0)
+    : SV_TARGET {
   uint width, height, randomWidth, randomHeight;
   srcTex.GetDimensions(width, height);
   randomTex.GetDimensions(randomWidth, randomHeight);
@@ -37,11 +45,12 @@ float4 pal_rand_blur(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGE
   float2 pixel = floor(pos.xy);
   uint2 pixel_u = (uint2)pixel;
   uint seed = (uint)constants.seed;
-  float random_value = random_value_at(pixel_u, seed, randomWidth, randomHeight);
+  float random_value =
+      random_value_at(pixel_u, seed, randomWidth, randomHeight);
   float delta =
-      (0.5 - random_value - constants.basePosition * 0.5) *
-      constants.maxOffset;
-  int2 sample_pixel = int2(round(pixel + float2(constants.cosAngle, constants.sinAngle) * delta));
+      (0.5 - random_value - constants.basePosition * 0.5) * constants.maxOffset;
+  int2 sample_pixel = int2(
+      round(pixel + float2(constants.cosAngle, constants.sinAngle) * delta));
   sample_pixel =
       clamp(sample_pixel, int2(0, 0), int2((int)width - 1, (int)height - 1));
 

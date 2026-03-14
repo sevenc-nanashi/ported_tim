@@ -162,8 +162,12 @@ if orAP == 1 or fiAP == 1 then
 
         local col1_r, col1_g, col1_b = RGB(col1)
         local col2_r, col2_g, col2_b = RGB(col2)
-        obj.pixelshader("tritone", "object", "object",
-            { col1_r / 255, col1_g / 255, col1_b / 255, col2_r / 255, col2_g / 255, col2_b / 255 })
+        obj.pixelshader(
+            "tritone",
+            "object",
+            "object",
+            { col1_r / 255, col1_g / 255, col1_b / 255, col2_r / 255, col2_g / 255, col2_b / 255 }
+        )
         obj.effect("グロー", "強さ", 2 * ST, "拡散", 30, "しきい値", 40, "ぼかし", 3, "形状", "通常")
         obj.effect("グロー", "強さ", 1 * ST, "拡散", 3, "しきい値", 60, "ぼかし", 3, "形状", "通常")
         obj.effect("斜めクリッピング", "幅", h0)
@@ -173,8 +177,12 @@ if orAP == 1 or fiAP == 1 then
 
         obj.copybuffer("object", "cache:dst")
         obj.effect("エッジ抽出", "輝度エッジを抽出", 1, "しきい値", 38 * Sh, "強さ", 330)
-        obj.pixelshader("tritone", "object", "object",
-            { col1_r / 255, col1_g / 255, col1_b / 255, col2_r / 255, col2_g / 255, col2_b / 255 })
+        obj.pixelshader(
+            "tritone",
+            "object",
+            "object",
+            { col1_r / 255, col1_g / 255, col1_b / 255, col2_r / 255, col2_g / 255, col2_b / 255 }
+        )
         obj.effect("グロー", "強さ", 2 * ST, "拡散", 40, "しきい値", 60, "ぼかし", 3, "形状", "通常")
         obj.effect("斜めクリッピング", "幅", h0)
         obj.effect("斜めクリッピング", "幅", w0, "角度", 90)

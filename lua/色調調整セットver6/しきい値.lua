@@ -86,5 +86,5 @@ obj.pixelshader("threshold", "object", "object", {
     col_r / 255,
     col_g / 255,
     col_b / 255,
-    invert_range and 1 or 0
+    invert_range and 1 or 0,
 })

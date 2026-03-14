@@ -50,15 +50,10 @@ if not check_keep_size then
     obj.setoption("drawtarget", "framebuffer")
 end
 local angle_radians = math.pi * angle / 180
-obj.pixelshader(
-    "pal_rand_blur",
-    "object",
-    { "object", "random" },
-    {
-        max_offset,
-        math.cos(angle_radians),
-        math.sin(angle_radians),
-        change_seed,
-        track_base_position * 0.01
-    }
-)
+obj.pixelshader("pal_rand_blur", "object", { "object", "random" }, {
+    max_offset,
+    math.cos(angle_radians),
+    math.sin(angle_radians),
+    change_seed,
+    track_base_position * 0.01,
+})

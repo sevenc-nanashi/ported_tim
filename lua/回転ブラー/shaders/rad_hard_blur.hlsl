@@ -33,14 +33,12 @@ float shaped_fraction(float frac, float roundness) {
   }
 
   float result = clampedRoundness <= 0.0
-      ? (direction * (mirrored * 2.0 - shaped) + 1.0) * 0.5
-      : (direction * shaped + 1.0) * 0.5;
+                     ? (direction * (mirrored * 2.0 - shaped) + 1.0) * 0.5
+                     : (direction * shaped + 1.0) * 0.5;
   return clamp(result, 0.0, 1.0);
 }
 
-int c_rand(int seed) {
-  return seed * 214013 + 2531011;
-}
+int c_rand(int seed) { return seed * 214013 + 2531011; }
 
 int positive_mod(int value, int modulus) {
   float quotient = floor((float)value / (float)modulus);
@@ -64,15 +62,20 @@ float segment_random(float seedValue, int index, int period) {
   return frac(randBucket * 0.001);
 }
 
-float hard_pattern(float seed, float phase, int period, float amplitudeBase, float roundness, float basePosition) {
+float hard_pattern(float seed, float phase, int period, float amplitudeBase,
+                   float roundness, float basePosition) {
   int seg0 = (int)floor(phase);
   int seg1 = seg0 + 1;
   float frac = phase - seg0;
   float clampedAmplitudeBase = clamp(amplitudeBase, 0.0, 1.0);
-  float amp0 = clampedAmplitudeBase + (1.0 - clampedAmplitudeBase) * segment_random(seed, seg0, period);
-  float amp1 = clampedAmplitudeBase + (1.0 - clampedAmplitudeBase) * segment_random(seed, seg1, period);
-  float negAmp0 = 1.0 - (1.0 - clampedAmplitudeBase) * segment_random(seed, seg0, period);
-  float negAmp1 = 1.0 - (1.0 - clampedAmplitudeBase) * segment_random(seed, seg1, period);
+  float amp0 = clampedAmplitudeBase + (1.0 - clampedAmplitudeBase) *
+                                          segment_random(seed, seg0, period);
+  float amp1 = clampedAmplitudeBase + (1.0 - clampedAmplitudeBase) *
+                                          segment_random(seed, seg1, period);
+  float negAmp0 =
+      1.0 - (1.0 - clampedAmplitudeBase) * segment_random(seed, seg0, period);
+  float negAmp1 =
+      1.0 - (1.0 - clampedAmplitudeBase) * segment_random(seed, seg1, period);
   float clampedBasePosition = clamp(basePosition, -1.0, 1.0);
   float negScale = 0.5 * (1.0 - clampedBasePosition);
   float posScale = 0.5 * (1.0 + clampedBasePosition);
@@ -90,30 +93,30 @@ float hard_pattern(float seed, float phase, int period, float amplitudeBase, flo
 
 float4 sample_nearest_transparent(float2 samplePixel, uint width, uint height) {
   int2 nearest = int2(trunc(samplePixel + 0.5));
-  if (nearest.x < 0 || nearest.y < 0 || nearest.x >= (int)width || nearest.y >= (int)height) {
+  if (nearest.x < 0 || nearest.y < 0 || nearest.x >= (int)width ||
+      nearest.y >= (int)height) {
     return float4(0.0, 0.0, 0.0, 0.0);
   }
   return srcTex.Load(int3(nearest, 0));
 }
 
-float4 rad_hard_blur(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
+float4 rad_hard_blur(float4 pos : SV_Position, float2 uv : TEXCOORD0)
+    : SV_TARGET {
   uint width, height;
   srcTex.GetDimensions(width, height);
 
   float2 pixel = floor(pos.xy);
-  float2 origin = float2(width * 0.5 + constants.centerX, height * 0.5 + constants.centerY);
+  float2 origin =
+      float2(width * 0.5 + constants.centerX, height * 0.5 + constants.centerY);
   float2 offset = pixel - origin;
   int sampleCount = max((int)round(constants.count), 1);
   int period = sampleCount * 2;
   float phase = (atan2(offset.y, offset.x) / PI + 1.0) * sampleCount;
-  float scale = 1.0 - constants.blurAmount *
-      hard_pattern(
-          constants.seed,
-          phase,
-          period,
-          constants.amplitudeBase,
-          constants.roundness,
-          constants.basePosition);
+  float scale =
+      1.0 - constants.blurAmount * hard_pattern(constants.seed, phase, period,
+                                                constants.amplitudeBase,
+                                                constants.roundness,
+                                                constants.basePosition);
   float2 samplePixel = origin + offset * scale;
 
   return sample_nearest_transparent(samplePixel, width, height);

@@ -233,8 +233,13 @@ task :rewrite_parameters do
 end
 
 task :format do
-  files = Dir.glob("./lua/**/*.lua")
-  sh "stylua #{files.join(" ")}"
+  lua_files = Dir.glob("./lua/**/*.lua")
+  sh "stylua #{lua_files.join(" ")}"
+
+  hlsl_files = Dir.glob("./lua/**/*.hlsl")
+  sh "clang-format -i #{hlsl_files.join(" ")}"
+
+  sh "cargo fmt"
 end
 
 task :tasklist do

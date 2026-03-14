@@ -1,5 +1,6 @@
 // NOTE: 元の計算結果となんか合わない...
-// 元コード： https://github.com/sevenc-nanashi/ported_tim/blob/5d9e136adf3513d4f0bd98c05a866006f6937525/src/burning/unoptimized/tritone.rs
+// 元コード：
+// https://github.com/sevenc-nanashi/ported_tim/blob/5d9e136adf3513d4f0bd98c05a866006f6937525/src/burning/unoptimized/tritone.rs
 
 struct Constants {
   float color1R;
