@@ -5,35 +5,19 @@ use std::{
 
 use anyhow::Result;
 
-use crate::mmdcam::unoptimized::state::{CameraKeyframe, MmdCamState};
+use super::state::{CameraKeyframe, MmdCamState};
 
 const VMD_HEADER_PREFIX: &[u8] = b"Vocaloid Motion Data 0002";
 const MAX_CAMERA_KEYFRAMES: usize = 499;
 const BONE_KEYFRAME_SIZE: u64 = 0x6f;
 const MORPH_KEYFRAME_SIZE: u64 = 0x17;
 
-pub fn read_data(state: &mut MmdCamState, file_path: &str) -> Result<usize> {
-    state.clear();
-
-    if file_path.is_empty() {
-        return Ok(0);
-    }
-
-    match read_data_inner(state, file_path) {
-        Ok(()) => Ok(state.keyframes.len()),
-        Err(_) => {
-            state.clear();
-            Ok(0)
-        }
-    }
-}
-
-fn read_data_inner(state: &mut MmdCamState, file_path: &str) -> Result<()> {
+pub fn read_data(file_path: &str) -> Result<Vec<CameraKeyframe>> {
     let mut file = File::open(file_path)?;
 
     let header = read_array::<30>(&mut file)?;
     if !header.starts_with(VMD_HEADER_PREFIX) {
-        return Ok(());
+        return Err(anyhow::anyhow!("Invalid VMD file header"));
     }
 
     let _model_name = read_array::<20>(&mut file)?;
@@ -51,14 +35,11 @@ fn read_data_inner(state: &mut MmdCamState, file_path: &str) -> Result<()> {
     let camera_count = read_u32(&mut file)? as usize;
     let load_count = camera_count.min(MAX_CAMERA_KEYFRAMES);
 
-    state.keyframes.reserve(load_count);
-    for _ in 0..load_count {
-        state.keyframes.push(read_camera_keyframe(&mut file)?);
-    }
-
-    state.keyframes.sort_by_key(|keyframe| keyframe.frame);
-
-    Ok(())
+    let mut keyframes = (0..load_count)
+        .map(|_| read_camera_keyframe(&mut file))
+        .collect::<Result<Vec<_>>>()?;
+    keyframes.sort_by_key(|keyframe| keyframe.frame);
+    Ok(keyframes)
 }
 
 fn read_camera_keyframe(reader: &mut impl Read) -> Result<CameraKeyframe> {

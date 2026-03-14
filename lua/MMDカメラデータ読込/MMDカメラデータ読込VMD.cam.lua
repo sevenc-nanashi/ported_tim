@@ -17,10 +17,6 @@ local check_auto_view_angle = true
 ---$file:ファイル
 local file_path = ""
 
-local function is_enabled(value)
-    return value == true or value == 1
-end
-
 local tim2 = obj.module("tim2")
 local loaded_camera_count = tim2.mmdcam_read_data(file_path)
 
@@ -47,7 +43,7 @@ if loaded_camera_count ~= 0 then
         cam.uz = -cam.uz
     end
 
-    if is_enabled(check_auto_view_angle) then
+    if check_auto_view_angle then
         cam.d = obj.screen_h / math.tan(view_angle * math.pi / 360) / 2
     end
 

@@ -1,6 +1,6 @@
 use anyhow::{Result, anyhow};
 
-use crate::mmdcam::unoptimized::state::{CameraKeyframe, MmdCamState};
+use super::state::{CameraKeyframe, MmdCamState};
 
 const BEZIER_EPSILON: f64 = 1e-6;
 const BEZIER_ITERATIONS: usize = 15;
