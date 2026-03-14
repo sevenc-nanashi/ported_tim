@@ -105,7 +105,6 @@ OFSET[2] = OFSET[2] * 0.01
 OFSET[3] = OFSET[3] * 0.01
 local data, w, h = tim2_images.custom_flare_load_image("I" .. fig)
 obj.putpixeldata("object", data, w, h)
-tim2_images.custom_flare_free_image(data)
 obj.effect("グラデーション", "color", col, "color2", col, "blend", 5)
 obj.effect("ぼかし", "範囲", blur)
 local OF = math.floor(obj.time * obj.framerate)
@@ -113,7 +112,6 @@ for i = 1, count do
     if dcol > 0 then
         local data, w, h = tim2_images.custom_flare_load_image("I" .. fig)
         obj.putpixeldata("object", data, w, h)
-        tim2_images.custom_flare_free_image(data)
         local h, s, v = HSV(col)
         h = math.floor(h + math.floor(3.6 * obj.rand(0, dcol, i, seed))) % 360
         col = HSV(h, s, v)

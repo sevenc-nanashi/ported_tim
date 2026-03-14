@@ -120,7 +120,6 @@ end
 local tim2_images = obj.module("tim2")
 local data, w, h = tim2_images.custom_flare_load_image("hoop" .. fig)
 obj.putpixeldata("object", data, w, h)
-tim2_images.custom_flare_free_image(data)
 obj.setoption("antialias", 1)
 
 local ox = CustomFlaredX * (t + OFSET[1]) * 0.01 + CustomFlareCX

@@ -116,7 +116,6 @@ local dz = (t + OFSET[3]) * 0.01 * CustomFlaredZ + CustomFlareCZ
 local tim2_images = obj.module("tim2")
 local data, w, h = tim2_images.custom_flare_load_image("spike" .. fig)
 obj.putpixeldata("object", data, w, h)
-tim2_images.custom_flare_free_image(data)
 obj.effect("グラデーション", "color", col, "color2", col, "blend", 3)
 obj.effect("ぼかし", "範囲", blur)
 local w0, h0 = obj.getpixel()
