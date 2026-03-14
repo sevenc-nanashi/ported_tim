@@ -11,7 +11,7 @@ local track_x = 300
 ---step=0.1
 local track_y = 0
 
---trackgroup@track_x,track_y
+--trackgroup@track_x,track_y:位置
 
 ---$track:回転
 ---min=-3600

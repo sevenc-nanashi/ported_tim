@@ -11,7 +11,7 @@ local track_vertex_x = 0
 ---step=0.1
 local track_vertex_y = 0
 
---trackgroup@track_vertex_x,track_vertex_y
+--trackgroup@track_vertex_x,track_vertex_y:頂点
 
 ---$track:頂点数
 ---min=0

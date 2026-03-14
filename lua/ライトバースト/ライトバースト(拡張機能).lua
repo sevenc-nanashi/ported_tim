@@ -11,7 +11,7 @@ local track_glow_center_x = 0
 ---step=0.1
 local track_glow_center_y = 0
 
---trackgroup@track_glow_center_x,track_glow_center_y
+--trackgroup@track_glow_center_x,track_glow_center_y:発光中心
 
 ---$track:サイズ補正X
 ---min=0

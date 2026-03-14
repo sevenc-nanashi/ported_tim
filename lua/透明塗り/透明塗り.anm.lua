@@ -11,7 +11,7 @@ local track_target_position_x = 0
 ---step=1
 local track_target_position_y = 0
 
---trackgroup@track_target_position_x,track_target_position_y
+--trackgroup@track_target_position_x,track_target_position_y:指定位置
 
 ---$track:α調整
 ---min=1

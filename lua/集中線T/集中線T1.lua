@@ -26,8 +26,19 @@ local track_locality = 0
 ---$color:色
 local color = 0xffffff
 
----$value:中心位置
-local CC = { 0, 0 }
+---$track:中心位置X
+---min=-5000
+---max=5000
+---step=0.1
+local track_center_x = 0
+
+---$track:中心位置Y
+---min=-5000
+---max=5000
+---step=0.1
+local track_center_y = 0
+
+--trackgroup@track_center_x,track_center_y:中心位置
 
 ---$track:中心ランダム度
 ---min=0
@@ -99,9 +110,9 @@ end
 local Cx
 local Cy
 if track_follow_center_layer == nil or track_follow_center_layer == 0 then
-    obj.setanchor("CC", 1)
-    Cx = CC[1]
-    Cy = CC[2]
+    obj.setanchor("track_center_x,track_center_y", 0)
+    Cx = track_center_x
+    Cy = track_center_y
 else
     Cx = obj.getvalue("layer" .. track_follow_center_layer .. ".x")
     Cy = obj.getvalue("layer" .. track_follow_center_layer .. ".y")

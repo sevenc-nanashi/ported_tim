@@ -11,7 +11,7 @@ local track_center_x = 0
 ---step=0.1
 local track_center_y = 0
 
---trackgroup@track_center_x,track_center_y
+--trackgroup@track_center_x,track_center_y:中心
 
 ---$track:最大ズレ量
 ---min=0
