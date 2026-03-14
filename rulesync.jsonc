@@ -3,7 +3,8 @@
     "copilot",
     "cursor",
     "claudecode",
-    "codexcli"
+    "codexcli",
+    "geminicli"
   ],
   "features": [
     "rules",

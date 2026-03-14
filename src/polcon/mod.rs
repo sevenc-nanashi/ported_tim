@@ -1,7 +1,7 @@
 use aviutl2::anyhow;
 use std::ptr::NonNull;
 
-pub mod unoptimized;
+pub mod optimized;
 
 pub(crate) struct PolConModule;
 
@@ -24,7 +24,7 @@ impl PolConModule {
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
         let work_buffer =
             unsafe { std::slice::from_raw_parts_mut(work_buffer.as_ptr(), buffer_size) };
-        crate::polcon::unoptimized::polar_conversion(
+        crate::polcon::optimized::polar_conversion(
             image_buffer,
             work_buffer,
             width,
@@ -51,7 +51,7 @@ impl PolConModule {
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
         let work_buffer =
             unsafe { std::slice::from_raw_parts_mut(work_buffer.as_ptr(), buffer_size) };
-        crate::polcon::unoptimized::polar_inversion(
+        crate::polcon::optimized::polar_inversion(
             image_buffer,
             work_buffer,
             width,

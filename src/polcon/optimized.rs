@@ -1,3 +1,5 @@
+use rayon::prelude::*;
+
 fn sample_bilinear(src: &[u8], width: usize, height: usize, x: f64, y: f64) -> [u8; 4] {
     let x = x.clamp(0.0, (width.saturating_sub(1)) as f64);
     let y = y.clamp(0.0, (height.saturating_sub(1)) as f64);
@@ -34,11 +36,6 @@ fn sample_bilinear(src: &[u8], width: usize, height: usize, x: f64, y: f64) -> [
     out
 }
 
-fn write_pixel(dst: &mut [u8], width: usize, x: usize, y: usize, px: [u8; 4]) {
-    let idx = (y * width + x) * 4;
-    dst[idx..idx + 4].copy_from_slice(&px);
-}
-
 pub fn polar_conversion(
     image_buffer: &mut [u8],
     work_buffer: &mut [u8],
@@ -59,9 +56,9 @@ pub fn polar_conversion(
     }
 
     let range = range.clamp(0.0, 1.0);
-
-    let src = image_buffer[..len].to_vec();
+    let src = image_buffer[..len].to_vec(); // Use a copy for safe multi-threaded read
     let dst = &mut work_buffer[..len];
+
     let cx = width as f64 * 0.5;
     let cy = height as f64 * 0.5;
     let half_w = width as f64 * 0.5;
@@ -77,24 +74,30 @@ pub fn polar_conversion(
     let a = apply_amount.clamp(0.0, 1.0);
     let b = 1.0 - a;
 
-    for y in 0..height {
-        for x in 0..width {
-            let nx = (x as f64 - cx) / radius_x;
-            let ny = (y as f64 - cy) / radius_y;
-            let theta = nx.atan2(ny);
-            let r = (nx * nx + ny * ny).sqrt();
-            let sx = ((theta / std::f64::consts::PI) + 1.0) * x_div * 0.5;
-            let sy = r * y_div;
-            let bx = b * x as f64 + a * sx;
-            let by = b * y as f64 + a * sy;
-            if bx < 0.0 || bx > x_div || by < 0.0 || by > y_div {
-                write_pixel(dst, width, x, y, [0, 0, 0, 0]);
-            } else {
-                let px = sample_bilinear(&src, width, height, bx, by);
-                write_pixel(dst, width, x, y, px);
+    dst.par_chunks_exact_mut(width * 4)
+        .enumerate()
+        .for_each(|(y, row)| {
+            let y_f = y as f64;
+            for x in 0..width {
+                let x_f = x as f64;
+                let nx = (x_f - cx) / radius_x;
+                let ny = (y_f - cy) / radius_y;
+                let theta = nx.atan2(ny);
+                let r = (nx * nx + ny * ny).sqrt();
+                let sx = ((theta / std::f64::consts::PI) + 1.0) * x_div * 0.5;
+                let sy = r * y_div;
+                let bx = b * x_f + a * sx;
+                let by = b * y_f + a * sy;
+
+                let px = if bx < 0.0 || bx > x_div || by < 0.0 || by > y_div {
+                    [0, 0, 0, 0]
+                } else {
+                    sample_bilinear(&src, width, height, bx, by)
+                };
+                let idx = x * 4;
+                row[idx..idx + 4].copy_from_slice(&px);
             }
-        }
-    }
+        });
 
     image_buffer[..len].copy_from_slice(dst);
 }
@@ -119,9 +122,9 @@ pub fn polar_inversion(
     }
 
     let range = range.clamp(0.0, 1.0);
-
-    let src = image_buffer[..len].to_vec();
+    let src = image_buffer[..len].to_vec(); // Use a copy for safe multi-threaded read
     let dst = &mut work_buffer[..len];
+
     let cx = width as f64 * 0.5;
     let cy = height as f64 * 0.5;
     let half_w = width as f64 * 0.5;
@@ -138,25 +141,33 @@ pub fn polar_inversion(
     let a = apply_amount.clamp(0.0, 1.0);
     let b = 1.0 - a;
 
-    for y in 0..height {
-        for x in 0..width {
-            let mut theta = (2.0 * x as f64 / x_scale - 1.0) * std::f64::consts::PI;
-            if theta < -std::f64::consts::PI {
-                theta += tau;
+    dst.par_chunks_exact_mut(width * 4)
+        .enumerate()
+        .for_each(|(y, row)| {
+            let y_f = y as f64;
+            let t = y_f / y_scale;
+            let radius_x_t = radius_x * t;
+            let radius_y_t = radius_y * t;
+            for x in 0..width {
+                let x_f = x as f64;
+                let mut theta = (2.0 * x_f / x_scale - 1.0) * std::f64::consts::PI;
+                if theta < -std::f64::consts::PI {
+                    theta += tau;
+                }
+                let sx = cx + theta.sin() * radius_x_t;
+                let sy = cy + theta.cos() * radius_y_t;
+                let bx = b * x_f + a * sx;
+                let by = b * y_f + a * sy;
+
+                let px = if bx < 0.0 || bx > x_scale || by < 0.0 || by > y_scale {
+                    [0, 0, 0, 0]
+                } else {
+                    sample_bilinear(&src, width, height, bx, by)
+                };
+                let idx = x * 4;
+                row[idx..idx + 4].copy_from_slice(&px);
             }
-            let t = y as f64 / y_scale;
-            let sx = cx + theta.sin() * (radius_x * t);
-            let sy = cy + theta.cos() * (radius_y * t);
-            let bx = b * x as f64 + a * sx;
-            let by = b * y as f64 + a * sy;
-            if bx < 0.0 || bx > x_scale || by < 0.0 || by > y_scale {
-                write_pixel(dst, width, x, y, [0, 0, 0, 0]);
-            } else {
-                let mapped = sample_bilinear(&src, width, height, bx, by);
-                write_pixel(dst, width, x, y, mapped);
-            }
-        }
-    }
+        });
 
     image_buffer[..len].copy_from_slice(dst);
 }

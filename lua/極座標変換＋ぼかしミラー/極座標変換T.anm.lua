@@ -17,13 +17,26 @@ local track_apply_amount = 100
 ---step=1
 local track_inverse_transform = 0
 
-local tim2 = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-obj.clearbuffer("cache:work", w, h)
-local work = obj.getpixeldata("cache:work", "bgra")
-if track_inverse_transform == 0 then
-    tim2.polcon_polar_conversion(userdata, work, w, h, track_range * 0.01, track_apply_amount * 0.01)
-else
-    tim2.polcon_polar_inversion(userdata, work, w, h, track_range * 0.01, track_apply_amount * 0.01)
-end
-obj.putpixeldata("object", userdata, w, h, "bgra")
+--[[pixelshader@polar_conversion
+---$include "./shaders/polcon.hlsl"
+]]
+
+local range = track_range * 0.01
+local apply_amount = track_apply_amount * 0.01
+
+local w, h = obj.getpixel()
+local diag_half = math.sqrt(w * w + h * h) * 0.5
+local half_w = w * 0.5
+local half_h = h * 0.5
+local radius_x = half_w * range + diag_half * (1.0 - range)
+local radius_y = half_h * range + diag_half * (1.0 - range)
+
+obj.pixelshader("polar_conversion", "object", "object", {
+    w,
+    h,
+    range,
+    apply_amount,
+    track_inverse_transform,
+    radius_x,
+    radius_y,
+})
