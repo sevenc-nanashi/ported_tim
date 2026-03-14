@@ -1,18 +1,17 @@
 --label:tim2\ぼかし\@T_RandomBlur_Module
--- ---$track:中心X
--- ---min=-5000
--- ---max=5000
--- ---step=0.1
--- local track_center_x = 0
---
--- ---$track:中心Y
--- ---min=-5000
--- ---max=5000
--- ---step=0.1
--- local track_center_y = 0
+---$track:中心X
+---min=-5000
+---max=5000
+---step=0.1
+local track_center_x = 0
 
---track0:中心X,-5000,5000,0
---track1:中心Y,-5000,5000,0
+---$track:中心Y
+---min=-5000
+---max=5000
+---step=0.1
+local track_center_y = 0
+
+--trackgroup@track_center_x,track_center_y
 
 ---$track:最大ズレ量
 ---min=0
@@ -52,9 +51,9 @@ if not check_keep_size then
     obj.load("tempbuffer")
     obj.setoption("drawtarget", "framebuffer")
 end
-obj.setanchor("track", 0, "line")
-local center_x = obj.track0
-local center_y = obj.track1
+obj.setanchor("track_center_x,track_center_y", 0, "line")
+local center_x = track_center_x
+local center_y = track_center_y
 obj.pixelshader("rot_rand_blur", "object", { "object", "random" }, {
     track_max_offset,
     center_x,

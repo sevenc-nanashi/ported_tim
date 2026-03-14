@@ -1,19 +1,17 @@
 --label:tim2\アニメーション効果
--- ---$track:指定位置X
--- ---min=-10000
--- ---max=10000
--- ---step=1
--- local track_target_position_x = 0
---
--- ---$track:指定位置Y
--- ---min=-10000
--- ---max=10000
--- ---step=1
--- local track_target_position_y = 0
---track0:指定位置X,-10000,10000,0,1
---track1:指定位置Y,-10000,10000,0,1
-local track_target_position_x = obj.track0
-local track_target_position_y = obj.track1
+---$track:指定位置X
+---min=-10000
+---max=10000
+---step=1
+local track_target_position_x = 0
+
+---$track:指定位置Y
+---min=-10000
+---max=10000
+---step=1
+local track_target_position_y = 0
+
+--trackgroup@track_target_position_x,track_target_position_y
 
 ---$track:α調整
 ---min=1
@@ -35,7 +33,7 @@ local check0 = true
 
 local T_Alpha_Module = obj.module("tim2")
 
-obj.setanchor("track", 0)
+obj.setanchor("track_target_position_x,track_target_position_y", 0)
 local r, g, b = RGB(col)
 local userdata, w, h = obj.getpixeldata("object", "bgra")
 T_Alpha_Module.alpha_fill_color(

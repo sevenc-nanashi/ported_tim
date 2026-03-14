@@ -1,17 +1,17 @@
 --label:tim2\変形\@任意多角形カット
--- ---$track:頂点X
--- ---min=-50000
--- ---max=50000
--- ---step=0.1
--- local track_vertex_x = 0
---
--- ---$track:頂点Y
--- ---min=-50000
--- ---max=50000
--- ---step=0.1
--- local track_vertex_y = 0
---track0:頂点X,-50000,50000,0
---track1:頂点Y,-50000,50000,0
+---$track:頂点X
+---min=-50000
+---max=50000
+---step=0.1
+local track_vertex_x = 0
+
+---$track:頂点Y
+---min=-50000
+---max=50000
+---step=0.1
+local track_vertex_y = 0
+
+--trackgroup@track_vertex_x,track_vertex_y
 
 ---$track:頂点数
 ---min=0
@@ -163,12 +163,12 @@ pos = {}
 pos2 = {}
 
 if N == 0 then
-    obj.setanchor("track", 0, "loop")
+    obj.setanchor("track_vertex_x,track_vertex_y", 0, "loop")
     N = obj.getoption("section_num") + 1
     for i = 1, N - 1 do
         pos[i] = {}
-        pos[i].x = obj.getvalue(0, 0, i - 1)
-        pos[i].y = obj.getvalue(1, 0, i - 1)
+        pos[i].x = obj.getvalue("track.track_vertex_x", 0, i - 1)
+        pos[i].y = obj.getvalue("track.track_vertex_y", 0, i - 1)
     end
     pos[N] = {}
     pos[N].x = obj.getvalue(0, 0, -1)

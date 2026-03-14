@@ -1,20 +1,18 @@
 --label:tim2\ぼかし\@T_RotBlur_Module
 
--- ---$track:中心X
--- ---min=-5000
--- ---max=5000
--- ---step=0.1
--- local track_center_x = 0
---
--- ---$track:中心Y
--- ---min=-5000
--- ---max=5000
--- ---step=0.1
--- local track_center_y = 0
---track0:中心X,-5000,5000,0
---track1:中心Y,-5000,5000,0
-local track_center_x = obj.track0
-local track_center_y = obj.track1
+---$track:中心X
+---min=-5000
+---max=5000
+---step=0.1
+local track_center_x = 0
+
+---$track:中心Y
+---min=-5000
+---max=5000
+---step=0.1
+local track_center_y = 0
+
+--trackgroup@track_center_x,track_center_y
 
 ---$track:ブラー量
 ---min=0
@@ -92,7 +90,7 @@ end
 
 local blur_amount = track_blur_amount
 if blur_amount ~= 0 then
-    obj.setanchor("track", 0, "line")
+    obj.setanchor("track_center_x,track_center_y", 0, "line")
     local center_x = track_center_x
     local center_y = track_center_y
     local bump_amount = track_bump_amount
