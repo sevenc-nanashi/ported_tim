@@ -17,9 +17,3 @@ pub struct CameraKeyframe {
 pub struct MmdCamState {
     pub keyframes: Vec<CameraKeyframe>,
 }
-
-impl MmdCamState {
-    pub fn clear(&mut self) {
-        self.keyframes.clear();
-    }
-}

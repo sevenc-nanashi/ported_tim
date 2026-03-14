@@ -5,7 +5,7 @@ use std::{
 
 use anyhow::Result;
 
-use super::state::{CameraKeyframe, MmdCamState};
+use super::state::CameraKeyframe;
 
 const VMD_HEADER_PREFIX: &[u8] = b"Vocaloid Motion Data 0002";
 const MAX_CAMERA_KEYFRAMES: usize = 499;
