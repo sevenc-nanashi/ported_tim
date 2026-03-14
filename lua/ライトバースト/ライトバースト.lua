@@ -29,8 +29,19 @@ local col = 0xffffff
 ---$check:オリジナル色発光
 local chk = 0
 
----$value:発光中心
-local Cpos = { 0, 0 }
+---$track:発光中心X
+---min=-10000
+---max=10000
+---step=0.1
+local track_glow_center_x = 0
+
+---$track:発光中心Y
+---min=-10000
+---max=10000
+---step=0.1
+local track_glow_center_y = 0
+
+--trackgroup@track_glow_center_x,track_glow_center_y:発光中心
 
 ---$select:合成モード
 ---通常=0
@@ -61,9 +72,9 @@ obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 
 if komorebikakutyou == nil or komorebikakutyou == 0 then
-    obj.setanchor("Cpos", 1)
-    XX = Cpos[1]
-    YY = Cpos[2]
+    obj.setanchor("track_glow_center_x,track_glow_center_y", 0)
+    XX = track_glow_center_x
+    YY = track_glow_center_y
 else
     obj.load("tempbuffer")
     XX = Dpos[1]

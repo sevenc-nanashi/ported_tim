@@ -38,8 +38,19 @@ local select_wipe_type = 0
 ---$check:反転
 local rev = 0
 
----$value:中心座標
-local centerPos = { 0, 0 }
+---$track:中心座標X
+---min=-10000
+---max=10000
+---step=0.1
+local track_center_position_x = 0
+
+---$track:中心座標Y
+---min=-10000
+---max=10000
+---step=0.1
+local track_center_position_y = 0
+
+--trackgroup@track_center_position_x,track_center_position_y:中心座標
 
 local wipe_door = function(b, S, R, A, n, L, Lh, cos, sin, cx, cy)
     local T = (L + S / A) * b
@@ -205,9 +216,9 @@ local A = track_aspect_ratio_percent * 0.01
 
 local w, h = obj.getpixel()
 
-obj.setanchor("centerPos", 1)
-w = w + 2 * math.abs(centerPos[1])
-h = h + 2 * math.abs(centerPos[2])
+obj.setanchor("track_center_position_x,track_center_position_y", 0)
+w = w + 2 * math.abs(track_center_position_x)
+h = h + 2 * math.abs(track_center_position_y)
 
 local L0 = math.sqrt(w * w + h * h)
 
@@ -221,23 +232,23 @@ local sin = math.sin(R)
 obj.copybuffer("cache:ori", "object")
 
 if select_wipe_type == 0 then
-    wipe_door(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2])
+    wipe_door(b, S, R, A, n, L, Lh, cos, sin, track_center_position_x, track_center_position_y)
 elseif select_wipe_type == 1 then
-    wipe_radial(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 2)
+    wipe_radial(b, S, R, A, n, L, Lh, cos, sin, track_center_position_x, track_center_position_y, 2)
 elseif select_wipe_type == 2 then
-    wipe_rectangular(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 2)
+    wipe_rectangular(b, S, R, A, n, L, Lh, cos, sin, track_center_position_x, track_center_position_y, 2)
 elseif select_wipe_type == 3 then
-    wipe_crossline(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 2)
+    wipe_crossline(b, S, R, A, n, L, Lh, cos, sin, track_center_position_x, track_center_position_y, 2)
 elseif select_wipe_type == 4 then
-    wipe_diamond(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 2)
+    wipe_diamond(b, S, R, A, n, L, Lh, cos, sin, track_center_position_x, track_center_position_y, 2)
 elseif select_wipe_type == 5 then
-    wipe_radial(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 1)
+    wipe_radial(b, S, R, A, n, L, Lh, cos, sin, track_center_position_x, track_center_position_y, 1)
 elseif select_wipe_type == 6 then
-    wipe_rectangular(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 1)
+    wipe_rectangular(b, S, R, A, n, L, Lh, cos, sin, track_center_position_x, track_center_position_y, 1)
 elseif select_wipe_type == 7 then
-    wipe_crossline(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 1)
+    wipe_crossline(b, S, R, A, n, L, Lh, cos, sin, track_center_position_x, track_center_position_y, 1)
 else
-    wipe_diamond(b, S, R, A, n, L, Lh, cos, sin, centerPos[1], centerPos[2], 1)
+    wipe_diamond(b, S, R, A, n, L, Lh, cos, sin, track_center_position_x, track_center_position_y, 1)
 end
 
 obj.copybuffer("obj", "tmp")

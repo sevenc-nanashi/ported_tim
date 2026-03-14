@@ -23,8 +23,19 @@ local track_horizontal_ratio_percent = 100
 ---step=1
 local N = 30
 
----$value:中心
-local Cpos = { 0, 0 }
+---$track:中心X
+---min=-10000
+---max=10000
+---step=0.1
+local track_center_x = 0
+
+---$track:中心Y
+---min=-10000
+---max=10000
+---step=0.1
+local track_center_y = 0
+
+--trackgroup@track_center_x,track_center_y:中心
 
 local w, h = obj.getpixel()
 local A = h * track_percent * 0.01
@@ -34,7 +45,7 @@ local hw = track_horizontal_ratio_percent * 0.01
 N = math.max(2, N)
 local Nh = N * 0.5
 
-obj.setanchor("Cpos", 1)
+obj.setanchor("track_center_x,track_center_y", 0)
 
 local w2 = w * 0.5
 local h2 = h * 0.5
@@ -50,8 +61,8 @@ for i = 0, N do
     local x = w2 * (i - Nh) / Nh
     for j = 0, N do
         local y = h2 * (j - Nh) / Nh
-        local dx = (x - Cpos[1]) * hx
-        local dy = (y - Cpos[2]) * hy
+        local dx = (x - track_center_x) * hx
+        local dy = (y - track_center_y) * hy
         local dr = math.sqrt(dx * dx + dy * dy)
         TPz[i][j] = 0
         if dr <= 1 then

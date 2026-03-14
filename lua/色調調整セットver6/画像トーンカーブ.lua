@@ -23,8 +23,19 @@ local track_angle = 0
 ---step=0.1
 local track_width_percent = 100
 
----$value:中心
-local CC = { 0, 0 }
+---$track:中心X
+---min=-10000
+---max=10000
+---step=0.1
+local track_center_x = 0
+
+---$track:中心Y
+---min=-10000
+---max=10000
+---step=0.1
+local track_center_y = 0
+
+--trackgroup@track_center_x,track_center_y:中心
 
 ---$color:線色
 local col = 0xff0000
@@ -36,7 +47,7 @@ local Lck = false
 local check0 = false
 
 col = col or 0x0
-obj.setanchor("CC", 1)
+obj.setanchor("track_center_x,track_center_y", 0)
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local CSET = track_x_or_r
@@ -47,7 +58,7 @@ if check0 then
     Deg = Deg + Y
     X, Y = -X * math.sin(Y / 180 * math.pi), X * math.cos(Y / 180 * math.pi)
 end
-X, Y = X + CC[1], Y + CC[2]
+X, Y = X + track_center_x, Y + track_center_y
 T_Color_Module.color_image_tone_curve(userdata, w, h, X, Y, Deg, w * track_width_percent * 0.01, col, Lck)
 obj.putpixeldata("object", userdata, w, h, "bgra")
 T_ToneCurve_R = 1

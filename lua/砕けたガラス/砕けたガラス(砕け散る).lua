@@ -67,8 +67,19 @@ local rotv = 5
 ---step=0.1
 local vz = 7
 
----$value:XY速度中心
-local pos = { 0, 0 }
+---$track:XY速度中心X
+---min=-10000
+---max=10000
+---step=0.1
+local track_xy_speed_center_x = 0
+
+---$track:XY速度中心Y
+---min=-10000
+---max=10000
+---step=0.1
+local track_xy_speed_center_y = 0
+
+--trackgroup@track_xy_speed_center_x,track_xy_speed_center_y:XY速度中心
 
 ---$value:重力方向
 local gr = { 0, 100, 0 }
@@ -391,7 +402,7 @@ local vr = track_diameter_speed
 w, h = obj.getpixel()
 whf = w * 0.5
 hhf = h * 0.5
-obj.setanchor("pos", 1)
+obj.setanchor("track_xy_speed_center_x,track_xy_speed_center_y", 0)
 d = d * 0.5
 
 obj.setoption("drawtarget", "tempbuffer", w, h)
@@ -458,8 +469,8 @@ for i = 0, NN - 1 do
     local avx = (xx[i][0] + xx[i][1] + xx[i][2] + xx[i][3]) * 0.25
     local avy = (yy[i][0] + yy[i][1] + yy[i][2] + yy[i][3]) * 0.25
 
-    local vx = vr * (avx - pos[1]) / w * (1 + vrd * obj.rand(-50, 50, i, 1000 + rnd))
-    local vy = vr * (avy - pos[2]) / w * (1 + vrd * obj.rand(-50, 50, i, 2000 + rnd))
+    local vx = vr * (avx - track_xy_speed_center_x) / w * (1 + vrd * obj.rand(-50, 50, i, 1000 + rnd))
+    local vy = vr * (avy - track_xy_speed_center_y) / w * (1 + vrd * obj.rand(-50, 50, i, 2000 + rnd))
 
     local dx = of * vx + gr[1] * of * of
     local dy = of * vy + gr[2] * of * of
