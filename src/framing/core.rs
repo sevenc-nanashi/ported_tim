@@ -3,6 +3,7 @@ struct QueueEntry {
     y: usize,
     nearest_x: usize,
     nearest_y: usize,
+    dist2: u64,
 }
 
 impl std::cmp::PartialEq for QueueEntry {
@@ -12,11 +13,7 @@ impl std::cmp::PartialEq for QueueEntry {
 }
 impl std::cmp::PartialOrd for QueueEntry {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
-        let key_self =
-            self.nearest_x.abs_diff(self.x).pow(2) + self.nearest_y.abs_diff(self.y).pow(2);
-        let key_other =
-            other.nearest_x.abs_diff(other.x).pow(2) + other.nearest_y.abs_diff(other.y).pow(2);
-        let res = key_other.cmp(&key_self);
+        let res = other.dist2.cmp(&self.dist2);
         if res.is_eq() {
             let base_key = (self.x, self.y);
             let other_key = (other.x, other.y);
@@ -68,16 +65,22 @@ pub fn create_distance_map(
     distance: f64,
 ) -> anyhow::Result<()> {
     let mut queue = std::collections::binary_heap::BinaryHeap::new();
+    let pixel_count = width
+        .checked_mul(height)
+        .ok_or_else(|| anyhow::anyhow!("Image size overflow"))?;
+    let mut best_dist2 = vec![u64::MAX; pixel_count];
     for y in 0..height {
         for x in 0..width {
             let idx = (y * width + x) * 4;
             let alpha = original[idx + 3];
             if alpha > alpha_threshold {
+                best_dist2[y * width + x] = 0;
                 queue.push(QueueEntry {
                     x,
                     y,
                     nearest_x: x,
                     nearest_y: y,
+                    dist2: 0,
                 });
             }
         }
@@ -88,18 +91,18 @@ pub fn create_distance_map(
         y,
         nearest_x,
         nearest_y,
+        dist2,
     }) = queue.pop()
     {
-        let idx = (y * width + x) * 4;
-        let dist =
-            ((nearest_x as i64 - x as i64).pow(2) + (nearest_y as i64 - y as i64).pow(2)) as u64;
-        if dist > max_distance_squared {
+        let pixel_idx = y * width + x;
+        if dist2 != best_dist2[pixel_idx] {
             continue;
         }
+        let idx = pixel_idx * 4;
         if dest[idx + 3] == 255 {
             continue;
         }
-        let dist = (dist as f64).sqrt();
+        let dist = (dist2 as f64).sqrt();
         let alpha = smoothstep(0.0, 1.0, unlerp_clamped(distance, distance - blur, dist));
         let color_level = 1.0 - dist / distance;
         dest[idx] = (color_level * 255.0).round() as u8;
@@ -113,14 +116,23 @@ pub fn create_distance_map(
             (x, y + 1),
         ] {
             if nx < width && ny < height {
-                if dest[(ny * width + nx) * 4 + 3] != 0 {
+                let next_pixel_idx = ny * width + nx;
+                if dest[next_pixel_idx * 4 + 3] != 0 {
                     continue;
                 }
+                let next_dist2 = ((nearest_x as i64 - nx as i64).pow(2)
+                    + (nearest_y as i64 - ny as i64).pow(2))
+                    as u64;
+                if next_dist2 > max_distance_squared || next_dist2 >= best_dist2[next_pixel_idx] {
+                    continue;
+                }
+                best_dist2[next_pixel_idx] = next_dist2;
                 queue.push(QueueEntry {
                     x: nx,
                     y: ny,
                     nearest_x,
                     nearest_y,
+                    dist2: next_dist2,
                 });
             }
         }
