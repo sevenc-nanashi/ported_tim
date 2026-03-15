@@ -34,7 +34,6 @@ impl FramingModule {
             )
         };
 
-        let before = std::time::Instant::now();
         core::create_distance_map(
             image_buffer,
             return_buffer,
@@ -44,7 +43,6 @@ impl FramingModule {
             blur,
             distance,
         )?;
-        aviutl2::lprintln!("Distance map created in {:.2?}", before.elapsed());
         Ok(())
     }
 }
