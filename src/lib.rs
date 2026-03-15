@@ -8,7 +8,6 @@ mod custom_flare;
 mod extbuffer;
 mod familiar;
 mod filter;
-mod framing;
 mod lineextra;
 mod linefill;
 mod mmdcam;
@@ -42,7 +41,6 @@ impl ScriptModuleFunctions for PortedTimMod2 {
         functions.extend(extbuffer::ExtbufferModule::functions());
         functions.extend(familiar::FamiliarModule::functions());
         functions.extend(filter::FilterModule::functions());
-        functions.extend(framing::FramingModule::functions());
         functions.extend(lineextra::LineExtraModule::functions());
         functions.extend(linefill::LineFillModule::functions());
         functions.extend(mmdcam::MmdCamModule::functions());
