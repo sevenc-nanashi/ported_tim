@@ -104,13 +104,28 @@ if not gradient then
 end
 
 obj.clearbuffer("cache:distance_map", width, height)
-obj.pixelshader("distance_map", "cache:distance_map", "object", {
-    width,
-    height,
-    alpha_base / 255,
-    boundary_blur,
-    outline_size,
-})
+local use_gpu = outline_size < 50
+if use_gpu then
+    obj.pixelshader("distance_map", "cache:distance_map", "object", {
+        width,
+        height,
+        alpha_base / 255,
+        boundary_blur,
+        outline_size,
+    })
+else
+    local tim2 = obj.module("tim2")
+    local original_pixel_data, w, h = obj.getpixeldata("object", "rgba")
+    local dest_pixel_data = obj.getpixeldata("cache:distance_map", "rgba")
+    tim2.framing_create_distance_map(
+        original_pixel_data,
+        dest_pixel_data,
+        w, h,
+        alpha_base,
+        boundary_blur,
+        outline_size)
+    obj.putpixeldata("cache:distance_map", dest_pixel_data, w, h, "rgba")
+end
 
 obj.clearbuffer("cache:color_only", width, height)
 obj.pixelshader("map_color_without_alpha", "cache:color_only", "cache:distance_map", {
