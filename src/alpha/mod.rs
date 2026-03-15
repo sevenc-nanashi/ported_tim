@@ -1,7 +1,7 @@
 use aviutl2::anyhow;
 use std::ptr::NonNull;
 
-pub mod unoptimized;
+mod core;
 
 pub(crate) struct AlphaModule;
 
@@ -20,7 +20,7 @@ impl AlphaModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::alpha::unoptimized::alpha_data_set(image_buffer, width, height, target_method)
+        crate::alpha::core::alpha_data_set(image_buffer, width, height, target_method)
     }
 
     fn alpha_fill_color(
@@ -42,7 +42,7 @@ impl AlphaModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::alpha::unoptimized::alpha_fill_color(
+        crate::alpha::core::alpha_fill_color(
             image_buffer,
             width,
             height,
