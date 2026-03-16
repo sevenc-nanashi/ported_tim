@@ -87,8 +87,48 @@ url = "https://github.com/karoterra/aviutl2-aulua/releases/download/v0.6.0/aulua
 url_api = "https://api.github.com/repos/karoterra/aviutl2-aulua/releases/assets/374391139"
 
 [[tools."github:sevenc-nanashi/aviutl2-cli"]]
-version = "0.8.0-preview.0"
+version = "0.8.0-preview.7"
 backend = "github:sevenc-nanashi/aviutl2-cli"
+
+[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-arm64"]
+checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
+
+[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-arm64-musl"]
+checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
+
+[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-x64"]
+checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
+
+[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-x64-baseline"]
+checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
+
+[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-x64-musl"]
+checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
+
+[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-x64-musl-baseline"]
+checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
+
+[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.windows-x64"]
+checksum = "sha256:e4b423fc2cb05e757e0b01c1e4cd6f7c30387d494ad1c38a9b88b0e9326634a5"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-windows.exe"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731505"
+
+[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.windows-x64-baseline"]
+checksum = "sha256:e4b423fc2cb05e757e0b01c1e4cd6f7c30387d494ad1c38a9b88b0e9326634a5"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-windows.exe"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731505"
 
 [[tools.node]]
 version = "24.14.0"
