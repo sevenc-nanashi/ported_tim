@@ -72,22 +72,21 @@ local track_blue_blue_percent = 100
 ---step=0.1
 local track_blue_count = 0
 
-local current_rate = {
-    track_red_red_percent,
-    track_red_green_percent,
-    track_red_blue_percent,
-    track_red_count,
-    track_green_red_percent,
-    track_green_green_percent,
-    track_green_blue_percent,
-    track_green_count,
-    track_blue_red_percent,
-    track_blue_green_percent,
-    track_blue_blue_percent,
-    track_blue_count,
-}
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_channel_mixer(userdata, w, h, unpack(current_rate))
-obj.putpixeldata("object", userdata, w, h, "bgra")
+--[[pixelshader@channel_mixer
+---$include "./shaders/channel_mixer.hlsl"
+]]
+
+obj.pixelshader("channel_mixer", "object", "object", {
+    track_red_red_percent / 100,
+    track_red_green_percent / 100,
+    track_red_blue_percent / 100,
+    track_red_count / 100,
+    track_green_red_percent / 100,
+    track_green_green_percent / 100,
+    track_green_blue_percent / 100,
+    track_green_count / 100,
+    track_blue_red_percent / 100,
+    track_blue_green_percent / 100,
+    track_blue_blue_percent / 100,
+    track_blue_count / 100,
+})

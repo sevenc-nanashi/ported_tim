@@ -26,7 +26,7 @@
 | 色調整               | @T_Color_Module.anm          | サイクルビットシフト            | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | シャドウ・ハイライト            | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | チャンネルシフト                | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | チャンネルミキサー              | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | チャンネルミキサー              | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | テトラトーン                    | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | トライトーン                    | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | ネオン                          | :o:      | :o: | :o:              | :x:                  |

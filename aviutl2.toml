@@ -11,6 +11,7 @@ aulua = "aulua build"
 
 [development]
 aviutl2_version = "latest"
+catalog_dependencies = ["sevenc-nanashi.aviutl2-rs.rusty_scripts_search", "sigma-axis.Basic_S"]
 
 [preview]
 aviutl2_version = "latest"
