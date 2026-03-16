@@ -3,7 +3,7 @@ project: {}
 build:
   out_dir: build
   embed_search_dirs:
-    - "../extbuffer"
+    - "./lua/extbuffer"
 scripts:
   - name: tim2.anm2
     sources:

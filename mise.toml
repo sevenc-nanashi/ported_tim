@@ -1,7 +1,7 @@
 [tools]
 bun = "latest"
-"github:karoterra/aviutl2-aulua" = "latest"
-"github:sevenc-nanashi/aviutl2-cli" = { version = "latest", bin = "au2.exe" }
+"github:karoterra/aviutl2-aulua" = "0.6.0"
+"github:sevenc-nanashi/aviutl2-cli" = { version = "0.8.0-preview.0", bin = "au2.exe" }
 "npm:rulesync" = "latest"
 ruby = "latest"
 stylua = "latest"
