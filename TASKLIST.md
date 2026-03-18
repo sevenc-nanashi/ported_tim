@@ -28,7 +28,7 @@
 | 色調整               | @T_Color_Module.anm          | チャンネルシフト                | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | チャンネルミキサー              | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | テトラトーン                    | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | トライトーン                    | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | トライトーン                    | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | ネオン                          | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | バイアス消去                    | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | パステル調                      | :o:      | :o: | :o:              | :x:                  |
@@ -51,8 +51,8 @@
 | 色調整               | @T_Color_Module.anm          | 簡易減色                        | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 粒状化                          | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 色抜き                          | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | 金属質                          | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | 黄金質                          | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | 金属質                          | :o:      | :o: | :o:              | :o:                  |
+| 色調整               | @T_Color_Module.anm          | 黄金質                          | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | ２値化                          | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | ２値化RGB                       | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @カメレオン効果.anm          | カメレオン効果(背景)            | :o:      | :o: | :o:              | :x:                  |

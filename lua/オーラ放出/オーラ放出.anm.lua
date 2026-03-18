@@ -71,7 +71,7 @@ obj.effect("縁取り", "サイズ", sz * 0.5, "ぼかし", 0, "color", 0x0)
 obj.effect("ぼかし", "範囲", sz)
 
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.colorama(userdata, w, h, sft, repN, 2, 0xffffff, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+T_Color_Module.color_colorama(userdata, w, h, sft, repN, 2, 0xffffff, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 obj.putpixeldata("object", userdata, w, h, "bgra")
 
 obj.copybuffer("cache:wave", "object")
@@ -84,13 +84,14 @@ obj.draw()
 obj.copybuffer("object", "tempbuffer")
 
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.shift_channels(userdata, w, h, 1, 1, 1, 1)
+T_Color_Module.color_shift_channels(userdata, w, h, 1, 1, 1, 1)
 obj.putpixeldata("object", userdata, w, h, "bgra")
 
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.tritone_v2(userdata, w, h, r1, g1, b1, r2, g2, b2, r3, g3, b3, 255, 128, 0)
-obj.putpixeldata("object", userdata, w, h, "bgra")
-obj.effect("ぼかし", "範囲", bl)
+-- local userdata, w, h = obj.getpixeldata("object", "bgra")
+-- T_Color_Module.color_tritone_v2(userdata, w, h, r1, g1, b1, r2, g2, b2, r3, g3, b3, 255, 128, 0)
+-- obj.putpixeldata("object", userdata, w, h, "bgra")
+-- obj.effect("ぼかし", "範囲", bl)
+obj.effect("トライトーン@T_Color_Module@tim.anm2", "シャドウ", RGB(r3, g3, b3), "ミッドトーン", RGB(r2, g2, b2), "ハイライト", RGB(r1, g1, b1), "飽和点1", 255, "中心点", 128, "飽和点2", 0)
 
 if check0 then
     obj.copybuffer("tempbuffer", "object")
