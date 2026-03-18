@@ -842,41 +842,6 @@ impl ColorModule {
         Ok(())
     }
 
-    fn color_tetratone(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        col1: u32, // 0xRRGGBB: shadow
-        col2: u32, // 0xRRGGBB: midtone 1
-        col3: u32, // 0xRRGGBB: midtone 2
-        col4: u32, // 0xRRGGBB: highlight
-        n1: u8,
-        midpoint1: u8,
-        midpoint2: u8,
-        n2: u8,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::tetratone::tetratone(
-            image_buffer,
-            width,
-            height,
-            col1,
-            col2,
-            col3,
-            col4,
-            n1,
-            midpoint1,
-            midpoint2,
-            n2,
-        )?;
-        Ok(())
-    }
-
     fn color_posterize(
         image_buffer: NonNull<u8>,
         width: usize,

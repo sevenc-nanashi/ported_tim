@@ -35,5 +35,4 @@ pub mod reduction;
 pub mod shadow_highlight;
 pub mod shift_channels;
 pub mod standard_color;
-pub mod tetratone;
 pub mod tone_curve;
