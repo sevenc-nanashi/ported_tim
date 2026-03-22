@@ -49,9 +49,10 @@ else
     obj.effect("単色化", "color", 0xffffff, "輝度を保持する", 0, "強さ", 2 * T - 100)
 end
 
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-tim2.color_shift_channels(userdata, w, h, 1, 1, 2, 3)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+-- local userdata, w, h = obj.getpixeldata("object", "bgra")
+-- tim2.color_shift_channels(userdata, w, h, 1, 1, 2, 3)
+-- obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.effect("チャンネルシフト@T_Color_Module@tim.anm2", 1, 1, 2, 3)
 
 obj.effect("ぼかし", "範囲", bl, "サイズ固定", 1)
 obj.setoption("blend", "alpha_sub")

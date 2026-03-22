@@ -41,7 +41,13 @@ local track_green = 2
 local track_blue = 3
 
 -- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_shift_channels(userdata, w, h, track_alpha, track_red, track_green, track_blue, false)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+--[[pixelshader@channel_shift
+---$include "./shaders/channel_shift.hlsl"
+]]
+
+obj.pixelshader("channel_shift", "object", "object", {
+    track_alpha,
+    track_red,
+    track_green,
+    track_blue,
+})
