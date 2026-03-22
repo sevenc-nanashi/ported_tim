@@ -64,6 +64,7 @@ local select_blend_mode = 1
 ---min=0
 ---max=1000
 ---step=1
+---zero_label=なし
 local track_layer_index = 0
 
 ---$check:エフェクト取得

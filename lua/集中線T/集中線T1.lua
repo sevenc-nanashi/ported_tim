@@ -92,6 +92,7 @@ local track_height = 0
 ---min=0
 ---max=1000
 ---step=1
+---zero_label=なし
 local track_follow_center_layer = 0
 
 ---$check:最大本数自動計算

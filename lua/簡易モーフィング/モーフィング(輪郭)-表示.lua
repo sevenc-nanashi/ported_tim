@@ -27,6 +27,7 @@ local track_offset = 0
 ---min=0
 ---max=1000
 ---step=1
+---zero_label=なし
 local inum = 0
 
 ---$check:エフェクト取得

@@ -93,6 +93,7 @@ local track_extract_threshold = 0
 ---min=0
 ---max=1000
 ---step=1
+---zero_label=なし
 local track_map_layer = 0
 
 ---$string:方向マスク

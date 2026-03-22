@@ -24,7 +24,7 @@ local track_direction = 30
 local track_size = 120
 
 ---$track:P形状
----min=-22
+---min=-1000
 ---max=22
 ---step=1
 local Pfig = 1
