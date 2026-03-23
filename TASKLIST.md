@@ -22,7 +22,7 @@
 | 色調整               | @T_Color_Module.anm          | しきい値                        | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | イコライズ                      | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | ガンマ補正                      | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | グレースケール                  | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | グレースケール                  | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | サイクルビットシフト            | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | シャドウ・ハイライト            | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | チャンネルシフト                | :o:      | :o: | :o:              | :o:                  |

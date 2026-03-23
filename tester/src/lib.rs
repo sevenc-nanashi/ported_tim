@@ -111,7 +111,7 @@ fn run_effect(
     delete_all_objects()?;
 
     EDIT_HANDLE.call_edit_section(|e| {
-        let image = e.create_object(&name, 0, 0, Some(length))?;
+        let image = e.create_object("画像ファイル", 0, 0, Some(length))?;
         e.set_object_effect_item(&image, "画像ファイル", 0, "ファイル", &source_path)?;
 
         let effect_object = e.create_object(&name, 1, 0, Some(length))?;

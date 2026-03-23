@@ -23,12 +23,20 @@ local bright_color = 0xffffff
 ---$color:暗部色
 local dark_color = 0x0
 
-bright_color = bright_color or 0xffffff
-dark_color = dark_color or 0x0
--- require("T_Color_Module")
+--[[pixelshader@grayscale
+---$include "./shaders/grayscale.hlsl"
+]]
 
-local T_Color_Module = obj.module("tim2")
+local bright_r, bright_g, bright_b = RGB(bright_color or 0xffffff)
+local dark_r, dark_g, dark_b = RGB(dark_color or 0x0)
 
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_grayscale(userdata, w, h, gray_mode, bright_color, dark_color, 100 / gamma)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("grayscale", "object", "object", {
+    gray_mode,
+    100 / gamma,
+    bright_r / 255,
+    bright_g / 255,
+    bright_b / 255,
+    dark_r / 255,
+    dark_g / 255,
+    dark_b / 255,
+})

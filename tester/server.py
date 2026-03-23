@@ -21,7 +21,9 @@ app = FastMCP("ported_tim_tester")
 def _call(endpoint: str, body: dict | None = None) -> str:
     resp = requests.post(f"{BASE_URL}{endpoint}", json=body or {})
     if not resp.ok:
-        raise Exception(f"API call failed: {resp.status_code} {resp.text}. (Call `fetch_new_logs` for more details.)")
+        raise Exception(
+            f"API call failed: {resp.status_code} {resp.text}. (Call `fetch_new_logs` for more details.)"
+        )
     return resp.text
 
 
@@ -69,6 +71,11 @@ aviutl2_dir = script_dir / ".." / ".aviutl2-cli" / "development"
 @app.tool()
 def launch() -> str:
     """Launch the AviUtl2 process. This should be called before any other tool."""
+    try:
+        requests.post(f"{BASE_URL}/quit", timeout=1)
+        print("Quitted existing AviUtl2 process")
+    except requests.exceptions.RequestException:
+        pass  # No existing process
     subprocess.Popen([aviutl2_dir / "aviutl2.exe"], cwd=aviutl2_dir)
     return "AviUtl2 launched"
 
