@@ -35,7 +35,7 @@
 | 色調整               | @T_Color_Module.anm          | フリンジ修正                    | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | ブリーチバイパス                | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | ポスタリゼーション              | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | メタル化                        | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | メタル化                        | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | メディアンカット減色            | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 単色化(T)                       | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 単色化(T2)                      | :o:      | :o: | :o:              | :x:                  |

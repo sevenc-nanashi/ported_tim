@@ -20,7 +20,8 @@ app = FastMCP("ported_tim_tester")
 
 def _call(endpoint: str, body: dict | None = None) -> str:
     resp = requests.post(f"{BASE_URL}{endpoint}", json=body or {})
-    resp.raise_for_status()
+    if not resp.ok:
+        raise Exception(f"API call failed: {resp.status_code} {resp.text}. (Call `fetch_new_logs` for more details.)")
     return resp.text
 
 

@@ -23,8 +23,15 @@ local flip_upper = 170
 ---HDTV法=2
 local gray_mode = 1
 
---require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_metal(userdata, w, h, flip_lower, flip_upper, gray_mode)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+--[[pixelshader@metal
+---$include "./shaders/metal.hlsl"
+]]
+
+local flips = { flip_lower, flip_upper }
+table.sort(flips)
+
+obj.pixelshader("metal", "object", "object", {
+    flips[1] / 255,
+    flips[2] / 255,
+    gray_mode,
+})

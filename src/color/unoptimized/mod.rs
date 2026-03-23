@@ -25,7 +25,6 @@ pub mod grainy;
 pub mod grayscale;
 pub mod histogram;
 pub mod leave_color;
-pub mod metal;
 pub mod minimax;
 pub mod monochromatic;
 pub mod monochromatic2;
