@@ -22,11 +22,11 @@ aviutl2_version = "latest"
 destination = "Script/tim2.mod2"
 
 [artifacts.tim2-mod2.profiles.debug]
-build = "cargo build"
+build = "cargo build -p ported_tim"
 source = "target/debug/ported_tim.dll"
 
 [artifacts.tim2-mod2.profiles.release]
-build = "cargo build --release"
+build = "cargo build --release -p ported_tim"
 source = "target/release/ported_tim.dll"
 
 [artifacts.tim2_anm2]
@@ -53,3 +53,13 @@ destination = "Script/@tim.cam2.cam2"
 build = { group = "aulua" }
 source = "build/tim2.scn2"
 destination = "Script/@tim.scn2.scn2"
+
+[artifacts.mcp_agent]
+destination = "Plugin/mcp_agent.aux2"
+
+[artifacts.mcp_agent.profiles.debug]
+build = "cargo build -p ported_tim_tester"
+source = "target/debug/ported_tim_tester.dll"
+
+[artifacts.mcp_agent.profiles.release]
+enabled = false

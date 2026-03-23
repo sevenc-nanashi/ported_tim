@@ -1,0 +1,7 @@
+# AviUtl2 CLI
+/.aviutl2-cli
+/release
+
+target
+
+__pycache__

@@ -8,6 +8,15 @@
         "--script",
         "./.rulesync/mcp/ghidra_mcp_bridge.py"
       ]
+    },
+    "aviutl2": {
+      "type": "stdio",
+      "command": "uv",
+      "args": [
+        "run",
+        "--script",
+        "./tester/server.py"
+      ]
     }
   },
   "hooks": {}
