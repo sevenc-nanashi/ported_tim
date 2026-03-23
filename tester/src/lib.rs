@@ -87,7 +87,6 @@ fn run_object(
         let alias = format!(
             r"
 [Object]
-frame=0,{}
 [Object.0]
 effect.name=フィルタオブジェクト
 [Object.1]
@@ -96,7 +95,7 @@ Nonce={}
 ",
             length, nonce
         );
-        e.create_object_from_alias(&alias, 1, 0, 0)?;
+        e.create_object_from_alias(&alias, 1, 0, length)?;
 
         anyhow::Ok(nonce)
     })?
@@ -134,7 +133,6 @@ fn run_effect(
         let alias = format!(
             r"
 [Object]
-frame=0,{}
 [Object.0]
 effect.name=フィルタオブジェクト
 [Object.1]
@@ -143,7 +141,7 @@ Nonce={}
 ",
             length, nonce
         );
-        e.create_object_from_alias(&alias, 2, 0, 0)?;
+        e.create_object_from_alias(&alias, 2, 0, length)?;
 
         anyhow::Ok(nonce)
     })?
