@@ -25,32 +25,6 @@ fn clamp_color(value: i32) -> u8 {
     value.clamp(0, 255) as u8
 }
 
-pub fn alpha_data_set(
-    image_buffer: &mut [u8],
-    width: usize,
-    height: usize,
-    target_method: u8,
-) -> anyhow::Result<()> {
-    validate_bgra_buffer(image_buffer, width, height)?;
-
-    for pixel in image_buffer.chunks_exact_mut(4) {
-        let alpha = match target_method {
-            0 => pixel[3],
-            1 => pixel[2],
-            2 => pixel[1],
-            3 => pixel[0],
-            4 => ((pixel[0] as u16 + pixel[1] as u16 + pixel[2] as u16) / 3) as u8,
-            _ => bail!("invalid target method: {target_method}"),
-        };
-        pixel[0] = 0;
-        pixel[1] = 0;
-        pixel[2] = 0;
-        pixel[3] = alpha;
-    }
-
-    Ok(())
-}
-
 #[allow(clippy::too_many_arguments)]
 pub fn alpha_fill_color(
     image_buffer: &mut [u8],

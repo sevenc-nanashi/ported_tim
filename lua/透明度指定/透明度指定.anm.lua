@@ -30,18 +30,19 @@ local check0 = false
 3:B
 4:グレー
 --]]
-local T_Alpha_Module = obj.module("tim2")
+--[[pixelshader@set_alpha_from_channel
+---$include "./shaders/set_alpha_from_channel.hlsl"
+]]
 
 local w0, h0 = obj.getpixel()
 obj.copybuffer("cache:original", "object")
-obj.load("layer", track_alpha_layer, (effect == 1))
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-if not userdata and obj.layer == track_alpha_layer and effect == 1 then
+if obj.layer == track_alpha_layer and effect == 1 then
     error("エフェクトが有効の場合、自分自身をαレイヤーに指定することはできません。")
 end
-
-T_Alpha_Module.alpha_data_set(userdata, w, h, track_target_method)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.load("layer", track_alpha_layer, (effect == 1))
+obj.pixelshader("set_alpha_from_channel", "object", "object", {
+    track_target_method,
+})
 obj.effect("反転", "透明度反転", check0 and 0 or 1)
 
 obj.copybuffer("tempbuffer", "cache:original")
