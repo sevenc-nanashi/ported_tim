@@ -83,15 +83,27 @@ obj.copybuffer("object", "cache:wave")
 obj.draw()
 obj.copybuffer("object", "tempbuffer")
 
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_shift_channels(userdata, w, h, 1, 1, 1, 1)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.effect("チャンネルシフト@T_Color_Module@tim.anm2", "アルファ", 1, "赤", 1, "緑", 1, "青", 1)
 
 -- local userdata, w, h = obj.getpixeldata("object", "bgra")
 -- T_Color_Module.color_tritone_v2(userdata, w, h, r1, g1, b1, r2, g2, b2, r3, g3, b3, 255, 128, 0)
 -- obj.putpixeldata("object", userdata, w, h, "bgra")
 -- obj.effect("ぼかし", "範囲", bl)
-obj.effect("トライトーン@T_Color_Module@tim.anm2", "シャドウ", RGB(r3, g3, b3), "ミッドトーン", RGB(r2, g2, b2), "ハイライト", RGB(r1, g1, b1), "飽和点1", 255, "中心点", 128, "飽和点2", 0)
+obj.effect(
+    "トライトーン@T_Color_Module@tim.anm2",
+    "シャドウ",
+    RGB(r3, g3, b3),
+    "ミッドトーン",
+    RGB(r2, g2, b2),
+    "ハイライト",
+    RGB(r1, g1, b1),
+    "飽和点1",
+    255,
+    "中心点",
+    128,
+    "飽和点2",
+    0
+)
 
 if check0 then
     obj.copybuffer("tempbuffer", "object")

@@ -61,34 +61,6 @@ impl ColorModule {
         Ok(thresholds.into_iter().map(i32::from).collect())
     }
 
-    fn color_shift_channels(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        alpha_shift: i32,
-        red_shift: i32,
-        green_shift: i32,
-        blue_shift: i32,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-
-        crate::color::unoptimized::shift_channels::shift_channels(
-            image_buffer,
-            width,
-            height,
-            alpha_shift,
-            red_shift,
-            green_shift,
-            blue_shift,
-        )?;
-        Ok(())
-    }
-
     fn color_cycle_bit_shift(
         image_buffer: NonNull<u8>,
         width: usize,

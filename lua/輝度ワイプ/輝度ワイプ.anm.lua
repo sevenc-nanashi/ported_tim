@@ -52,7 +52,7 @@ end
 -- local userdata, w, h = obj.getpixeldata("object", "bgra")
 -- tim2.color_shift_channels(userdata, w, h, 1, 1, 2, 3)
 -- obj.putpixeldata("object", userdata, w, h, "bgra")
-obj.effect("チャンネルシフト@T_Color_Module@tim.anm2", 1, 1, 2, 3)
+obj.effect("チャンネルシフト@T_Color_Module@tim.anm2", "アルファ", 1, "赤", 1, "緑", 2, "青", 3)
 
 obj.effect("ぼかし", "範囲", bl, "サイズ固定", 1)
 obj.setoption("blend", "alpha_sub")
