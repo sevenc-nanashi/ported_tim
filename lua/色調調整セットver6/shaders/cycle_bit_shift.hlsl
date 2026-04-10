@@ -33,10 +33,13 @@ uint normalize_shift24(int value) {
 
 float4 cycle_bit_shift(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
   float4 rgba = srcTex.Sample(srcSmp, uv);
+  if (rgba.a <= 0.0) {
+    return rgba;
+  }
 
-  uint r = (uint)round(saturate(rgba.r) * 255.0);
-  uint g = (uint)round(saturate(rgba.g) * 255.0);
-  uint b = (uint)round(saturate(rgba.b) * 255.0);
+  uint r = (uint)round(saturate(rgba.r / rgba.a) * 255.0);
+  uint g = (uint)round(saturate(rgba.g / rgba.a) * 255.0);
+  uint b = (uint)round(saturate(rgba.b / rgba.a) * 255.0);
 
   uint outR;
   uint outG;
@@ -59,5 +62,5 @@ float4 cycle_bit_shift(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TAR
     outR = (((r << 8) | r) >> shiftR) & 0xffu;
   }
 
-  return float4(float3(outR, outG, outB) / 255.0, rgba.a);
+  return float4(float3(outR, outG, outB) / 255.0, 1.0) * rgba.a;
 }
