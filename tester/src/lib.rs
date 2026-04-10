@@ -93,7 +93,7 @@ effect.name=フィルタオブジェクト
 effect.name=Saver
 Nonce={}
 ",
-            length, nonce
+            nonce
         );
         e.create_object_from_alias(&alias, 1, 0, length)?;
 
@@ -139,7 +139,7 @@ effect.name=フィルタオブジェクト
 effect.name=Saver
 Nonce={}
 ",
-            length, nonce
+            nonce
         );
         e.create_object_from_alias(&alias, 2, 0, length)?;
 

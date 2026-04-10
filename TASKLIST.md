@@ -45,7 +45,7 @@
 | 色調整               | @T_Color_Module.anm          | 減色パレット                    | :o:      | -   | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 特定色域変換T                   | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 画像トーンカーブ                | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | 白黒                            | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | 白黒                            | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 簡易コロラマ                    | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 簡易トーンカーブ                | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 簡易減色                        | :o:      | :o: | :o:              | :x:                  |

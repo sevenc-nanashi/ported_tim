@@ -51,15 +51,23 @@ local col = nil
 ---step=0.1
 local gamma = 100
 
-red = red * 0.01
-green = green * 0.01
-blue = blue * 0.01
-white = white * 0.01
-cyan = (cyan or 100) * 0.01
-magenta = (magenta or 100) * 0.01
-yellow = (yellow or 100) * 0.01
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_enh_grayscale(userdata, w, h, red, green, blue, cyan, magenta, yellow, white, 100 / gamma, col)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+--[[pixelshader@enh_grayscale
+---$include "./shaders/enh_grayscale.hlsl"
+]]
+
+local color_r, color_g, color_b = RGB(col or 0xffffff)
+
+obj.pixelshader("enh_grayscale", "object", "object", {
+    red * 0.01,
+    green * 0.01,
+    blue * 0.01,
+    (cyan or 100) * 0.01,
+    (magenta or 100) * 0.01,
+    (yellow or 100) * 0.01,
+    white * 0.01,
+    100 / gamma,
+    col and 1 or 0,
+    color_r / 255,
+    color_g / 255,
+    color_b / 255,
+})
