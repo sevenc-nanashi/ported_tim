@@ -26,7 +26,6 @@ pub mod leave_color;
 pub mod minimax;
 pub mod monochromatic;
 pub mod monochromatic2;
-pub mod pastel;
 pub mod posterize;
 pub mod reduction;
 pub mod shadow_highlight;

@@ -10,33 +10,6 @@ pub(crate) struct ColorModule;
 #[aviutl2::module::functions]
 #[allow(clippy::too_many_arguments)]
 impl ColorModule {
-    fn color_pastel(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        saturation_pct: f64,
-        brightness_pct: f64,
-        threshold_pct: f64,
-        shw: f64,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::pastel::pastel_bgra(
-            image_buffer,
-            width,
-            height,
-            saturation_pct,
-            brightness_pct,
-            threshold_pct,
-            shw,
-        );
-        Ok(())
-    }
-
     fn color_binarization_threshold(
         image_buffer: NonNull<u8>,
         width: usize,
