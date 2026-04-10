@@ -61,40 +61,6 @@ impl ColorModule {
         Ok(thresholds.into_iter().map(i32::from).collect())
     }
 
-    fn color_leave_color(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        r: u8,
-        g: u8,
-        b: u8,
-        color_cut_amount: f64,
-        color_difference_range: i32,
-        edge: i32,
-        matching_method: i32,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-
-        crate::color::unoptimized::leave_color::leave_color(
-            image_buffer,
-            width,
-            height,
-            r,
-            g,
-            b,
-            color_cut_amount,
-            color_difference_range,
-            edge,
-            matching_method,
-        )?;
-        Ok(())
-    }
-
     fn color_fringe_fix(
         image_buffer: NonNull<u8>,
         width: usize,

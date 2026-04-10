@@ -21,7 +21,6 @@ pub mod fringe_fix;
 pub mod gamma_correction;
 pub mod grainy;
 pub mod histogram;
-pub mod leave_color;
 pub mod minimax;
 pub mod monochromatic;
 pub mod monochromatic2;

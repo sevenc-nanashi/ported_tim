@@ -29,19 +29,15 @@ local track_matching_method = 1
 local col = 0xff0000
 
 local r, g, b = RGB(col)
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_leave_color(
-    userdata,
-    w,
-    h,
-    r,
-    g,
-    b,
-    track_color_cut_amount,
+--[[pixelshader@leave_color
+---$include "./shaders/leave_color.hlsl"
+]]
+obj.pixelshader("leave_color", "object", "object", {
+    r / 255,
+    g / 255,
+    b / 255,
+    track_color_cut_amount / 100,
     track_color_difference_range,
     track_edge,
-    track_matching_method
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+    track_matching_method,
+})
