@@ -28,13 +28,18 @@ local shift_24bit = false
 local track_n_24bit = 0
 
 -- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
+--[[pixelshader@cycle_bit_shift
+---$include "./shaders/cycle_bit_shift.hlsl"
+]]
 local r = math.floor(track_r8bit)
 local g = math.floor(track_g8bit)
 local b = math.floor(track_b8bit)
 if shift_24bit then
     r = math.floor(track_n_24bit)
 end
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_cycle_bit_shift(userdata, w, h, r, g, b, shift_24bit)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("cycle_bit_shift", "object", "object", {
+    r,
+    g,
+    b,
+    shift_24bit and 1 or 0,
+})
