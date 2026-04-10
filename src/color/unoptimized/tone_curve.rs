@@ -340,7 +340,6 @@ impl ToneCurveState {
         center_y: f64,
         degree: f64,
         line_width: f64,
-        _unused_arg8: f64,
         hide_line: bool,
         color_rgb: u32,
     ) -> Result<()> {
