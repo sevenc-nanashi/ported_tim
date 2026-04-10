@@ -37,33 +37,6 @@ impl ColorModule {
         Ok(())
     }
 
-    fn color_grayscale(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        gray_mode: u8,
-        bright_color: u32,
-        dark_color: u32,
-        gamma_scale: f64,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::grayscale::grayscale(
-            image_buffer,
-            width,
-            height,
-            gray_mode as i32,
-            bright_color,
-            dark_color,
-            gamma_scale,
-        );
-        Ok(())
-    }
-
     fn color_binarization_threshold(
         image_buffer: NonNull<u8>,
         width: usize,
