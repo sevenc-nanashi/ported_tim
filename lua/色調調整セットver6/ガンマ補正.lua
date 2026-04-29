@@ -34,7 +34,13 @@ else
     r = 100 / track_all
     g, b = r, r
 end
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_gamma_correction(userdata, w, h, r, g, b)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+
+--[[pixelshader@gamma_correction
+---$include "./shaders/gamma_correction.hlsl"
+]]
+
+obj.pixelshader("gamma_correction", "object", "object", {
+    r,
+    g,
+    b,
+})
