@@ -13,7 +13,6 @@ pub(crate) static MINIMAX_CACHE: LazyLock<Mutex<crate::color::unoptimized::minim
 
 pub mod bias_deletion;
 pub mod change_to_color;
-pub mod color_reduction;
 pub mod colorama;
 pub mod equalize;
 pub mod extended_contrast;
