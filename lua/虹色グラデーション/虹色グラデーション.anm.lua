@@ -66,26 +66,24 @@ local ioy = obj.oy
 local icx = obj.cx
 local icy = obj.cy
 
-local tim2 = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
+--[[pixelshader@rainbow_gradation
+---$include "./shaders/rainbow_gradation.hlsl"
+]]
+
+local w, h = obj.getpixel()
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 
-tim2.rbwgra_r_gradation_line(
-    userdata,
-    w,
-    h,
+obj.pixelshader("rainbow_gradation", "object", "object", {
     track_saturation,
     track_shrink_rate * 0.01,
     math.rad(track_rotation),
-    rev == 1,
-    chk == 1,
+    rev,
+    chk,
     track_shift,
-    rep == 1,
-    track_boundary_correction
-)
-
-obj.putpixeldata("object", userdata, w, h, "bgra")
+    rep,
+    track_boundary_correction,
+})
 obj.setoption("blend", math.floor(track_blend_mode))
 obj.draw(0, 0, 0, 1, 1 - track_original_image * 0.01)
 obj.load("tempbuffer")

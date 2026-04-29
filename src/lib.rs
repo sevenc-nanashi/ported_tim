@@ -12,7 +12,6 @@ mod framing;
 mod lineextra;
 mod linefill;
 mod mmdcam;
-mod rbwgra;
 mod rgline;
 mod sketch;
 
@@ -46,7 +45,6 @@ impl ScriptModuleFunctions for PortedTimMod2 {
         functions.extend(lineextra::LineExtraModule::functions());
         functions.extend(linefill::LineFillModule::functions());
         functions.extend(mmdcam::MmdCamModule::functions());
-        functions.extend(rbwgra::RbwGraModule::functions());
         functions.extend(rgline::RgLineModule::functions());
         functions.extend(sketch::SketchModule::functions());
         functions
