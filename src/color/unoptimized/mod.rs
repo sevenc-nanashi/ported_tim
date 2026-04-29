@@ -17,7 +17,6 @@ pub mod color_reduction;
 pub mod colorama;
 pub mod equalize;
 pub mod extended_contrast;
-pub mod fringe_fix;
 pub mod gamma_correction;
 pub mod grainy;
 pub mod histogram;
