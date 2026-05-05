@@ -147,7 +147,7 @@
 | 変形                 | 曲面変形.anm                 | -                               | :o:      | -   | :o:              | :x:                  |
 | 加工                 | @T_Filter_Module.anm         | エンボスT                       | :o:      | :o: | :o:              | :x:                  |
 | 加工                 | @T_Filter_Module.anm         | ガラスT                         | :o:      | :o: | :o:              | :x:                  |
-| 加工                 | @T_Filter_Module.anm         | グラフィックペンT               | :o:      | :o: | :o:              | :x:                  |
+| 加工                 | @T_Filter_Module.anm         | グラフィックペンT               | :o:      | :o: | :o:              | :o:                  |
 | 加工                 | @T_Filter_Module.anm         | シャープT                       | :o:      | :o: | :o:              | :x:                  |
 | 加工                 | @T_Filter_Module.anm         | チョーク・木炭T                 | :o:      | :o: | :o:              | :x:                  |
 | 加工                 | @T_Filter_Module.anm         | ノート用紙T                     | :o:      | :o: | :o:              | :x:                  |
