@@ -48,114 +48,56 @@ url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.13/bun-windows-
 checksum = "sha256:c68c7903c1190101590cc1b2129835f47211b3b37ae87759f2b97d6534aa3ad1"
 url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.13/bun-windows-x64-baseline.zip"
 
-[[tools."cargo:naga-cli"]]
-version = "28.0.0"
-backend = "cargo:naga-cli"
-
 [[tools."github:karoterra/aviutl2-aulua"]]
-version = "0.7.1"
+version = "0.8.0"
 backend = "github:karoterra/aviutl2-aulua"
 
 [tools."github:karoterra/aviutl2-aulua"."platforms.linux-x64"]
-checksum = "sha256:e89eb9968f6c39ba931d800d4655fe85728ab3b1c31f5e745fb2225d45777b22"
-url = "https://github.com/karoterra/aviutl2-aulua/releases/download/v0.7.1/aulua-v0.7.1-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/karoterra/aviutl2-aulua/releases/assets/379217682"
-
-[tools."github:karoterra/aviutl2-aulua"."platforms.linux-x64-baseline"]
-checksum = "sha256:e89eb9968f6c39ba931d800d4655fe85728ab3b1c31f5e745fb2225d45777b22"
-url = "https://github.com/karoterra/aviutl2-aulua/releases/download/v0.7.1/aulua-v0.7.1-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/karoterra/aviutl2-aulua/releases/assets/379217682"
+checksum = "sha256:16079ba98bfb3edd947acbcc610aeb0a56472e7d370f13ca77a716e8d8d2101f"
+url = "https://github.com/karoterra/aviutl2-aulua/releases/download/v0.8.0/aulua-v0.8.0-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/karoterra/aviutl2-aulua/releases/assets/399796715"
 
 [tools."github:karoterra/aviutl2-aulua"."platforms.linux-x64-musl"]
-checksum = "sha256:e89eb9968f6c39ba931d800d4655fe85728ab3b1c31f5e745fb2225d45777b22"
-url = "https://github.com/karoterra/aviutl2-aulua/releases/download/v0.7.1/aulua-v0.7.1-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/karoterra/aviutl2-aulua/releases/assets/379217682"
-
-[tools."github:karoterra/aviutl2-aulua"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:e89eb9968f6c39ba931d800d4655fe85728ab3b1c31f5e745fb2225d45777b22"
-url = "https://github.com/karoterra/aviutl2-aulua/releases/download/v0.7.1/aulua-v0.7.1-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/karoterra/aviutl2-aulua/releases/assets/379217682"
+checksum = "sha256:16079ba98bfb3edd947acbcc610aeb0a56472e7d370f13ca77a716e8d8d2101f"
+url = "https://github.com/karoterra/aviutl2-aulua/releases/download/v0.8.0/aulua-v0.8.0-linux-x64.tar.gz"
+url_api = "https://api.github.com/repos/karoterra/aviutl2-aulua/releases/assets/399796715"
 
 [tools."github:karoterra/aviutl2-aulua"."platforms.windows-x64"]
-checksum = "sha256:04cbb0af67114b5048b4512409273d3376f87dbd316ee433d36f1482f5e7c0d6"
-url = "https://github.com/karoterra/aviutl2-aulua/releases/download/v0.7.1/aulua-v0.7.1-windows-x64.zip"
-url_api = "https://api.github.com/repos/karoterra/aviutl2-aulua/releases/assets/379217683"
-
-[tools."github:karoterra/aviutl2-aulua"."platforms.windows-x64-baseline"]
-checksum = "sha256:04cbb0af67114b5048b4512409273d3376f87dbd316ee433d36f1482f5e7c0d6"
-url = "https://github.com/karoterra/aviutl2-aulua/releases/download/v0.7.1/aulua-v0.7.1-windows-x64.zip"
-url_api = "https://api.github.com/repos/karoterra/aviutl2-aulua/releases/assets/379217683"
+checksum = "sha256:04c6305a3e7d3757b2c1315d6cdc08eff818d3374291960d4416fa692cad7021"
+url = "https://github.com/karoterra/aviutl2-aulua/releases/download/v0.8.0/aulua-v0.8.0-windows-x64.zip"
+url_api = "https://api.github.com/repos/karoterra/aviutl2-aulua/releases/assets/399796714"
 
 [[tools."github:sevenc-nanashi/aviutl2-cli"]]
-version = "0.8.0-preview.7"
+version = "0.8.2"
 backend = "github:sevenc-nanashi/aviutl2-cli"
 
 [tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-arm64"]
-checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
-url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
-url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
+checksum = "sha256:a975f0311a4dab46962fd96bddfdc5e4a178ca1cd6d43a32b76fd96e577832e8"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.2/au2-v0.8.2-linux"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/391520741"
 
 [tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-arm64-musl"]
-checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
-url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
-url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
+checksum = "sha256:a975f0311a4dab46962fd96bddfdc5e4a178ca1cd6d43a32b76fd96e577832e8"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.2/au2-v0.8.2-linux"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/391520741"
 
 [tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-x64"]
-checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
-url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
-url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
-
-[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-x64-baseline"]
-checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
-url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
-url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
+checksum = "sha256:a975f0311a4dab46962fd96bddfdc5e4a178ca1cd6d43a32b76fd96e577832e8"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.2/au2-v0.8.2-linux"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/391520741"
 
 [tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-x64-musl"]
-checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
-url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
-url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
-
-[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.linux-x64-musl-baseline"]
-checksum = "sha256:ea65d0d2bad1453ece4056e8fdf7451b222a6f5249f4ea8c955b4bec2e28538c"
-url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-linux"
-url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731506"
+checksum = "sha256:a975f0311a4dab46962fd96bddfdc5e4a178ca1cd6d43a32b76fd96e577832e8"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.2/au2-v0.8.2-linux"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/391520741"
 
 [tools."github:sevenc-nanashi/aviutl2-cli"."platforms.windows-x64"]
-checksum = "sha256:e4b423fc2cb05e757e0b01c1e4cd6f7c30387d494ad1c38a9b88b0e9326634a5"
-url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-windows.exe"
-url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731505"
-
-[tools."github:sevenc-nanashi/aviutl2-cli"."platforms.windows-x64-baseline"]
-checksum = "sha256:e4b423fc2cb05e757e0b01c1e4cd6f7c30387d494ad1c38a9b88b0e9326634a5"
-url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.0-preview.7/au2-v0.8.0-preview.7-windows.exe"
-url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/374731505"
-
-[[tools.node]]
-version = "24.14.0"
-backend = "core:node"
-
-[tools.node."platforms.linux-arm64"]
-checksum = "sha256:f44740cd218de8127f1c44c41510a3a740fa5c9c8d1cdce1c3bedada79f3cde7"
-url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-linux-arm64.tar.gz"
-
-[tools.node."platforms.linux-x64"]
-checksum = "sha256:dbf5b8665dec15e59e6359a517fefb47b23fdb9152d8def975b9bca3dfc6d355"
-url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-linux-x64.tar.gz"
-
-[tools.node."platforms.macos-arm64"]
-checksum = "sha256:a1a54f46a750d2523d628d924aab61758a51c9dad3e0238beb14141be9615dd3"
-url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-darwin-arm64.tar.gz"
-
-[tools.node."platforms.macos-x64"]
-checksum = "sha256:f2879eb810e25993a0578e5d878930266fd2eafcffe9f2839b3d8db354d4879e"
-url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-darwin-x64.tar.gz"
-
-[tools.node."platforms.windows-x64"]
-checksum = "sha256:313fa40c0d7b18575821de8cb17483031fe07d95de5994f6f435f3b345f85c66"
-url = "https://nodejs.org/dist/v24.14.0/node-v24.14.0-win-x64.zip"
+checksum = "sha256:a5ed78a19ebabb271864e6cd12b8294e5eb2c39ea7bd4cf2866f39687e9bab5e"
+url = "https://github.com/sevenc-nanashi/aviutl2-cli/releases/download/0.8.2/au2-v0.8.2-windows.exe"
+url_api = "https://api.github.com/repos/sevenc-nanashi/aviutl2-cli/releases/assets/391520740"
 
 [[tools."npm:rulesync"]]
-version = "8.14.0"
+version = "8.15.0"
 backend = "npm:rulesync"
 
 [[tools.ruby]]
@@ -178,15 +120,7 @@ url = "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.4.1/stylua-l
 checksum = "sha256:cb9280d967a3f83e443b354a6497b562de4acc1daccf4456df0f7232653d3843"
 url = "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.4.1/stylua-linux-x86_64-musl.zip"
 
-[tools.stylua."platforms.linux-x64-baseline"]
-checksum = "sha256:cb9280d967a3f83e443b354a6497b562de4acc1daccf4456df0f7232653d3843"
-url = "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.4.1/stylua-linux-x86_64-musl.zip"
-
 [tools.stylua."platforms.linux-x64-musl"]
-checksum = "sha256:cb9280d967a3f83e443b354a6497b562de4acc1daccf4456df0f7232653d3843"
-url = "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.4.1/stylua-linux-x86_64-musl.zip"
-
-[tools.stylua."platforms.linux-x64-musl-baseline"]
 checksum = "sha256:cb9280d967a3f83e443b354a6497b562de4acc1daccf4456df0f7232653d3843"
 url = "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.4.1/stylua-linux-x86_64-musl.zip"
 
@@ -199,9 +133,5 @@ checksum = "sha256:985dc2c791ef5f0bfbaea99f18b01322613f5c6985979a8346c346a341043
 url = "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.4.1/stylua-macos-x86_64.zip"
 
 [tools.stylua."platforms.windows-x64"]
-checksum = "sha256:9b1627b6034aa7ea0ce80485d2a07e777447548839a40acda6e30824a2bba07a"
-url = "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.4.1/stylua-windows-x86_64.zip"
-
-[tools.stylua."platforms.windows-x64-baseline"]
 checksum = "sha256:9b1627b6034aa7ea0ce80485d2a07e777447548839a40acda6e30824a2bba07a"
 url = "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.4.1/stylua-windows-x86_64.zip"
