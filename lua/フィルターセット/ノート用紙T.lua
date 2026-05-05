@@ -36,6 +36,11 @@ local col2 = 0xffffff
 
 local T_Filter_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
+
+--[[pixelshader@emboss
+---$include "./shaders/emboss.hlsl"
+]]
+
 T_Filter_Module.filter_easy_binarization(userdata, w, h, track_threshold)
 obj.putpixeldata("object", userdata, w, h, "bgra")
 userdata, w, h = obj.getpixeldata("object", "bgra")
@@ -46,17 +51,13 @@ obj.draw()
 obj.load("figure", "四角形", 0xffffff, math.max(w, h))
 obj.effect("ノイズ", "周期X", 100, "周期Y", 100, "type", 0, "mode", 1)
 obj.effect("領域拡張", "塗りつぶし", 1, "上", 1, "下", 1, "左", 1, "右", 1)
-userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Filter_Module.filter_emboss(userdata, w, h, 1, 2)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("emboss", "object", "object", { 1, 2 })
 obj.effect("クリッピング", "上", 1, "下", 1, "左", 1, "右", 1)
 obj.setoption("blend", 2)
 obj.draw(0, 0, 0, 1, 0.5 * (1 - track_grain * 0.01))
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
-userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Filter_Module.filter_emboss(userdata, w, h, track_relief * 0.01, direction)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("emboss", "object", "object", { track_relief * 0.01, direction })
 userdata, w, h = obj.getpixeldata("object", "bgra")
 local r1, g1, b1 = RGB(col1)
 local r2, g2, b2 = RGB(col2)

@@ -9,45 +9,6 @@ pub(crate) struct FilterModule;
 #[aviutl2::module::functions]
 #[allow(clippy::too_many_arguments)]
 impl FilterModule {
-    fn filter_sharp(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        strength: f64,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::filter::unoptimized::sharp::sharp(image_buffer, width, height, strength);
-        Ok(())
-    }
-
-    fn filter_emboss(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        strength: f64,
-        direction: i32,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::filter::unoptimized::emboss::emboss(
-            image_buffer,
-            width,
-            height,
-            strength,
-            direction,
-        );
-        Ok(())
-    }
-
     fn filter_flat_rgb(
         image_buffer: NonNull<u8>,
         width: usize,

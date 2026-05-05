@@ -7,11 +7,9 @@ pub(crate) static FILTER_UNSHARP_STATE: LazyLock<
 pub mod blaster;
 pub mod chalk_charcoal;
 pub mod easy_binarization;
-pub mod emboss;
 pub mod flat_rgb;
 pub mod flattening;
 pub mod glass_sq;
 pub mod gray_color;
 pub mod preprocessing;
-pub mod sharp;
 pub mod unsharp;

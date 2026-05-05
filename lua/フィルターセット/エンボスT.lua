@@ -11,12 +11,13 @@ local track_strength = 100
 ---step=1
 local track_direction = 1
 
-local T_Filter_Module = obj.module("tim2")
 local St = track_strength * 0.01
 local Vec = track_direction
 
+--[[pixelshader@emboss
+---$include "./shaders/emboss.hlsl"
+]]
+
 obj.effect("領域拡張", "塗りつぶし", 1, "上", 1, "下", 1, "左", 1, "右", 1)
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Filter_Module.filter_emboss(userdata, w, h, St, Vec)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("emboss", "object", "object", { St, Vec })
 obj.effect("クリッピング", "上", 1, "下", 1, "左", 1, "右", 1)

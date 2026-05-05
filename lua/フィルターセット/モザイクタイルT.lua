@@ -89,16 +89,19 @@ local Rf = track_deform_amount
 local w2, h2 = w + Sw, h + Sh
 local T_Filter_Module = obj.module("tim2")
 
+--[[pixelshader@sharp
+---$include "./shaders/sharp.hlsl"
+]]
+--[[pixelshader@emboss
+---$include "./shaders/emboss.hlsl"
+]]
+
 if check0 then
     local Vec = math.floor((edge_angle + 45) / 45 - 0.5)
     Vec = Vec % 8
     obj.effect("領域拡張", "塗りつぶし", 1, "上", 1, "下", 1, "左", 1, "右", 1)
-    local userdata, w, h = obj.getpixeldata("object", "bgra")
-    T_Filter_Module.filter_sharp(userdata, w, h, 0.5)
-    obj.putpixeldata("object", userdata, w, h, "bgra")
-    userdata, w, h = obj.getpixeldata("object", "bgra")
-    T_Filter_Module.filter_emboss(userdata, w, h, gs * 0.01, Vec)
-    obj.putpixeldata("object", userdata, w, h, "bgra")
+    obj.pixelshader("sharp", "object", "object", { 0.5 })
+    obj.pixelshader("emboss", "object", "object", { gs * 0.01, Vec })
     obj.effect("クリッピング", "上", 1, "下", 1, "左", 1, "右", 1)
 end
 

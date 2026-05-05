@@ -19,6 +19,10 @@ local mode = 1
 local T_Filter_Module = obj.module("tim2")
 local St = track_strength * 0.01
 
+--[[pixelshader@sharp
+---$include "./shaders/sharp.hlsl"
+]]
+
 if mode == 1 then
     local userdata, w, h = obj.getpixeldata("object", "bgra")
     T_Filter_Module.filter_set_public_image(userdata, w, h)
@@ -28,8 +32,6 @@ if mode == 1 then
     obj.putpixeldata("object", userdata, w, h, "bgra")
 else
     obj.effect("領域拡張", "塗りつぶし", 1, "上", 1, "下", 1, "左", 1, "右", 1)
-    local userdata, w, h = obj.getpixeldata("object", "bgra")
-    T_Filter_Module.filter_sharp(userdata, w, h, St)
-    obj.putpixeldata("object", userdata, w, h, "bgra")
+    obj.pixelshader("sharp", "object", "object", { St })
     obj.effect("クリッピング", "上", 1, "下", 1, "左", 1, "右", 1)
 end
