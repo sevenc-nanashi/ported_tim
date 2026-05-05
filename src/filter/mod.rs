@@ -2,6 +2,7 @@ use aviutl2::anyhow;
 use std::ptr::NonNull;
 
 mod graphicpen;
+mod preprocessing;
 pub mod unoptimized;
 
 pub(crate) struct FilterModule;
@@ -106,6 +107,20 @@ impl FilterModule {
         crate::filter::graphicpen::calculate_threshold(image_buffer, width, height)
     }
 
+    fn filter_preprocessing_threshold(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+    ) -> anyhow::Result<f64> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts(image_buffer.as_ptr() as *const u8, buffer_size) };
+        crate::filter::preprocessing::calculate_threshold(image_buffer, width, height)
+    }
+
     fn filter_gray_color(
         image_buffer: NonNull<u8>,
         width: usize,
@@ -154,68 +169,6 @@ impl FilterModule {
             width,
             height,
             threshold,
-        );
-        Ok(())
-    }
-
-    fn filter_preprocessing(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        charcoal_apply: f64,
-        chalk_apply: f64,
-        pen_pressure: f64,
-        threshold: i32,
-        auto_threshold: bool,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::filter::unoptimized::preprocessing::preprocessing(
-            image_buffer,
-            width,
-            height,
-            charcoal_apply,
-            chalk_apply,
-            pen_pressure,
-            threshold,
-            auto_threshold,
-        );
-        Ok(())
-    }
-
-    fn filter_chalk_charcoal(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        length: i32,
-        r1: i32,
-        g1: i32,
-        b1: i32,
-        r2: i32,
-        g2: i32,
-        b2: i32,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::filter::unoptimized::chalk_charcoal::chalk_charcoal(
-            image_buffer,
-            width,
-            height,
-            length,
-            r1,
-            g1,
-            b1,
-            r2,
-            g2,
-            b2,
         );
         Ok(())
     }

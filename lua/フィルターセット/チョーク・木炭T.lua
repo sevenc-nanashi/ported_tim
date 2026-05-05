@@ -28,8 +28,6 @@ local track_threshold = 0
 ---$check:しきい値を自動計算
 local auto_threshold = true
 
---group:
-
 --group:仕上げ,true
 
 ---$track:長さ
@@ -65,6 +63,13 @@ local T_Filter_Module = obj.module("tim2")
 local seed = track_seed
 local length = track_length
 
+--[[pixelshader@chalk_charcoal_preprocessing
+---$include "./shaders/chalk_charcoal_preprocessing.hlsl"
+]]
+--[[pixelshader@chalk_charcoal
+---$include "./shaders/chalk_charcoal.hlsl"
+]]
+
 if not fix_seed then
     seed = seed + obj.time * obj.framerate
 end
@@ -75,18 +80,18 @@ elseif length > 10 then
 end
 
 obj.effect("単色化")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Filter_Module.filter_preprocessing(
-    userdata,
-    w,
-    h,
+local threshold = track_threshold
+if auto_threshold then
+    local userdata, w, h = obj.getpixeldata("object", "bgra")
+    threshold = T_Filter_Module.filter_preprocessing_threshold(userdata, w, h)
+end
+obj.pixelshader("chalk_charcoal_preprocessing", "object", "object", {
     track_charcoal_apply * 0.01,
     track_chalk_apply * 0.01,
     track_pen_pressure * 0.01,
-    track_threshold,
-    auto_threshold
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+    threshold / 255,
+})
+local w, h = obj.getpixel()
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 obj.effect("単色化", "輝度を保持する", 0)
@@ -95,9 +100,15 @@ obj.effect("ぼかし", "範囲", 3, "サイズ固定", 1)
 obj.setoption("blend", 5)
 obj.draw(0, 0, 0, 1, track_noise_power * 0.01)
 obj.load("tempbuffer")
-userdata, w, h = obj.getpixeldata("object", "bgra")
 local r1, g1, b1 = RGB(color_shadow)
 local r2, g2, b2 = RGB(color_highlight)
-T_Filter_Module.filter_chalk_charcoal(userdata, w, h, length, r1, g1, b1, r2, g2, b2)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("chalk_charcoal", "object", "object", {
+    length,
+    r1 / 255,
+    g1 / 255,
+    b1 / 255,
+    r2 / 255,
+    g2 / 255,
+    b2 / 255,
+})
 obj.setoption("blend", 0)
