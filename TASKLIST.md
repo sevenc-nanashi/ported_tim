@@ -151,7 +151,7 @@
 | 加工                 | @T_Filter_Module.anm         | シャープT                       | :o:      | :o: | :o:              | :x:                  |
 | 加工                 | @T_Filter_Module.anm         | チョーク・木炭T                 | :o:      | :o: | :o:              | :x:                  |
 | 加工                 | @T_Filter_Module.anm         | ノート用紙T                     | :o:      | :o: | :o:              | :x:                  |
-| 加工                 | @T_Filter_Module.anm         | ブラスターT                     | :o:      | :o: | :o:              | :x:                  |
+| 加工                 | @T_Filter_Module.anm         | ブラスターT                     | :o:      | :o: | :o:              | :o:                  |
 | 加工                 | @T_Filter_Module.anm         | モザイクタイルT                 | :o:      | :o: | :o:              | :x:                  |
 | 加工                 | @網点分解T.anm               | 網点分解(CMY)                   | :o:      | -   | :o:              | :x:                  |
 | 加工                 | @網点分解T.anm               | 網点分解(特色)                  | :o:      | -   | :o:              | :x:                  |

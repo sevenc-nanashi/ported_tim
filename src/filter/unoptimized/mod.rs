@@ -4,7 +4,6 @@ pub(crate) static FILTER_UNSHARP_STATE: LazyLock<
     Mutex<crate::filter::unoptimized::unsharp::UnsharpState>,
 > = LazyLock::new(|| Mutex::new(crate::filter::unoptimized::unsharp::UnsharpState::new()));
 
-pub mod blaster;
 pub mod chalk_charcoal;
 pub mod easy_binarization;
 pub mod flat_rgb;

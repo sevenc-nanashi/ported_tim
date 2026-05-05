@@ -106,23 +106,6 @@ impl FilterModule {
         crate::filter::graphicpen::calculate_threshold(image_buffer, width, height)
     }
 
-    fn filter_blaster(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        direction: i32,
-        edge: f64,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::filter::unoptimized::blaster::blaster(image_buffer, width, height, direction, edge);
-        Ok(())
-    }
-
     fn filter_gray_color(
         image_buffer: NonNull<u8>,
         width: usize,

@@ -40,10 +40,22 @@ local col2 = 0xffffff
 ---step=1
 local track_edge_strength = 100
 
-local T_Filter_Module = obj.module("tim2")
 local Len = track_distance
 local Vec = direction
-local userdata, w, h, w0, h0
+local w0, h0
+
+--[[pixelshader@blaster_binarization
+---$include "./shaders/blaster_binarization.hlsl"
+]]
+--[[pixelshader@blaster_prepare
+---$include "./shaders/blaster_prepare.hlsl"
+]]
+--[[pixelshader@blaster
+---$include "./shaders/blaster.hlsl"
+]]
+--[[pixelshader@blaster_gray_color
+---$include "./shaders/blaster_gray_color.hlsl"
+]]
 
 obj.copybuffer("cache:original", "object")
 
@@ -57,18 +69,18 @@ obj.load("tempbuffer")
 obj.setoption("blend", "none")
 
 obj.effect("ぼかし", "範囲", track_smooth, "サイズ固定", 1)
-userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Filter_Module.filter_easy_binarization(userdata, w, h, track_threshold)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("blaster_binarization", "object", "object", { track_threshold / 255 })
 obj.copybuffer("cache:saveimg", "object")
 
 obj.setoption("drawtarget", "tempbuffer", w0, h0)
 
 obj.effect("ぼかし", "範囲", Len, "サイズ固定", 1)
 obj.effect("領域拡張", "塗りつぶし", 1, "上", 3, "下", 3, "左", 3, "右", 3)
-userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Filter_Module.filter_blaster(userdata, w, h, Vec, track_edge_strength * 0.01)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.clearbuffer("cache:blaster", w0, h0)
+obj.pixelshader("blaster_prepare", "cache:blaster", "object", { Vec, track_edge_strength * 0.01 })
+obj.pixelshader("blaster", "object", "cache:blaster")
+obj.copybuffer("cache:1", "object")
+
 obj.draw()
 
 obj.copybuffer("object", "cache:saveimg")
@@ -95,11 +107,16 @@ obj.copybuffer("object", "cache:saveimg")
 obj.draw()
 
 obj.load("tempbuffer")
-userdata, w, h = obj.getpixeldata("object", "bgra")
 local r1, g1, b1 = RGB(col1)
 local r2, g2, b2 = RGB(col2)
-T_Filter_Module.filter_gray_color(userdata, w, h, r1, g1, b1, r2, g2, b2)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("blaster_gray_color", "object", "object", {
+    r1 / 255,
+    g1 / 255,
+    b1 / 255,
+    r2 / 255,
+    g2 / 255,
+    b2 / 255,
+})
 
 obj.copybuffer("tempbuffer", "object")
 obj.copybuffer("object", "cache:original")
