@@ -309,35 +309,6 @@ impl ColorModule {
         Ok(())
     }
 
-    fn color_extended_contrast(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        center: f64,
-        intensity: f64,
-        brightness: f64,
-        smooth: f64,
-        show_curve: bool,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::extended_contrast::extended_contrast(
-            image_buffer,
-            width,
-            height,
-            center,
-            intensity,
-            brightness,
-            smooth,
-            show_curve,
-        )?;
-        Ok(())
-    }
-
     fn color_equalize(
         image_buffer: NonNull<u8>,
         width: usize,

@@ -40,7 +40,7 @@
 | 色調整               | @T_Color_Module.anm          | 単色化(T)                       | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 単色化(T2)                      | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 基準色変更                      | :o:      | :o: | :o:              | :o:                  |
-| 色調整               | @T_Color_Module.anm          | 拡張コントラスト                | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | 拡張コントラスト                | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 最大/最小                       | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 減色パレット                    | :o:      | -   | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 特定色域変換T                   | :o:      | :o: | :o:              | :x:                  |

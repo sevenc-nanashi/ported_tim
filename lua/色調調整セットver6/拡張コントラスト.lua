@@ -33,20 +33,23 @@ local curve_size = 260
 ---$check:カーブ表示
 local show_curve = false
 
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-if show_curve then
-    obj.load("figure", "四角形", 0xffffff, math.max(100, curve_size or 260))
-end
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_extended_contrast(
-    userdata,
-    w,
-    h,
+--[[pixelshader@extended_contrast
+---$include "./shaders/extended_contrast.hlsl"
+]]
+--[[pixelshader@extended_contrast_curve
+---$include "./shaders/extended_contrast.hlsl"
+]]
+
+local params = {
     track_center,
     track_intensity / 100,
     track_brightness,
     track_smooth / 100,
-    show_curve
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+}
+
+if show_curve then
+    obj.load("figure", "四角形", 0xffffff, math.max(100, curve_size or 260))
+    obj.pixelshader("extended_contrast_curve", "object", "object", params)
+else
+    obj.pixelshader("extended_contrast", "object", "object", params)
+end
