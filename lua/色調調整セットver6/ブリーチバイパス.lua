@@ -30,7 +30,13 @@ obj.draw(0, 0, 0, 1, alp)
 obj.load("tempbuffer")
 obj.setoption("blend", "none")
 obj.effect("色調補正", "彩度", sai)
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_gamma_correction(userdata, w, h, r, r, r)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+
+--[[pixelshader@gamma_correction
+---$include "./shaders/gamma_correction.hlsl"
+]]
+
+obj.pixelshader("gamma_correction", "object", "object", {
+    r,
+    r,
+    r,
+})

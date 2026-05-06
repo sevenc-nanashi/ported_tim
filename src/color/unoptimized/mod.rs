@@ -2,7 +2,6 @@ pub mod change_to_color;
 pub mod colorama;
 pub mod equalize;
 pub mod extended_contrast;
-pub mod gamma_correction;
 pub mod histogram;
 pub mod monochromatic;
 pub mod monochromatic2;
