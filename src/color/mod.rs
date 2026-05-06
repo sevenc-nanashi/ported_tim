@@ -436,43 +436,6 @@ impl ColorModule {
         Ok(())
     }
 
-    fn color_colorama(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        f_shift: f64,
-        cycle_count: f64,
-        max_colors: usize,
-        col1: u32,
-        col2: u32,
-        col3: u32,
-        col4: u32,
-        col5: u32,
-        col6: u32,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::colorama::colorama(
-            image_buffer,
-            width,
-            height,
-            f_shift,
-            cycle_count,
-            max_colors,
-            col1,
-            col2,
-            col3,
-            col4,
-            col5,
-            col6,
-        )?;
-        Ok(())
-    }
-
     fn color_minimax_check(
         image_buffer: NonNull<u8>,
         width: usize,

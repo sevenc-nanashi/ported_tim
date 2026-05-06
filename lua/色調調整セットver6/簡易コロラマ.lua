@@ -40,21 +40,37 @@ local maxN = math.floor(track_max_colors)
 if maxN < 1 then
     maxN = 6
 end
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_colorama(
-    userdata,
-    w,
-    h,
+local col1_r, col1_g, col1_b = RGB(col1)
+local col2_r, col2_g, col2_b = RGB(col2)
+local col3_r, col3_g, col3_b = RGB(col3)
+local col4_r, col4_g, col4_b = RGB(col4)
+local col5_r, col5_g, col5_b = RGB(col5)
+local col6_r, col6_g, col6_b = RGB(col6)
+
+--[[pixelshader@colorama
+---$include "./shaders/colorama.hlsl"
+]]
+
+obj.pixelshader("colorama", "object", "object", {
     track_f_shift / 100,
     track_cycle_count,
     maxN,
-    col1,
-    col2,
-    col3,
-    col4,
-    col5,
-    col6
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+    col1_r,
+    col1_g,
+    col1_b,
+    col2_r,
+    col2_g,
+    col2_b,
+    col3_r,
+    col3_g,
+    col3_b,
+    col4_r,
+    col4_g,
+    col4_b,
+    col5_r,
+    col5_g,
+    col5_b,
+    col6_r,
+    col6_g,
+    col6_b,
+})

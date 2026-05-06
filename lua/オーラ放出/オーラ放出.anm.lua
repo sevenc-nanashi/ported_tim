@@ -42,10 +42,7 @@ local col3 = 0x0080ff
 local bl = 1
 
 ---$check:オリジナル表示
-local check0 = true
-
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
+local show_original = true
 
 local ox, oy, oz = obj.ox, obj.oy, obj.oz
 local cx, cy, cz = obj.cx, obj.cy, obj.cz
@@ -70,9 +67,35 @@ obj.effect("縁取り", "サイズ", sz * 0.5, "ぼかし", 0, "color", 0xffffff
 obj.effect("縁取り", "サイズ", sz * 0.5, "ぼかし", 0, "color", 0x0)
 obj.effect("ぼかし", "範囲", sz)
 
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_colorama(userdata, w, h, sft, repN, 2, 0xffffff, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+--[[pixelshader@colorama
+---$include "../色調調整セットver6/shaders/colorama.hlsl"
+]]
+
+obj.pixelshader("colorama", "object", "object", {
+    sft,
+    repN,
+    2,
+    255,
+    255,
+    255,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+})
+
+local w, h = obj.w, obj.h
 
 obj.copybuffer("cache:wave", "object")
 
@@ -83,12 +106,12 @@ obj.copybuffer("object", "cache:wave")
 obj.draw()
 obj.copybuffer("object", "tempbuffer")
 
-obj.effect("チャンネルシフト@T_Color_Module@tim.anm2", "アルファ", 1, "赤", 1, "緑", 1, "青", 1)
+obj.effect("チャンネルシフト@T_Color_Module@tim.anm2", "アルファ", "赤", "赤", "赤", "緑", "赤", "青", "赤")
 
 -- local userdata, w, h = obj.getpixeldata("object", "bgra")
 -- T_Color_Module.color_tritone_v2(userdata, w, h, r1, g1, b1, r2, g2, b2, r3, g3, b3, 255, 128, 0)
 -- obj.putpixeldata("object", userdata, w, h, "bgra")
--- obj.effect("ぼかし", "範囲", bl)
+obj.effect("ぼかし", "範囲", bl)
 obj.effect(
     "トライトーン@T_Color_Module@tim.anm2",
     "シャドウ",
@@ -105,7 +128,7 @@ obj.effect(
     0
 )
 
-if check0 then
+if show_original then
     obj.copybuffer("tempbuffer", "object")
     obj.copybuffer("object", "cache:ori")
     obj.draw()
