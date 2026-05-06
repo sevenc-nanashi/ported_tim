@@ -1,4 +1,5 @@
 use anyhow::{Result, anyhow, ensure};
+use rayon::prelude::*;
 
 const HIST_SIZE: usize = 256 * 256 * 256;
 const MAX_MC_COLORS: usize = 500;
@@ -9,6 +10,12 @@ struct Rgb8 {
     r: u8,
     g: u8,
     b: u8,
+}
+
+#[derive(Clone, Copy, Debug)]
+struct ColorEntry {
+    rgb: Rgb8,
+    count: u32,
 }
 
 #[derive(Clone, Debug)]
@@ -58,6 +65,14 @@ fn u32_to_rgb(color: u32) -> Rgb8 {
 
 fn hist_index(r: u8, g: u8, b: u8) -> usize {
     ((r as usize) << 16) | ((g as usize) << 8) | (b as usize)
+}
+
+fn rgb_from_hist_index(idx: usize) -> Rgb8 {
+    Rgb8 {
+        r: ((idx >> 16) & 0xff) as u8,
+        g: ((idx >> 8) & 0xff) as u8,
+        b: (idx & 0xff) as u8,
+    }
 }
 
 fn sq_diff_u8(a: u8, b: u8) -> u32 {
@@ -117,15 +132,12 @@ pub fn disp_reduction(
 
     let palette: Vec<Rgb8> = palette_rgb.iter().copied().map(u32_to_rgb).collect();
 
-    let px_count = pixel_count(width, height)?;
-    for i in 0..px_count {
-        let (_, _, _, a) = get_pixel_bgra(pixels_bgra, i);
-        let (_, g0, r0, _) = get_pixel_bgra(pixels_bgra, i);
-        let b0 = pixels_bgra[i * 4];
+    pixels_bgra.par_chunks_exact_mut(4).for_each(|px| {
+        let a = px[3];
         let src = Rgb8 {
-            r: r0,
-            g: g0,
-            b: b0,
+            r: px[2],
+            g: px[1],
+            b: px[0],
         };
 
         let mut best_idx = 0usize;
@@ -139,8 +151,11 @@ pub fn disp_reduction(
         }
 
         let best = palette[best_idx];
-        set_pixel_bgra(pixels_bgra, i, best.b, best.g, best.r, a);
-    }
+        px[0] = best.b;
+        px[1] = best.g;
+        px[2] = best.r;
+        px[3] = a;
+    });
 
     Ok(())
 }
@@ -175,13 +190,17 @@ fn compute_average_opaque_color(pixels_bgra: &[u8], width: usize, height: usize)
 }
 
 fn fill_opaque_with_color(pixels_bgra: &mut [u8], width: usize, height: usize, color: Rgb8) {
-    let px_count = width * height;
-    for i in 0..px_count {
-        let a = pixels_bgra[i * 4 + 3];
-        if a != 0 {
-            set_pixel_bgra(pixels_bgra, i, color.b, color.g, color.r, 0xff);
-        }
-    }
+    pixels_bgra[..width * height * 4]
+        .par_chunks_exact_mut(4)
+        .for_each(|px| {
+            let a = px[3];
+            if a != 0 {
+                px[0] = color.b;
+                px[1] = color.g;
+                px[2] = color.r;
+                px[3] = 0xff;
+            }
+        });
 }
 
 fn nearest_color_index(src: Rgb8, palette: &[Rgb8], fixed: &[Rgb8]) -> (bool, usize) {
@@ -217,20 +236,26 @@ fn apply_reduction_with_palette_and_fixed(
     palette: &[Rgb8],
     fixed: &[Rgb8],
 ) {
-    let px_count = width * height;
+    pixels_bgra[..width * height * 4]
+        .par_chunks_exact_mut(4)
+        .for_each(|px| {
+            let b = px[0];
+            let g = px[1];
+            let r = px[2];
+            let a = px[3];
+            if a == 0 {
+                return;
+            }
 
-    for i in 0..px_count {
-        let (b, g, r, a) = get_pixel_bgra(pixels_bgra, i);
-        if a == 0 {
-            continue;
-        }
+            let src = Rgb8 { r, g, b };
+            let (is_fixed, idx) = nearest_color_index(src, palette, fixed);
 
-        let src = Rgb8 { r, g, b };
-        let (is_fixed, idx) = nearest_color_index(src, palette, fixed);
-
-        let out = if is_fixed { fixed[idx] } else { palette[idx] };
-        set_pixel_bgra(pixels_bgra, i, out.b, out.g, out.r, a);
-    }
+            let out = if is_fixed { fixed[idx] } else { palette[idx] };
+            px[0] = out.b;
+            px[1] = out.g;
+            px[2] = out.r;
+            px[3] = a;
+        });
 }
 
 fn draw_palette_grid(
@@ -253,12 +278,12 @@ fn draw_palette_grid(
     let cell_h = height / grid;
     let cell_w = width / grid;
 
-    for px in out_bgra.chunks_exact_mut(4) {
+    out_bgra.par_chunks_exact_mut(4).for_each(|px| {
         px[0] = 0xff;
         px[1] = 0xff;
         px[2] = 0xff;
         px[3] = 0xff;
-    }
+    });
 
     for gy in 0..grid {
         for gx in 0..grid {
@@ -290,12 +315,22 @@ fn draw_palette_grid(
     }
 }
 
-fn extract_histogram_and_initial_box(
+fn color_in_box(color: Rgb8, b: &ColorBox) -> bool {
+    color.r >= b.r_min
+        && color.r <= b.r_max
+        && color.g >= b.g_min
+        && color.g <= b.g_max
+        && color.b >= b.b_min
+        && color.b <= b.b_max
+}
+
+fn extract_colors_and_initial_box(
     pixels_bgra: &[u8],
     width: usize,
     height: usize,
-) -> (Vec<u32>, Option<ColorBox>) {
+) -> (Vec<ColorEntry>, Option<ColorBox>) {
     let mut hist = vec![0u32; HIST_SIZE];
+    let mut used_indices = Vec::new();
 
     let px_count = width * height;
     let mut unique_count = 0u32;
@@ -326,6 +361,7 @@ fn extract_histogram_and_initial_box(
         let idx = hist_index(r, g, b);
         if hist[idx] == 0 {
             unique_count += 1;
+            used_indices.push(idx);
         }
         hist[idx] += 1;
     }
@@ -345,7 +381,15 @@ fn extract_histogram_and_initial_box(
         })
     };
 
-    (hist, initial)
+    let colors = used_indices
+        .into_iter()
+        .map(|idx| ColorEntry {
+            rgb: rgb_from_hist_index(idx),
+            count: hist[idx],
+        })
+        .collect();
+
+    (colors, initial)
 }
 
 fn choose_split_axis(b: &ColorBox) -> Option<Axis> {
@@ -368,28 +412,15 @@ fn choose_split_axis(b: &ColorBox) -> Option<Axis> {
     Some(axis)
 }
 
-fn count_half_split(hist: &[u32], b: &ColorBox, axis: Axis, threshold: u8) -> u32 {
-    let mut total = 0u32;
-
-    for r in b.r_min..=b.r_max {
-        for g in b.g_min..=b.g_max {
-            for bl in b.b_min..=b.b_max {
-                let take = match axis {
-                    Axis::R => r <= threshold,
-                    Axis::G => g <= threshold,
-                    Axis::B => bl <= threshold,
-                };
-                if take && hist[hist_index(r, g, bl)] > 0 {
-                    total += 1;
-                }
-            }
-        }
+fn axis_value(color: Rgb8, axis: Axis) -> u8 {
+    match axis {
+        Axis::R => color.r,
+        Axis::G => color.g,
+        Axis::B => color.b,
     }
-
-    total
 }
 
-fn recompute_box_bounds(hist: &[u32], b: &mut ColorBox) {
+fn recompute_box_bounds(colors: &[ColorEntry], b: &mut ColorBox) {
     let mut r_min = u8::MAX;
     let mut r_max = 0u8;
     let mut g_min = u8::MAX;
@@ -399,24 +430,20 @@ fn recompute_box_bounds(hist: &[u32], b: &mut ColorBox) {
     let mut count = 0u32;
     let mut unique_count = 0u32;
 
-    for r in b.r_min..=b.r_max {
-        for g in b.g_min..=b.g_max {
-            for bl in b.b_min..=b.b_max {
-                let v = hist[hist_index(r, g, bl)];
-                if v == 0 {
-                    continue;
-                }
-
-                count += v;
-                unique_count += 1;
-                r_min = r_min.min(r);
-                r_max = r_max.max(r);
-                g_min = g_min.min(g);
-                g_max = g_max.max(g);
-                b_min = b_min.min(bl);
-                b_max = b_max.max(bl);
-            }
+    for entry in colors {
+        let color = entry.rgb;
+        if !color_in_box(color, b) {
+            continue;
         }
+
+        count += entry.count;
+        unique_count += 1;
+        r_min = r_min.min(color.r);
+        r_max = r_max.max(color.r);
+        g_min = g_min.min(color.g);
+        g_max = g_max.max(color.g);
+        b_min = b_min.min(color.b);
+        b_max = b_max.max(color.b);
     }
 
     if count == 0 {
@@ -435,7 +462,7 @@ fn recompute_box_bounds(hist: &[u32], b: &mut ColorBox) {
     b.unique_count = unique_count;
 }
 
-fn split_box(hist: &[u32], boxes: &mut Vec<ColorBox>, idx: usize) -> bool {
+fn split_box(colors: &[ColorEntry], boxes: &mut Vec<ColorBox>, idx: usize) -> bool {
     let src = boxes[idx].clone();
     let Some(axis) = choose_split_axis(&src) else {
         return false;
@@ -455,9 +482,18 @@ fn split_box(hist: &[u32], boxes: &mut Vec<ColorBox>, idx: usize) -> bool {
     let mut best_cut = None::<u8>;
     let mut best_half = 0u32;
     let mut prev_half = 0u32;
+    let mut axis_counts = [0u32; 256];
 
+    for entry in colors {
+        let color = entry.rgb;
+        if color_in_box(color, &src) {
+            axis_counts[usize::from(axis_value(color, axis))] += 1;
+        }
+    }
+
+    let mut half = 0u32;
     for t in start..=end {
-        let half = count_half_split(hist, &src, axis, t);
+        half += axis_counts[usize::from(t)];
         if half.saturating_mul(2) >= src.unique_count {
             best_cut = Some(t);
             best_half = half;
@@ -478,45 +514,45 @@ fn split_box(hist: &[u32], boxes: &mut Vec<ColorBox>, idx: usize) -> bool {
             if cut == src.r_max {
                 a.r_max = cut.saturating_sub(1);
                 c.r_min = cut;
-                a.count = prev_half;
-                c.count = src.count.saturating_sub(prev_half);
+                a.unique_count = prev_half;
+                c.unique_count = src.unique_count.saturating_sub(prev_half);
             } else {
                 a.r_max = cut;
                 c.r_min = cut.saturating_add(1);
-                a.count = best_half;
-                c.count = src.count.saturating_sub(best_half);
+                a.unique_count = best_half;
+                c.unique_count = src.unique_count.saturating_sub(best_half);
             }
         }
         Axis::G => {
             if cut == src.g_max {
                 a.g_max = cut.saturating_sub(1);
                 c.g_min = cut;
-                a.count = prev_half;
-                c.count = src.count.saturating_sub(prev_half);
+                a.unique_count = prev_half;
+                c.unique_count = src.unique_count.saturating_sub(prev_half);
             } else {
                 a.g_max = cut;
                 c.g_min = cut.saturating_add(1);
-                a.count = best_half;
-                c.count = src.count.saturating_sub(best_half);
+                a.unique_count = best_half;
+                c.unique_count = src.unique_count.saturating_sub(best_half);
             }
         }
         Axis::B => {
             if cut == src.b_max {
                 a.b_max = cut.saturating_sub(1);
                 c.b_min = cut;
-                a.count = prev_half;
-                c.count = src.count.saturating_sub(prev_half);
+                a.unique_count = prev_half;
+                c.unique_count = src.unique_count.saturating_sub(prev_half);
             } else {
                 a.b_max = cut;
                 c.b_min = cut.saturating_add(1);
-                a.count = best_half;
-                c.count = src.count.saturating_sub(best_half);
+                a.unique_count = best_half;
+                c.unique_count = src.unique_count.saturating_sub(best_half);
             }
         }
     }
 
-    recompute_box_bounds(hist, &mut a);
-    recompute_box_bounds(hist, &mut c);
+    recompute_box_bounds(colors, &mut a);
+    recompute_box_bounds(colors, &mut c);
 
     if a.count == 0 || c.count == 0 {
         return false;
@@ -527,7 +563,7 @@ fn split_box(hist: &[u32], boxes: &mut Vec<ColorBox>, idx: usize) -> bool {
     true
 }
 
-fn box_average_color(hist: &[u32], b: &ColorBox) -> Option<(Rgb8, u32)> {
+fn box_average_color(colors: &[ColorEntry], b: &ColorBox) -> Option<(Rgb8, u32)> {
     if b.count == 0 {
         return None;
     }
@@ -537,19 +573,17 @@ fn box_average_color(hist: &[u32], b: &ColorBox) -> Option<(Rgb8, u32)> {
     let mut sum_b: u64 = 0;
     let mut count: u64 = 0;
 
-    for r in b.r_min..=b.r_max {
-        for g in b.g_min..=b.g_max {
-            for bl in b.b_min..=b.b_max {
-                let v = hist[hist_index(r, g, bl)] as u64;
-                if v == 0 {
-                    continue;
-                }
-                count += v;
-                sum_r += (r as u64) * v;
-                sum_g += (g as u64) * v;
-                sum_b += (bl as u64) * v;
-            }
+    for entry in colors {
+        let color = entry.rgb;
+        if !color_in_box(color, b) {
+            continue;
         }
+
+        let v = entry.count as u64;
+        count += v;
+        sum_r += u64::from(color.r) * v;
+        sum_g += u64::from(color.g) * v;
+        sum_b += u64::from(color.b) * v;
     }
 
     if count == 0 {
@@ -656,7 +690,7 @@ pub fn mcut_reduction(
         return Ok(());
     }
 
-    let (hist, initial_box) = extract_histogram_and_initial_box(pixels_bgra, width, height);
+    let (colors, initial_box) = extract_colors_and_initial_box(pixels_bgra, width, height);
     let Some(initial_box) = initial_box else {
         return Ok(());
     };
@@ -679,14 +713,14 @@ pub fn mcut_reduction(
             unreachable!();
         };
 
-        if !split_box(&hist, &mut boxes, idx) {
+        if !split_box(&colors, &mut boxes, idx) {
             break;
         }
     }
 
     let mut palette_with_weights: Vec<(Rgb8, u32)> = boxes
         .iter()
-        .filter_map(|b| box_average_color(&hist, b))
+        .filter_map(|b| box_average_color(&colors, b))
         .collect();
 
     if c > 0 && palette_with_weights.len() > c {
