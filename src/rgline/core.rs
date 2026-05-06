@@ -1,8 +1,9 @@
 use aviutl2::anyhow;
+use rayon::prelude::*;
 use std::sync::{LazyLock, Mutex};
 
-pub(crate) static RG_LINE_STATE: LazyLock<Mutex<crate::rgline::unoptimized::RgLineState>> =
-    LazyLock::new(|| Mutex::new(crate::rgline::unoptimized::RgLineState::new()));
+pub(crate) static RG_LINE_STATE: LazyLock<Mutex<crate::rgline::core::RgLineState>> =
+    LazyLock::new(|| Mutex::new(crate::rgline::core::RgLineState::new()));
 
 pub struct RgLineState {
     width: usize,
@@ -54,16 +55,17 @@ impl RgLineState {
             anyhow::bail!("Input buffer too small");
         }
 
-        let mut map_sum = vec![0u16; width * height];
-        for i in 0..(width * height) {
-            let p = i * 4;
-            let b = image_buffer[p] as u16;
-            let g = image_buffer[p + 1] as u16;
-            let r = image_buffer[p + 2] as u16;
-            let a = image_buffer[p + 3];
-            // DLL(FUN_10006140): alpha=0 のとき 0x2fd を使って長さ倍率1.0を維持
-            map_sum[i] = if a == 0 { 0x2fd } else { b + g + r };
-        }
+        let map_sum = image_buffer[..required]
+            .par_chunks_exact(4)
+            .map(|pixel| {
+                let b = pixel[0] as u16;
+                let g = pixel[1] as u16;
+                let r = pixel[2] as u16;
+                let a = pixel[3];
+                // DLL(FUN_10006140): alpha=0 のとき 0x2fd を使って長さ倍率1.0を維持
+                if a == 0 { 0x2fd } else { b + g + r }
+            })
+            .collect();
 
         self.map_sum = Some(map_sum);
         Ok(true)
@@ -96,42 +98,40 @@ fn extract_edge_strength(
     lut: Option<&[i32; 1024]>,
 ) -> Vec<i32> {
     let pixels = public_image.len() / 4;
-    let mut out = vec![0i32; pixels];
+    (0..pixels)
+        .into_par_iter()
+        .map(|i| {
+            let p = i * 4;
+            if current_image[p + 3] == 0 {
+                return 0;
+            }
 
-    for i in 0..pixels {
-        let p = i * 4;
-        if current_image[p + 3] == 0 {
-            out[i] = 0;
-            continue;
-        }
+            let cur_b = current_image[p] as i32;
+            let cur_g = current_image[p + 1] as i32;
+            let cur_r = current_image[p + 2] as i32;
+            let cur_l = cur_b * 0x1d + cur_g * 0x96 + cur_r * 0x4d;
 
-        let cur_b = current_image[p] as i32;
-        let cur_g = current_image[p + 1] as i32;
-        let cur_r = current_image[p + 2] as i32;
-        let cur_l = cur_b * 0x1d + cur_g * 0x96 + cur_r * 0x4d;
+            let mut ratio = if cur_l == 0 {
+                0xff00
+            } else {
+                let pub_b = public_image[p] as i32;
+                let pub_g = public_image[p + 1] as i32;
+                let pub_r = public_image[p + 2] as i32;
+                let v = ((pub_b * 0x1d00 + pub_g * 0x9600 + pub_r * 0x4d00) / cur_l) * 0xff;
+                v.min(0xff00)
+            };
 
-        let mut ratio = if cur_l == 0 {
-            0xff00
-        } else {
-            let pub_b = public_image[p] as i32;
-            let pub_g = public_image[p + 1] as i32;
-            let pub_r = public_image[p + 2] as i32;
-            let v = ((pub_b * 0x1d00 + pub_g * 0x9600 + pub_r * 0x4d00) / cur_l) * 0xff;
-            v.min(0xff00)
-        };
+            if ratio > threshold_cmp {
+                ratio = 0xff00;
+            }
+            if let Some(t) = lut {
+                let idx = (((ratio * 0x3ff) / 0xff00) as usize).min(1023);
+                ratio = t[idx];
+            }
 
-        if ratio > threshold_cmp {
-            ratio = 0xff00;
-        }
-        if let Some(t) = lut {
-            let idx = (((ratio * 0x3ff) / 0xff00) as usize).min(1023);
-            ratio = t[idx];
-        }
-
-        out[i] = 0xff00 - ratio;
-    }
-
-    out
+            0xff00 - ratio
+        })
+        .collect()
 }
 
 fn map_length(base_length: i32, map_sum: Option<&[u16]>, idx: usize) -> i32 {
@@ -179,8 +179,8 @@ fn extend_directional(
     ) -> Vec<i8> {
         let mut out = vec![-1i8; width * height];
 
-        for y in 0..height {
-            for x in 0..width {
+        out.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
+            for (x, cell) in row.iter_mut().enumerate() {
                 let xi = x as isize;
                 let yi = y as isize;
                 let mut best_dir = -1i8;
@@ -259,9 +259,9 @@ fn extend_directional(
                     }
                 }
 
-                out[y * width + x] = best_dir;
+                *cell = best_dir;
             }
-        }
+        });
         out
     }
 
@@ -303,17 +303,17 @@ fn extend_directional(
             }
         }
 
-        for y in 0..height {
-            for x in 0..width {
+        dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
+            for (x, dst_cell) in row.iter_mut().enumerate() {
                 let idx = y * width + x;
                 let r = map_length(radius, map_sum, idx).max(0) as usize;
                 let top = y.saturating_sub(r);
                 let bottom = (y + r).min(height - 1);
                 let sum = prefix[(bottom + 1) * width + x] - prefix[top * width + x];
                 let avg = sum / (r as i32 * 2 + 1);
-                blend_direction(&mut dst[idx], avg, screen_blend);
+                blend_direction(dst_cell, avg, screen_blend);
             }
-        }
+        });
     }
 
     fn horizontal_blur(
@@ -334,8 +334,8 @@ fn extend_directional(
             }
         }
 
-        for y in 0..height {
-            for x in 0..width {
+        dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
+            for (x, dst_cell) in row.iter_mut().enumerate() {
                 let idx = y * width + x;
                 let r = map_length(radius, map_sum, idx).max(0) as usize;
                 let left = x.saturating_sub(r);
@@ -343,9 +343,9 @@ fn extend_directional(
                 let row_prefix = y * (width + 1);
                 let sum = prefix[row_prefix + right + 1] - prefix[row_prefix + left];
                 let avg = sum / (r as i32 * 2 + 1);
-                blend_direction(&mut dst[idx], avg, screen_blend);
+                blend_direction(dst_cell, avg, screen_blend);
             }
-        }
+        });
     }
 
     fn diagonal_main_blur(
@@ -370,8 +370,8 @@ fn extend_directional(
             }
         }
 
-        for y in 0..height {
-            for x in 0..width {
+        dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
+            for (x, dst_cell) in row.iter_mut().enumerate() {
                 let idx = y * width + x;
                 let r = map_length(radius, map_sum, idx).max(0) as usize;
                 let end_step = r.min(width - 1 - x).min(height - 1 - y);
@@ -384,9 +384,9 @@ fn extend_directional(
                     sum -= prefix[sy as usize * width + sx as usize];
                 }
                 let avg = sum / (r as i32 * 2 + 1);
-                blend_direction(&mut dst[idx], avg, screen_blend);
+                blend_direction(dst_cell, avg, screen_blend);
             }
-        }
+        });
     }
 
     fn diagonal_anti_blur(
@@ -411,8 +411,8 @@ fn extend_directional(
             }
         }
 
-        for y in 0..height {
-            for x in 0..width {
+        dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
+            for (x, dst_cell) in row.iter_mut().enumerate() {
                 let idx = y * width + x;
                 let r = map_length(radius, map_sum, idx).max(0) as usize;
                 let end_step = r.min(x).min(height - 1 - y);
@@ -425,9 +425,9 @@ fn extend_directional(
                     sum -= prefix[sy as usize * width + sx];
                 }
                 let avg = sum / (r as i32 * 2 + 1);
-                blend_direction(&mut dst[idx], avg, screen_blend);
+                blend_direction(dst_cell, avg, screen_blend);
             }
-        }
+        });
     }
 
     fn build_oblique_prefix(
@@ -443,9 +443,9 @@ fn extend_directional(
             return prefix;
         }
 
-        for inner in 0..inner_count {
+        for (inner, prefix_cell) in prefix.iter_mut().enumerate().take(inner_count) {
             let src_idx = (start + step_minor * inner as isize) as usize;
-            prefix[inner] = src[src_idx] * 2;
+            *prefix_cell = src[src_idx] * 2;
         }
 
         if outer_count > 1 {
@@ -697,7 +697,7 @@ fn remap_strength(
 
     let lut = build_lut(gamma_scale);
 
-    for v in values.iter_mut() {
+    values.par_iter_mut().for_each(|v| {
         let x = ((*v - lo) as f64 * 255.0 * slope).clamp(0.0, 65280.0);
         let mut q = x.round() as i32;
         if let Some(t) = &lut {
@@ -705,7 +705,7 @@ fn remap_strength(
             q = t[idx];
         }
         *v = q;
-    }
+    });
 }
 
 fn compose_line_only(
@@ -717,15 +717,19 @@ fn compose_line_only(
     height: usize,
 ) {
     let (lb, lg, lr) = rgb_to_bgr(line_color);
-    for i in 0..(width * height) {
-        let p = i * 4;
-        let src_a = public_image[p + 3] as i32;
-        let alpha = ((line_strength[i] * src_a) / 0xff00).clamp(0, 255) as u8;
-        image_buffer[p] = lb;
-        image_buffer[p + 1] = lg;
-        image_buffer[p + 2] = lr;
-        image_buffer[p + 3] = alpha;
-    }
+    image_buffer
+        .par_chunks_mut(4)
+        .zip(public_image.par_chunks_exact(4))
+        .zip(line_strength.par_iter())
+        .take(width * height)
+        .for_each(|((dst, src), strength)| {
+            let src_a = src[3] as i32;
+            let alpha = ((*strength * src_a) / 0xff00).clamp(0, 255) as u8;
+            dst[0] = lb;
+            dst[1] = lg;
+            dst[2] = lr;
+            dst[3] = alpha;
+        });
 }
 
 fn compose_normal(
@@ -747,41 +751,45 @@ fn compose_normal(
     let use_bg = 1.0 - orig_alpha01;
     let keep_bg = 1.0 - (background_alpha.clamp(0, 100) as f64) / 100.0;
 
-    for i in 0..(width * height) {
-        let p = i * 4;
-        let a = (line_strength[i] as f64 / 65280.0).clamp(0.0, 1.0);
-        let d = 1.0 - (1.0 - a) * (1.0 - keep_bg);
+    image_buffer
+        .par_chunks_mut(4)
+        .zip(public_image.par_chunks_exact(4))
+        .zip(line_strength.par_iter())
+        .take(width * height)
+        .for_each(|((dst, src), strength)| {
+            let a = (*strength as f64 / 65280.0).clamp(0.0, 1.0);
+            let d = 1.0 - (1.0 - a) * (1.0 - keep_bg);
 
-        if d <= 0.0 {
-            image_buffer[p] = 0;
-            image_buffer[p + 1] = 0;
-            image_buffer[p + 2] = 0;
-            image_buffer[p + 3] = 0;
-            continue;
-        }
+            if d <= 0.0 {
+                dst[0] = 0;
+                dst[1] = 0;
+                dst[2] = 0;
+                dst[3] = 0;
+                return;
+            }
 
-        let bgmix_b = (bg_b as f64 * use_bg + public_image[p] as f64 * keep_orig).round();
-        let bgmix_g = (bg_g as f64 * use_bg + public_image[p + 1] as f64 * keep_orig).round();
-        let bgmix_r = (bg_r as f64 * use_bg + public_image[p + 2] as f64 * keep_orig).round();
+            let bgmix_b = (bg_b as f64 * use_bg + src[0] as f64 * keep_orig).round();
+            let bgmix_g = (bg_g as f64 * use_bg + src[1] as f64 * keep_orig).round();
+            let bgmix_r = (bg_r as f64 * use_bg + src[2] as f64 * keep_orig).round();
 
-        let k = (1.0 - a) * keep_bg;
+            let k = (1.0 - a) * keep_bg;
 
-        let out_b = ((line_b as f64 * a + bgmix_b * k) / d)
-            .round()
-            .clamp(0.0, 255.0) as u8;
-        let out_g = ((line_g as f64 * a + bgmix_g * k) / d)
-            .round()
-            .clamp(0.0, 255.0) as u8;
-        let out_r = ((line_r as f64 * a + bgmix_r * k) / d)
-            .round()
-            .clamp(0.0, 255.0) as u8;
-        let out_a = ((public_image[p + 3] as f64) * d).round().clamp(0.0, 255.0) as u8;
+            let out_b = ((line_b as f64 * a + bgmix_b * k) / d)
+                .round()
+                .clamp(0.0, 255.0) as u8;
+            let out_g = ((line_g as f64 * a + bgmix_g * k) / d)
+                .round()
+                .clamp(0.0, 255.0) as u8;
+            let out_r = ((line_r as f64 * a + bgmix_r * k) / d)
+                .round()
+                .clamp(0.0, 255.0) as u8;
+            let out_a = ((src[3] as f64) * d).round().clamp(0.0, 255.0) as u8;
 
-        image_buffer[p] = out_b;
-        image_buffer[p + 1] = out_g;
-        image_buffer[p + 2] = out_r;
-        image_buffer[p + 3] = out_a;
-    }
+            dst[0] = out_b;
+            dst[1] = out_g;
+            dst[2] = out_r;
+            dst[3] = out_a;
+        });
 }
 
 #[allow(clippy::too_many_arguments)]
