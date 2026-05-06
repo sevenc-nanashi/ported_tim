@@ -8,7 +8,6 @@ pub mod colorama;
 pub mod equalize;
 pub mod extended_contrast;
 pub mod gamma_correction;
-pub mod grainy;
 pub mod histogram;
 pub mod monochromatic;
 pub mod monochromatic2;

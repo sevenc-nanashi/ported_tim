@@ -37,8 +37,22 @@ local N = track_seed
 if check0 then
     N = obj.rand(0, 10000, -obj.time * obj.framerate, 1)
 end
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_grainy(userdata, w, h, track_amount, track_contrast, track_processing_method, N, col1, col2)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+
+--[[pixelshader@grainy
+---$include "./shaders/grainy.hlsl"
+]]
+
+local r1, g1, b1 = RGB(col1)
+local r2, g2, b2 = RGB(col2)
+obj.pixelshader("grainy", "object", { "object", "random" }, {
+    track_amount,
+    track_contrast,
+    track_processing_method,
+    N,
+    r1 / 255,
+    g1 / 255,
+    b1 / 255,
+    r2 / 255,
+    g2 / 255,
+    b2 / 255,
+})

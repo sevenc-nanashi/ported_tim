@@ -49,7 +49,7 @@
 | 色調整               | @T_Color_Module.anm          | 簡易コロラマ                    | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 簡易トーンカーブ                | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 簡易減色                        | :o:      | :o: | :o:              | :o:                  |
-| 色調整               | @T_Color_Module.anm          | 粒状化                          | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | 粒状化                          | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 色抜き                          | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 金属質                          | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 黄金質                          | :o:      | :o: | :o:              | :o:                  |
