@@ -16,20 +16,19 @@ local track_radius = 1
 ---シャープ=0
 local mode = 1
 
-local T_Filter_Module = obj.module("tim2")
 local St = track_strength * 0.01
 
 --[[pixelshader@sharp
 ---$include "./shaders/sharp.hlsl"
 ]]
+--[[pixelshader@unsharp_mask
+---$include "./shaders/unsharp_mask.hlsl"
+]]
 
 if mode == 1 then
-    local userdata, w, h = obj.getpixeldata("object", "bgra")
-    T_Filter_Module.filter_set_public_image(userdata, w, h)
+    obj.copybuffer("cache:unsharp_original", "object")
     obj.effect("ぼかし", "範囲", track_radius, "サイズ固定", 1)
-    userdata, w, h = obj.getpixeldata("object", "bgra")
-    T_Filter_Module.filter_unsharp_mask(userdata, w, h, St)
-    obj.putpixeldata("object", userdata, w, h, "bgra")
+    obj.pixelshader("unsharp_mask", "object", { "cache:unsharp_original", "object" }, { St })
 else
     obj.effect("領域拡張", "塗りつぶし", 1, "上", 1, "下", 1, "左", 1, "右", 1)
     obj.pixelshader("sharp", "object", "object", { St })
