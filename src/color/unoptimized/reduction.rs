@@ -379,8 +379,8 @@ fn count_half_split(hist: &[u32], b: &ColorBox, axis: Axis, threshold: u8) -> u3
                     Axis::G => g <= threshold,
                     Axis::B => bl <= threshold,
                 };
-                if take {
-                    total += hist[hist_index(r, g, bl)];
+                if take && hist[hist_index(r, g, bl)] > 0 {
+                    total += 1;
                 }
             }
         }
@@ -458,7 +458,7 @@ fn split_box(hist: &[u32], boxes: &mut Vec<ColorBox>, idx: usize) -> bool {
 
     for t in start..=end {
         let half = count_half_split(hist, &src, axis, t);
-        if half.saturating_mul(2) >= src.count {
+        if half.saturating_mul(2) >= src.unique_count {
             best_cut = Some(t);
             best_half = half;
             break;
@@ -741,4 +741,28 @@ pub fn sample_grid_colors(
     }
 
     Ok(out)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn push_pixel(buf: &mut Vec<u8>, r: u8, g: u8, b: u8) {
+        buf.extend_from_slice(&[b, g, r, 0xff]);
+    }
+
+    #[test]
+    fn mcut_split_uses_unique_color_median_not_pixel_weight_median() {
+        let mut pixels = Vec::new();
+        for _ in 0..100 {
+            push_pixel(&mut pixels, 0, 0, 0);
+        }
+        push_pixel(&mut pixels, 10, 0, 0);
+        push_pixel(&mut pixels, 20, 0, 0);
+
+        mcut_reduction(&mut pixels, 102, 1, 2, 0, false, &[]).unwrap();
+
+        assert_eq!(pixels[100 * 4 + 2], 0);
+        assert_eq!(pixels[101 * 4 + 2], 20);
+    }
 }
