@@ -2,6 +2,7 @@ use aviutl2::anyhow;
 
 use anyhow::{Result, anyhow, bail};
 use rand::{RngExt, SeedableRng};
+use rayon::prelude::*;
 use std::sync::{LazyLock, Mutex};
 
 static GLASS_ORIGINAL: LazyLock<Mutex<Option<Vec<u32>>>> = LazyLock::new(|| Mutex::new(None));
@@ -54,19 +55,24 @@ pub fn cracked_glass(
         0
     };
 
-    for (i, px) in userdata.chunks_exact_mut(4).enumerate() {
-        let src = pixel_to_u32(px);
-        original[i] = src;
+    userdata
+        .par_chunks_exact_mut(4)
+        .zip(mask.par_iter_mut())
+        .zip(original.par_iter_mut())
+        .for_each(|((px, mask), original)| {
+            let src = pixel_to_u32(px);
+            *original = src;
 
-        let a = ((src >> 24) & 0xff) as i32;
-        let sum = ((src >> 16) & 0xff) as i32 + ((src >> 8) & 0xff) as i32 + (src & 0xff) as i32;
-        if a == 0 || sum > threshold {
-            mask[i] = 0;
-            write_u32_pixel(px, fill_color);
-        } else {
-            mask[i] = 1;
-        }
-    }
+            let a = ((src >> 24) & 0xff) as i32;
+            let sum =
+                ((src >> 16) & 0xff) as i32 + ((src >> 8) & 0xff) as i32 + (src & 0xff) as i32;
+            if a == 0 || sum > threshold {
+                *mask = 0;
+                write_u32_pixel(px, fill_color);
+            } else {
+                *mask = 1;
+            }
+        });
 
     let mut queue = vec![0usize; pixel_count];
     let seed = (pt as u64).wrapping_mul(pt as u64).wrapping_mul(0x9fbf1);
@@ -180,29 +186,33 @@ pub fn add_glass(
     }
 
     if edge_mode == 0 {
-        for (i, px) in userdata.chunks_exact_mut(4).enumerate() {
-            let src = original[i];
-            let b = px[0] as i32 + ((src & 0xff) as i32 * cs) / 100;
-            let g = px[1] as i32 + (((src >> 8) & 0xff) as i32 * cs) / 100;
-            let r = px[2] as i32 + (((src >> 16) & 0xff) as i32 * cs) / 100;
-            px[0] = b.clamp(0, 255) as u8;
-            px[1] = g.clamp(0, 255) as u8;
-            px[2] = r.clamp(0, 255) as u8;
-        }
+        userdata
+            .par_chunks_exact_mut(4)
+            .zip(original.par_iter())
+            .for_each(|(px, &src)| {
+                let b = px[0] as i32 + ((src & 0xff) as i32 * cs) / 100;
+                let g = px[1] as i32 + (((src >> 8) & 0xff) as i32 * cs) / 100;
+                let r = px[2] as i32 + (((src >> 16) & 0xff) as i32 * cs) / 100;
+                px[0] = b.clamp(0, 255) as u8;
+                px[1] = g.clamp(0, 255) as u8;
+                px[2] = r.clamp(0, 255) as u8;
+            });
     } else {
         let threshold = sh.saturating_mul(3);
-        for (i, px) in userdata.chunks_exact_mut(4).enumerate() {
-            let src = original[i];
-            let a = ((src >> 24) & 0xff) as i32;
-            let sum =
-                ((src >> 16) & 0xff) as i32 + ((src >> 8) & 0xff) as i32 + (src & 0xff) as i32;
-            if a != 0 && sum > threshold {
-                px[0] = 0;
-                px[1] = 0;
-                px[2] = 0;
-                px[3] = 0;
-            }
-        }
+        userdata
+            .par_chunks_exact_mut(4)
+            .zip(original.par_iter())
+            .for_each(|(px, &src)| {
+                let a = ((src >> 24) & 0xff) as i32;
+                let sum =
+                    ((src >> 16) & 0xff) as i32 + ((src >> 8) & 0xff) as i32 + (src & 0xff) as i32;
+                if a != 0 && sum > threshold {
+                    px[0] = 0;
+                    px[1] = 0;
+                    px[2] = 0;
+                    px[3] = 0;
+                }
+            });
     }
 
     *state = None;

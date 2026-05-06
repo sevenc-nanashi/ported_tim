@@ -1,7 +1,7 @@
 use aviutl2::anyhow;
 use std::ptr::NonNull;
 
-pub mod unoptimized;
+mod core;
 
 pub(crate) struct CrackedGlassModule;
 
@@ -24,7 +24,7 @@ impl CrackedGlassModule {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        crate::cracked_glass::unoptimized::cracked_glass(
+        crate::cracked_glass::core::cracked_glass(
             image_buffer,
             width,
             height,
@@ -51,14 +51,7 @@ impl CrackedGlassModule {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        crate::cracked_glass::unoptimized::add_glass(
-            image_buffer,
-            width,
-            height,
-            cs,
-            edge_mode,
-            sh,
-        )?;
+        crate::cracked_glass::core::add_glass(image_buffer, width, height, cs, edge_mode, sh)?;
         Ok(())
     }
 }
