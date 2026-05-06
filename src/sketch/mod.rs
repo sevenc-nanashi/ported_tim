@@ -1,7 +1,7 @@
 use aviutl2::anyhow;
 use std::ptr::NonNull;
 
-pub mod unoptimized;
+mod core;
 
 pub(crate) struct SketchModule;
 
@@ -32,7 +32,7 @@ impl SketchModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::sketch::unoptimized::sketch(
+        crate::sketch::core::sketch(
             image_buffer,
             width,
             height,

@@ -1,4 +1,5 @@
 use rand::{RngExt, SeedableRng, rngs::StdRng};
+use rayon::prelude::*;
 
 const HALF: f64 = 0.5;
 const INV_RANDOM_SCALE: f64 = 1.0 / 2048.0;
@@ -102,132 +103,148 @@ pub fn sketch(
     let src = image_buffer.to_vec();
     let (bg_r, bg_g, bg_b) = split_rgb(background_color);
 
-    for y in 0..height {
-        let pixel_y = y as f64;
-        let estimated_grid_y = trunc_to_i32((pixel_y - center_y) / pitch + half_grid_y as f64);
-        let search_y_start = (estimated_grid_y - 3).max(0);
-        let search_y_end = (estimated_grid_y + 4).min(grid_height as i32 - 1);
-        for x in 0..width {
-            let pixel_x = x as f64;
-            let pixel_index = y * width + x;
-            let src_offset = pixel_index * 4;
-            let estimated_grid_x = trunc_to_i32((pixel_x - center_x) / pitch + half_grid_x as f64);
-            let search_x_start = (estimated_grid_x - 3).max(0);
-            let search_x_end = (estimated_grid_x + 4).min(grid_width as i32 - 1);
+    image_buffer
+        .par_chunks_exact_mut(width * 4)
+        .enumerate()
+        .for_each(|(y, row)| {
+            let pixel_y = y as f64;
+            let estimated_grid_y = trunc_to_i32((pixel_y - center_y) / pitch + half_grid_y as f64);
+            let search_y_start = (estimated_grid_y - 3).max(0);
+            let search_y_end = (estimated_grid_y + 4).min(grid_height as i32 - 1);
+            for x in 0..width {
+                let pixel_x = x as f64;
+                let pixel_index = y * width + x;
+                let src_offset = pixel_index * 4;
+                let row_offset = x * 4;
+                let estimated_grid_x =
+                    trunc_to_i32((pixel_x - center_x) / pitch + half_grid_x as f64);
+                let search_x_start = (estimated_grid_x - 3).max(0);
+                let search_x_end = (estimated_grid_x + 4).min(grid_width as i32 - 1);
 
-            let mut nearest: Option<(usize, f64)> = None;
-            let mut second: Option<(usize, f64)> = None;
+                let mut nearest: Option<(usize, f64)> = None;
+                let mut second: Option<(usize, f64)> = None;
 
-            for grid_y in search_y_start..=search_y_end {
-                for grid_x in search_x_start..=search_x_end {
-                    let point_index = grid_y as usize * grid_width + grid_x as usize;
-                    let point = points[point_index];
-                    let dx = point.x - pixel_x;
-                    let dy = point.y - pixel_y;
-                    let dist_sq = dx * dx + dy * dy;
+                for grid_y in search_y_start..=search_y_end {
+                    for grid_x in search_x_start..=search_x_end {
+                        let point_index = grid_y as usize * grid_width + grid_x as usize;
+                        let point = points[point_index];
+                        let dx = point.x - pixel_x;
+                        let dy = point.y - pixel_y;
+                        let dist_sq = dx * dx + dy * dy;
 
-                    match nearest {
-                        None => nearest = Some((point_index, dist_sq)),
-                        Some((_, best_dist_sq)) if dist_sq < best_dist_sq => {
-                            second = nearest;
-                            nearest = Some((point_index, dist_sq));
-                        }
-                        _ => match second {
-                            None => second = Some((point_index, dist_sq)),
-                            Some((_, second_dist_sq)) if dist_sq < second_dist_sq => {
-                                second = Some((point_index, dist_sq));
+                        match nearest {
+                            None => nearest = Some((point_index, dist_sq)),
+                            Some((_, best_dist_sq)) if dist_sq < best_dist_sq => {
+                                second = nearest;
+                                nearest = Some((point_index, dist_sq));
                             }
-                            _ => {}
-                        },
+                            _ => match second {
+                                None => second = Some((point_index, dist_sq)),
+                                Some((_, second_dist_sq)) if dist_sq < second_dist_sq => {
+                                    second = Some((point_index, dist_sq));
+                                }
+                                _ => {}
+                            },
+                        }
                     }
                 }
-            }
 
-            let mut alpha_fixed = 0u32;
-            let mut out_rgb = [bg_r, bg_g, bg_b];
+                let mut alpha_fixed = 0u32;
+                let mut out_rgb = [bg_r, bg_g, bg_b];
 
-            if let Some((nearest_index, nearest_dist_sq)) = nearest
-                && nearest_dist_sq <= radius_sq
-            {
-                let nearest_point = points[nearest_index];
-                let mut coverage = coverage_from_distance(nearest_dist_sq, radius, solid_radius_sq);
-                let mut fixed_rgb = sample_point_rgb_fixed(
-                    &src,
-                    width,
-                    height,
-                    nearest_point,
-                    color_width,
-                    lock_color_reference,
-                );
-
-                if let Some((second_index, second_dist_sq)) = second
-                    && second_dist_sq <= radius_sq
+                if let Some((nearest_index, nearest_dist_sq)) = nearest
+                    && nearest_dist_sq <= radius_sq
                 {
-                    let second_point = points[second_index];
-                    if is_between_points(pixel_x, pixel_y, nearest_point, second_point) {
-                        let second_coverage =
-                            coverage_from_distance(second_dist_sq, radius, solid_radius_sq);
-                        let second_rgb = sample_point_rgb_fixed(
-                            &src,
-                            width,
-                            height,
-                            second_point,
-                            color_width,
-                            lock_color_reference,
+                    let nearest_point = points[nearest_index];
+                    let mut coverage =
+                        coverage_from_distance(nearest_dist_sq, radius, solid_radius_sq);
+                    let mut fixed_rgb = sample_point_rgb_fixed(
+                        &src,
+                        width,
+                        height,
+                        nearest_point,
+                        color_width,
+                        lock_color_reference,
+                    );
+
+                    if let Some((second_index, second_dist_sq)) = second
+                        && second_dist_sq <= radius_sq
+                    {
+                        let second_point = points[second_index];
+                        if is_between_points(pixel_x, pixel_y, nearest_point, second_point) {
+                            let second_coverage =
+                                coverage_from_distance(second_dist_sq, radius, solid_radius_sq);
+                            let second_rgb = sample_point_rgb_fixed(
+                                &src,
+                                width,
+                                height,
+                                second_point,
+                                color_width,
+                                lock_color_reference,
+                            );
+                            fixed_rgb =
+                                blend_fixed_rgb(fixed_rgb, second_rgb, coverage, second_coverage);
+                            coverage = coverage.max(second_coverage);
+                        }
+                    }
+
+                    if enable_3d {
+                        fixed_rgb = apply_3d_shading(
+                            fixed_rgb,
+                            nearest_dist_sq,
+                            radius,
+                            ambient,
+                            diffuse,
+                            specular,
+                            shininess,
                         );
-                        fixed_rgb =
-                            blend_fixed_rgb(fixed_rgb, second_rgb, coverage, second_coverage);
-                        coverage = coverage.max(second_coverage);
+                    }
+
+                    alpha_fixed = alpha_to_fixed(coverage);
+                    out_rgb = [
+                        fixed_to_byte(fixed_rgb[0]),
+                        fixed_to_byte(fixed_rgb[1]),
+                        fixed_to_byte(fixed_rgb[2]),
+                    ];
+                }
+
+                let dst = &mut row[row_offset..row_offset + 4];
+                match background_mode {
+                    1 => {
+                        let inv_alpha = FIXED_ALPHA_SCALE - alpha_fixed;
+                        dst[0] = blend_fixed_byte(out_rgb[2], bg_b, alpha_fixed, inv_alpha);
+                        dst[1] = blend_fixed_byte(out_rgb[1], bg_g, alpha_fixed, inv_alpha);
+                        dst[2] = blend_fixed_byte(out_rgb[0], bg_r, alpha_fixed, inv_alpha);
+                        dst[3] = src[src_offset + 3];
+                    }
+                    3 => {
+                        let inv_alpha = FIXED_ALPHA_SCALE - alpha_fixed;
+                        dst[0] =
+                            blend_fixed_byte(out_rgb[2], src[src_offset], alpha_fixed, inv_alpha);
+                        dst[1] = blend_fixed_byte(
+                            out_rgb[1],
+                            src[src_offset + 1],
+                            alpha_fixed,
+                            inv_alpha,
+                        );
+                        dst[2] = blend_fixed_byte(
+                            out_rgb[0],
+                            src[src_offset + 2],
+                            alpha_fixed,
+                            inv_alpha,
+                        );
+                        dst[3] = src[src_offset + 3];
+                    }
+                    _ => {
+                        dst[0] = out_rgb[2];
+                        dst[1] = out_rgb[1];
+                        dst[2] = out_rgb[0];
+                        dst[3] =
+                            (((src[src_offset + 3] as u64) * (alpha_fixed as u64)) >> 20) as u8;
                     }
                 }
-
-                if enable_3d {
-                    fixed_rgb = apply_3d_shading(
-                        fixed_rgb,
-                        nearest_dist_sq,
-                        radius,
-                        ambient,
-                        diffuse,
-                        specular,
-                        shininess,
-                    );
-                }
-
-                alpha_fixed = alpha_to_fixed(coverage);
-                out_rgb = [
-                    fixed_to_byte(fixed_rgb[0]),
-                    fixed_to_byte(fixed_rgb[1]),
-                    fixed_to_byte(fixed_rgb[2]),
-                ];
             }
-
-            let dst = &mut image_buffer[src_offset..src_offset + 4];
-            match background_mode {
-                1 => {
-                    let inv_alpha = FIXED_ALPHA_SCALE - alpha_fixed;
-                    dst[0] = blend_fixed_byte(out_rgb[2], bg_b, alpha_fixed, inv_alpha);
-                    dst[1] = blend_fixed_byte(out_rgb[1], bg_g, alpha_fixed, inv_alpha);
-                    dst[2] = blend_fixed_byte(out_rgb[0], bg_r, alpha_fixed, inv_alpha);
-                    dst[3] = src[src_offset + 3];
-                }
-                3 => {
-                    let inv_alpha = FIXED_ALPHA_SCALE - alpha_fixed;
-                    dst[0] = blend_fixed_byte(out_rgb[2], src[src_offset], alpha_fixed, inv_alpha);
-                    dst[1] =
-                        blend_fixed_byte(out_rgb[1], src[src_offset + 1], alpha_fixed, inv_alpha);
-                    dst[2] =
-                        blend_fixed_byte(out_rgb[0], src[src_offset + 2], alpha_fixed, inv_alpha);
-                    dst[3] = src[src_offset + 3];
-                }
-                _ => {
-                    dst[0] = out_rgb[2];
-                    dst[1] = out_rgb[1];
-                    dst[2] = out_rgb[0];
-                    dst[3] = (((src[src_offset + 3] as u64) * (alpha_fixed as u64)) >> 20) as u8;
-                }
-            }
-        }
-    }
+        });
 }
 
 fn sample_point_rgb_fixed(
