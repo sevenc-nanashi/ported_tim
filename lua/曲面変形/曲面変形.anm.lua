@@ -59,9 +59,6 @@ local track_move_direction_error = 12
 ---step=0.1
 local track_rotation_speed = 10
 
----$check:アンチエイリアス
-local antialias = 0
-
 ---$check:重心を中心にする
 local check0 = false
 
@@ -173,11 +170,10 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
         end
     end
 
-    obj.setoption("antialias", antialias)
-
+    local vertices = {}
     for i = -Nh, Nh - 1 do
         for j = 0, N - 1 do
-            obj.drawpoly(
+            vertices[#vertices + 1] = {
                 x[i][j],
                 y[i][j],
                 z[i][j],
@@ -197,9 +193,12 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
                 u[i + 1][j + 1],
                 v[i + 1][j + 1],
                 u[i][j + 1],
-                v[i][j + 1]
-            )
+                v[i][j + 1],
+            }
         end
+    end
+    if #vertices > 0 then
+        obj.drawpoly(vertices)
     end
 end
 

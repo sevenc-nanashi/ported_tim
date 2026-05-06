@@ -128,6 +128,20 @@ local tt = {}
 local AA = string.format("%s,%s,%s", track_center_x, track_center_y, track_center_z)
 local grav = string.format("%s,%s,%s", track_gravity_x, track_gravity_y, track_gravity_z)
 
+local vertices = {}
+
+local flush_vertices = function()
+    if #vertices == 0 then
+        return
+    end
+    obj.drawpoly(vertices)
+    vertices = {}
+end
+
+local push_quad = function(...)
+    vertices[#vertices + 1] = { ... }
+end
+
 obj.effect()
 
 mpi = math.pi
@@ -244,9 +258,6 @@ for y = 0, h - 1 do
 
         if (t < 0) or hh ~= 0 then
             t = 0
-            obj.setoption("antialias", 0)
-        else
-            obj.setoption("antialias", 1)
         end
 
         gg = math.sqrt(gx * gx + gy * gy)
@@ -297,7 +308,7 @@ for y = 0, h - 1 do
             qz[i] = m20 * xx + m21 * yy + m22 * zz + cz
         end
 
-        obj.drawpoly(
+        push_quad(
             px[0],
             py[0],
             pz[0],
@@ -319,7 +330,7 @@ for y = 0, h - 1 do
             pu[3],
             pv[3]
         )
-        obj.drawpoly(
+        push_quad(
             qx[0],
             qy[0],
             qz[0],
@@ -342,7 +353,7 @@ for y = 0, h - 1 do
             pv[3]
         )
         if hh == 0 and t > 0 then
-            obj.drawpoly(
+            push_quad(
                 px[0],
                 py[0],
                 pz[0],
@@ -364,7 +375,7 @@ for y = 0, h - 1 do
                 pu[0],
                 pv[0]
             )
-            obj.drawpoly(
+            push_quad(
                 px[1],
                 py[1],
                 pz[1],
@@ -386,7 +397,7 @@ for y = 0, h - 1 do
                 pu[1],
                 pv[1]
             )
-            obj.drawpoly(
+            push_quad(
                 px[2],
                 py[2],
                 pz[2],
@@ -408,7 +419,7 @@ for y = 0, h - 1 do
                 pu[2],
                 pv[2]
             )
-            obj.drawpoly(
+            push_quad(
                 px[3],
                 py[3],
                 pz[3],
@@ -435,7 +446,7 @@ for y = 0, h - 1 do
                 (y == 0 and han[(w + 1) * (h - 1) + x] == 0 and tt[(w + 1) * (h - 1) + x] > 0)
                 or (han[(w + 1) * (y - 1) + x] == 0 and tt[(w + 1) * (y - 1) + x] > 0)
             then
-                obj.drawpoly(
+                push_quad(
                     px[0],
                     py[0],
                     pz[0],
@@ -462,7 +473,7 @@ for y = 0, h - 1 do
                 (x == w - 1 and han[(w + 1) * y] == 0 and tt[(w + 1) * y] > 0)
                 or (han[(w + 1) * y + x + 1] == 0 and tt[(w + 1) * y + x + 1] > 0)
             then
-                obj.drawpoly(
+                push_quad(
                     px[1],
                     py[1],
                     pz[1],
@@ -489,7 +500,7 @@ for y = 0, h - 1 do
                 (y == h - 1 and han[x] == 0 and tt[x] > 0)
                 or (han[(w + 1) * (y + 1) + x] == 0 and tt[(w + 1) * (y + 1) + x] > 0)
             then
-                obj.drawpoly(
+                push_quad(
                     px[2],
                     py[2],
                     pz[2],
@@ -516,7 +527,7 @@ for y = 0, h - 1 do
                 (x == 0 and han[(w + 1) * y + w - 1] == 0 and tt[(w + 1) * y + w - 1] > 0)
                 or (han[(w + 1) * y + x - 1] == 0 and tt[(w + 1) * y + x - 1] > 0)
             then
-                obj.drawpoly(
+                push_quad(
                     px[3],
                     py[3],
                     pz[3],
@@ -542,3 +553,4 @@ for y = 0, h - 1 do
         end
     end
 end
+flush_vertices()

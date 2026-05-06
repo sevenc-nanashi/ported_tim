@@ -180,12 +180,12 @@ local df = -math.rad(track_rotation) + camf
 
 obj.setoption("drawtarget", "tempbuffer", obj.screen_w, obj.screen_h)
 if chk == 1 then
-    obj.setoption("antialias", 1)
     obj.setoption("blend", "alpha_add")
 else
-    obj.setoption("antialias", 0)
     obj.setoption("blend", 0)
 end
+
+local vertices = {}
 
 for i = 0, N - 1 do
     local u1 = i * dx
@@ -218,7 +218,8 @@ for i = 0, N - 1 do
             local ix3, iy3 = L * x3 / z3, L * y3 / z3
 
             if hantei(ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3, wf, hf) then
-                obj.drawpoly(ix0, iy0, 0, ix1, iy1, 0, ix2, iy2, 0, ix3, iy3, 0, u1, v1, u2, v1, u2, v2, u1, v2)
+                vertices[#vertices + 1] =
+                    { ix0, iy0, 0, ix1, iy1, 0, ix2, iy2, 0, ix3, iy3, 0, u1, v1, u2, v1, u2, v2, u1, v2 }
             end
         end
         v1 = v2
@@ -226,6 +227,9 @@ for i = 0, N - 1 do
         x0, y0, z0 = x3, y3, z3
         x1, y1, z1 = x2, y2, z2
     end
+end
+if #vertices > 0 then
+    obj.drawpoly(vertices)
 end
 obj.load("tempbuffer")
 T_skydoom_H = nil
