@@ -3,6 +3,7 @@ use std::ptr::NonNull;
 
 mod binarization;
 mod binarization_rgb;
+mod equalize;
 mod minimax;
 pub mod unoptimized;
 
@@ -393,6 +394,38 @@ impl ColorModule {
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
         crate::color::unoptimized::equalize::equalize_rgb(image_buffer, width, height)?;
         Ok(())
+    }
+
+    fn color_prepare_equalize_lut(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        lut_buffer: NonNull<u8>,
+        lut_width: usize,
+        lut_height: usize,
+        calc_method: u8,
+    ) -> anyhow::Result<Vec<f64>> {
+        let image_buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Image buffer size overflow"))?;
+        let lut_buffer_size = lut_width
+            .checked_mul(lut_height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("LUT buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts(image_buffer.as_ptr(), image_buffer_size) };
+        let lut_buffer =
+            unsafe { std::slice::from_raw_parts_mut(lut_buffer.as_ptr(), lut_buffer_size) };
+        crate::color::equalize::prepare_equalize_lut(
+            image_buffer,
+            width,
+            height,
+            lut_buffer,
+            lut_width,
+            lut_height,
+            calc_method,
+        )
     }
 
     fn color_create_histogram(
