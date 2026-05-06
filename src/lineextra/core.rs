@@ -1,8 +1,9 @@
 use aviutl2::anyhow;
+use rayon::prelude::*;
 use std::sync::{LazyLock, Mutex};
 
-pub(crate) static LINE_EXTRA_STATE: LazyLock<Mutex<crate::lineextra::unoptimized::LineExtraState>> =
-    LazyLock::new(|| Mutex::new(crate::lineextra::unoptimized::LineExtraState::new()));
+pub(crate) static LINE_EXTRA_STATE: LazyLock<Mutex<crate::lineextra::core::LineExtraState>> =
+    LazyLock::new(|| Mutex::new(crate::lineextra::core::LineExtraState::new()));
 
 pub struct LineExtraState {
     width: usize,
@@ -130,65 +131,68 @@ pub fn line_ext(
     };
 
     let mut out = vec![0u8; required];
-    for i in 0..(width * height) {
-        let p = i * 4;
-        let ob = original[p];
-        let og = original[p + 1];
-        let or_ = original[p + 2];
-        let oa = original[p + 3];
+    out.par_chunks_mut(4)
+        .zip(original[..required].par_chunks_exact(4))
+        .zip(image_buffer[..required].par_chunks_exact(4))
+        .for_each(|((dst, orig), cur)| {
+            let ob = orig[0];
+            let og = orig[1];
+            let or_ = orig[2];
+            let oa = orig[3];
 
-        let cb = image_buffer[p];
-        let cg = image_buffer[p + 1];
-        let cr = image_buffer[p + 2];
+            let cb = cur[0];
+            let cg = cur[1];
+            let cr = cur[2];
 
-        let cur_l = (cg as i32) * 0x96 + (cb as i32) * 0x1d + (cr as i32) * 0x4d;
-        let mut i_var1 = if cur_l <= 0 {
-            0xff00
-        } else {
-            let orig_l_scaled = (ob as i32) * 0x1d00 + (og as i32) * 0x9600 + (or_ as i32) * 0x4d00;
-            let mut v = (orig_l_scaled / cur_l) * 0xff;
-            if v > 0xff00 {
-                v = 0xff00;
-            }
-            v
-        };
-        if i_var1 > threshold_cmp {
-            i_var1 = 0xff00;
-        }
-        if let Some(t) = &lut {
-            i_var1 = t[((i_var1 >> 6) as usize).min(1023)];
-        }
-        let i_var5 = ((0xff00 - i_var1) >> 8).clamp(0, 0xff);
-
-        if line_only {
-            let alpha = div255_floor(i_var5 * oa as i32).clamp(0, 255) as u8;
-            out[p] = line_b;
-            out[p + 1] = line_g;
-            out[p + 2] = line_r;
-            out[p + 3] = alpha;
-        } else {
-            let den = 0xfe01 - (0xff - bg_u) * (0xff - i_var5);
-            if den < 1 {
-                out[p] = 0;
-                out[p + 1] = 0;
-                out[p + 2] = 0;
-                out[p + 3] = 0;
+            let cur_l = (cg as i32) * 0x96 + (cb as i32) * 0x1d + (cr as i32) * 0x4d;
+            let mut i_var1 = if cur_l <= 0 {
+                0xff00
             } else {
-                let i_var2 = (0xff - i_var5) * bg_u;
-                out[p] = ((i_var2 * bg_b as i32 + i_var5 * line_b as i32 * 0xff) / den)
-                    .clamp(0, 255) as u8;
-                out[p + 1] = ((i_var2 * bg_g as i32 + i_var5 * line_g as i32 * 0xff) / den)
-                    .clamp(0, 255) as u8;
-                out[p + 2] = ((i_var2 * bg_r as i32 + i_var5 * line_r as i32 * 0xff) / den)
-                    .clamp(0, 255) as u8;
-                let a1 = div255_floor(den * oa as i32);
-                out[p + 3] = div255_floor(a1).clamp(0, 255) as u8;
+                let orig_l_scaled =
+                    (ob as i32) * 0x1d00 + (og as i32) * 0x9600 + (or_ as i32) * 0x4d00;
+                let mut v = (orig_l_scaled / cur_l) * 0xff;
+                if v > 0xff00 {
+                    v = 0xff00;
+                }
+                v
+            };
+            if i_var1 > threshold_cmp {
+                i_var1 = 0xff00;
             }
-            out[p + 3] = (((out[p + 3] as f64) * orig_alpha_scale)
-                .round()
-                .clamp(0.0, 255.0)) as u8;
-        }
-    }
+            if let Some(t) = &lut {
+                i_var1 = t[((i_var1 >> 6) as usize).min(1023)];
+            }
+            let i_var5 = ((0xff00 - i_var1) >> 8).clamp(0, 0xff);
+
+            if line_only {
+                let alpha = div255_floor(i_var5 * oa as i32).clamp(0, 255) as u8;
+                dst[0] = line_b;
+                dst[1] = line_g;
+                dst[2] = line_r;
+                dst[3] = alpha;
+            } else {
+                let den = 0xfe01 - (0xff - bg_u) * (0xff - i_var5);
+                if den < 1 {
+                    dst[0] = 0;
+                    dst[1] = 0;
+                    dst[2] = 0;
+                    dst[3] = 0;
+                } else {
+                    let i_var2 = (0xff - i_var5) * bg_u;
+                    dst[0] = ((i_var2 * bg_b as i32 + i_var5 * line_b as i32 * 0xff) / den)
+                        .clamp(0, 255) as u8;
+                    dst[1] = ((i_var2 * bg_g as i32 + i_var5 * line_g as i32 * 0xff) / den)
+                        .clamp(0, 255) as u8;
+                    dst[2] = ((i_var2 * bg_r as i32 + i_var5 * line_r as i32 * 0xff) / den)
+                        .clamp(0, 255) as u8;
+                    let a1 = div255_floor(den * oa as i32);
+                    dst[3] = div255_floor(a1).clamp(0, 255) as u8;
+                }
+                dst[3] = (((dst[3] as f64) * orig_alpha_scale)
+                    .round()
+                    .clamp(0.0, 255.0)) as u8;
+            }
+        });
 
     if particle_width > 0 {
         let mut rng = LegacyRand::seeded(seed);

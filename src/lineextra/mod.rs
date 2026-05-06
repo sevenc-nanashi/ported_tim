@@ -1,7 +1,7 @@
 use aviutl2::anyhow;
 use std::ptr::NonNull;
 
-pub mod unoptimized;
+mod core;
 
 pub(crate) struct LineExtraModule;
 
@@ -19,13 +19,11 @@ impl LineExtraModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts(image_buffer.as_ptr(), buffer_size) };
-        let mut state = unoptimized::LINE_EXTRA_STATE
+        let mut state = core::LINE_EXTRA_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire line-extra state lock"))?;
         state.set_public_image(image_buffer, width, height)
     }
-
-    #[allow(clippy::too_many_arguments)]
 
     fn lineextra_line_ext(
         image_buffer: NonNull<u8>,
@@ -51,10 +49,10 @@ impl LineExtraModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let mut state = unoptimized::LINE_EXTRA_STATE
+        let mut state = core::LINE_EXTRA_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire line-extra state lock"))?;
-        crate::lineextra::unoptimized::line_ext(
+        crate::lineextra::core::line_ext(
             &mut state,
             image_buffer,
             width,
