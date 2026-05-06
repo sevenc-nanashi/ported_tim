@@ -41,7 +41,6 @@ local track_change_speed = 0
 ---step=1
 local track_seed = 0
 
-local T_Filter_Module = obj.module("tim2")
 local size = track_distortion_amount
 local per = track_period_size
 local seed = track_seed
@@ -51,13 +50,30 @@ obj.effect("領域拡張", "塗りつぶし", 1, "上", size, "下", size, "左"
 obj.copybuffer("cache:ori", "object")
 local w, h = obj.getpixel()
 
+--[[pixelshader@loop
+---$include "./shaders/loop.hlsl"
+]]
+--[[pixelshader@flat_rgb
+---$include "./shaders/flat_rgb.hlsl"
+]]
+--[[pixelshader@glass_sq
+---$include "./shaders/glass_sq.hlsl"
+]]
+--[[pixelshader@flattening
+---$include "./shaders/flattening.hlsl"
+]]
+
+local function loop_image(nx, ny)
+    obj.copybuffer("cache:loop_src", "object")
+    obj.clearbuffer("object", obj.w * nx, obj.h * ny)
+    obj.pixelshader("loop", "object", "cache:loop_src")
+end
+
 if fig == 1 then
     obj.setoption("drawtarget", "tempbuffer", w, h)
     obj.load("figure", "四角形", 0xffffff, math.max(w, h))
     obj.effect("ノイズ", "周期X", per, "周期Y", per, "type", 0, "mode", 1, "seed", seed, "変化速度", nv)
-    local userdata, w0, h0 = obj.getpixeldata("object", "bgra")
-    T_Filter_Module.filter_flat_rgb(userdata, w0, h0, 1)
-    obj.putpixeldata("object", userdata, w0, h0, "bgra")
+    obj.pixelshader("flat_rgb", "object", "object", { 1 })
     obj.setoption("blend", 5)
     obj.draw()
     obj.load("figure", "四角形", 0xffffff, math.max(w, h))
@@ -76,18 +92,14 @@ if fig == 1 then
         "変化速度",
         nv
     )
-    local userdata, w0, h0 = obj.getpixeldata("object", "bgra")
-    T_Filter_Module.filter_flat_rgb(userdata, w0, h0, 2)
-    obj.putpixeldata("object", userdata, w0, h0, "bgra")
+    obj.pixelshader("flat_rgb", "object", "object", { 2 })
     obj.setoption("blend", 5)
     obj.draw()
     obj.setoption("blend", 0)
 elseif fig == 2 then
     local siz = per * 2.5
     obj.load("figure", "四角形", 0x808080, 50)
-    local userdata, w0, h0 = obj.getpixeldata("object", "bgra")
-    T_Filter_Module.filter_glass_sq(userdata, w0, h0)
-    obj.putpixeldata("object", userdata, w0, h0, "bgra")
+    obj.pixelshader("glass_sq", "object", "object")
     obj.effect("ぼかし", "範囲", 2, "サイズ固定", 1)
     local pp = siz / 50 * 100
     obj.effect("リサイズ", "拡大率", pp)
@@ -95,7 +107,8 @@ elseif fig == 2 then
     local ny = -math.floor(-h / siz)
     nx = 2 * math.floor((nx + 1) / 2)
     ny = 2 * math.floor((ny + 1) / 2)
-    obj.effect("画像ループ", "横回数", nx, "縦回数", ny)
+    -- obj.effect("画像ループ", "横回数", nx, "縦回数", ny)
+    loop_image(nx, ny)
 else
     local siz = per * 5
     obj.setoption("drawtarget", "tempbuffer", 100, 100)
@@ -116,15 +129,13 @@ else
     local ny = -math.floor(-h / siz)
     nx = 2 * math.floor((nx + 1) / 2)
     ny = 2 * math.floor((ny + 1) / 2)
-    obj.effect("画像ループ", "横回数", nx, "縦回数", ny)
+    -- obj.effect("画像ループ", "横回数", nx, "縦回数", ny)
+    loop_image(nx, ny)
     obj.effect("ぼかし", "範囲", siz * 0.02, "サイズ固定", 1)
 end
 obj.setoption("drawtarget", "tempbuffer", w, h)
-
-local userdata, w, h = obj.getpixeldata("tempbuffer", "bgra")
-T_Filter_Module.filter_flattening(userdata, w, h, track_divide * 0.01)
-obj.putpixeldata("tempbuffer", userdata, w, h, "bgra")
 obj.draw()
+obj.pixelshader("flattening", "tempbuffer", "tempbuffer", { track_divide * 0.01 })
 
 obj.copybuffer("obj", "cache:ori")
 obj.effect(

@@ -87,13 +87,15 @@ local Bw = track_width
 local Fr = track_detail * 0.1
 local Rf = track_deform_amount
 local w2, h2 = w + Sw, h + Sh
-local T_Filter_Module = obj.module("tim2")
 
 --[[pixelshader@sharp
 ---$include "./shaders/sharp.hlsl"
 ]]
 --[[pixelshader@emboss
 ---$include "./shaders/emboss.hlsl"
+]]
+--[[pixelshader@flat_rgb
+---$include "./shaders/flat_rgb.hlsl"
 ]]
 
 if check0 then
@@ -127,16 +129,12 @@ obj.copybuffer("cache:Lat", "tempbuffer")
 
 obj.load("figure", "四角形", 0xffffff, 2 * math.max(w2, h2))
 obj.effect("ノイズ", "mode", 1, "周期X", Fr, "周期Y", Fr, "seed", seed, "変化速度", nv)
-local userdata, w0, h0 = obj.getpixeldata("object", "bgra")
-T_Filter_Module.filter_flat_rgb(userdata, w0, h0, 1)
-obj.putpixeldata("object", userdata, w0, h0, "bgra")
+obj.pixelshader("flat_rgb", "object", "object", { 1 })
 obj.setoption("blend", "none")
 obj.draw()
 obj.load("figure", "四角形", 0xffffff, 2 * math.max(w2, h2))
 obj.effect("ノイズ", "mode", 1, "周期X", Fr, "周期Y", Fr, "seed", seed + 100, "変化速度", nv)
-userdata, w0, h0 = obj.getpixeldata("object", "bgra")
-T_Filter_Module.filter_flat_rgb(userdata, w0, h0, 2)
-obj.putpixeldata("object", userdata, w0, h0, "bgra")
+obj.pixelshader("flat_rgb", "object", "object", { 2 })
 obj.setoption("blend", "overlay")
 obj.draw()
 obj.setoption("blend", "none")

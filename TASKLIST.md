@@ -146,13 +146,13 @@
 | 変形                 | バニシングポイント2.anm      | -                               | :o:      | -   | :o:              | :x:                  |
 | 変形                 | 曲面変形.anm                 | -                               | :o:      | -   | :o:              | :o:                  |
 | 加工                 | @T_Filter_Module.anm         | エンボスT                       | :o:      | :o: | :o:              | :o:                  |
-| 加工                 | @T_Filter_Module.anm         | ガラスT                         | :o:      | :o: | :o:              | :x:                  |
+| 加工                 | @T_Filter_Module.anm         | ガラスT                         | :o:      | :o: | :o:              | :o:                  |
 | 加工                 | @T_Filter_Module.anm         | グラフィックペンT               | :o:      | :o: | :o:              | :o:                  |
 | 加工                 | @T_Filter_Module.anm         | シャープT                       | :o:      | :o: | :o:              | :o:                  |
 | 加工                 | @T_Filter_Module.anm         | チョーク・木炭T                 | :o:      | :o: | :o:              | :o:                  |
 | 加工                 | @T_Filter_Module.anm         | ノート用紙T                     | :o:      | :o: | :o:              | :o:                  |
 | 加工                 | @T_Filter_Module.anm         | ブラスターT                     | :o:      | :o: | :o:              | :o:                  |
-| 加工                 | @T_Filter_Module.anm         | モザイクタイルT                 | :o:      | :o: | :o:              | :x:                  |
+| 加工                 | @T_Filter_Module.anm         | モザイクタイルT                 | :o:      | :o: | :o:              | :o:                  |
 | 加工                 | @網点分解T.anm               | 網点分解(CMY)                   | :o:      | -   | :o:              | :x:                  |
 | 加工                 | @網点分解T.anm               | 網点分解(特色)                  | :o:      | -   | :o:              | :x:                  |
 | 加工                 | 蜂の巣モザイク.anm           | -                               | :o:      | -   | :o:              | :x:                  |
