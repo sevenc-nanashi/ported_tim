@@ -79,6 +79,140 @@ fn rgb_to_bgr(color: u32) -> (u8, u8, u8) {
     (b, g, r)
 }
 
+pub fn trace_contour(
+    image_buffer: &[u8],
+    width: usize,
+    height: usize,
+    threshold: i32,
+    scan_step: i32,
+    smoothness: i32,
+) -> anyhow::Result<(usize, f64, Vec<f64>)> {
+    let required = width
+        .checked_mul(height)
+        .and_then(|v| v.checked_mul(4))
+        .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+    if image_buffer.len() < required {
+        anyhow::bail!("Input buffer too small");
+    }
+    if width == 0 || height == 0 {
+        return Ok((0, 0.0, Vec::new()));
+    }
+
+    let threshold = threshold.clamp(0, 255) as u8;
+    let scan_step = scan_step.max(1) as usize;
+    let alpha_at = |x: usize, y: usize| image_buffer[(y * width + x) * 4 + 3];
+
+    let Some((start_x, start_y)) = (0..height).step_by(scan_step).find_map(|y| {
+        (0..width)
+            .find(|&x| alpha_at(x, y) > threshold)
+            .map(|x| (x as i32, y as i32))
+    }) else {
+        return Ok((0, 0.0, Vec::new()));
+    };
+
+    const DPX: [i32; 8] = [-1, 0, 1, 1, 1, 0, -1, -1];
+    const DPY: [i32; 8] = [1, 1, 1, 0, -1, -1, -1, 0];
+    const DKY: [f64; 8] = [
+        std::f64::consts::SQRT_2,
+        1.0,
+        std::f64::consts::SQRT_2,
+        1.0,
+        std::f64::consts::SQRT_2,
+        1.0,
+        std::f64::consts::SQRT_2,
+        1.0,
+    ];
+
+    let mut xs = vec![start_x];
+    let mut ys = vec![start_y];
+    let mut lengths = vec![0.0];
+    let mut nn = 0usize;
+    let mut previous_dir = 0usize;
+    let mut first_dir = 0usize;
+    let mut last_dir = 0usize;
+    let max_steps = width.saturating_mul(height).saturating_mul(8).max(1);
+
+    for _ in 0..max_steps {
+        let mut found = false;
+        for i in 0..8 {
+            let dir = (previous_dir + 6 + i) % 8;
+            let tx = xs[nn] + DPX[dir];
+            let ty = ys[nn] + DPY[dir];
+            if tx < 0 || ty < 0 || tx >= width as i32 || ty >= height as i32 {
+                continue;
+            }
+            if alpha_at(tx as usize, ty as usize) <= threshold {
+                continue;
+            }
+
+            nn += 1;
+            xs.push(tx);
+            ys.push(ty);
+            lengths.push(DKY[dir]);
+            previous_dir = dir;
+            last_dir = dir;
+            if nn == 1 {
+                first_dir = dir;
+            }
+            found = true;
+            break;
+        }
+
+        if !found {
+            break;
+        }
+        if nn > 1 && xs[nn - 1] == xs[0] && ys[nn - 1] == ys[0] && first_dir == last_dir {
+            break;
+        }
+    }
+
+    if nn == 0 {
+        return Ok((0, 0.0, Vec::new()));
+    }
+    nn -= 1;
+    if nn == 0 {
+        return Ok((0, 0.0, Vec::new()));
+    }
+
+    let mut xs = xs.into_iter().map(f64::from).collect::<Vec<_>>();
+    let mut ys = ys.into_iter().map(f64::from).collect::<Vec<_>>();
+    let total_length = lengths[1..=nn].iter().sum::<f64>();
+
+    let smoothness = smoothness.max(0) as usize;
+    if smoothness > 0 {
+        let smooth_ring = |values: &[f64]| {
+            let ring_sum = values[1..=nn].iter().sum::<f64>();
+            let cycles = smoothness / nn;
+            let remainder = smoothness % nn;
+            let mut prefix = vec![0.0; nn * 2 + 1];
+            for i in 0..nn * 2 {
+                prefix[i + 1] = prefix[i] + values[i % nn + 1];
+            }
+            let mut out = vec![0.0; nn + 1];
+            out[0] = values[0];
+            for i in 1..=nn {
+                let start = i - 1;
+                let sum = ring_sum * cycles as f64 + prefix[start + remainder] - prefix[start];
+                out[i] = sum / smoothness as f64;
+            }
+            out
+        };
+        xs = smooth_ring(&xs);
+        ys = smooth_ring(&ys);
+    }
+
+    let mut points = Vec::with_capacity(nn * 4);
+    for i in 1..=nn {
+        let angle = (ys[i] - ys[i - 1]).atan2(xs[i] - xs[i - 1]).to_degrees();
+        points.push(xs[i]);
+        points.push(ys[i]);
+        points.push(lengths[i]);
+        points.push(angle);
+    }
+
+    Ok((nn, total_length, points))
+}
+
 fn build_lut(scale: f64) -> Option<[i32; 1024]> {
     if (scale - 1.0).abs() <= f64::EPSILON {
         return None;

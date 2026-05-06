@@ -8,6 +8,30 @@ pub(crate) struct RgLineModule;
 #[aviutl2::module::functions]
 #[allow(clippy::too_many_arguments)]
 impl RgLineModule {
+    fn rgline_trace_contour(
+        image_buffer: NonNull<u8>,
+        width: usize,
+        height: usize,
+        threshold: i32,
+        scan_step: i32,
+        smoothness: i32,
+    ) -> anyhow::Result<(usize, f64, Vec<f64>)> {
+        let buffer_size = width
+            .checked_mul(height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let image_buffer =
+            unsafe { std::slice::from_raw_parts(image_buffer.as_ptr(), buffer_size) };
+        crate::rgline::core::trace_contour(
+            image_buffer,
+            width,
+            height,
+            threshold,
+            scan_step,
+            smoothness,
+        )
+    }
+
     fn rgline_set_public_image(
         image_buffer: NonNull<u8>,
         width: usize,
