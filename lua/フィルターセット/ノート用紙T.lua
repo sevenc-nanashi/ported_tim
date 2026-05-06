@@ -34,18 +34,27 @@ local col1 = 0x0
 ---$color:ハイライト
 local col2 = 0xffffff
 
-local T_Filter_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
+local w, h = obj.getpixel()
 
 --[[pixelshader@emboss
 ---$include "./shaders/emboss.hlsl"
 ]]
+--[[pixelshader@note_binarization
+---$include "./shaders/note_binarization.hlsl"
+]]
+--[[pixelshader@note_gray_color
+---$include "./shaders/note_gray_color.hlsl"
+]]
 
-T_Filter_Module.filter_easy_binarization(userdata, w, h, track_threshold)
-obj.putpixeldata("object", userdata, w, h, "bgra")
-userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Filter_Module.filter_gray_color(userdata, w, h, 128, 128, 128, 255, 255, 255)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("note_binarization", "object", "object", { track_threshold / 255 })
+obj.pixelshader("note_gray_color", "object", "object", {
+    128 / 255,
+    128 / 255,
+    128 / 255,
+    1,
+    1,
+    1,
+})
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 obj.load("figure", "四角形", 0xffffff, math.max(w, h))
@@ -58,8 +67,13 @@ obj.draw(0, 0, 0, 1, 0.5 * (1 - track_grain * 0.01))
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
 obj.pixelshader("emboss", "object", "object", { track_relief * 0.01, direction })
-userdata, w, h = obj.getpixeldata("object", "bgra")
 local r1, g1, b1 = RGB(col1)
 local r2, g2, b2 = RGB(col2)
-T_Filter_Module.filter_gray_color(userdata, w, h, r1, g1, b1, r2, g2, b2)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("note_gray_color", "object", "object", {
+    r1 / 255,
+    g1 / 255,
+    b1 / 255,
+    r2 / 255,
+    g2 / 255,
+    b2 / 255,
+})

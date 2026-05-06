@@ -58,7 +58,7 @@ float4 emboss(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
     return center;
   }
 
-  int direction = ((int)round(constants.direction) % 8 + 8) % 8;
+  int direction = ((uint)round(constants.direction) % 8 + 8) % 8;
   float strength = clamp(constants.strength, -10.0, 10.0);
   float3 conv = 0.0;
   int index = 0;
