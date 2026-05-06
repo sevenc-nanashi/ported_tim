@@ -440,56 +440,6 @@ impl ColorModule {
         Ok(())
     }
 
-    fn color_monochromatic(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        track_r: u8,
-        track_g: u8,
-        track_b: u8,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::monochromatic::monochromatic(
-            image_buffer,
-            width,
-            height,
-            track_r,
-            track_g,
-            track_b,
-        )?;
-        Ok(())
-    }
-
-    fn color_monochromatic2(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        u: f64,
-        v: f64,
-        gamma: f64,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::monochromatic2::monochromatic2(
-            image_buffer,
-            width,
-            height,
-            u,
-            v,
-            gamma,
-        )?;
-        Ok(())
-    }
-
     fn color_standard_color(
         image_buffer: NonNull<u8>,
         width: usize,

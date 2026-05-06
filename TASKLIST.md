@@ -37,8 +37,8 @@
 | 色調整               | @T_Color_Module.anm          | ポスタリゼーション              | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | メタル化                        | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | メディアンカット減色            | :o:      | :o: | :o:              | :o:                  |
-| 色調整               | @T_Color_Module.anm          | 単色化(T)                       | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | 単色化(T2)                      | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | 単色化(T)                       | :o:      | :o: | :o:              | :o:                  |
+| 色調整               | @T_Color_Module.anm          | 単色化(T2)                      | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 基準色変更                      | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 拡張コントラスト                | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 最大/最小                       | :o:      | :o: | :o:              | :o:                  |
