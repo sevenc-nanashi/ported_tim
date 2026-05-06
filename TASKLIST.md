@@ -44,10 +44,10 @@
 | 色調整               | @T_Color_Module.anm          | 最大/最小                       | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 減色パレット                    | :o:      | -   | :o:              | :x:                  |
 | 色調整               | @T_Color_Module.anm          | 特定色域変換T                   | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | 画像トーンカーブ                | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | 画像トーンカーブ                | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 白黒                            | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 簡易コロラマ                    | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | 簡易トーンカーブ                | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | 簡易トーンカーブ                | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 簡易減色                        | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 粒状化                          | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | 色抜き                          | :o:      | :o: | :o:              | :o:                  |
@@ -228,7 +228,7 @@
 | カスタムオブジェクト | 稲妻.obj                     | -                               | :o:      | -   | :o:              | :x:                  |
 | カスタムオブジェクト | マルチラインT.obj            | -                               | :o:      | -   | :o:              | :x:                  |
 | カスタムオブジェクト | もじゃもじゃT.obj            | -                               | :o:      | -   | :o:              | :x:                  |
-| 色調整               | 簡易トーンカーブ.obj         | -                               | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | 簡易トーンカーブ.obj         | -                               | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | 簡易ヒストグラム.obj         | -                               | :o:      | :o: | :o:              | :x:                  |
 | 色調整               | 色相環.obj                   | -                               | :o:      | -   | :o:              | :x:                  |
 | 装飾                 | ぐにゃ枠T.obj                | -                               | :o:      | -   | :o:              | :x:                  |

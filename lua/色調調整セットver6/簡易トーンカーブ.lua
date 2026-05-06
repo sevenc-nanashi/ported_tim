@@ -18,9 +18,16 @@ end
 if T_ToneCurve_B == nil then
     T_Color_Module.color_set_tone_curve(2, 0, 1, 0, 0)
 end
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_sim_tone_curve(userdata, w, h, check0)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+
+--[[pixelshader@tone_curve
+---$include "./shaders/tone_curve.hlsl"
+]]
+
+obj.clearbuffer("cache:tone_curve_lut", 256, 1)
+local lut, lut_w, lut_h = obj.getpixeldata("cache:tone_curve_lut", "bgra")
+T_Color_Module.color_prepare_tone_curve_lut(lut, lut_w, lut_h, check0)
+obj.putpixeldata("cache:tone_curve_lut", lut, lut_w, lut_h, "bgra")
+obj.pixelshader("tone_curve", "object", { "object", "cache:tone_curve_lut" })
 if DCL2 == 1 then
     T_ToneCurve_R = nil
     T_ToneCurve_G = nil

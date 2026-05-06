@@ -172,6 +172,30 @@ impl ColorModule {
         Ok(())
     }
 
+    fn color_prepare_tone_curve_lut(
+        lut_buffer: NonNull<u8>,
+        lut_width: usize,
+        lut_height: usize,
+        copy_red_to_green_blue: bool,
+    ) -> anyhow::Result<()> {
+        let buffer_size = lut_width
+            .checked_mul(lut_height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
+        let lut_buffer =
+            unsafe { std::slice::from_raw_parts_mut(lut_buffer.as_ptr(), buffer_size) };
+        let mut state = unoptimized::TONE_CURVE_STATE
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
+        state.prepare_tone_curve_lut_impl(
+            lut_buffer,
+            lut_width,
+            lut_height,
+            copy_red_to_green_blue,
+        )?;
+        Ok(())
+    }
+
     fn color_image_tone_curve(
         image_buffer: NonNull<u8>,
         width: usize,

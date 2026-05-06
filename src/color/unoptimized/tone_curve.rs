@@ -1,4 +1,5 @@
 use anyhow::{Result, bail};
+use rayon::prelude::*;
 
 const TONE_CURVE_SIZE: usize = 256;
 
@@ -211,16 +212,67 @@ impl ToneCurveState {
             }
         }
 
-        for px in img.chunks_exact_mut(4) {
+        let r_curve = self.r_curve;
+        let g_curve = self.g_curve;
+        let b_curve = self.b_curve;
+
+        img.par_chunks_exact_mut(4).for_each(|px| {
             let b = px[0] as usize;
             let g = px[1] as usize;
             let r = px[2] as usize;
             let a = px[3];
 
-            px[0] = self.b_curve[b];
-            px[1] = self.g_curve[g];
-            px[2] = self.r_curve[r];
+            px[0] = b_curve[b];
+            px[1] = g_curve[g];
+            px[2] = r_curve[r];
             px[3] = a;
+        });
+
+        Ok(())
+    }
+
+    pub fn prepare_tone_curve_lut_impl(
+        &mut self,
+        lut: &mut [u8],
+        lut_width: usize,
+        lut_height: usize,
+        unify_red_curve_to_all: bool,
+    ) -> Result<()> {
+        if lut_width < TONE_CURVE_SIZE || lut_height == 0 {
+            bail!(
+                "tone curve lut buffer is too small: got {}x{}, expected at least {}x1",
+                lut_width,
+                lut_height,
+                TONE_CURVE_SIZE
+            );
+        }
+        let required = lut_width
+            .checked_mul(lut_height)
+            .and_then(|v| v.checked_mul(4))
+            .ok_or_else(|| anyhow::anyhow!("tone curve lut buffer size overflow"))?;
+        if lut.len() < required {
+            bail!(
+                "tone curve lut buffer length mismatch: got {}, expected at least {}",
+                lut.len(),
+                required
+            );
+        }
+
+        if unify_red_curve_to_all {
+            for i in 0..TONE_CURVE_SIZE {
+                let v = self.r_curve[i];
+                self.g_curve[i] = v;
+                self.b_curve[i] = v;
+            }
+        }
+
+        lut.fill(0);
+        for i in 0..TONE_CURVE_SIZE {
+            let offset = i * 4;
+            lut[offset] = self.b_curve[i];
+            lut[offset + 1] = self.g_curve[i];
+            lut[offset + 2] = self.r_curve[i];
+            lut[offset + 3] = 255;
         }
 
         Ok(())
@@ -278,36 +330,29 @@ impl ToneCurveState {
             return Ok(());
         }
 
-        for x in 0..width {
-            let sample = curve[x] as f64;
-            let y_f = sample * (height as f64) / 255.0;
-            let y_i = (y_f as i32).clamp(0, height_i32);
+        let y_limits = curve
+            .iter()
+            .take(width)
+            .map(|&sample| {
+                let y_f = f64::from(sample) * (height as f64) / 255.0;
+                (y_f as i32).clamp(0, height_i32)
+            })
+            .collect::<Vec<_>>();
 
-            for step in 0..=y_i {
-                let yy = height_i32 - 1 - step;
-                if yy < 0 {
-                    break;
+        img.par_chunks_exact_mut(width * 4)
+            .enumerate()
+            .for_each(|(y, row)| {
+                let step_from_bottom = height_i32 - 1 - y as i32;
+                for x in 0..width {
+                    let color = if step_from_bottom <= y_limits[x] {
+                        fg_argb
+                    } else {
+                        bg_argb
+                    };
+                    let idx = x * 4;
+                    write_bgra_u32(&mut row[idx..idx + 4], color);
                 }
-                // let idx = img.pixel_index(x, yy as usize);
-                let idx = (yy as usize) * width * 4 + x * 4;
-                write_bgra_u32(&mut img[idx..idx + 4], fg_argb);
-            }
-
-            if y_i + 1 < height_i32 {
-                let start = y_i + 1;
-                let remain = height_i32 - start;
-                for off in 0..remain {
-                    let yy = height_i32 - 1 - (start + off);
-                    if yy < 0 {
-                        break;
-                    }
-                    // let idx = img.pixel_index(x, yy as usize);
-                    // write_bgra_u32(&mut img.data[idx..idx + 4], bg_argb);
-                    let idx = (yy as usize) * width * 4 + x * 4;
-                    write_bgra_u32(&mut img[idx..idx + 4], bg_argb);
-                }
-            }
-        }
+            });
 
         Ok(())
     }
