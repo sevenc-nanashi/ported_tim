@@ -12,7 +12,6 @@ pub mod grainy;
 pub mod histogram;
 pub mod monochromatic;
 pub mod monochromatic2;
-pub mod posterize;
 pub mod reduction;
 pub mod standard_color;
 pub mod tone_curve;

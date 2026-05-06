@@ -30,10 +30,12 @@ local check0 = false
 ---$check:誤差拡散
 local ED = false
 
+--[[pixelshader@posterize
+---$include "./shaders/posterize.hlsl"
+]]
+
 local sz = math.max(1, track_size) --追加のため
 local w0, h0
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
 local r, g, b
 if check0 then
     r = track_r_count
@@ -45,9 +47,19 @@ if sz > 1 then
     w0, h0 = obj.getpixel()
     obj.effect("リサイズ", "拡大率", 100 / sz)
 end
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_posterize(userdata, w, h, r, g, b, ED)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+if ED then
+    -- require("T_Color_Module")
+    local T_Color_Module = obj.module("tim2")
+    local userdata, w, h = obj.getpixeldata("object", "bgra")
+    T_Color_Module.color_posterize_error_diffusion(userdata, w, h, r, g, b)
+    obj.putpixeldata("object", userdata, w, h, "bgra")
+else
+    obj.pixelshader("posterize", "object", "object", {
+        r,
+        g,
+        b,
+    })
+end
 if sz > 1 then
     obj.effect("リサイズ", "X", w0, "Y", h0, "補間なし", 1, "ドット数でサイズ指定", 1)
 end

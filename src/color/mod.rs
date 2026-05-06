@@ -6,6 +6,7 @@ mod binarization;
 mod binarization_rgb;
 mod equalize;
 mod minimax;
+mod posterize;
 pub mod unoptimized;
 
 use std::sync::{LazyLock, Mutex};
@@ -582,14 +583,13 @@ impl ColorModule {
         Ok(())
     }
 
-    fn color_posterize(
+    fn color_posterize_error_diffusion(
         image_buffer: NonNull<u8>,
         width: usize,
         height: usize,
         r_count: usize,
         g_count: usize,
         b_count: usize,
-        error_diffusion: bool,
     ) -> anyhow::Result<()> {
         let buffer_size = width
             .checked_mul(height)
@@ -597,14 +597,13 @@ impl ColorModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::posterize::posterize(
+        crate::color::posterize::posterize_error_diffusion(
             image_buffer,
             width,
             height,
             r_count,
             g_count,
             b_count,
-            error_diffusion,
         )?;
         Ok(())
     }
