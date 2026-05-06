@@ -7,12 +7,16 @@ mod binarization_rgb;
 mod equalize;
 mod minimax;
 mod posterize;
+mod reduction;
+mod tone_curve;
 pub mod unoptimized;
 
 use std::sync::{LazyLock, Mutex};
 
 pub(crate) static MINIMAX_CACHE: LazyLock<Mutex<minimax::MinimaxCache>> =
     LazyLock::new(|| Mutex::new(minimax::MinimaxCache::default()));
+pub(crate) static TONE_CURVE_STATE: LazyLock<Mutex<tone_curve::ToneCurveState>> =
+    LazyLock::new(|| Mutex::new(tone_curve::ToneCurveState::default()));
 
 pub(crate) struct ColorModule;
 
@@ -137,7 +141,7 @@ impl ColorModule {
         arg8: f64,
         arg9: f64,
     ) -> anyhow::Result<()> {
-        let mut state = unoptimized::TONE_CURVE_STATE
+        let mut state = TONE_CURVE_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
         state.set_tone_curve_impl(
@@ -165,7 +169,7 @@ impl ColorModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let mut state = unoptimized::TONE_CURVE_STATE
+        let mut state = TONE_CURVE_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
         state.sim_tone_curve_impl(image_buffer, copy_red_to_green_blue)?;
@@ -184,7 +188,7 @@ impl ColorModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let lut_buffer =
             unsafe { std::slice::from_raw_parts_mut(lut_buffer.as_ptr(), buffer_size) };
-        let mut state = unoptimized::TONE_CURVE_STATE
+        let mut state = TONE_CURVE_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
         state.prepare_tone_curve_lut_impl(
@@ -213,7 +217,7 @@ impl ColorModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let mut state = unoptimized::TONE_CURVE_STATE
+        let mut state = TONE_CURVE_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
         state.image_tone_curve_impl(
@@ -243,7 +247,7 @@ impl ColorModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let state = unoptimized::TONE_CURVE_STATE
+        let state = TONE_CURVE_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire tone curve state lock"))?;
         state.draw_tone_curve_impl(
@@ -275,7 +279,7 @@ impl ColorModule {
             .into_iter()
             .map(|c| c as u32)
             .collect::<Vec<u32>>();
-        crate::color::unoptimized::reduction::mcut_reduction(
+        crate::color::reduction::mcut_reduction(
             image_buffer,
             width,
             height,
@@ -302,7 +306,7 @@ impl ColorModule {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        let colors = crate::color::unoptimized::reduction::sample_grid_colors(
+        let colors = crate::color::reduction::sample_grid_colors(
             image_buffer,
             width,
             height,
@@ -327,7 +331,7 @@ impl ColorModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::reduction::disp_reduction(image_buffer, width, height, &colors)?;
+        crate::color::reduction::disp_reduction(image_buffer, width, height, &colors)?;
         Ok(())
     }
 
