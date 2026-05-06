@@ -37,19 +37,23 @@ local col2 = 0xff0000
 local pS = 100
 
 local pS2 = pS or 100
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_change_to_color(
-    userdata,
-    w,
-    h,
-    col1,
-    col2,
+local src_r, src_g, src_b = RGB(col1)
+local dst_r, dst_g, dst_b = RGB(col2)
+
+--[[pixelshader@change_to_color
+---$include "./shaders/change_to_color.hlsl"
+]]
+
+obj.pixelshader("change_to_color", "object", "object", {
+    src_r,
+    src_g,
+    src_b,
+    dst_r,
+    dst_g,
+    dst_b,
     track_hue_range,
     track_saturation_range,
     pS2 * 0.01,
     track_luminance_adjust * 0.01,
-    track_boundary_adjust
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+    track_boundary_adjust,
+})
