@@ -467,50 +467,6 @@ impl ColorModule {
         Ok(())
     }
 
-    fn color_save_g_image(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let mut state = unoptimized::SHADOW_HIGHLIGHT_STATE
-            .lock()
-            .map_err(|_| anyhow::anyhow!("Failed to acquire shadow/highlight state lock"))?;
-        state.save_g_image(image_buffer, width, height)?;
-        Ok(())
-    }
-
-    fn color_shadow_highlight(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        black_crush_adjust: f64,
-        white_clip_adjust: f64,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let mut state = unoptimized::SHADOW_HIGHLIGHT_STATE
-            .lock()
-            .map_err(|_| anyhow::anyhow!("Failed to acquire shadow/highlight state lock"))?;
-        state.shadow_highlight_in_place(
-            image_buffer,
-            width,
-            height,
-            black_crush_adjust,
-            white_clip_adjust,
-        )?;
-        Ok(())
-    }
-
     fn color_monochromatic(
         image_buffer: NonNull<u8>,
         width: usize,

@@ -18,11 +18,13 @@ local track_white_clip_adjust = 100
 ---step=1
 local track_range = 10
 
--- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_save_g_image(userdata, w, h)
+--[[pixelshader@shadow_highlight
+---$include "./shaders/shadow_highlight.hlsl"
+]]
+
+obj.copybuffer("cache:shadow_highlight_original", "object")
 obj.effect("ぼかし", "範囲", track_range, "サイズ固定", 1)
-userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_shadow_highlight(userdata, w, h, -track_black_crush_adjust / 100, track_white_clip_adjust / 100)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.pixelshader("shadow_highlight", "object", { "cache:shadow_highlight_original", "object" }, {
+    -track_black_crush_adjust / 100,
+    track_white_clip_adjust / 100,
+})
