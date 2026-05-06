@@ -8,9 +8,6 @@ pub(crate) static SHADOW_HIGHLIGHT_STATE: LazyLock<
 > = LazyLock::new(|| {
     Mutex::new(crate::color::unoptimized::shadow_highlight::ShadowHighlightState::new())
 });
-pub(crate) static MINIMAX_CACHE: LazyLock<Mutex<crate::color::unoptimized::minimax::MinimaxCache>> =
-    LazyLock::new(|| Mutex::new(crate::color::unoptimized::minimax::MinimaxCache::default()));
-
 pub mod bias_deletion;
 pub mod change_to_color;
 pub mod colorama;
@@ -19,7 +16,6 @@ pub mod extended_contrast;
 pub mod gamma_correction;
 pub mod grainy;
 pub mod histogram;
-pub mod minimax;
 pub mod monochromatic;
 pub mod monochromatic2;
 pub mod posterize;

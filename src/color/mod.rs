@@ -3,7 +3,13 @@ use std::ptr::NonNull;
 
 mod binarization;
 mod binarization_rgb;
+mod minimax;
 pub mod unoptimized;
+
+use std::sync::{LazyLock, Mutex};
+
+pub(crate) static MINIMAX_CACHE: LazyLock<Mutex<minimax::MinimaxCache>> =
+    LazyLock::new(|| Mutex::new(minimax::MinimaxCache::default()));
 
 pub(crate) struct ColorModule;
 
@@ -664,8 +670,6 @@ impl ColorModule {
         symmetric: bool,
         save_color: bool,
         fig: u8, // caller comment says [0..4]
-        reserved0: f64,
-        reserved1: f64,
     ) -> anyhow::Result<()> {
         let buffer_size = width
             .checked_mul(height)
@@ -673,15 +677,15 @@ impl ColorModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let mut cache = unoptimized::MINIMAX_CACHE
+        let mut cache = MINIMAX_CACHE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire minimax cache lock"))?;
-        crate::color::unoptimized::minimax::minimax_check(
+        crate::color::minimax::minimax_check(
             &mut cache,
             image_buffer,
             width,
             height,
-            crate::color::unoptimized::minimax::MinimaxCheckParams {
+            crate::color::minimax::MinimaxCheckParams {
                 max_min,
                 channel,
                 range,
@@ -692,8 +696,6 @@ impl ColorModule {
                 symmetric,
                 save_color,
                 fig,
-                reserved0,
-                reserved1,
             },
         )?;
         Ok(())
@@ -721,11 +723,11 @@ impl ColorModule {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        crate::color::unoptimized::minimax::minimax_impl(
+        crate::color::minimax::minimax_impl(
             image_buffer,
             width,
             height,
-            crate::color::unoptimized::minimax::MinimaxParams {
+            crate::color::minimax::MinimaxParams {
                 max_min,
                 range,
                 channel,
@@ -759,11 +761,11 @@ impl ColorModule {
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
 
-        crate::color::unoptimized::minimax::minimax_rot(
+        crate::color::minimax::minimax_rot(
             image_buffer,
             width,
             height,
-            crate::color::unoptimized::minimax::MinimaxRotParams {
+            crate::color::minimax::MinimaxRotParams {
                 original_width,
                 original_height,
                 angle_rad,
@@ -786,10 +788,10 @@ impl ColorModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let mut cache = unoptimized::MINIMAX_CACHE
+        let mut cache = MINIMAX_CACHE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire minimax cache lock"))?;
-        crate::color::unoptimized::minimax::minimax_save(&mut cache, image_buffer, width, height)?;
+        crate::color::minimax::minimax_save(&mut cache, image_buffer, width, height)?;
         Ok(())
     }
 }

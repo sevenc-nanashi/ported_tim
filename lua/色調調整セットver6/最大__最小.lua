@@ -92,9 +92,7 @@ if check0 then
         asp2,
         Sym2,
         svC2,
-        fig2,
-        0,
-        0
+        fig2
     )
     if ckr == 1 then
         obj.putpixeldata("object", userdata, w, h, "bgra")

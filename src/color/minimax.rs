@@ -1,17 +1,15 @@
+//! Optimized maximum/minimum color filter implementation.
+
 use anyhow::{Result, anyhow, bail};
+use rayon::prelude::*;
 
 #[derive(Debug, Clone, Default)]
 pub struct MinimaxCache {
-    /// dword_1002A8F8
     cached_width: usize,
-    /// dword_1002A8FC
     cached_height: usize,
-    /// dword_1002A884
     cached_input: Option<Vec<u32>>,
-    /// dbl_1002A888
     cached_output: Option<Vec<u32>>,
-    /// dbl_1002A890
-    cached_params: Option<[f64; 12]>,
+    cached_params: Option<[f64; 10]>,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -26,12 +24,10 @@ pub struct MinimaxCheckParams {
     pub symmetric: bool,
     pub save_color: bool,
     pub fig: u8, // caller comment says [0..4]
-    pub reserved0: f64,
-    pub reserved1: f64,
 }
 
 impl MinimaxCheckParams {
-    fn as_f64_array(self) -> [f64; 12] {
+    fn as_f64_array(self) -> [f64; 10] {
         [
             self.max_min as f64,
             self.channel as f64,
@@ -43,8 +39,6 @@ impl MinimaxCheckParams {
             self.symmetric as u8 as f64,
             self.save_color as u8 as f64,
             self.fig as f64,
-            self.reserved0,
-            self.reserved1,
         ]
     }
 }
@@ -308,11 +302,11 @@ fn channel_mask(channel: u8) -> u32 {
 fn extract_alpha_plane(userdata: &[u8], width: usize, height: usize) -> Result<Vec<u32>> {
     validate_bgra(userdata, width, height)?;
     let n = pixel_count(width, height)?;
-    let mut out = vec![0u32; n];
-    for i in 0..n {
-        out[i] = alpha_of(load_px(userdata, i)) as u32;
-    }
-    Ok(out)
+    Ok(userdata
+        .par_chunks_exact(4)
+        .take(n)
+        .map(|px| px[3] as u32)
+        .collect())
 }
 
 fn extract_color_plane(
@@ -323,19 +317,21 @@ fn extract_color_plane(
 ) -> Result<Vec<u32>> {
     validate_bgra(userdata, width, height)?;
     let n = pixel_count(width, height)?;
-    let mut out = vec![0u32; n];
-    for i in 0..n {
-        let px = load_px(userdata, i);
-        let a = alpha_of(px);
-        if a == 0 {
-            out[i] = 0;
-        } else if max_min == 1 {
-            out[i] = rgb_of(px);
-        } else {
-            out[i] = 0x00FF_FFFF - rgb_of(px);
-        }
-    }
-    Ok(out)
+    Ok(userdata
+        .par_chunks_exact(4)
+        .take(n)
+        .map(|chunk| {
+            let px = u32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]);
+            let a = alpha_of(px);
+            if a == 0 {
+                0
+            } else if max_min == 1 {
+                rgb_of(px)
+            } else {
+                0x00FF_FFFF - rgb_of(px)
+            }
+        })
+        .collect())
 }
 
 fn write_planes_back(
@@ -351,15 +347,19 @@ fn write_planes_back(
         bail!("plane length mismatch");
     }
 
-    for i in 0..n {
-        let rgb = if max_min == 1 {
-            color_plane[i] & 0x00FF_FFFF
-        } else {
-            0x00FF_FFFF - (color_plane[i] & 0x00FF_FFFF)
-        };
-        let a = (alpha_plane[i] & 0xFF) as u8;
-        store_px(userdata, i, with_alpha(rgb, a));
-    }
+    userdata
+        .par_chunks_exact_mut(4)
+        .enumerate()
+        .take(n)
+        .for_each(|(i, chunk)| {
+            let rgb = if max_min == 1 {
+                color_plane[i] & 0x00FF_FFFF
+            } else {
+                0x00FF_FFFF - (color_plane[i] & 0x00FF_FFFF)
+            };
+            let a = (alpha_plane[i] & 0xFF) as u8;
+            chunk.copy_from_slice(&with_alpha(rgb, a).to_le_bytes());
+        });
 
     Ok(())
 }
@@ -367,25 +367,32 @@ fn write_planes_back(
 fn invert_rgb_buffer_in_place(userdata: &mut [u8], width: usize, height: usize) -> Result<()> {
     validate_bgra(userdata, width, height)?;
     let n = pixel_count(width, height)?;
-    for i in 0..n {
-        let px = load_px(userdata, i);
-        store_px(userdata, i, invert_rgb_preserve_alpha(px));
-    }
+    userdata
+        .par_chunks_exact_mut(4)
+        .enumerate()
+        .take(n)
+        .for_each(|(_, chunk)| {
+            let px = u32::from_le_bytes([chunk[0], chunk[1], chunk[2], chunk[3]]);
+            chunk.copy_from_slice(&invert_rgb_preserve_alpha(px).to_le_bytes());
+        });
     Ok(())
 }
 
 fn alpha_to_rgb_replicated(userdata: &[u8], width: usize, height: usize) -> Result<Vec<u32>> {
     let n = pixel_count(width, height)?;
-    let mut out = vec![0u32; n];
-    for i in 0..n {
-        let a = alpha_of(load_px(userdata, i)) as u32;
-        out[i] = a | (a << 8) | (a << 16);
-    }
+    let out = userdata
+        .par_chunks_exact(4)
+        .take(n)
+        .map(|px| {
+            let a = px[3] as u32;
+            a | (a << 8) | (a << 16)
+        })
+        .collect();
     Ok(out)
 }
 
 fn alpha_rgb_to_alpha_plane(alpha_rgb: &[u32]) -> Vec<u32> {
-    alpha_rgb.iter().map(|&v| v & 0xFF).collect()
+    alpha_rgb.par_iter().map(|&v| v & 0xFF).collect()
 }
 
 fn line_max_all_rgb(
@@ -402,7 +409,7 @@ fn line_max_all_rgb(
     let mut dst = vec![0u32; width * height];
 
     if vertical {
-        for y in 0..height {
+        dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
             let y0 = y.saturating_sub(radius);
             let y1 = (y + radius).min(height - 1);
             for x in 0..width {
@@ -410,11 +417,11 @@ fn line_max_all_rgb(
                 for yy in y0..=y1 {
                     acc = max_rgb(acc, src[yy * width + x]);
                 }
-                dst[y * width + x] = acc;
+                row[x] = acc;
             }
-        }
+        });
     } else {
-        for y in 0..height {
+        dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
             for x in 0..width {
                 let x0 = x.saturating_sub(radius);
                 let x1 = (x + radius).min(width - 1);
@@ -422,9 +429,9 @@ fn line_max_all_rgb(
                 for xx in x0..=x1 {
                     acc = max_rgb(acc, src[y * width + xx]);
                 }
-                dst[y * width + x] = acc;
+                row[x] = acc;
             }
-        }
+        });
     }
 
     dst
@@ -445,7 +452,7 @@ fn line_max_masked_rgb(
     let mut dst = src.to_vec();
 
     if vertical {
-        for y in 0..height {
+        dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
             let y0 = y.saturating_sub(radius);
             let y1 = (y + radius).min(height - 1);
             for x in 0..width {
@@ -454,11 +461,11 @@ fn line_max_masked_rgb(
                     acc = max_rgb(acc, src[yy * width + x] & mask);
                 }
                 let i = y * width + x;
-                dst[i] = (dst[i] & !mask) | (acc & mask);
+                row[x] = (src[i] & !mask) | (acc & mask);
             }
-        }
+        });
     } else {
-        for y in 0..height {
+        dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
             for x in 0..width {
                 let x0 = x.saturating_sub(radius);
                 let x1 = (x + radius).min(width - 1);
@@ -467,9 +474,9 @@ fn line_max_masked_rgb(
                     acc = max_rgb(acc, src[y * width + xx] & mask);
                 }
                 let i = y * width + x;
-                dst[i] = (dst[i] & !mask) | (acc & mask);
+                row[x] = (src[i] & !mask) | (acc & mask);
             }
-        }
+        });
     }
 
     dst
@@ -485,7 +492,7 @@ fn even_size_adjust_rgb(
 ) -> Vec<u32> {
     let mut dst = src.to_vec();
 
-    for y in 0..height {
+    dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
         for x in 0..width {
             let cur = src[y * width + x];
 
@@ -530,9 +537,9 @@ fn even_size_adjust_rgb(
                 | (((max_g + (cur & 0x0000_FF00)) & 0x0001_FE00) >> 1)
                 | (((max_r + (cur & 0x00FF_0000)) & 0x01FE_0000) >> 1);
 
-            dst[y * width + x] = out;
+            row[x] = out;
         }
-    }
+    });
 
     dst
 }
@@ -595,7 +602,7 @@ fn line_max_metric(
     let radius = (size - 1) / 2;
     let mut dst = vec![0u8; width * height];
     if vertical {
-        for y in 0..height {
+        dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
             let y0 = y.saturating_sub(radius);
             let y1 = (y + radius).min(height - 1);
             for x in 0..width {
@@ -603,11 +610,11 @@ fn line_max_metric(
                 for yy in y0..=y1 {
                     acc = acc.max(src[yy * width + x]);
                 }
-                dst[y * width + x] = acc;
+                row[x] = acc;
             }
-        }
+        });
     } else {
-        for y in 0..height {
+        dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
             for x in 0..width {
                 let x0 = x.saturating_sub(radius);
                 let x1 = (x + radius).min(width - 1);
@@ -615,9 +622,9 @@ fn line_max_metric(
                 for xx in x0..=x1 {
                     acc = acc.max(src[y * width + xx]);
                 }
-                dst[y * width + x] = acc;
+                row[x] = acc;
             }
-        }
+        });
     }
     dst
 }
@@ -650,7 +657,7 @@ fn shaped_max_rgb(
     let aspect = aspect_ratio.abs().min(1.0).max(0.01);
     let r = radius as i32;
     let mut dst = src.to_vec();
-    for y in 0..height {
+    dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
         for x in 0..width {
             let mut acc = if channel == 1 {
                 0u32
@@ -673,9 +680,9 @@ fn shaped_max_rgb(
                     };
                 }
             }
-            dst[y * width + x] = acc;
+            row[x] = acc;
         }
-    }
+    });
     dst
 }
 
@@ -693,7 +700,7 @@ fn shaped_max_metric(
     let aspect = aspect_ratio.abs().min(1.0).max(0.01);
     let r = radius as i32;
     let mut dst = vec![0u8; width * height];
-    for y in 0..height {
+    dst.par_chunks_mut(width).enumerate().for_each(|(y, row)| {
         for x in 0..width {
             let mut acc = 0u8;
             for oy in -r..=r {
@@ -706,9 +713,9 @@ fn shaped_max_metric(
                     acc = acc.max(src[ny * width + nx]);
                 }
             }
-            dst[y * width + x] = acc;
+            row[x] = acc;
         }
-    }
+    });
     dst
 }
 
@@ -784,7 +791,7 @@ pub fn minimax_impl(
 
         if params.save_color {
             let mut metric: Vec<u8> = src_color_plane
-                .iter()
+                .par_iter()
                 .map(|&px| metric_for_channel(px, params.channel))
                 .collect();
             if params.horizontal {
@@ -793,10 +800,13 @@ pub fn minimax_impl(
             if params.vertical {
                 metric = line_max_metric(&metric, width, height, vertical_size, true);
             }
-            for i in 0..metric.len() {
-                color_plane[i] =
-                    apply_metric_preserve_color(src_color_plane[i], params.channel, metric[i]);
-            }
+            color_plane
+                .par_iter_mut()
+                .enumerate()
+                .for_each(|(i, color)| {
+                    *color =
+                        apply_metric_preserve_color(src_color_plane[i], params.channel, metric[i]);
+                });
         } else {
             if params.horizontal {
                 if params.channel == 1 {
@@ -848,7 +858,7 @@ pub fn minimax_impl(
         }
 
         if params.alpha_expand {
-            let alpha_metric: Vec<u8> = alpha_plane.iter().map(|&a| (a & 0xFF) as u8).collect();
+            let alpha_metric: Vec<u8> = alpha_plane.par_iter().map(|&a| (a & 0xFF) as u8).collect();
             let alpha_max = shaped_max_metric(
                 &alpha_metric,
                 width,
@@ -857,12 +867,12 @@ pub fn minimax_impl(
                 params.fig,
                 params.aspect_ratio,
             );
-            alpha_plane = alpha_max.into_iter().map(|a| a as u32).collect();
+            alpha_plane = alpha_max.into_par_iter().map(|a| a as u32).collect();
         }
 
         if params.save_color {
             let metric: Vec<u8> = src_color_plane
-                .iter()
+                .par_iter()
                 .map(|&px| metric_for_channel(px, params.channel))
                 .collect();
             let metric = shaped_max_metric(
@@ -873,10 +883,13 @@ pub fn minimax_impl(
                 params.fig,
                 params.aspect_ratio,
             );
-            for i in 0..metric.len() {
-                color_plane[i] =
-                    apply_metric_preserve_color(src_color_plane[i], params.channel, metric[i]);
-            }
+            color_plane
+                .par_iter_mut()
+                .enumerate()
+                .for_each(|(i, color)| {
+                    *color =
+                        apply_metric_preserve_color(src_color_plane[i], params.channel, metric[i]);
+                });
         } else {
             color_plane = shaped_max_rgb(
                 &src_color_plane,
