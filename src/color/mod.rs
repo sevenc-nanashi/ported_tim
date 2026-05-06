@@ -670,7 +670,7 @@ impl ColorModule {
         symmetric: bool,
         save_color: bool,
         fig: u8, // caller comment says [0..4]
-    ) -> anyhow::Result<()> {
+    ) -> anyhow::Result<f64> {
         let buffer_size = width
             .checked_mul(height)
             .and_then(|v| v.checked_mul(4))
@@ -680,7 +680,7 @@ impl ColorModule {
         let mut cache = MINIMAX_CACHE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire minimax cache lock"))?;
-        crate::color::minimax::minimax_check(
+        let restored = crate::color::minimax::minimax_check(
             &mut cache,
             image_buffer,
             width,
@@ -698,7 +698,7 @@ impl ColorModule {
                 fig,
             },
         )?;
-        Ok(())
+        Ok(if restored { 1.0 } else { 0.0 })
     }
 
     fn color_minimax(

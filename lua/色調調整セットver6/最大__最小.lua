@@ -1,15 +1,15 @@
 --label:tim2\色調整\@T_Color_Module
 --filter
----$track:MAX/MIN
----min=1
----max=2
----step=1
+---$select:モード
+---最大=1
+---最小=2
 local track_max_min = 1
 
----$track:チャンネル
----min=1
----max=4
----step=1
+---$select:チャンネル
+---全て=1
+---R=2
+---G=3
+---B=4
 local track_channel = 1
 
 ---$track:範囲
@@ -22,6 +22,8 @@ local track_range = 10
 ---min=-3600
 ---max=3600
 ---step=0.1
+---zero_label=0.0
+---scale=0.05
 local track_angle = 0
 
 ---$check:水平
@@ -56,7 +58,10 @@ local fig = 0
 ---step=1
 local lmt = 50
 
----$value:α拡張
+---$track:α拡張
+---min=0
+---max=255
+---step=1
 local Aen = 0
 
 ---$check:結果を保存(同条件1度のみ)
