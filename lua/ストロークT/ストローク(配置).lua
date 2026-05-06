@@ -1,4 +1,4 @@
---label:tim2\装飾\@ストロークT
+--label:${ROOT_CATEGORY}\装飾\@ストロークT
 ---$track:進捗度1
 ---min=0
 ---max=100

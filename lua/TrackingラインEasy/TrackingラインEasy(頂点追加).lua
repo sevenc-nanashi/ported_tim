@@ -1,4 +1,4 @@
---label:tim2\配置\@TrackingラインEasy
+--label:${ROOT_CATEGORY}\配置\@TrackingラインEasy
 ---$track:+頂点数
 ---min=2
 ---max=16

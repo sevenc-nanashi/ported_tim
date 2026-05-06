@@ -1,4 +1,4 @@
---label:tim2\カスタムオブジェクト\@集中線T
+--label:${ROOT_CATEGORY}\カスタムオブジェクト\@集中線T
 ---$track:発生確率
 ---min=0
 ---max=100

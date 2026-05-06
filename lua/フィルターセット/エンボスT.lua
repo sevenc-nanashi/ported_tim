@@ -1,4 +1,4 @@
---label:tim2\加工\@T_Filter_Module
+--label:${ROOT_CATEGORY}\加工\@T_Filter_Module
 ---$track:強さ
 ---min=0
 ---max=1000

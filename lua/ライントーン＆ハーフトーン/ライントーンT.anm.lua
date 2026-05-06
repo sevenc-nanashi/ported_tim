@@ -1,4 +1,4 @@
---label:tim2\加工
+--label:${ROOT_CATEGORY}\加工
 ---$track:分割数
 ---min=10
 ---max=500

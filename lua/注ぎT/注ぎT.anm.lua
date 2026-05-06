@@ -1,4 +1,4 @@
---label:tim2\アニメーション効果
+--label:${ROOT_CATEGORY}\アニメーション効果
 --group:基本,true
 
 ---$track:水位

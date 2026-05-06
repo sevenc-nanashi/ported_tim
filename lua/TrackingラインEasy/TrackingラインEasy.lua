@@ -1,4 +1,4 @@
---label:tim2\配置\@TrackingラインEasy
+--label:${ROOT_CATEGORY}\配置\@TrackingラインEasy
 ---$track:開始/シフト
 ---min=0
 ---max=100

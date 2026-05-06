@@ -1,4 +1,4 @@
---label:tim2\装飾\@領域枠
+--label:${ROOT_CATEGORY}\装飾\@領域枠
 ---$track:画線幅％
 ---min=0
 ---max=100

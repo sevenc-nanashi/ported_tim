@@ -1,4 +1,4 @@
---label:tim2\加工
+--label:${ROOT_CATEGORY}\加工
 ---$track:サイズ
 ---min=5
 ---max=1000

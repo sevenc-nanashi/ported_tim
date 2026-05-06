@@ -1,4 +1,4 @@
---label:tim2\変形\@スカイドーム
+--label:${ROOT_CATEGORY}\変形\@スカイドーム
 ---$track:水平範囲
 ---min=0
 ---max=360

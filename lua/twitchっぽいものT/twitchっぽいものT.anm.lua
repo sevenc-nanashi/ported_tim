@@ -1,4 +1,4 @@
---label:tim2\アニメーション効果
+--label:${ROOT_CATEGORY}\アニメーション効果
 ---$track:間隔ミリ秒
 ---min=1
 ---max=10000

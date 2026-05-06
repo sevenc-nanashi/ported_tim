@@ -1,4 +1,4 @@
---label:tim2\装飾\@罫線T
+--label:${ROOT_CATEGORY}\装飾\@罫線T
 ---$track:斜線数
 ---min=1
 ---max=16

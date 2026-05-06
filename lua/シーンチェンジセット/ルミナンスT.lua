@@ -1,4 +1,4 @@
---label:tim2\シーンチェンジ\@シーンチェンジセットT
+--label:${ROOT_CATEGORY}\シーンチェンジ\@シーンチェンジセットT
 ---$track:ぼかし％
 ---min=0
 ---max=100

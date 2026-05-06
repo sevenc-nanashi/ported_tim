@@ -1,4 +1,4 @@
---label:tim2\カメラ制御
+--label:${ROOT_CATEGORY}\カメラ制御
 ---$track:ターゲット
 ---min=100
 ---max=10000

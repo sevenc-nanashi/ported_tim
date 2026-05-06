@@ -1,4 +1,4 @@
---label:tim2\トラックバー制御
+--label:${ROOT_CATEGORY}\トラックバー制御
 --param:1
 --[[
 軌道調整Ｔ.objの軌道番号と

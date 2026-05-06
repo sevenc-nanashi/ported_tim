@@ -1,4 +1,4 @@
---label:tim2\配置\@モーションパスB
+--label:${ROOT_CATEGORY}\配置\@モーションパスB
 ---$track:R座標
 ---min=0
 ---max=10000

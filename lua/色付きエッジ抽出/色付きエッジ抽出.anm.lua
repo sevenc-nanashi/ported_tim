@@ -1,4 +1,4 @@
---label:tim2\抽出
+--label:${ROOT_CATEGORY}\抽出
 ---$track:ズレX
 ---min=-20000
 ---max=20000

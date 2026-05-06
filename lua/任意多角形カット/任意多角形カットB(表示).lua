@@ -1,4 +1,4 @@
---label:tim2\変形\@任意多角形カット
+--label:${ROOT_CATEGORY}\変形\@任意多角形カット
 ---$track:厚み
 ---min=0
 ---max=1000

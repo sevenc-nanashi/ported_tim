@@ -1,4 +1,4 @@
---label:tim2\光効果\@カスタムフレア
+--label:${ROOT_CATEGORY}\光効果\@カスタムフレア
 ---$track:光芒長
 ---min=0
 ---max=2000

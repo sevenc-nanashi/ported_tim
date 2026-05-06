@@ -1,4 +1,4 @@
---label:tim2\配置\@簡易リピーター
+--label:${ROOT_CATEGORY}\配置\@簡易リピーター
 ---$track:X
 ---min=-5000
 ---max=5000

@@ -1,4 +1,4 @@
---label:tim2\加工
+--label:${ROOT_CATEGORY}\加工
 ---$track:強度
 ---min=-200
 ---max=200

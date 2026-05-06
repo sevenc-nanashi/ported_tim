@@ -1,4 +1,4 @@
---label:tim2\カスタムオブジェクト\@任意多角形
+--label:${ROOT_CATEGORY}\カスタムオブジェクト\@任意多角形
 ---$track:厚み
 ---min=0
 ---max=1000

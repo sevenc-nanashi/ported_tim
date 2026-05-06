@@ -1,4 +1,4 @@
---label:tim2\アニメーション効果
+--label:${ROOT_CATEGORY}\アニメーション効果
 ---$track:サイズ
 ---min=10
 ---max=2000

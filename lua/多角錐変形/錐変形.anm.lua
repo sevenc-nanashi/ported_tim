@@ -1,4 +1,4 @@
---label:tim2\変形
+--label:${ROOT_CATEGORY}\変形
 ---$track:角数
 ---min=3
 ---max=100

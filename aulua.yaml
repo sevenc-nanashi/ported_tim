@@ -1,5 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/karoterra/aviutl2-aulua/refs/heads/main/schema/aulua.schema.json
-project: {}
+project:
+  variables:
+    ROOT_CATEGORY: "tim2"
 build:
   out_dir: build
   embed_search_dirs:

@@ -1,4 +1,4 @@
---label:tim2\カメラ制御
+--label:${ROOT_CATEGORY}\カメラ制御
 ---$track:サイズ補正
 ---min=1
 ---max=10000

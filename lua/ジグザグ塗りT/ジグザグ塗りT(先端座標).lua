@@ -1,3 +1,3 @@
---label:tim2\装飾\@ジグザグ塗りT
+--label:${ROOT_CATEGORY}\装飾\@ジグザグ塗りT
 obj.ox = obj.ox + _T_LineFill_last_x
 obj.oy = obj.oy + _T_LineFill_last_y

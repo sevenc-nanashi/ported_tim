@@ -1,4 +1,4 @@
---label:tim2\カスタムオブジェクト
+--label:${ROOT_CATEGORY}\カスタムオブジェクト
 ---$track:サイズ
 ---min=0
 ---max=5000

@@ -1,4 +1,4 @@
---label:tim2\変形
+--label:${ROOT_CATEGORY}\変形
 ---$track:変形1
 ---min=-100
 ---max=100

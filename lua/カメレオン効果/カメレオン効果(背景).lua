@@ -1,4 +1,4 @@
---label:tim2\色調整\@カメレオン効果
+--label:${ROOT_CATEGORY}\色調整\@カメレオン効果
 ---$track:中心X
 ---min=-10000
 ---max=10000

@@ -1,4 +1,4 @@
---label:tim2\変形\@スプリット
+--label:${ROOT_CATEGORY}\変形\@スプリット
 ---$track:オフセット
 ---min=0
 ---max=100

@@ -1,4 +1,4 @@
---label:tim2\カスタムオブジェクト
+--label:${ROOT_CATEGORY}\カスタムオブジェクト
 ---$track:高さ
 ---min=0
 ---max=2000

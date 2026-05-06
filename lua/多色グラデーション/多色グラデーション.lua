@@ -1,4 +1,4 @@
---label:tim2\色調整\@多色グラデーション
+--label:${ROOT_CATEGORY}\色調整\@多色グラデーション
 ---$track:幅
 ---min=0
 ---max=5000

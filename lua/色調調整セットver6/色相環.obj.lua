@@ -1,4 +1,4 @@
---label:tim2\色調整
+--label:${ROOT_CATEGORY}\色調整
 ---$track:半径
 ---min=0
 ---max=1000

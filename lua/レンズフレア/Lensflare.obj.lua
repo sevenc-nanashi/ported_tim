@@ -1,4 +1,4 @@
---label:tim2\カスタムオブジェクト
+--label:${ROOT_CATEGORY}\カスタムオブジェクト
 ---$track:光中心(X)
 ---min=-5000
 ---max=5000

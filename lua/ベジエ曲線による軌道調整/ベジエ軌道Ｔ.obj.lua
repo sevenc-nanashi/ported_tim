@@ -1,4 +1,4 @@
---label:tim2\カスタムオブジェクト
+--label:${ROOT_CATEGORY}\カスタムオブジェクト
 ---$track:軌道番号
 ---min=1
 ---max=100

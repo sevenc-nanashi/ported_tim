@@ -1,4 +1,4 @@
---label:tim2\装飾
+--label:${ROOT_CATEGORY}\装飾
 --group:基本,true
 
 ---$track:長さ

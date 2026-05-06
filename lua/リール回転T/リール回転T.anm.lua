@@ -1,4 +1,4 @@
---label:tim2\アニメーション効果
+--label:${ROOT_CATEGORY}\アニメーション効果
 
 ---$track:開始位置％
 ---min=0

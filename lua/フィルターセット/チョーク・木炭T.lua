@@ -1,4 +1,4 @@
---label:tim2\加工\@T_Filter_Module
+--label:${ROOT_CATEGORY}\加工\@T_Filter_Module
 --group:前処理,true
 
 ---$track:木炭適用

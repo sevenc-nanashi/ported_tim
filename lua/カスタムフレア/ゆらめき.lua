@@ -1,4 +1,4 @@
---label:tim2\光効果\@カスタムフレア
+--label:${ROOT_CATEGORY}\光効果\@カスタムフレア
 ---$track:サイズ
 ---min=10
 ---max=1000

@@ -1,4 +1,4 @@
---label:tim2\装飾
+--label:${ROOT_CATEGORY}\装飾
 ---$track:サイズ
 ---min=0
 ---max=3000

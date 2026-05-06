@@ -1,4 +1,4 @@
---label:tim2\シーンチェンジ\@シーンチェンジセットT
+--label:${ROOT_CATEGORY}\シーンチェンジ\@シーンチェンジセットT
 ---$track:幅
 ---min=5
 ---max=1000

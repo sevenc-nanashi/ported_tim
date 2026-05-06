@@ -1,4 +1,4 @@
---label:tim2\変形\@サイズ修正T
+--label:${ROOT_CATEGORY}\変形\@サイズ修正T
 ---$track:横
 ---min=0
 ---max=5000

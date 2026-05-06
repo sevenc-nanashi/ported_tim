@@ -1,4 +1,4 @@
---label:tim2\光効果
+--label:${ROOT_CATEGORY}\光効果
 ---$track:強さ
 ---min=0
 ---max=400

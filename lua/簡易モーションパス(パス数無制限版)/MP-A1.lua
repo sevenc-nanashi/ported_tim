@@ -1,4 +1,4 @@
---label:tim2\配置\@モーションパスA
+--label:${ROOT_CATEGORY}\配置\@モーションパスA
 ---$track:X座標
 ---min=-10000
 ---max=10000

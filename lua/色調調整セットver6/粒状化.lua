@@ -1,4 +1,4 @@
---label:tim2\色調整\@T_Color_Module
+--label:${ROOT_CATEGORY}\色調整\@T_Color_Module
 --filter
 ---$track:量
 ---min=0

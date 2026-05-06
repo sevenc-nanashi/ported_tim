@@ -1,4 +1,4 @@
---label:tim2\変形\@任意多角形カット
+--label:${ROOT_CATEGORY}\変形\@任意多角形カット
 ---$track:頂点X
 ---min=-50000
 ---max=50000
