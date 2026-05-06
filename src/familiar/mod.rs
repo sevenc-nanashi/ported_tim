@@ -1,7 +1,7 @@
 use aviutl2::anyhow;
 use std::ptr::NonNull;
 
-pub mod unoptimized;
+mod core;
 
 pub(crate) struct FamiliarModule;
 
@@ -26,10 +26,10 @@ impl FamiliarModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let mut state = unoptimized::FAMILIAR_STATE
+        let mut state = core::FAMILIAR_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire familiar state lock"))?;
-        crate::familiar::unoptimized::set_color(
+        crate::familiar::core::set_color(
             &mut state,
             image_buffer,
             width,
@@ -46,7 +46,7 @@ impl FamiliarModule {
     }
 
     fn famili_get_color() -> anyhow::Result<(u8, u8, u8)> {
-        let state = unoptimized::FAMILIAR_STATE
+        let state = core::FAMILIAR_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire familiar state lock"))?;
         Ok(state.get_color())
@@ -67,10 +67,10 @@ impl FamiliarModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        let state = unoptimized::FAMILIAR_STATE
+        let state = core::FAMILIAR_STATE
             .lock()
             .map_err(|_| anyhow::anyhow!("Failed to acquire familiar state lock"))?;
-        crate::familiar::unoptimized::familiar(
+        crate::familiar::core::familiar(
             &state,
             image_buffer,
             width,

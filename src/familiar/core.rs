@@ -1,9 +1,10 @@
 use std::sync::{LazyLock, Mutex};
 
-pub(crate) static FAMILIAR_STATE: LazyLock<Mutex<crate::familiar::unoptimized::FamiliarState>> =
-    LazyLock::new(|| Mutex::new(crate::familiar::unoptimized::FamiliarState::default()));
+pub(crate) static FAMILIAR_STATE: LazyLock<Mutex<crate::familiar::core::FamiliarState>> =
+    LazyLock::new(|| Mutex::new(crate::familiar::core::FamiliarState::default()));
 
 use anyhow::{Result, ensure};
+use rayon::prelude::*;
 
 #[derive(Debug, Clone, Copy, Default)]
 pub struct FamiliarState {
@@ -52,21 +53,29 @@ pub fn set_color(
 
     let region = resolve_region(width, height, center_x, center_y, range_width, range_height);
     if !region.is_empty() {
-        let mut sum_r: u64 = 0;
-        let mut sum_g: u64 = 0;
-        let mut sum_b: u64 = 0;
-        let mut count: u64 = 0;
-
-        for y in region.top..region.bottom {
-            let row_start = y * width * 4;
-            for x in region.left..region.right {
-                let idx = row_start + x * 4;
-                sum_b += image_buffer[idx] as u64;
-                sum_g += image_buffer[idx + 1] as u64;
-                sum_r += image_buffer[idx + 2] as u64;
-                count += 1;
-            }
-        }
+        let (sum_r, sum_g, sum_b, count) = image_buffer
+            .par_chunks_exact(width * 4)
+            .enumerate()
+            .skip(region.top)
+            .take(region.bottom - region.top)
+            .map(|(_, row)| {
+                let mut sum_r: u64 = 0;
+                let mut sum_g: u64 = 0;
+                let mut sum_b: u64 = 0;
+                let mut count: u64 = 0;
+                for x in region.left..region.right {
+                    let idx = x * 4;
+                    sum_b += row[idx] as u64;
+                    sum_g += row[idx + 1] as u64;
+                    sum_r += row[idx + 2] as u64;
+                    count += 1;
+                }
+                (sum_r, sum_g, sum_b, count)
+            })
+            .reduce(
+                || (0, 0, 0, 0),
+                |a, b| (a.0 + b.0, a.1 + b.1, a.2 + b.2, a.3 + b.3),
+            );
 
         if count > 0 {
             state.target_r = (sum_r / count) as u8;
@@ -122,13 +131,13 @@ pub fn familiar(
         value_ratio = 1.0;
     }
 
-    for px in image_buffer.chunks_exact_mut(4) {
+    image_buffer.par_chunks_exact_mut(4).for_each(|px| {
         let b = px[0];
         let g = px[1];
         let r = px[2];
         let a = px[3];
         if a == 0 {
-            continue;
+            return;
         }
 
         let (src_h, src_s, src_v) = rgb_to_hsv(r, g, b);
@@ -143,7 +152,7 @@ pub fn familiar(
         px[0] = out_b.round() as u8;
         px[1] = out_g.round() as u8;
         px[2] = out_r.round() as u8;
-    }
+    });
 
     Ok(())
 }
@@ -220,18 +229,14 @@ fn average_rgb_of_nonzero_alpha(image_buffer: &[u8]) -> Result<Option<(u8, u8, u
         image_buffer.len().is_multiple_of(4),
         "Invalid image buffer size"
     );
-    let mut sum_r: u64 = 0;
-    let mut sum_g: u64 = 0;
-    let mut sum_b: u64 = 0;
-    let mut count: u64 = 0;
-    for px in image_buffer.chunks_exact(4) {
-        if px[3] != 0 {
-            sum_b += px[0] as u64;
-            sum_g += px[1] as u64;
-            sum_r += px[2] as u64;
-            count += 1;
-        }
-    }
+    let (sum_r, sum_g, sum_b, count) = image_buffer
+        .par_chunks_exact(4)
+        .filter(|px| px[3] != 0)
+        .map(|px| (px[2] as u64, px[1] as u64, px[0] as u64, 1u64))
+        .reduce(
+            || (0, 0, 0, 0),
+            |a, b| (a.0 + b.0, a.1 + b.1, a.2 + b.2, a.3 + b.3),
+        );
     if count == 0 {
         Ok(None)
     } else {
