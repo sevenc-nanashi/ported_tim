@@ -1,5 +1,6 @@
 use rand::rngs::StdRng;
 use rand::{RngExt, SeedableRng};
+use rayon::prelude::*;
 
 /// Ghidra 解析ベースの `T_LineFill_Module.LineFill(...)` 互換実装。
 /// 対応元: FUN_10001000 + FUN_1000a180/a1f0/a2e0/a370/a400
@@ -24,11 +25,7 @@ pub fn line_fill(
     }
 
     let threshold = alpha_threshold.clamp(0, 255) as u8;
-    let mut mask = vec![0u8; pixel_count];
-    for i in 0..pixel_count {
-        let a = image_buffer[i * 4 + 3];
-        mask[i] = u8::from(a > threshold);
-    }
+    let mask = build_mask(image_buffer, pixel_count, threshold);
 
     let Some(first_idx) = mask.iter().position(|&v| v != 0) else {
         return (width, height, 0, Vec::new());
@@ -48,7 +45,7 @@ pub fn line_fill(
 
     // [x0, y0, x1, y1, ...]。ここでは画像座標系(左上原点)。
     let mut pts = vec![0.0_f64; n * 2];
-    for i in 0..=segments {
+    pts.par_chunks_exact_mut(2).enumerate().for_each(|(i, pt)| {
         let y = first_row + (last_row - first_row) * i / segments;
         let row = &mask[y * width..(y + 1) * width];
         let x = if i % 2 == 0 {
@@ -57,9 +54,9 @@ pub fn line_fill(
             row.iter().rposition(|&v| v != 0).map(|v| v as i32)
         }
         .unwrap_or(-100);
-        pts[i * 2] = x as f64;
-        pts[i * 2 + 1] = y as f64;
-    }
+        pt[0] = x as f64;
+        pt[1] = y as f64;
+    });
 
     // 欠損補間（偶数系列・奇数系列を独立補間）
     let mut even_last = pts[0];
@@ -119,4 +116,14 @@ pub fn line_fill(
     let ws = (max_abs_x.ceil() as usize).saturating_mul(2);
     let hs = (max_abs_y.ceil() as usize).saturating_mul(2);
     (ws, hs, n, pts)
+}
+
+fn build_mask(image_buffer: &[u8], pixel_count: usize, threshold: u8) -> Vec<u8> {
+    let mut mask = vec![0u8; pixel_count];
+    mask.par_iter_mut()
+        .zip(image_buffer.par_chunks_exact(4))
+        .for_each(|(dst, px)| {
+            *dst = u8::from(px[3] > threshold);
+        });
+    mask
 }

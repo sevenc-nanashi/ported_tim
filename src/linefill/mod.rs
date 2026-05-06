@@ -1,7 +1,7 @@
 use aviutl2::anyhow;
 use std::ptr::NonNull;
 
-pub mod unoptimized;
+mod core;
 
 pub(crate) struct LineFillModule;
 
@@ -25,7 +25,7 @@ impl LineFillModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts(image_buffer.as_ptr(), buffer_size) };
-        Ok(crate::linefill::unoptimized::line_fill(
+        Ok(crate::linefill::core::line_fill(
             image_buffer,
             width,
             height,

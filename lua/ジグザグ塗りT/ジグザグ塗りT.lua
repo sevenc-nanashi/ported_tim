@@ -246,13 +246,39 @@ if P > 0 and N > 0 then
     end
     obj.load("figure", "四角形", col, 1)
     local x0, y0 = PS[1], PS[2]
+    local vertices = {}
+    local u0, v0, u1, v1 = 0, 0, obj.w, obj.h
     for i = 1, Ne - 1 do
         local x1, y1 = PS[2 * i + 1], PS[2 * i + 2]
         local dx, dy = y1 - y0, x0 - x1
         local L = 2 * math.sqrt(dx * dx + dy * dy)
         dx, dy = (D - 1) * dx / L, (D - 1) * dy / L
-        obj.drawpoly(x0 + dx, y0 + dy, 0, x1 + dx, y1 + dy, 0, x1 - dx, y1 - dy, 0, x0 - dx, y0 - dy, 0)
+        vertices[#vertices + 1] = {
+            x0 + dx,
+            y0 + dy,
+            0,
+            x1 + dx,
+            y1 + dy,
+            0,
+            x1 - dx,
+            y1 - dy,
+            0,
+            x0 - dx,
+            y0 - dy,
+            0,
+            u0,
+            v0,
+            u1,
+            v0,
+            u1,
+            v1,
+            u0,
+            v1,
+        }
         x0, y0 = x1, y1
+    end
+    if #vertices > 0 then
+        obj.drawpoly(vertices)
     end
 end
 if track_map > 0 then
