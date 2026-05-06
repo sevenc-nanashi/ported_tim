@@ -440,37 +440,6 @@ impl ColorModule {
         Ok(())
     }
 
-    fn color_standard_color(
-        image_buffer: NonNull<u8>,
-        width: usize,
-        height: usize,
-        col1: u32,
-        col2: u32,
-        change: f64,
-        count: f64,
-        scale: f64,
-        use_distance_from_specified_color: bool,
-    ) -> anyhow::Result<()> {
-        let buffer_size = width
-            .checked_mul(height)
-            .and_then(|v| v.checked_mul(4))
-            .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
-        let image_buffer =
-            unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::standard_color::standard_color(
-            image_buffer,
-            width,
-            height,
-            col1,
-            col2,
-            change,
-            count,
-            scale,
-            use_distance_from_specified_color,
-        )?;
-        Ok(())
-    }
-
     fn color_change_to_color(
         image_buffer: NonNull<u8>,
         width: usize,

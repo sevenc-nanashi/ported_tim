@@ -28,17 +28,23 @@ local col2 = 0xffffff
 local use_distance_from_standard_color = false
 
 --require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_standard_color(
-    userdata,
-    w,
-    h,
-    col1,
-    col2,
-    track_change / 100,
+local col1_r, col1_g, col1_b = RGB(col1)
+local col2_r, col2_g, col2_b = RGB(col2)
+local use_distance = use_distance_from_standard_color and 1 or 0
+
+--[[pixelshader@standard_color
+---$include "./shaders/standard_color.hlsl"
+]]
+
+obj.pixelshader("standard_color", "object", "object", {
+    col1_r,
+    col1_g,
+    col1_b,
+    col2_r,
+    col2_g,
+    col2_b,
+    track_change * 0.01,
     track_count,
     track_scale,
-    use_distance_from_standard_color
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+    use_distance,
+})

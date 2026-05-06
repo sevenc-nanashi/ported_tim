@@ -3,4 +3,3 @@ pub mod colorama;
 pub mod equalize;
 pub mod extended_contrast;
 pub mod histogram;
-pub mod standard_color;
