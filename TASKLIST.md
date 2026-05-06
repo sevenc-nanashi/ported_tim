@@ -30,7 +30,7 @@
 | 色調整               | @T_Color_Module.anm          | テトラトーン                    | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | トライトーン                    | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | ネオン                          | :o:      | :o: | :o:              | :x:                  |
-| 色調整               | @T_Color_Module.anm          | バイアス消去                    | :o:      | :o: | :o:              | :x:                  |
+| 色調整               | @T_Color_Module.anm          | バイアス消去                    | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | パステル調                      | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | フリンジ修正                    | :o:      | :o: | :o:              | :o:                  |
 | 色調整               | @T_Color_Module.anm          | ブリーチバイパス                | :o:      | :o: | :o:              | :x:                  |

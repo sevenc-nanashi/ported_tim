@@ -1,6 +1,7 @@
 use aviutl2::anyhow;
 use std::ptr::NonNull;
 
+mod bias_deletion;
 mod binarization;
 mod binarization_rgb;
 mod equalize;
@@ -84,7 +85,7 @@ impl ColorModule {
             .ok_or_else(|| anyhow::anyhow!("Buffer size overflow"))?;
         let image_buffer =
             unsafe { std::slice::from_raw_parts_mut(image_buffer.as_ptr(), buffer_size) };
-        crate::color::unoptimized::bias_deletion::bias_deletion(
+        crate::color::bias_deletion::bias_deletion(
             image_buffer,
             width,
             height,

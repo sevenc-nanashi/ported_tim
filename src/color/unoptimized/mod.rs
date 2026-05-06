@@ -3,7 +3,6 @@ use std::sync::{LazyLock, Mutex};
 pub(crate) static TONE_CURVE_STATE: LazyLock<
     Mutex<crate::color::unoptimized::tone_curve::ToneCurveState>,
 > = LazyLock::new(|| Mutex::new(crate::color::unoptimized::tone_curve::ToneCurveState::default()));
-pub mod bias_deletion;
 pub mod change_to_color;
 pub mod colorama;
 pub mod equalize;
