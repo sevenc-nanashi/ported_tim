@@ -15,12 +15,11 @@ local track_blur = 0
 ---min=0
 ---max=100
 ---step=1
+---zero_label=自身
 local track_load_target = 0
 
 ---$check:暗い所から透過
 local check0 = false
-
-local tim2 = obj.module("tim2")
 
 local T = track_wipe_amount
 local bl = track_blur
@@ -52,7 +51,7 @@ end
 -- local userdata, w, h = obj.getpixeldata("object", "bgra")
 -- tim2.color_shift_channels(userdata, w, h, 1, 1, 2, 3)
 -- obj.putpixeldata("object", userdata, w, h, "bgra")
-obj.effect("チャンネルシフト@T_Color_Module@tim.anm2", "アルファ", 1, "赤", 1, "緑", 2, "青", 3)
+obj.effect("チャンネルシフト@T_Color_Module@tim.anm2", "アルファ", "赤")
 
 obj.effect("ぼかし", "範囲", bl, "サイズ固定", 1)
 obj.setoption("blend", "alpha_sub")
