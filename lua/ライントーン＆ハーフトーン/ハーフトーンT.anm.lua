@@ -21,6 +21,8 @@ local track_tone_large = 100
 ---min=-3600
 ---max=3600
 ---step=0.1
+---zero_label=
+---scale=0.05
 local track_rotation = 0
 
 ---$color:シャドウ色

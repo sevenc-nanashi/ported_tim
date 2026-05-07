@@ -3,7 +3,7 @@
 ---min=-50000
 ---max=50000
 ---step=0.1
----zero_label=0.0
+---zero_label=
 ---scale=0.02
 local track_move_x = 0
 
@@ -11,7 +11,7 @@ local track_move_x = 0
 ---min=-50000
 ---max=50000
 ---step=0.1
----zero_label=0.0
+---zero_label=
 ---scale=0.02
 local track_move_y = 0
 
@@ -19,7 +19,7 @@ local track_move_y = 0
 ---min=-20000
 ---max=20000
 ---step=0.1
----zero_label=0.0
+---zero_label=
 ---scale=0.05
 local track_up_x = 0
 
@@ -27,7 +27,7 @@ local track_up_x = 0
 ---min=-20000
 ---max=20000
 ---step=0.1
----zero_label=0.0
+---zero_label=
 ---scale=0.05
 local track_up_y = 0
 
