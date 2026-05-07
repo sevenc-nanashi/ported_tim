@@ -71,6 +71,7 @@ for i = 0, N do
     end
 end
 local u0 = 0
+local vertices = {}
 for i = 0, N - 1 do
     local u1 = w * (i + 1) / N
     local x0 = u0 - w2
@@ -80,7 +81,7 @@ for i = 0, N - 1 do
         local v1 = h * (j + 1) / N
         local y0 = v0 - h2
         local y1 = v1 - h2
-        obj.drawpoly(
+        vertices[#vertices + 1] = {
             x0,
             y0,
             TPz[i][j],
@@ -100,11 +101,14 @@ for i = 0, N - 1 do
             u1,
             v1,
             u0,
-            v1
-        )
+            v1,
+        }
         v0 = v1
     end
     u0 = u1
+end
+if #vertices > 0 then
+    obj.drawpoly(vertices)
 end
 
 obj.load("tempbuffer")
