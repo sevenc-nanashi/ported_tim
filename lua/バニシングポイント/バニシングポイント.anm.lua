@@ -200,6 +200,7 @@ if tar == 1 then
 
     obj.drawpoly(x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, u0, v0, u1, v1, u2, v2, u3, v3)
 else
+    local vertices = {}
     for i = 0, division_count - 1 do
         for j = 0, division_count - 1 do
             lx1 = (1 - ss ^ (dx + i / division_count)) / (1 - ss)
@@ -251,15 +252,18 @@ else
             y0, y1, y2, y3 = y0 - cy, y1 - cy, y2 - cy, y3 - cy
 
             if AND(reverse_mode, 1) == 1 then
-                u0, u1, u2, u3 = w - u0, w - u1, w - u2, w - u3
+                u0, u1 = w - u0, w - u1
             end
 
             if AND(reverse_mode, 2) == 2 then
-                v0, v1, v2, v3 = h - v0, h - v1, h - v2, h - v3
+                v0, v1 = h - v0, h - v1
             end
 
-            obj.drawpoly(x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+            vertices[#vertices + 1] = { x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, u0, v0, u1, v0, u1, v1, u0, v1 }
         end
+    end
+    if #vertices > 0 then
+        obj.drawpoly(vertices)
     end
 end
 

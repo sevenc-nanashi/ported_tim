@@ -47,16 +47,42 @@ local lw = 4
 -- ---$check:アンチエイリアス
 -- local ANT = 1
 
+local line_vertices
+local preview_vertices
+local transform_vertices
+
 function LineDraw(p1, p2)
     local dx = p2.x - p1.x
     local dy = p2.y - p1.y
     local r = math.sqrt(dx * dx + dy * dy)
     dx, dy = lw * dy / r, -lw * dx / r
-    obj.drawpoly(p1.x + dx, p1.y + dy, 0, p1.x - dx, p1.y - dy, 0, p2.x - dx, p2.y - dy, 0, p2.x + dx, p2.y + dy, 0)
+    local u0, v0, u1, v1 = 0, 0, obj.w, obj.h
+    line_vertices[#line_vertices + 1] = {
+        p1.x + dx,
+        p1.y + dy,
+        0,
+        p1.x - dx,
+        p1.y - dy,
+        0,
+        p2.x - dx,
+        p2.y - dy,
+        0,
+        p2.x + dx,
+        p2.y + dy,
+        0,
+        u0,
+        v0,
+        u1,
+        v0,
+        u1,
+        v1,
+        u0,
+        v1,
+    }
 end
 
 function sdp(a, b)
-    obj.drawpoly(
+    preview_vertices[#preview_vertices + 1] = {
         ps[a].x - vx,
         ps[a].y - vy,
         0,
@@ -76,8 +102,8 @@ function sdp(a, b)
         qs[b].x + iw / 2,
         qs[b].y + ih / 2,
         qs[a].x + iw / 2,
-        qs[a].y + ih / 2
-    )
+        qs[a].y + ih / 2,
+    }
 end
 
 function dtd(a, b)
@@ -94,7 +120,7 @@ function dtd(a, b)
 
         K1 = L * ((qs[a].x - vp.x + cp.x) / (xxa_1 - vp.x + cp.x) - 1)
         K2 = L * ((qs[a].x - vp.x + cp.x) / (xxa_2 - vp.x + cp.x) - 1)
-        obj.drawpoly(
+        transform_vertices[#transform_vertices + 1] = {
             zoom * (qs[a].x - qcp.x),
             zoom * (qs[a].y - qcp.y),
             zoom * K1,
@@ -114,8 +140,8 @@ function dtd(a, b)
             zoom * (xxb_2 + w2),
             zoom * (yyb_2 + h2),
             zoom * (xxa_2 + w2),
-            zoom * (yya_2 + h2)
-        )
+            zoom * (yya_2 + h2),
+        }
     end
 end
 
@@ -177,6 +203,7 @@ if va == 0 then
         obj.draw(qs[i].x, qs[i].y, 0)
     end
     obj.load("figure", "四角形", 0xffffff, gr)
+    line_vertices = {}
     LineDraw(ps[1], ps[2])
     LineDraw(ps[2], ps[3])
     LineDraw(ps[3], ps[4])
@@ -189,6 +216,9 @@ if va == 0 then
     LineDraw(ps[2], qs[2])
     LineDraw(ps[3], qs[3])
     LineDraw(ps[4], qs[4])
+    if #line_vertices > 0 then
+        obj.drawpoly(line_vertices)
+    end
     obj.load("tempbuffer")
     obj.cx = obj.cx - cp.x
     obj.cy = obj.cy - cp.y
@@ -201,32 +231,35 @@ elseif va == 1 then
     bvy = Rsize * vy
     obj.setoption("drawtarget", "tempbuffer", iw + 2 * math.abs(bvx), ih + 2 * math.abs(bvy)) --面倒臭くなって適当＞＜;
     obj.setoption("antialias", 0)
-    obj.drawpoly(
-        ps[1].x - vx,
-        ps[1].y - vy,
-        0,
-        ps[2].x - vx,
-        ps[2].y - vy,
-        0,
-        ps[3].x - vx,
-        ps[3].y - vy,
-        0,
-        ps[4].x - vx,
-        ps[4].y - vy,
-        0,
-        ps[1].x + iw / 2,
-        ps[1].y + ih / 2,
-        ps[2].x + iw / 2,
-        ps[2].y + ih / 2,
-        ps[3].x + iw / 2,
-        ps[3].y + ih / 2,
-        ps[4].x + iw / 2,
-        ps[4].y + ih / 2
-    )
+    preview_vertices = {
+        {
+            ps[1].x - vx,
+            ps[1].y - vy,
+            0,
+            ps[2].x - vx,
+            ps[2].y - vy,
+            0,
+            ps[3].x - vx,
+            ps[3].y - vy,
+            0,
+            ps[4].x - vx,
+            ps[4].y - vy,
+            0,
+            ps[1].x + iw / 2,
+            ps[1].y + ih / 2,
+            ps[2].x + iw / 2,
+            ps[2].y + ih / 2,
+            ps[3].x + iw / 2,
+            ps[3].y + ih / 2,
+            ps[4].x + iw / 2,
+            ps[4].y + ih / 2,
+        },
+    }
     sdp(1, 4)
     sdp(3, 2)
     sdp(1, 2)
     sdp(3, 4)
+    obj.drawpoly(preview_vertices)
     obj.load("tempbuffer")
     obj.cx = obj.cx - cp.x
     obj.cy = obj.cy - cp.y
@@ -242,30 +275,33 @@ else
     qcp = { x = (qs[1].x + qs[2].x) / 2, y = (qs[1].y + qs[4].y) / 2 }
     K = L * (Rsize - 1)
 
-    obj.drawpoly(
-        zoom * (qs[1].x - qcp.x),
-        zoom * (qs[1].y - qcp.y),
-        zoom * K,
-        zoom * (qs[2].x - qcp.x),
-        zoom * (qs[2].y - qcp.y),
-        zoom * K,
-        zoom * (qs[3].x - qcp.x),
-        zoom * (qs[3].y - qcp.y),
-        zoom * K,
-        zoom * (qs[4].x - qcp.x),
-        zoom * (qs[4].y - qcp.y),
-        zoom * K,
-        zoom * (ps[1].x + w2),
-        zoom * (ps[1].y + h2),
-        zoom * (ps[2].x + w2),
-        zoom * (ps[2].y + h2),
-        zoom * (ps[3].x + w2),
-        zoom * (ps[3].y + h2),
-        zoom * (ps[4].x + w2),
-        zoom * (ps[4].y + h2)
-    )
+    transform_vertices = {
+        {
+            zoom * (qs[1].x - qcp.x),
+            zoom * (qs[1].y - qcp.y),
+            zoom * K,
+            zoom * (qs[2].x - qcp.x),
+            zoom * (qs[2].y - qcp.y),
+            zoom * K,
+            zoom * (qs[3].x - qcp.x),
+            zoom * (qs[3].y - qcp.y),
+            zoom * K,
+            zoom * (qs[4].x - qcp.x),
+            zoom * (qs[4].y - qcp.y),
+            zoom * K,
+            zoom * (ps[1].x + w2),
+            zoom * (ps[1].y + h2),
+            zoom * (ps[2].x + w2),
+            zoom * (ps[2].y + h2),
+            zoom * (ps[3].x + w2),
+            zoom * (ps[3].y + h2),
+            zoom * (ps[4].x + w2),
+            zoom * (ps[4].y + h2),
+        },
+    }
     dtd(3, 2)
     dtd(4, 1)
     dtd(1, 2)
     dtd(3, 4)
+    obj.drawpoly(transform_vertices)
 end
