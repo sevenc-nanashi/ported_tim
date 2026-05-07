@@ -59,7 +59,7 @@ local tp = 1
 -- ---$value:ｱﾝﾁｴｲﾘｱｽ[0/1/2]
 -- local ANT = 0
 
-function CupLine(x)
+local function CupLine(x)
     if x <= 0.9 then
         return 1.191156183 * x ^ 4
     else
@@ -69,8 +69,17 @@ function CupLine(x)
     end
 end
 
-function Rot(u, s)
+local function Rot(u, s)
     return u * math.cos(s), u * math.sin(s)
+end
+
+local vertices_buffer = {}
+local function push_poly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3)
+    table.insert(vertices_buffer, {x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0, 0, obj.w, 0, obj.w, obj.h, obj.h, 0})
+end
+local function flush_polys()
+    obj.drawpoly(vertices_buffer)
+    vertices_buffer = {}
 end
 
 local size = track_size / 2
@@ -105,13 +114,14 @@ for i = 0, N - 1 do
         local s2 = (j + 1) * 2 * mpi / N
         local x1, z1 = Rot(u0, s2)
         local x2, z2 = Rot(u1, s2)
-        obj.drawpoly(x0, y0, z0, x1, y0, z1, x2, y1, z2, x3, y1, z3)
+        push_poly(x0, y0, z0, x1, y0, z1, x2, y1, z2, x3, y1, z3)
         x0, z0 = x1, z1
         x3, z3 = x2, z2
     end
     y1 = y0
     u1 = u0
 end
+flush_polys()
 
 --皿作成
 obj.load("figure", "四角形", cols, size)
@@ -139,12 +149,13 @@ for i = 0, N - 1 do
         local x1, z1 = Rot(u0, s2)
         local x2, z2 = Rot(u1, s2)
         local x3, z3 = Rot(u1, s1)
-        obj.drawpoly(x0, y0, z0, x1, y0, z1, x2, y1, z2, x3, y1, z3)
+        push_poly(x0, y0, z0, x1, y0, z1, x2, y1, z2, x3, y1, z3)
     end
     -- local v1 = v0
     y1 = y0
     u1 = u0
 end
+flush_polys()
 
 --取っ手作成
 obj.load("figure", "四角形", colc, size * 0.6)
@@ -164,11 +175,13 @@ for j = 0, N - 1 do
     local x1, y1 = Rot(size * 0.30 * hi2, s2 + 0.7 * mpi)
     local x2, y2 = Rot(size * 0.24 * hi2, s2 + 0.7 * mpi)
     local x3, y3 = Rot(size * 0.24 * hi1, s1 + 0.7 * mpi)
-    obj.drawpoly(x0 + ox, y0 - oy, dz, x1 + ox, y1 - oy, dz, x2 + ox, y2 - oy, dz, x3 + ox, y3 - oy, dz)
-    obj.drawpoly(x0 + ox, y0 - oy, -dz, x1 + ox, y1 - oy, -dz, x2 + ox, y2 - oy, -dz, x3 + ox, y3 - oy, -dz)
-    obj.drawpoly(x0 + ox, y0 - oy, dz, x1 + ox, y1 - oy, dz, x1 + ox, y1 - oy, -dz, x0 + ox, y0 - oy, -dz)
-    obj.drawpoly(x2 + ox, y2 - oy, dz, x3 + ox, y3 - oy, dz, x3 + ox, y3 - oy, -dz, x2 + ox, y2 - oy, -dz)
+    push_poly(x0 + ox, y0 - oy, dz, x1 + ox, y1 - oy, dz, x2 + ox, y2 - oy, dz, x3 + ox, y3 - oy, dz)
+    push_poly(x0 + ox, y0 - oy, -dz, x1 + ox, y1 - oy, -dz, x2 + ox, y2 - oy, -dz, x3 + ox, y3 - oy, -dz)
+    push_poly(x0 + ox, y0 - oy, dz, x1 + ox, y1 - oy, dz, x1 + ox, y1 - oy, -dz, x0 + ox, y0 - oy, -dz)
+    push_poly(x2 + ox, y2 - oy, dz, x3 + ox, y3 - oy, dz, x3 + ox, y3 - oy, -dz, x2 + ox, y2 - oy, -dz)
 end
+
+flush_polys()
 
 --紅茶作成
 u1 = track_height / 100

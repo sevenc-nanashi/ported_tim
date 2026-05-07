@@ -23,25 +23,36 @@ local tablecol = 0xc0c0a0
 ---$color:脚の色
 local legcol = 0xffffff
 
-function MkSq(x1, y1, z1, x2, y2, z2) -- 数値は対角線指定(1<2)で表裏が正確に
+local vertices_buffer = {}
+local function push_poly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3)
+    table.insert(vertices_buffer, {x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0, 0, obj.w, 0, obj.w, obj.h, obj.h, 0})
+end
+local function flush_polys()
+    obj.drawpoly(vertices_buffer)
+    vertices_buffer = {}
+end
+
+
+local function Sxdrawpoly(x, y1, y2, z1, z2)
+    push_poly(x, y1, z1, x, y1, z2, x, y2, z2, x, y2, z1)
+end
+
+local function Sydrawpoly(x1, x2, y, z1, z2)
+    push_poly(x1, y, z1, x2, y, z1, x2, y, z2, x1, y, z2)
+end
+
+local function Szdrawpoly(x1, y1, x2, y2, z)
+    push_poly(x1, y1, z, x2, y1, z, x2, y2, z, x1, y2, z)
+end
+
+
+local function MkSq(x1, y1, z1, x2, y2, z2) -- 数値は対角線指定(1<2)で表裏が正確に
     Szdrawpoly(x1, y1, x2, y2, z1)
     Szdrawpoly(x1, y2, x2, y1, z2)
     Sydrawpoly(x1, x2, y1, z2, z1)
     Sydrawpoly(x1, x2, y2, z1, z2)
     Sxdrawpoly(x1, y1, y2, z2, z1)
     Sxdrawpoly(x2, y1, y2, z1, z2)
-end
-
-function Sxdrawpoly(x, y1, y2, z1, z2)
-    obj.drawpoly(x, y1, z1, x, y1, z2, x, y2, z2, x, y2, z1)
-end
-
-function Sydrawpoly(x1, x2, y, z1, z2)
-    obj.drawpoly(x1, y, z1, x2, y, z1, x2, y, z2, x1, y, z2)
-end
-
-function Szdrawpoly(x1, y1, x2, y2, z)
-    obj.drawpoly(x1, y1, z, x2, y1, z, x2, y2, z, x1, y2, z)
 end
 
 function pole(x1, y1, z1, x2, y2, z2, size)
@@ -55,10 +66,10 @@ function pole(x1, y1, z1, x2, y2, z2, size)
     local z2_2 = z2 + size
     Sydrawpoly(x1_1, x1_2, y1, z1_2, z1_1)
     Sydrawpoly(x2_1, x2_2, y2, z2_1, z2_2)
-    obj.drawpoly(x1_1, y1, z1_1, x1_2, y1, z1_1, x2_2, y2, z2_1, x2_1, y2, z2_1)
-    obj.drawpoly(x1_2, y1, z1_2, x1_1, y1, z1_2, x2_1, y2, z2_2, x2_2, y2, z2_2)
-    obj.drawpoly(x1_1, y1, z1_2, x1_1, y1, z1_1, x2_1, y2, z2_1, x2_1, y2, z2_2)
-    obj.drawpoly(x1_2, y1, z1_1, x1_2, y1, z1_2, x2_2, y2, z2_2, x2_2, y2, z2_1)
+    push_poly(x1_1, y1, z1_1, x1_2, y1, z1_1, x2_2, y2, z2_1, x2_1, y2, z2_1)
+    push_poly(x1_2, y1, z1_2, x1_1, y1, z1_2, x2_1, y2, z2_2, x2_2, y2, z2_2)
+    push_poly(x1_1, y1, z1_2, x1_1, y1, z1_1, x2_1, y2, z2_1, x2_1, y2, z2_2)
+    push_poly(x1_2, y1, z1_1, x1_2, y1, z1_2, x2_2, y2, z2_2, x2_2, y2, z2_1)
 end
 
 local zoom = obj.getvalue("zoom") * 0.01
@@ -73,6 +84,7 @@ local y2 = 0
 
 obj.load("figure", "四角形", tablecol, sc0)
 MkSq(-sc0, (-150 - 10 * td) * scl + ty, -sc0, sc0, -150 * scl + ty, sc0)
+flush_polys()
 
 obj.load("figure", "四角形", legcol, 150 * scl * hd)
 local tsize = 8 * scl / 2
@@ -88,3 +100,5 @@ pole(tc1, y1, tc0, tc2, y2, tc2, tsize)
 pole(tc0, y1, tc1, tc2, y2, tc2, tsize)
 pole(-tc1, y1, tc1, -tc2, y2, tc2, tsize)
 pole(-tc0, y1, tc0, -tc2, y2, tc2, tsize)
+
+flush_polys()
