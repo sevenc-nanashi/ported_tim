@@ -25,7 +25,7 @@ impl aviutl2::module::ScriptModule for PortedTimMod2 {
 
     fn plugin_info(&self) -> aviutl2::module::ScriptModuleTable {
         aviutl2::module::ScriptModuleTable {
-            information: "ported_tim.mod2".into(),
+            information: "https://github.com/sevenc-nanashi/ported_tim".into(),
             functions: Self::functions(),
         }
     }
