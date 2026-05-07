@@ -139,6 +139,7 @@ local Twister = function(
     local posv = {}
     local scx = cos * Cw
     local scy = -sin * Cw
+    local vertices = {}
     for i = 0, N do
         posu[i] = {}
         posv[i] = {}
@@ -160,14 +161,8 @@ local Twister = function(
         end
     end
     for i = 0, N - 1 do
-        local ihan = (i == 0) or (i == N - 1)
         for j = 0, N - 1 do
-            if j == 0 or j == N - 1 or ihan then
-                obj.setoption("antialias", 1)
-            else
-                obj.setoption("antialias", 0)
-            end
-            obj.drawpoly(
+            vertices[#vertices + 1] = {
                 posx[i][j],
                 posy[i][j],
                 0,
@@ -187,9 +182,12 @@ local Twister = function(
                 posu[i + 1][j + 1],
                 posv[i + 1][j + 1],
                 posu[i][j + 1],
-                posv[i][j + 1]
-            )
+                posv[i][j + 1],
+            }
         end
+    end
+    if #vertices > 0 then
+        obj.drawpoly(vertices)
     end
 end
 
