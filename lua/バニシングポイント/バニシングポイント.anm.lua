@@ -3,24 +3,32 @@
 ---min=-50000
 ---max=50000
 ---step=0.1
+---zero_label=0.0
+---scale=0.02
 local track_move_x = 0
 
 ---$track:移動Y
 ---min=-50000
 ---max=50000
 ---step=0.1
+---zero_label=0.0
+---scale=0.02
 local track_move_y = 0
 
 ---$track:浮上X
 ---min=-20000
 ---max=20000
 ---step=0.1
+---zero_label=0.0
+---scale=0.05
 local track_up_x = 0
 
 ---$track:浮上Y
 ---min=-20000
 ---max=20000
 ---step=0.1
+---zero_label=0.0
+---scale=0.05
 local track_up_y = 0
 
 ---$select:反転
@@ -48,7 +56,9 @@ local track_division_count = 10
 ---$value:領域
 local are = { -80, -100, 80, -105, 100, 105, -100, 100 }
 
-function cal_koten(a, b, c, d)
+local b, c, tx, ty, flx, fly
+
+local function cal_koten(a, b, c, d)
     local g
     local f = (d.y - c.y) * (c.x - a.x) - (d.x - c.x) * (c.y - a.y)
     local z = (b.x - a.x) * (d.y - c.y) - (b.y - a.y) * (d.x - c.x)
@@ -60,27 +70,27 @@ function cal_koten(a, b, c, d)
     return a.x + g * (b.x - a.x), a.y + g * (b.y - a.y)
 end
 
-function muki(a, b, c, d)
+local function muki(a, b, c, d)
     return (b.x - a.x) * (d.y - c.y) - (b.y - a.y) * (d.x - c.x) > 0 and -1 or 1
 end
 
-function Lrate(x, y, ex, ey, fx, fy)
+local function Lrate(x, y, ex, ey, fx, fy)
     return (1 - (x * ex + y * ey) / (ex * ex + ey * ey)) * (1 - (x * fx + y * fy) / (fx * fx + fy * fy))
 end
 
-function cal_pos(p1, p2)
+local function cal_pos(p1, p2)
     local x, y = cal_koten(p1, c, p2, b)
-    hi = Lrate(x - tx, y - ty, b.x - tx, b.y - ty, c.x - tx, c.y - ty)
+    local hi = Lrate(x - tx, y - ty, b.x - tx, b.y - ty, c.x - tx, c.y - ty)
     return x + flx * hi, y + fly * hi
 end
 
 local reverse_mode = select_reverse or 0
 local division_count = math.max(1, track_division_count or 10)
 obj.setanchor("are", 4, "loop")
-w, h = obj.getpixel()
-w2 = w / 2
-h2 = h / 2
-ps = {}
+local w, h = obj.getpixel()
+local w2 = w / 2
+local h2 = h / 2
+local ps = {}
 ps[1] = { x = are[1], y = are[2] }
 ps[2] = { x = are[3], y = are[4] }
 ps[3] = { x = are[5], y = are[6] }
@@ -91,8 +101,8 @@ if muki(ps[1], ps[2], ps[2], ps[3]) == 1 then
     ps[3], ps[4] = ps[4], ps[3]
 end
 
-dx = track_move_x / 100
-dy = track_move_y / 100
+local dx = track_move_x / 100
+local dy = track_move_y / 100
 
 flx = track_up_x
 fly = track_up_y
@@ -102,11 +112,13 @@ c = {}
 b.x, b.y = cal_koten(ps[1], ps[2], ps[4], ps[3])
 c.x, c.y = cal_koten(ps[1], ps[4], ps[2], ps[3])
 
-bmuki = muki(b, ps[1], ps[1], ps[4])
-cmuki = muki(c, ps[2], ps[2], ps[1])
+local bmuki = muki(b, ps[1], ps[1], ps[4])
+local cmuki = muki(c, ps[2], ps[2], ps[1])
 
-w0 = math.sqrt((ps[1].x - ps[2].x) ^ 2 + (ps[1].y - ps[2].y) ^ 2)
-h0 = math.sqrt((ps[1].x - ps[4].x) ^ 2 + (ps[1].y - ps[4].y) ^ 2)
+local w0 = math.sqrt((ps[1].x - ps[2].x) ^ 2 + (ps[1].y - ps[2].y) ^ 2)
+local h0 = math.sqrt((ps[1].x - ps[4].x) ^ 2 + (ps[1].y - ps[4].y) ^ 2)
+local wa
+local ha
 if bmuki > 0 then
     wa = math.sqrt((ps[1].x - b.x) ^ 2 + (ps[1].y - b.y) ^ 2)
 else
@@ -124,12 +136,12 @@ end
 tx = (ps[1].x + ps[2].x + ps[3].x + ps[4].x) / 4
 ty = (ps[1].y + ps[2].y + ps[3].y + ps[4].y) / 4
 
-ss = 1 - w0 / wa
-tt = 1 - h0 / ha
+local ss = 1 - w0 / wa
+local tt = 1 - h0 / ha
 
-lx1 = (1 - ss ^ dx) / (1 - ss)
-lx2 = (1 - ss ^ (dx + 1)) / (1 - ss)
-qx = {}
+local lx1 = (1 - ss ^ dx) / (1 - ss)
+local lx2 = (1 - ss ^ (dx + 1)) / (1 - ss)
+local qx = {}
 
 if bmuki > 0 then
     qx[1] = { x = ps[1].x + (ps[2].x - ps[1].x) * lx1, y = ps[1].y + (ps[2].y - ps[1].y) * lx1 }
@@ -139,9 +151,9 @@ else
     qx[1] = { x = ps[2].x + (ps[1].x - ps[2].x) * lx2, y = ps[2].y + (ps[1].y - ps[2].y) * lx2 }
 end
 
-ly1 = (1 - tt ^ dy) / (1 - tt)
-ly2 = (1 - tt ^ (1 + dy)) / (1 - tt)
-qy = {}
+local ly1 = (1 - tt ^ dy) / (1 - tt)
+local ly2 = (1 - tt ^ (1 + dy)) / (1 - tt)
+local qy = {}
 
 if cmuki > 0 then
     qy[1] = { x = ps[1].x + (ps[4].x - ps[1].x) * ly1, y = ps[1].y + (ps[4].y - ps[1].y) * ly1 }
@@ -151,11 +163,12 @@ else
     qy[1] = { x = ps[4].x + (ps[1].x - ps[4].x) * ly2, y = ps[4].y + (ps[1].y - ps[4].y) * ly2 }
 end
 
-x0, y0 = cal_pos(qx[1], qy[1])
-x1, y1 = cal_pos(qx[2], qy[1])
-x2, y2 = cal_pos(qx[2], qy[2])
-x3, y3 = cal_pos(qx[1], qy[2])
+local x0, y0 = cal_pos(qx[1], qy[1])
+local x1, y1 = cal_pos(qx[2], qy[1])
+local x2, y2 = cal_pos(qx[2], qy[2])
+local x3, y3 = cal_pos(qx[1], qy[2])
 
+local tpw_max, tph_max, tpw_min, tph_min
 if ora == 1 then
     tpw_max = math.max(x3, x2, x1, x0, w2)
     tph_max = math.max(y3, y2, y1, y0, h2)
@@ -168,10 +181,10 @@ else
     tph_min = math.min(y3, y2, y1, y0)
 end
 
-tpw = tpw_max - tpw_min
-tph = tph_max - tph_min
-cx = (tpw_max + tpw_min) / 2
-cy = (tph_max + tph_min) / 2
+local tpw = tpw_max - tpw_min
+local tph = tph_max - tph_min
+local cx = (tpw_max + tpw_min) / 2
+local cy = (tph_max + tph_min) / 2
 
 obj.setoption("drawtarget", "tempbuffer", tpw, tph)
 -- obj.setoption("antialias", ANT)
@@ -185,7 +198,7 @@ end
 if tar == 1 then
     x0, x1, x2, x3 = x0 - cx, x1 - cx, x2 - cx, x3 - cx
     y0, y1, y2, y3 = y0 - cy, y1 - cy, y2 - cy, y3 - cy
-    u0, v0, u1, v1, u2, v2, u3, v3 =
+    local u0, v0, u1, v1, u2, v2, u3, v3 =
         ps[1].x + w2, ps[1].y + h2, ps[2].x + w2, ps[2].y + h2, ps[3].x + w2, ps[3].y + h2, ps[4].x + w2, ps[4].y + h2
 
     if AND(reverse_mode, 1) == 1 then
@@ -203,9 +216,9 @@ else
     local vertices = {}
     for i = 0, division_count - 1 do
         for j = 0, division_count - 1 do
-            lx1 = (1 - ss ^ (dx + i / division_count)) / (1 - ss)
-            lx2 = (1 - ss ^ (dx + (i + 1) / division_count)) / (1 - ss)
-            qx = {}
+            local lx1 = (1 - ss ^ (dx + i / division_count)) / (1 - ss)
+            local lx2 = (1 - ss ^ (dx + (i + 1) / division_count)) / (1 - ss)
+            local qx = {}
 
             if bmuki > 0 then
                 qx[1] = { x = ps[1].x + (ps[2].x - ps[1].x) * lx1, y = ps[1].y + (ps[2].y - ps[1].y) * lx1 }
@@ -215,9 +228,9 @@ else
                 qx[1] = { x = ps[2].x + (ps[1].x - ps[2].x) * lx2, y = ps[2].y + (ps[1].y - ps[2].y) * lx2 }
             end
 
-            ly1 = (1 - tt ^ (dy + j / division_count)) / (1 - tt)
-            ly2 = (1 - tt ^ (dy + (j + 1) / division_count)) / (1 - tt)
-            qy = {}
+            local ly1 = (1 - tt ^ (dy + j / division_count)) / (1 - tt)
+            local ly2 = (1 - tt ^ (dy + (j + 1) / division_count)) / (1 - tt)
+            local qy = {}
 
             if cmuki > 0 then
                 qy[1] = { x = ps[1].x + (ps[4].x - ps[1].x) * ly1, y = ps[1].y + (ps[4].y - ps[1].y) * ly1 }
@@ -227,10 +240,11 @@ else
                 qy[1] = { x = ps[4].x + (ps[1].x - ps[4].x) * ly2, y = ps[4].y + (ps[1].y - ps[4].y) * ly2 }
             end
 
-            x0, y0 = cal_pos(qx[1], qy[1])
-            x1, y1 = cal_pos(qx[2], qy[1])
-            x2, y2 = cal_pos(qx[2], qy[2])
-            x3, y3 = cal_pos(qx[1], qy[2])
+            local x0, y0 = cal_pos(qx[1], qy[1])
+            local x1, y1 = cal_pos(qx[2], qy[1])
+            local x2, y2 = cal_pos(qx[2], qy[2])
+            local x3, y3 = cal_pos(qx[1], qy[2])
+            local u0, u1, v0, v1
 
             if bmuki < 0 then
                 u1 = w * (1 - i / division_count)

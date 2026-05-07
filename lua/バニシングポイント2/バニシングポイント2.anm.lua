@@ -50,8 +50,11 @@ local lw = 4
 local line_vertices
 local preview_vertices
 local transform_vertices
+local ps, qs, vp, cp, iw, ih
+local vx, vy, bvx, bvy
+local zoom, w2, h2, L, qcp
 
-function LineDraw(p1, p2)
+local function LineDraw(p1, p2)
     local dx = p2.x - p1.x
     local dy = p2.y - p1.y
     local r = math.sqrt(dx * dx + dy * dy)
@@ -81,7 +84,7 @@ function LineDraw(p1, p2)
     }
 end
 
-function sdp(a, b)
+local function sdp(a, b)
     preview_vertices[#preview_vertices + 1] = {
         ps[a].x - vx,
         ps[a].y - vy,
@@ -106,7 +109,7 @@ function sdp(a, b)
     }
 end
 
-function dtd(a, b)
+local function dtd(a, b)
     for i = 0, N - 1 do
         local xxa_1 = (1 - i / N) * ps[a].x + i / N * qs[a].x
         local xxa_2 = (1 - (i + 1) / N) * ps[a].x + (i + 1) / N * qs[a].x
@@ -118,8 +121,8 @@ function dtd(a, b)
         local yyb_1 = (1 - i / N) * ps[b].y + i / N * qs[b].y
         local yyb_2 = (1 - (i + 1) / N) * ps[b].y + (i + 1) / N * qs[b].y
 
-        K1 = L * ((qs[a].x - vp.x + cp.x) / (xxa_1 - vp.x + cp.x) - 1)
-        K2 = L * ((qs[a].x - vp.x + cp.x) / (xxa_2 - vp.x + cp.x) - 1)
+        local K1 = L * ((qs[a].x - vp.x + cp.x) / (xxa_1 - vp.x + cp.x) - 1)
+        local K2 = L * ((qs[a].x - vp.x + cp.x) / (xxa_2 - vp.x + cp.x) - 1)
         transform_vertices[#transform_vertices + 1] = {
             zoom * (qs[a].x - qcp.x),
             zoom * (qs[a].y - qcp.y),
@@ -273,7 +276,7 @@ else
     h2 = h / 2 --/zoom
     L = w * track_view_x_depth / 100
     qcp = { x = (qs[1].x + qs[2].x) / 2, y = (qs[1].y + qs[4].y) / 2 }
-    K = L * (Rsize - 1)
+    local K = L * (Rsize - 1)
 
     transform_vertices = {
         {
