@@ -123,11 +123,6 @@ local FBR = 0
 ---$check:マップ反転
 local check0 = false
 
--- NOTE: AviUtl2 beta36a現在、alpha_subで描画した部分のアルファ値がマイナスになると描画がおかしくなるので、u8の範囲で飽和させてから描画するようにする
-local function fix_alpha_sub_workaround(target)
-    obj.putpixeldata(target, obj.getpixeldata(target))
-end
-
 local Ct = { track_scatter_center_x, track_scatter_center_y }
 local Gr = { track_gravity_x, track_gravity_y, track_gravity_z }
 
@@ -150,8 +145,9 @@ if Pfig == 0 then
     local makeSpl = function(SI, spt)
         local drawSpl = function(paz_x, paz_y, HB2, HB4)
             obj.setoption("drawtarget", "tempbuffer", HB4, HB4)
+            local vertices = {}
             for i = 1, 6 do
-                obj.drawpoly(
+                vertices[#vertices + 1] = {
                     -paz_x[i],
                     paz_y[i],
                     0,
@@ -163,9 +159,9 @@ if Pfig == 0 then
                     0,
                     -paz_x[i + 1],
                     paz_y[i + 1],
-                    0
-                )
-                obj.drawpoly(
+                    0,
+                }
+                vertices[#vertices + 1] = {
                     -paz_x[i],
                     -paz_y[i],
                     0,
@@ -177,12 +173,14 @@ if Pfig == 0 then
                     0,
                     -paz_x[i + 1],
                     -paz_y[i + 1],
-                    0
-                )
+                    0,
+                }
             end
-            obj.drawpoly(-paz_x[7], paz_y[7], 0, paz_x[7], paz_y[7], 0, paz_x[7], -paz_y[7], 0, -paz_x[7], -paz_y[7], 0)
-            obj.drawpoly(paz_x[7], paz_y[7], 0, paz_x[8], paz_y[8], 0, paz_x[8], -paz_y[8], 0, paz_x[7], -paz_y[7], 0)
-            obj.drawpoly(
+            vertices[#vertices + 1] =
+                { -paz_x[7], paz_y[7], 0, paz_x[7], paz_y[7], 0, paz_x[7], -paz_y[7], 0, -paz_x[7], -paz_y[7], 0 }
+            vertices[#vertices + 1] =
+                { paz_x[7], paz_y[7], 0, paz_x[8], paz_y[8], 0, paz_x[8], -paz_y[8], 0, paz_x[7], -paz_y[7], 0 }
+            vertices[#vertices + 1] = {
                 -paz_x[7],
                 paz_y[7],
                 0,
@@ -194,10 +192,13 @@ if Pfig == 0 then
                 0,
                 -paz_x[7],
                 -paz_y[7],
-                0
-            )
-            obj.drawpoly(paz_x[8], paz_y[8], 0, HB2, paz_y[8], 0, HB2, -paz_y[8], 0, paz_x[8], -paz_y[8], 0)
-            obj.drawpoly(-paz_x[8], paz_y[8], 0, -HB2, paz_y[8], 0, -HB2, -paz_y[8], 0, -paz_x[8], -paz_y[8], 0)
+                0,
+            }
+            vertices[#vertices + 1] =
+                { paz_x[8], paz_y[8], 0, HB2, paz_y[8], 0, HB2, -paz_y[8], 0, paz_x[8], -paz_y[8], 0 }
+            vertices[#vertices + 1] =
+                { -paz_x[8], paz_y[8], 0, -HB2, paz_y[8], 0, -HB2, -paz_y[8], 0, -paz_x[8], -paz_y[8], 0 }
+            obj.drawpoly(vertices)
         end
 
         local paz_x, paz_y
@@ -227,8 +228,6 @@ if Pfig == 0 then
         obj.draw(SI * se, 0, 0, 1, 1, 0, 0, 90)
         obj.draw(-SI * se, 0, 0, 1, 1, 0, 0, 90)
 
-        fix_alpha_sub_workaround("tempbuffer")
-
         obj.copybuffer("object", "tempbuffer")
         obj.effect("縁取り", "サイズ", spt, "ぼかし", 0)
         local w2, h2 = obj.getpixel()
@@ -252,7 +251,6 @@ if Pfig == 0 then
             end
         end
 
-        fix_alpha_sub_workaround("tempbuffer")
         obj.copybuffer("object", "tempbuffer")
 
         obj.setoption("drawtarget", "framebuffer")
@@ -261,6 +259,7 @@ if Pfig == 0 then
         local SI = SI * zoom
         local Bw2 = Bw2 * zoom
         local Bh2 = Bh2 * zoom
+        local vertices = {}
 
         for j = -ny, ny do
             local yy = SI * j
@@ -302,8 +301,12 @@ if Pfig == 0 then
                 y0, y1, y2, y3 = y0 + itiy, y1 + itiy, y2 + itiy, y3 + itiy
                 z0, z1, z2, z3 = z0 + itiz, z1 + itiz, z2 + itiz, z3 + itiz
 
-                obj.drawpoly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3)
+                vertices[#vertices + 1] =
+                    { x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3 }
             end
+        end
+        if #vertices > 0 then
+            obj.drawpoly(vertices)
         end
     end
 
@@ -407,7 +410,6 @@ if Pfig == 0 then
     if loadmap == 0 then
         GmakeMapData(mapnum, nx, ny, T)
     else
-        error("未実装です")
         GmakeMapDataF(mapnum, nx, ny, T)
     end
 
@@ -543,7 +545,6 @@ else
             obj.draw()
         end
 
-        fix_alpha_sub_workaround("tempbuffer")
         obj.copybuffer("cache:PC1", "tmp")
         if Pfig ~= 2 and Pfig ~= 6 and Pfig ~= 10 and Pfig ~= 14 and Pfig ~= 19 and Pfig ~= 17 and Pfig ~= 22 then
             obj.setoption("drawtarget", "tempbuffer", SID, SID)
@@ -561,7 +562,6 @@ else
             obj.draw(0, -SI, 0)
             obj.draw(0, SI, 0)
 
-            fix_alpha_sub_workaround("tempbuffer")
             obj.copybuffer("cache:PC2", "tmp")
             obj.load("figure", "四角形", 0xffffff, SI * 2)
             obj.setoption("drawtarget", "tempbuffer", SID, SID)
@@ -570,8 +570,6 @@ else
             obj.copybuffer("obj", "cache:PC2")
             obj.setoption("blend", "alpha_sub")
             obj.draw()
-
-            fix_alpha_sub_workaround("tempbuffer")
         end
         obj.copybuffer("cache:PC2", "tmp")
     end
@@ -609,13 +607,11 @@ else
             obj.draw(32 * bai, -104 * bai + 100 * bai, 0, 1 / se)
             obj.draw(-32 * bai, -104 * bai + 100 * bai, 0, 1 / se)
 
-            fix_alpha_sub_workaround("tempbuffer")
             obj.copybuffer("cache:Img2", "tmp")
             obj.load("figure", "四角形", 0xffffff, 1)
             obj.setoption("blend", "alpha_sub")
             obj.drawpoly(-SI2, 0, 0, SI2, 0, 0, SI2, SI2, 0, -SI2, SI2, 0)
 
-            fix_alpha_sub_workaround("tempbuffer")
             obj.copybuffer("cache:Img1", "tmp")
             obj.copybuffer("tmp", "cache:Img2")
             obj.load("figure", "四角形", 0xffffff, 1)
@@ -643,8 +639,6 @@ else
             elseif Pfig == 8 then
                 obj.draw(0, SI + 1, 0)
             end
-
-            fix_alpha_sub_workaround("tempbuffer")
         elseif Pfig >= 9 and Pfig <= 22 then
             local x0, x1, x2, x3
             local y0, y1, y2, y3
@@ -826,12 +820,13 @@ else
     local T = MakeMap(SI, mapnum, mapdeg, nx, ny, nxd, nyd, Cmap, loadmap, check0, apt, limap)
     --表示
     obj.setoption("drawtarget", "tempbuffer")
+    local vertices = {}
     DrawPoly = ({
         function(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3)
-            obj.drawpoly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3)
+            vertices[#vertices + 1] = { x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3 }
         end,
         function(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3)
-            obj.drawpoly(x3, y3, z3, x2, y2, z2, x1, y1, z1, x0, y0, z0, u3, v3, u2, v2, u1, v1, u0, v0)
+            vertices[#vertices + 1] = { x3, y3, z3, x2, y2, z2, x1, y1, z1, x0, y0, z0, u3, v3, u2, v2, u1, v1, u0, v0 }
         end,
     })[FBR + 1]
     local sht = ((nx + ny) % 2 == Csht) and 0 or 1
@@ -851,10 +846,10 @@ else
                 end
             end
 
-            fix_alpha_sub_workaround("tempbuffer")
             obj.copybuffer("obj", "tmp")
             obj.setoption("drawtarget", "framebuffer")
             obj.setoption("blend", 0)
+            vertices = {}
             for j = -ny + dj, ny, 2 do
                 local yy = SIz * j
                 for i = -nx + di, nx, 2 do
@@ -906,6 +901,9 @@ else
                     z0, z1, z2, z3 = z0 + itiz, z1 + itiz, z2 + itiz, z3 + itiz
                     DrawPoly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3)
                 end
+            end
+            if #vertices > 0 then
+                obj.drawpoly(vertices)
             end
         end
     end
