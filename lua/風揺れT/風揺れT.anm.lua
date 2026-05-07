@@ -239,24 +239,28 @@ WindShakeT = function(n)
     end
     obj.setoption("drawtarget", "tempbuffer", WW, HH)
     obj.setoption("blend", "alpha_add2")
+    local vertices = {}
     local drawpolyT = (function()
         if Frd == 1 then
             return function(x0, y0, x1, y1, x2, y2, x3, y3, v0, v1)
                 local xc, yc = (x0 + x1 + x2 + x3) / 4, (y0 + y1 + y2 + y3) / 4
                 local vc = (v0 + v1) / 2
-                obj.drawpoly(x0, y0, 0, x1, y1, 0, xc, yc, 0, xc, yc, 0, 0, v0, w, v0, w2, vc, w2, vc)
-                obj.drawpoly(x1, y1, 0, x2, y2, 0, xc, yc, 0, xc, yc, 0, w, v0, w, v1, w2, vc, w2, vc)
-                obj.drawpoly(x3, y3, 0, x0, y0, 0, xc, yc, 0, xc, yc, 0, 0, v1, 0, v0, w2, vc, w2, vc)
-                obj.drawpoly(x2, y2, 0, x3, y3, 0, xc, yc, 0, xc, yc, 0, w, v1, 0, v1, w2, vc, w2, vc)
+                vertices[#vertices + 1] = { x0, y0, 0, x1, y1, 0, xc, yc, 0, xc, yc, 0, 0, v0, w, v0, w2, vc, w2, vc }
+                vertices[#vertices + 1] = { x1, y1, 0, x2, y2, 0, xc, yc, 0, xc, yc, 0, w, v0, w, v1, w2, vc, w2, vc }
+                vertices[#vertices + 1] = { x3, y3, 0, x0, y0, 0, xc, yc, 0, xc, yc, 0, 0, v1, 0, v0, w2, vc, w2, vc }
+                vertices[#vertices + 1] = { x2, y2, 0, x3, y3, 0, xc, yc, 0, xc, yc, 0, w, v1, 0, v1, w2, vc, w2, vc }
             end
         else
             return function(x0, y0, x1, y1, x2, y2, x3, y3, v0, v1)
-                obj.drawpoly(x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, 0, v0, w, v0, w, v1, 0, v1)
+                vertices[#vertices + 1] = { x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, 0, v0, w, v0, w, v1, 0, v1 }
             end
         end
     end)()
     for i = 0, N do
         drawpolyT(X1[i - 1], Y1[i - 1], X2[i - 1], Y2[i - 1], X2[i], Y2[i], X1[i], Y1[i], V[i - 1], V[i])
+    end
+    if #vertices > 0 then
+        obj.drawpoly(vertices)
     end
     if alp == 1 then
         obj.copybuffer("cache:col", "tmp")
@@ -270,9 +274,13 @@ WindShakeT = function(n)
         obj.copybuffer("obj", "tmp")
         obj.setoption("drawtarget", "tempbuffer", WW, HH)
         obj.setoption("blend", "alpha_add2")
+        vertices = {}
         for i = 0, N do
             --obj.drawpoly(X1[i-1],Y1[i-1],0, X2[i-1],Y2[i-1],0, X2[i],Y2[i],0, X1[i],Y1[i],0, 0,V[i-1], w,V[i-1], w,V[i], 0,V[i])
             drawpolyT(X1[i - 1], Y1[i - 1], X2[i - 1], Y2[i - 1], X2[i], Y2[i], X1[i], Y1[i], V[i - 1], V[i])
+        end
+        if #vertices > 0 then
+            obj.drawpoly(vertices)
         end
         obj.copybuffer("obj", "tmp")
         obj.effect("ルミナンスキー", "基準輝度", 0, "ぼかし", 4096, "type", 1)
