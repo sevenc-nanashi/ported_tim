@@ -1,0 +1,35 @@
+[ ported_tim v{version} ]
+
+ティム様のスクリプトをAviUtl2用に移植するプロジェクト。
+
+原作者：ティム様（@TimNoHeya / https://tim3.web.fc2.com ）
+改変：名無し。（@sevenc_nanashi / https://sevenc7c.com ）
+配布：https://github.com/sevenc-nanashi/ported_tim
+
+[ ライセンス情報 ]
+
+このプラグイン集で使用されているサードパーティライブラリのライセンス情報は以下の通りです：
+
+[[ ライセンスの概要 ]]
+
+{{#each overview}}
+- {{name}} x{{count}}
+{{/each}}
+
+[[ ライセンスの全文 ]]
+
+{{#each licenses}}
+
+[[[ {{name}} ]]]
+
+使用しているクレート：
+
+{{#each used_by}}
+- {{crate.name}} {{crate.version}} ({{#if crate.repository}}{{crate.repository}}{{else}}https://crates.io/crates/{{crate.name}}{{/if}})
+{{/each}}
+
+```
+{{{text}}}
+```
+
+{{/each}}

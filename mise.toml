@@ -1,3 +1,6 @@
+[plugins]
+cargo-prebuilt = "https://github.com/sevenc-nanashi/mise-cargo-prebuilt"
+
 [tools]
 bun = "latest"
 "github:karoterra/aviutl2-aulua" = "latest"
@@ -5,6 +8,7 @@ bun = "latest"
 "npm:rulesync" = "latest"
 ruby = "latest"
 stylua = "latest"
+"cargo-prebuilt:cargo-edit" = "latest"
 
 [settings]
 npm = { package_manager = "bun" }

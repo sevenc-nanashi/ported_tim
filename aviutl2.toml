@@ -18,6 +18,8 @@ aviutl2_version = "latest"
 catalog_dependencies = ["sevenc-nanashi.aviutl2-rs.rusty_image_rs_input", "sevenc-nanashi.aviutl2-rs.rusty_scripts_search", "sevenc-nanashi.clipboard-aux2", "sigma-axis.Basic_S"]
 
 [release]
+prebuild = ["cargo about generate ./about.hbs -o ./release/package.txt"]
+package_template = "./release/package.txt"
 
 [artifacts.tim2-mod2]
 destination = "Script/tim2.mod2"
