@@ -119,6 +119,16 @@ else
     Cy = obj.getvalue("layer" .. track_follow_center_layer .. ".y")
 end
 
+local vertices_buffer = {}
+local function push_poly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3)
+    table.insert(vertices_buffer, {x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0, 0, obj.w, 0, obj.w, obj.h, obj.h, 0})
+end
+local function flush_polys()
+    obj.drawpoly(vertices_buffer)
+    vertices_buffer = {}
+end
+
+
 local P = track_spawn_probability
 local ws = track_line_width
 local Cen = track_center * 0.01
@@ -165,6 +175,7 @@ local const1 = 2 * math.pi / maxN
 local const2 = obj.rand(0, 3600, -1, seed + 4000) * math.pi / 1800
 local a = screen_w / math.sqrt(2)
 local b = screen_h / math.sqrt(2)
+
 for i = 1, maxN do
     if calP[i] == 1 then
         local rad = const1 * i + const2
@@ -187,9 +198,10 @@ for i = 1, maxN do
         local dy = (y1 + y2) / 2 - y0
 
         if dx * xm + dy * ym > 0 then
-            obj.drawpoly(x0, y0, 0, x0, y0, 0, x1, y1, 0, x2, y2, 0)
+            push_poly(x0, y0, 0, x0, y0, 0, x1, y1, 0, x2, y2, 0)
         end
     end
 end
+flush_polys()
 obj.load("tempbuffer")
 obj.effect("ぼかし", "範囲", track_blur, "サイズ固定", 1)
