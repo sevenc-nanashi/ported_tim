@@ -426,7 +426,7 @@ for i = 1, num do
     Tracking.X[1][i] = pos[2 * i - 1]
     Tracking.Y[1][i] = pos[2 * i]
 end
-if obj.getoption("script_name", 1) ~= "TrackingラインEasy(頂点追加)@tim.anm2" then
+if obj.getoption("script_name", 1) ~= "TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2" then
     Tracking.DoTrackingLineEasy(Tracking)
     Tracking = nil
 end
