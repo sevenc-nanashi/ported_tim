@@ -130,18 +130,18 @@ dependencies = [
 
 [[package]]
 name = "aviutl2"
-version = "0.20.3"
+version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "32d27a19422d79821cb684f4d5b224a943ba49ec85773cf3e8724e950d9fbf48"
+checksum = "d588f52340f89ac13b0f3415eeee53ca91cbcbca2c33824e37d913e71c5d5533"
 dependencies = [
  "anyhow",
- "aviutl2-alias 0.20.3",
- "aviutl2-macros 0.20.3",
- "aviutl2-sys 0.20.3",
+ "aviutl2-alias 0.21.0",
+ "aviutl2-macros 0.21.0",
+ "aviutl2-sys 0.21.0",
  "comptime-if",
  "dashmap",
  "duplicate",
- "env_filter",
+ "env_filter 0.1.4",
  "half",
  "num-rational",
  "parking_lot",
@@ -158,18 +158,18 @@ dependencies = [
 
 [[package]]
 name = "aviutl2"
-version = "0.21.0"
+version = "0.27.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d588f52340f89ac13b0f3415eeee53ca91cbcbca2c33824e37d913e71c5d5533"
+checksum = "ec1a78aa74a055e88789871bdcaaeabcda397cfdeb3eac10c7e5edf23317af72"
 dependencies = [
  "anyhow",
- "aviutl2-alias 0.21.0",
- "aviutl2-macros 0.21.0",
- "aviutl2-sys 0.21.0",
+ "aviutl2-alias 0.27.0",
+ "aviutl2-macros 0.27.0",
+ "aviutl2-sys 0.27.0",
  "comptime-if",
  "dashmap",
  "duplicate",
- "env_filter",
+ "env_filter 1.0.1",
  "half",
  "num-rational",
  "parking_lot",
@@ -186,17 +186,6 @@ dependencies = [
 
 [[package]]
 name = "aviutl2-alias"
-version = "0.20.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "01948ffc1032f75bda4d71063c21f030c0fc51df176ba5661283ca16b37b6d6d"
-dependencies = [
- "duplicate",
- "indexmap",
- "thiserror",
-]
-
-[[package]]
-name = "aviutl2-alias"
 version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d3b512c9b33ae5b4d007b2a4e63563cd6513fc0de98605ac2bd699221ea8c851"
@@ -207,18 +196,14 @@ dependencies = [
 ]
 
 [[package]]
-name = "aviutl2-macros"
-version = "0.20.3"
+name = "aviutl2-alias"
+version = "0.27.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "097928ffcfed3687c3c384f53b6f7012fe0a9b6b4b70759c6a4c973473bb347a"
+checksum = "fee2c69d0d921cf484c4dcdbc8025e7c90ed1e0760742c1aa52b185419d0b0dc"
 dependencies = [
- "decimal-rs",
- "either",
- "itertools",
- "proc-macro2",
- "quote",
- "strum",
- "syn",
+ "duplicate",
+ "indexmap",
+ "thiserror",
 ]
 
 [[package]]
@@ -232,17 +217,23 @@ dependencies = [
  "itertools",
  "proc-macro2",
  "quote",
- "strum",
+ "strum 0.27.2",
  "syn",
 ]
 
 [[package]]
-name = "aviutl2-sys"
-version = "0.20.3"
+name = "aviutl2-macros"
+version = "0.27.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a37e0d21bb4f61be6732a7e436def2b7145c5df120936297ee986f06e92167c1"
+checksum = "cd0f1dd1f2ea3948ad20e358f308f13007273e528e1f5f866fc99731f385e09b"
 dependencies = [
- "windows-sys",
+ "decimal-rs",
+ "either",
+ "itertools",
+ "proc-macro2",
+ "quote",
+ "strum 0.28.0",
+ "syn",
 ]
 
 [[package]]
@@ -250,6 +241,15 @@ name = "aviutl2-sys"
 version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca963cdced0d58e1e19814a2f4d60dbef5a9fc8e4595d9d54d7ba9713ab5c299"
+dependencies = [
+ "windows-sys",
+]
+
+[[package]]
+name = "aviutl2-sys"
+version = "0.27.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8df23e59a27181141da5b51436de6db2f530d674fb8a5a33b7a75fa6a6635aaa"
 dependencies = [
  "windows-sys",
 ]
@@ -460,6 +460,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "env_filter"
+version = "1.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "32e90c2accc4b07a8456ea0debdc2e7587bdd890680d71173a15d4ae604f6eef"
+dependencies = [
+ "log",
+ "regex",
+]
+
+[[package]]
 name = "equator"
 version = "0.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -499,6 +509,12 @@ dependencies = [
  "smallvec",
  "zune-inflate",
 ]
+
+[[package]]
+name = "fastrand"
+version = "2.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9f1f227452a390804cdb637b74a86990f2a7d7ba4b7d5693aac9b4dd6defd8d6"
 
 [[package]]
 name = "fax"
@@ -998,11 +1014,11 @@ name = "ported_tim"
 version = "0.1.0-preview.0"
 dependencies = [
  "anyhow",
- "aviutl2 0.20.3",
+ "aviutl2 0.27.0",
  "dashmap",
+ "fastrand",
  "image",
  "include_dir",
- "rand 0.10.0",
  "rayon",
 ]
 
@@ -1411,7 +1427,16 @@ version = "0.27.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "af23d6f6c1a224baef9d3f61e287d2761385a5b88fdab4eb4c6f11aeb54c4bcf"
 dependencies = [
- "strum_macros",
+ "strum_macros 0.27.2",
+]
+
+[[package]]
+name = "strum"
+version = "0.28.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9628de9b8791db39ceda2b119bbe13134770b56c138ec1d3af810d045c04f9bd"
+dependencies = [
+ "strum_macros 0.28.0",
 ]
 
 [[package]]
@@ -1419,6 +1444,18 @@ name = "strum_macros"
 version = "0.27.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7695ce3845ea4b33927c055a39dc438a45b059f7c1b3d91d38d10355fb8cbca7"
+dependencies = [
+ "heck",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "strum_macros"
+version = "0.28.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ab85eea0270ee17587ed4156089e10b9e6880ee688791d45a905f5b1ca36f664"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -1537,9 +1574,9 @@ dependencies = [
 
 [[package]]
 name = "tracing-subscriber"
-version = "0.3.22"
+version = "0.3.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2f30143827ddab0d256fd843b7a66d164e9f271cfa0dde49142c5ca0ca291f1e"
+checksum = "cb7f578e5945fb242538965c2d0b04418d38ec25c79d160cd279bf0731c8d319"
 dependencies = [
  "matchers",
  "nu-ansi-term",
@@ -1928,18 +1965,18 @@ checksum = "7a5a4b21e1a62b67a2970e6831bc091d7b87e119e7f9791aef9702e3bef04448"
 
 [[package]]
 name = "zerocopy"
-version = "0.8.40"
+version = "0.8.48"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a789c6e490b576db9f7e6b6d661bcc9799f7c0ac8352f56ea20193b2681532e5"
+checksum = "eed437bf9d6692032087e337407a86f04cd8d6a16a37199ed57949d415bd68e9"
 dependencies = [
  "zerocopy-derive",
 ]
 
 [[package]]
 name = "zerocopy-derive"
-version = "0.8.40"
+version = "0.8.48"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f65c489a7071a749c849713807783f70672b28094011623e200cb86dcb835953"
+checksum = "70e3cd084b1788766f53af483dd21f93881ff30d7320490ec3ef7526d203bad4"
 dependencies = [
  "proc-macro2",
  "quote",
