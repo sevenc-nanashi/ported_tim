@@ -23,10 +23,6 @@ local color = 0xffffff
 local Pfig = track_p
 local SI = math.floor(track_size)
 
--- NOTE: AviUtl2 beta36a現在、alpha_subで描画した部分のアルファ値がマイナスになると描画がおかしくなるので、u8の範囲で飽和させてから描画するようにする
-local function fix_alpha_sub_workaround(target)
-    obj.putpixeldata(target, obj.getpixeldata(target))
-end
 
 local DrawUnitBase = function(SI2, ROT, ...)
     local arg = { ... }
@@ -128,15 +124,11 @@ if Pfig >= 1 and Pfig <= 4 then
     obj.draw(32 * bai, -104 * bai + 100 * bai, 0, 1 / se)
     obj.draw(-32 * bai, -104 * bai + 100 * bai, 0, 1 / se)
 
-    fix_alpha_sub_workaround("tempbuffer")
-
     obj.copybuffer("cache:Img2", "tempbuffer")
 
     obj.load("figure", "四角形", 0xffffff, 1)
     obj.setoption("blend", "alpha_sub")
     obj.drawpoly(-SI2, 0, 0, SI2, 0, 0, SI2, SI2, 0, -SI2, SI2, 0)
-
-    fix_alpha_sub_workaround("tempbuffer")
 
     obj.copybuffer("cache:Img1", "tempbuffer")
 
@@ -224,5 +216,3 @@ then
 end
 obj.copybuffer("obj", "tmp")
 obj.effect("単色化", "輝度を保持する", 0, "color", color)
-
-fix_alpha_sub_workaround("object")

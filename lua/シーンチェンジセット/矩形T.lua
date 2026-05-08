@@ -100,9 +100,6 @@ x2, y2 = ROT(w2, h2, cos, sin)
 x3, y3 = ROT(-w2, h2, cos, sin)
 obj.drawpoly(x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0)
 
--- NOTE: AviUtl2 beta36a現在、alpha_subで描画した部分のアルファ値がマイナスになると描画がおかしくなるので、u8の範囲で飽和させてから描画するようにする
-obj.putpixeldata("tempbuffer", obj.getpixeldata("tempbuffer"))
-
 obj.copybuffer("object", "tempbuffer")
 obj.setoption("drawtarget", "framebuffer")
 obj.draw()
