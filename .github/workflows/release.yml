@@ -43,7 +43,7 @@ jobs:
         shell: bash
         run: |
           mkdir release
-          cargo set-version "${{ github.event.inputs.version }}"
+          cargo set-version "${{ github.event.inputs.version }}" -p ported_tim
           au2 release --set-version "${{ github.event.inputs.version }}"
 
       - name: Commit version change
