@@ -1,4 +1,5 @@
 --label:${ROOT_CATEGORY}\加工\@T_Filter_Module
+--filter
 ---$track:しきい値
 ---min=0
 ---max=255

@@ -1,7 +1,6 @@
 use aviutl2::anyhow;
 
 use anyhow::{Result, anyhow, bail};
-use rand::{RngExt, SeedableRng};
 use rayon::prelude::*;
 use std::sync::{LazyLock, Mutex};
 
@@ -76,16 +75,16 @@ pub fn cracked_glass(
 
     let mut queue = vec![0usize; pixel_count];
     let seed = (pt as u64).wrapping_mul(pt as u64).wrapping_mul(0x9fbf1);
-    let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
+    let mut rng = fastrand::Rng::with_seed(seed);
 
     for idx in 0..pixel_count {
         if mask[idx] == 0 {
             continue;
         }
 
-        let r = rng.random::<u8>() as u32;
-        let g = rng.random::<u8>() as u32;
-        let b = rng.random::<u8>() as u32;
+        let r = rng.u8(0..=u8::MAX) as u32;
+        let g = rng.u8(0..=u8::MAX) as u32;
+        let b = rng.u8(0..=u8::MAX) as u32;
         let color = (r << 16) | (g << 8) | b | 0xff00_0000;
 
         let mut top = 1usize;

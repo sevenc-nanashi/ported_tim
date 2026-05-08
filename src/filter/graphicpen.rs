@@ -1,6 +1,4 @@
 use aviutl2::anyhow::{Result, bail};
-use rand::rngs::StdRng;
-use rand::{RngExt, SeedableRng};
 
 pub(crate) fn calculate_threshold(image_buffer: &[u8], width: usize, height: usize) -> Result<f64> {
     if width == 0 || height == 0 {
@@ -96,19 +94,15 @@ pub(crate) fn graphicpen(
 
     let s = seed as i64;
     let rng_seed = 654_321i64.wrapping_mul(s.wrapping_mul(s).wrapping_mul(s)) as u64;
-    let mut rng = StdRng::seed_from_u64(rng_seed);
-    let mut random_table = vec![0.0f64; 100_000];
-    for v in &mut random_table {
-        *v = (rng.random_range(0..10_000) as f64) / 10_000.0;
-    }
+    let mut rng = fastrand::Rng::with_seed(rng_seed as _ );
 
     let mut out = gray.clone();
     for y in len..(height - len) {
         for x in len..(width - len) {
             let idx = y * width + x;
             let px = out[idx];
-            let r0 = random_table[idx % random_table.len()];
-            let r1 = random_table[(idx + 50_000) % random_table.len()];
+            let r0 = rng.f64_inclusive();
+            let r1 = rng.f64_inclusive();
 
             if px <= threshold_mode {
                 out[idx] = 0;

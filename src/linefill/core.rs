@@ -1,9 +1,5 @@
-use rand::rngs::StdRng;
-use rand::{RngExt, SeedableRng};
 use rayon::prelude::*;
 
-/// Ghidra 解析ベースの `T_LineFill_Module.LineFill(...)` 互換実装。
-/// 対応元: FUN_10001000 + FUN_1000a180/a1f0/a2e0/a370/a400
 pub fn line_fill(
     image_buffer: &[u8],
     width: usize,
@@ -86,10 +82,10 @@ pub fn line_fill(
     if random_x > 0.0 || random_y > 0.0 {
         let s = seed as i64;
         let rng_seed = s.wrapping_mul(s).wrapping_mul(s).wrapping_mul(0x9fbf1) as u64;
-        let mut rng = StdRng::seed_from_u64(rng_seed);
+        let mut rng = fastrand::Rng::with_seed(rng_seed);
         for i in 0..n {
-            let rx = ((rng.random_range(0..10_000) as f64) * 0.0001 - 0.5) * random_x * 2.0;
-            let ry = ((rng.random_range(0..10_000) as f64) * 0.0001 - 0.5) * random_y * 2.0;
+            let rx = (rng.f64_inclusive() - 0.5) * random_x * 2.0;
+            let ry = (rng.f64_inclusive() - 0.5) * random_y * 2.0;
             pts[i * 2] += rx;
             pts[i * 2 + 1] += ry;
         }

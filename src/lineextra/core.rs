@@ -41,24 +41,6 @@ impl LineExtraState {
     }
 }
 
-#[derive(Clone, Copy)]
-struct LegacyRand {
-    holdrand: u32,
-}
-
-impl LegacyRand {
-    fn seeded(seed: i32) -> Self {
-        Self {
-            holdrand: seed as u32,
-        }
-    }
-
-    fn rand15(&mut self) -> i32 {
-        self.holdrand = self.holdrand.wrapping_mul(0x343fd).wrapping_add(0x269ec3);
-        ((self.holdrand >> 16) & 0x7fff) as i32
-    }
-}
-
 fn rgb_to_bgr(color: u32) -> (u8, u8, u8) {
     let r = ((color >> 16) & 0xff) as u8;
     let g = ((color >> 8) & 0xff) as u8;
@@ -195,7 +177,7 @@ pub fn line_ext(
         });
 
     if particle_width > 0 {
-        let mut rng = LegacyRand::seeded(seed);
+        let mut rng = fastrand::Rng::with_seed(seed as u64);
         let mut moved = vec![0u8; required];
         let dir0 = (dir_start_deg as f64).to_radians();
         let dir1 = (dir_end_deg as f64).to_radians();
@@ -210,9 +192,9 @@ pub fn line_ext(
                     continue;
                 }
 
-                let r = rng.rand15() as f64 / 32767.0;
+                let r = rng.f64_inclusive();
                 let ang = dir0 + dir_span * r;
-                let dist = (rng.rand15() % (w + 1)) as f64;
+                let dist = (rng.i32(0..=32767) % (w + 1)) as f64;
                 let dx = (ang.cos() * dist).round() as isize;
                 let dy = (ang.sin() * dist).round() as isize;
 

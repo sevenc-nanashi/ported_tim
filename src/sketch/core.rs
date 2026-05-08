@@ -1,4 +1,3 @@
-use rand::{RngExt, SeedableRng, rngs::StdRng};
 use rayon::prelude::*;
 
 const HALF: f64 = 0.5;
@@ -62,18 +61,21 @@ pub fn sketch(
     let grid_width = (half_grid_x * 2 + 1) as usize;
     let grid_height = (half_grid_y * 2 + 1) as usize;
     let grid_count = grid_width * grid_height;
-    let mut rng = StdRng::seed_from_u64(seed as u64);
+    let mut rng = fastrand::Rng::with_seed(seed as u64);
 
     let mut position_noise = Vec::with_capacity(grid_count);
     for _ in 0..grid_count {
-        position_noise.push([rng.random_range(0..0x1000), rng.random_range(0..0x1000)]);
+        position_noise.push([
+            rng.i32(0..0x1000),
+            rng.i32(0..0x1000),
+        ]);
     }
     let mut color_noise = Vec::with_capacity(grid_count);
     for _ in 0..grid_count {
         color_noise.push([
-            rng.random_range(0..0x1000),
-            rng.random_range(0..0x1000),
-            rng.random_range(0..0x1000),
+            rng.i32(0..0x1000),
+            rng.i32(0..0x1000),
+            rng.i32(0..0x1000),
         ]);
     }
 
