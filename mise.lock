@@ -52,6 +52,10 @@ url = "https://github.com/oven-sh/bun/releases/download/bun-v1.3.13/bun-windows-
 version = "0.13.10"
 backend = "cargo-prebuilt"
 
+[[tools."cargo:cargo-about"]]
+version = "0.8.4"
+backend = "cargo:cargo-about"
+
 [[tools."github:karoterra/aviutl2-aulua"]]
 version = "0.8.0"
 backend = "github:karoterra/aviutl2-aulua"
