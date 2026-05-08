@@ -78,8 +78,7 @@ float4 graphicpen(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
 
     uint idx = origin.x + origin.y * width;
 
-    uint seedBase =
-        (uint)(654321 * constants.seed * constants.seed * constants.seed);
+    uint seedBase = hash(uint(constants.seed * 65536.0));
 
     float r0 = rand01(seedBase ^ idx ^ 0x12345678u);
     float r1 = rand01(seedBase ^ idx ^ 0x87654321u);
