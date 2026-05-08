@@ -1,5 +1,5 @@
 struct Constants {
-  float saturation;
+  float mixRate;
   float shrinkRate;
   float rotationRad;
   float reverse;
@@ -28,31 +28,46 @@ float apply_boundary_correction(float t, float dc) {
   return clamp((t - clampedDc) / span, 0.0, 1.0);
 }
 
-float3 hsv_to_rgb(float h, float s, float v) {
-  float wrappedHue = frac01(h) * 6.0;
-  float sector = floor(wrappedHue);
-  float t = wrappedHue - sector;
+float smooth_mix(float t, float mixRate) {
+  t = saturate(t);
+  float smooth = t * t * (3.0 - 2.0 * t);
+  return lerp(smooth, t, mixRate);
+}
 
-  float p = v * (1.0 - s);
-  float q = v * (1.0 - s * t);
-  float u = v * (1.0 - s * (1.0 - t));
+float ramp_up(float phase, float start, float end, float mixRate) {
+  return smooth_mix((phase - start) / (end - start), mixRate);
+}
 
-  if (sector < 1.0) {
-    return float3(v, u, p);
+float ramp_down(float phase, float start, float end, float mixRate) {
+  return 1.0 - ramp_up(phase, start, end, mixRate);
+}
+
+float3 rainbow_to_rgb(float phase, float mixRate) {
+  float r = 0.0;
+  float g = 0.0;
+  float b = 0.0;
+
+  if (phase < 1.0 / 6.0) {
+    r = 1.0;
+    g = ramp_up(phase, 0.0, 1.0 / 6.0, mixRate);
+  } else if (phase < 1.0 / 3.0) {
+    r = ramp_down(phase, 1.0 / 6.0, 1.0 / 3.0, mixRate);
+    g = 1.0;
+  } else if (phase < 0.5) {
+    g = 1.0;
+    b = ramp_up(phase, 1.0 / 3.0, 0.5, mixRate);
+  } else if (phase < 2.0 / 3.0) {
+    g = ramp_down(phase, 0.5, 2.0 / 3.0, mixRate);
+    b = 1.0;
+  } else if (phase < 5.0 / 6.0) {
+    r = ramp_up(phase, 2.0 / 3.0, 5.0 / 6.0, mixRate);
+    b = 1.0;
+  } else {
+    r = 1.0;
+    b = ramp_down(phase, 5.0 / 6.0, 1.0, mixRate);
   }
-  if (sector < 2.0) {
-    return float3(q, v, p);
-  }
-  if (sector < 3.0) {
-    return float3(p, v, u);
-  }
-  if (sector < 4.0) {
-    return float3(p, q, v);
-  }
-  if (sector < 5.0) {
-    return float3(u, p, v);
-  }
-  return float3(v, p, q);
+
+  return float3(r, g, b);
 }
 
 float4 rainbow_gradation(float4 pos : SV_Position, float2 uv : TEXCOORD0)
@@ -75,7 +90,7 @@ float4 rainbow_gradation(float4 pos : SV_Position, float2 uv : TEXCOORD0)
 
   float sinR = sin(constants.rotationRad);
   float cosR = cos(constants.rotationRad);
-  float sat = clamp(constants.saturation * 0.01, 0.0, 1.0);
+  float mixRate = clamp(constants.mixRate * 0.01, 0.0, 1.0);
   float shift01 = constants.shift * 0.01;
   float dc = max(constants.boundaryCorrection, 0.0);
   float linearDen = h * h * sinR * sinR + w * w * cosR * cosR;
@@ -113,7 +128,7 @@ float4 rainbow_gradation(float4 pos : SV_Position, float2 uv : TEXCOORD0)
   float segmentT = apply_boundary_correction(segment - segmentIndex, dc);
   phase = (segmentIndex + segmentT) / 6.0;
 
-  float3 rgb = hsv_to_rgb(phase, sat, 1.0);
+  float3 rgb = rainbow_to_rgb(phase, mixRate);
   rgb = round(rgb * 255.0) / 255.0;
-  return float4(rgb, src.a);
+  return float4(rgb * src.a, src.a);
 }

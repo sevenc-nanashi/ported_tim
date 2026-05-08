@@ -18,7 +18,7 @@ local track_rotation = 0
 ---step=0.1
 local track_shift = 0
 
----$track:元画像の不透明度
+---$track:元画像
 ---min=0
 ---max=100
 ---step=0.1
@@ -33,11 +33,11 @@ local rev = 0
 ---$check:繰返し
 local rep = 0
 
----$track:彩度
+---$track:混色度合
 ---min=0
 ---max=100
 ---step=0.1
-local track_saturation = 30
+local track_mix_rate = 30
 
 ---$track:境界補正
 ---min=0
@@ -75,7 +75,7 @@ obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 
 obj.pixelshader("rainbow_gradation", "object", "object", {
-    track_saturation,
+    track_mix_rate,
     track_shrink_rate * 0.01,
     math.rad(track_rotation),
     rev,
