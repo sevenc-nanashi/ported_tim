@@ -51,6 +51,9 @@ local auto_threshold = true
 
 local T_Filter_Module = obj.module("tim2")
 
+--[[pixelshader@graphicpen
+---$include "./shaders/graphicpen.hlsl"
+]]
 --[[pixelshader@graphicpen_gray_color
 ---$include "./shaders/graphicpen_gray_color.hlsl"
 ]]
@@ -65,20 +68,59 @@ end
 direction = math.floor(((direction or 2) % 4))
 local r1, g1, b1 = RGB(col1)
 local r2, g2, b2 = RGB(col2)
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Filter_Module.filter_graphicpen(
-    userdata,
-    w,
-    h,
-    Lng,
-    track_threshold,
-    track_white_line_amount * 0.01,
-    track_black_line_amount * 0.01,
-    direction,
-    seed,
-    auto_threshold
-)
-obj.putpixeldata("object", userdata, w, h, "bgra")
+local threshold = track_threshold
+if auto_threshold then
+    local userdata, w, h = obj.getpixeldata("object", "bgra")
+    threshold = T_Filter_Module.filter_graphicpen_threshold(userdata, w, h)
+end
+
+if Lng < 100 then
+    -- シェーダーはすべてのピクセルでLng回のループが走るので、Lngが小さいときのみ使う
+    -- TODO: もっと最適化する
+    local dx, dy, length;
+    if direction == 0 then
+        dx = 1
+        dy = 1
+        length = Lng * 0.7
+    elseif direction == 1 then
+        dx = 1
+        dy = 0
+        length = Lng
+    elseif direction == 2 then
+        dx = -1
+        dy = 1
+        length = Lng * 0.7
+    elseif direction == 3 then
+        dx = 0
+        dy = 1
+        length = Lng
+    end
+
+    obj.pixelshader("graphicpen", "object", "object", {
+        seed,
+        length,
+        threshold,
+        track_white_line_amount * 0.01,
+        track_black_line_amount * 0.01,
+        dx,
+        dy
+    })
+else
+    local userdata, w, h = obj.getpixeldata("object", "bgra")
+    T_Filter_Module.filter_graphicpen(
+        userdata,
+        w,
+        h,
+        Lng,
+        track_threshold,
+        track_white_line_amount * 0.01,
+        track_black_line_amount * 0.01,
+        direction,
+        seed,
+        auto_threshold
+    )
+    obj.putpixeldata("object", userdata, w, h, "bgra")
+end
 
 obj.pixelshader("graphicpen_gray_color", "object", "object", {
     r1 / 255,
