@@ -1,5 +1,7 @@
 # ported_tim
 
+[![AviUtl2 Catalog](https://aviutl2-catalog-badge.sevenc7c.workers.dev/badge/v/sevenc-nanashi.ported_tim)](https://aviutl2-catalog-badge.sevenc7c.workers.dev/package/sevenc-nanashi.ported_tim) [![sm46290285](https://niconi-commons-badge.sevenc7c.workers.dev/badge/sm46290285)](https://commons.nicovideo.jp/works/sm46290285)
+
 [ティム様のスクリプト](https://tim3.web.fc2.com/sidx.htm)をAviUtl2用に移植するプロジェクトです。
 
 > [!WARNING]
