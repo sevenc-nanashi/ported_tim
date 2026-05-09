@@ -94,7 +94,7 @@ pub(crate) fn graphicpen(
 
     let s = seed as i64;
     let rng_seed = 654_321i64.wrapping_mul(s.wrapping_mul(s).wrapping_mul(s)) as u64;
-    let mut rng = fastrand::Rng::with_seed(rng_seed as _ );
+    let mut rng = fastrand::Rng::with_seed(rng_seed as _);
 
     let mut out = gray.clone();
     for y in len..(height - len) {
