@@ -47,6 +47,12 @@ local param_aspect_ratio = 0
 ---step=1
 local param_dot_spacing = 2
 
+---$track:分割精度
+---min=1
+---max=200
+---step=1
+local param_subdivision_precision = 10
+
 --group:追加角度
 ---$track:追加角度::追加角度
 ---min=-360
@@ -56,13 +62,6 @@ local param_additional_angle = 0
 
 ---$check:自動方向
 local param_auto_direction = 0
---group:
-
----$track:分割精度
----min=1
----max=200
----step=1
-local param_subdivision_precision = 10
 
 --group:重ね描き
 ---$track:重ね描き回数
