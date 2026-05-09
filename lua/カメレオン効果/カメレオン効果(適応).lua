@@ -44,10 +44,11 @@ local BLA = false
 ---step=0.1
 local BLL = 100
 
----$check:事前無彩色補正
+--group:事前無彩色補正
+---$check:事前無彩色補正::有効化
 local reC = false
 
----$track:└強度
+---$track:強度
 ---min=0
 ---max=100
 ---step=0.1

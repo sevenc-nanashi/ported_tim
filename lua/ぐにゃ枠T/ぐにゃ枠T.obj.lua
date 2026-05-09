@@ -47,14 +47,16 @@ local param_aspect_ratio = 0
 ---step=1
 local param_dot_spacing = 2
 
----$track:追加角度
+--group:追加角度
+---$track:追加角度::追加角度
 ---min=-360
 ---max=360
 ---step=0.1
 local param_additional_angle = 0
 
----$check:└自動方向
+---$check:自動方向
 local param_auto_direction = 0
+--group:
 
 ---$track:分割精度
 ---min=1
@@ -62,14 +64,16 @@ local param_auto_direction = 0
 ---step=1
 local param_subdivision_precision = 10
 
----$track:重ね描き
+--group:重ね描き
+---$track:重ね描き回数
 ---min=1
 ---max=20
 ---step=1
 local param_overdraw_count = 1
 
----$check:└自動調整
+---$check:重ね描き::自動調整
 local param_auto_adjust_overdraw = 1
+--group:乱数
 
 ---$track:シード
 ---min=0
@@ -77,11 +81,12 @@ local param_auto_adjust_overdraw = 1
 ---step=1
 local param_seed = 0
 
----$track:└変化間隔
+---$track:変化間隔
 ---min=0
 ---max=10000
 ---step=1
 local param_seed_change_interval = 0
+--group:
 
 ---$value: PI
 local param_override = {}

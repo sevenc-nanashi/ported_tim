@@ -23,53 +23,56 @@ local track_pitch_percent = 75
 ---step=1
 local track_color_width = 32
 
----$check:背景に着色
+--group:背景に着色
+---$check:背景に着色::背景に着色
 local check_colorize_background = false
 
----$color:└背景色
+---$color:背景色
 local color_background = 0xffffff
 
----$check:└背景を元絵に
+---$check:背景を元絵に
 local check_use_original_background = false
 
+--group:3D
 ---$check:3D表示
 local check_enable_3d = false
 
----$track:└環境光[%]
+---$track:環境光[%]
 ---min=0
 ---max=100
 ---step=1
 local track_ambient_light = 20
 
----$track:└拡散光[%]
+---$track:拡散光[%]
 ---min=0
 ---max=100
 ---step=1
 local track_diffuse_light = 80
 
----$track:└鏡面光[%]
+---$track:鏡面光[%]
 ---min=0
 ---max=100
 ---step=1
 local track_specular_light = 60
 
----$track:└光沢度
+---$track:光沢度
 ---min=0
 ---max=100
 ---step=1
 local track_shininess = 30
-
----$track:乱数シード
+--group:乱数
+---$track:シード
 ---min=0
 ---max=1000000
 ---step=1
 local track_random_seed = 0
 
----$track:└変化間隔
+---$track:変化間隔
 ---min=0
 ---max=1000
 ---step=1
 local track_seed_change_interval = 0
+--group:
 
 ---$value: PI
 local _0 = nil

@@ -42,12 +42,11 @@ local use_right = false
 ---$check:下端を基準
 local use_bottom = false
 
---group:
-
+--group:縦波数
 ---$check:縦波数を別指定
 local Yck = false
 
----$track:└縦波数
+---$track:縦波数::縦波数
 ---min=0
 ---max=5000
 ---step=0.1

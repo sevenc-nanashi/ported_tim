@@ -20,21 +20,23 @@ local track_size_adjust_percent = 100
 ---$check:行列反転
 local check_reverse_rows_columns = false
 
----$check:自動配置
+---$check:サイズ自動調整
+local check_auto_size_adjust = false
+
+--group:自動配置
+---$check:自動配置::自動配置
 local check_auto_place = false
 
----$select:└配置順
+---$select:配置順
 ---左上=0
 ---右上=1
 ---左下=2
 ---右下=3
 local select_order = 0
 
----$check:└最終オブジェクト
+---$check:最終オブジェクト
 local check_last_object = false
-
----$check:サイズ自動調整
-local check_auto_size_adjust = false
+--group:
 
 local is_enabled = function(value)
     return value == true or value == 1

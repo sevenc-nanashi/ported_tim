@@ -26,11 +26,8 @@ local track_percent = 100
 ---$color:色1
 local col1 = 0xffffff
 
----$check:2色目指定
-local ck = 0
-
----$color:└色2
-local col2 = 0x0
+---$color:色2
+local col2 = nil
 
 ---$check:直線
 local Lc = 0
@@ -52,7 +49,7 @@ if Lc == 0 then
 else
     ty, tw = 3, 69
 end
-if ck == 0 then
+if col2 == nil then
     local r, g, b = RGB(col1)
     col2 = RGB(255 - r, 255 - g, 255 - b)
 end
@@ -66,7 +63,7 @@ if D ~= 0 then
     obj.draw(0, 0, 0, 1, 1, 0, 0, -D)
     obj.copybuffer("object", "tempbuffer")
 end
-w, h = obj.getpixel()
+local w, h = obj.getpixel()
 local nx2 = 2 * math.ceil(0.5 * w / S)
 local ny2 = 2 * math.ceil(0.5 * h / S)
 if check0 then

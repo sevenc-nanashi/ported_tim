@@ -101,10 +101,11 @@ local track_direction_deg = 0
 ---緑青B=5
 local Cdir = 0
 
+--group:乱数
 ---$value:シード
 local seed = 0
 
----$check:└レイヤー依存なし
+---$check:レイヤー依存なし
 local Lset = 1
 
 local function clamp_percentage(value)

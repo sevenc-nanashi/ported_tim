@@ -59,20 +59,22 @@ local count_array = { 100, 230, 180 }
 ---$value:速度配列
 local speed_array = { 2, 2.8, 0 }
 
----$check:オリジナル背景設定
+--group:オリジナル背景設定
+---$check:オリジナル背景を使用
 local check_original_background = false
 
----$track:└波形透明度％
+---$track:波形透明度％
 ---min=0
 ---max=100
 ---step=0.1
 local track_wave_opacity_percent = 35
 
----$track:└時間オフセット
+---$track:時間オフセット
 ---min=-10000
 ---max=10000
 ---step=1
 local track_time_offset = 1000
+--group:
 
 ---$value:PI
 local _0 = nil

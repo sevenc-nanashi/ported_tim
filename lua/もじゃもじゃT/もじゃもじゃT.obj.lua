@@ -110,17 +110,20 @@ local param_resolution = 40
 ---step=1
 local param_overdraw_count = 0
 
+--group:乱数
 ---$track:シード
 ---min=0
 ---max=1000000
 ---step=1
 local param_seed = 0
 
----$track:└変化間隔
+---$track:変化間隔
 ---min=0
 ---max=10000
 ---step=1
 local param_seed_step = 0
+
+--group:
 
 ---$value:PI
 local param_override = {}

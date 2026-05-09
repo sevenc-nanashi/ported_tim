@@ -120,17 +120,19 @@ local RX = 0
 ---step=0.1
 local RY = 0
 
+--group:乱数
 ---$track:シード
 ---min=-100000
 ---max=100000
 ---step=1
 local Sd = 0
 
----$track:└変動フレーム長
+---$track:変動フレーム長
 ---min=0
 ---max=1000
 ---step=1
 local Cf = 0
+--group:
 
 ---$track:αしきい値
 ---min=0
