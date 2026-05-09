@@ -35,6 +35,7 @@ local col = 0xffffff
 ---step=1
 local Lw = 2
 
+obj.setanchor("track_center_x,track_center_y",2)
 local tim2 = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
 tim2.famili_set_color(userdata, w, h, track_center_x, track_center_y, track_width, track_height, check0, col, Lw)
