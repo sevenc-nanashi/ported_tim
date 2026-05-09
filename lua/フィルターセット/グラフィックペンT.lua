@@ -49,6 +49,13 @@ local seed = 0
 ---$check:しきい値を自動計算
 local auto_threshold = true
 
+--group:高度な設定
+---$select:処理モード
+---自動=0
+---CPU=1
+---GPU=2
+local gpu_mode = 0
+
 local T_Filter_Module = obj.module("tim2")
 
 --[[pixelshader@graphicpen
@@ -74,8 +81,17 @@ if auto_threshold then
     threshold = T_Filter_Module.filter_graphicpen_threshold(userdata, w, h)
 end
 
-if Lng < 100 then
+local use_gpu
+if gpu_mode == 0 then
     -- シェーダーはすべてのピクセルでLng回のループが走るので、Lngが小さいときのみ使う
+    use_gpu = Lng < 100
+elseif gpu_mode == 1 then
+    use_gpu = false
+elseif gpu_mode == 2 then
+    use_gpu = true
+end
+
+if use_gpu then
     -- TODO: もっと最適化する
     local dx, dy, length;
     if direction == 0 then

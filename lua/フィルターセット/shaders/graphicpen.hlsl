@@ -28,7 +28,10 @@ uint hash(uint x) {
 
 float rand01(uint x) { return (hash(x) & 0x00FFFFFFu) / 16777215.0; }
 
-float getGray(int2 p) { return srcTex.Load(int3(p, 0)).r; }
+float getGray(int2 p) {
+  float4 pix = srcTex.Load(int3(p, 0));
+  return pix.a > 0.0 ? pix.r / pix.a : 0.0;
+}
 
 float lutValue(float px, float th) {
   if (px < th) {
