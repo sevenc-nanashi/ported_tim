@@ -101,7 +101,8 @@ float4 enh_grayscale(float4 pos : SV_Position, float2 uv : TEXCOORD0)
   float gray = computeGray(rgba.rgb);
 
   if (constants.useColorize > 0.5) {
-    float2 hs = rgbToHs(float3(constants.colorR, constants.colorG, constants.colorB));
+    float2 hs =
+        rgbToHs(float3(constants.colorR, constants.colorG, constants.colorB));
     return float4(hsvToRgb(hs.x, hs.y, gray), rgba.a);
   }
 

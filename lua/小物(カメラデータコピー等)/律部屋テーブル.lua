@@ -25,13 +25,15 @@ local legcol = 0xffffff
 
 local vertices_buffer = {}
 local function push_poly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3)
-    table.insert(vertices_buffer, {x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0, 0, obj.w, 0, obj.w, obj.h, obj.h, 0})
+    table.insert(
+        vertices_buffer,
+        { x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0, 0, obj.w, 0, obj.w, obj.h, obj.h, 0 }
+    )
 end
 local function flush_polys()
     obj.drawpoly(vertices_buffer)
     vertices_buffer = {}
 end
-
 
 local function Sxdrawpoly(x, y1, y2, z1, z2)
     push_poly(x, y1, z1, x, y1, z2, x, y2, z2, x, y2, z1)
@@ -44,7 +46,6 @@ end
 local function Szdrawpoly(x1, y1, x2, y2, z)
     push_poly(x1, y1, z, x2, y1, z, x2, y2, z, x1, y2, z)
 end
-
 
 local function MkSq(x1, y1, z1, x2, y2, z2) -- 数値は対角線指定(1<2)で表裏が正確に
     Szdrawpoly(x1, y1, x2, y2, z1)

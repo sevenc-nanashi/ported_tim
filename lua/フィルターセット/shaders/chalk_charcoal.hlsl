@@ -44,16 +44,14 @@ float4 chalk_charcoal(float4 pos : SV_Position, float2 uv : TEXCOORD0)
   while (count > 0) {
     int y1 = local8 + 1 + pixel.y;
     int x1 = localC + pixel.x;
-    [unroll]
-    for (int i = 0; i < 3; ++i) {
+    [unroll] for (int i = 0; i < 3; ++i) {
       localMax =
           max(localMax, sample_gray(int2(x1 + i, y1), (int)width, (int)height));
     }
 
     int y2 = local8 + 1 + pixel.y;
     int x2 = local8 + pixel.x;
-    [unroll]
-    for (int j = 0; j < 3; ++j) {
+    [unroll] for (int j = 0; j < 3; ++j) {
       localMin =
           min(localMin, sample_gray(int2(x2 + j, y2), (int)width, (int)height));
     }

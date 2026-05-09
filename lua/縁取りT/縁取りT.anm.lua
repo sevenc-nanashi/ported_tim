@@ -120,10 +120,12 @@ else
     tim2.framing_create_distance_map(
         original_pixel_data,
         dest_pixel_data,
-        w, h,
+        w,
+        h,
         alpha_base,
         boundary_blur,
-        outline_size)
+        outline_size
+    )
     obj.putpixeldata("cache:distance_map", dest_pixel_data, w, h, "rgba")
 end
 
@@ -160,11 +162,10 @@ if enable_adjust then
         obj.copybuffer("object", "cache:color_only")
         obj.effect("ぼかし", "範囲", adjust_color_blur, "サイズ固定", 1)
         obj.copybuffer("cache:color_only", "object")
-        obj.pixelshader("set_alpha",
-            "object", {
-                "object",
-                "cache:premult_alpha",
-            })
+        obj.pixelshader("set_alpha", "object", {
+            "object",
+            "cache:premult_alpha",
+        })
         -- pixel_data, width, height = obj.getpixeldata("object", "bgra")
         -- tim2.framing_set_alpha(pixel_data, width, height)
         -- obj.putpixeldata("object", pixel_data, width, height, "bgra")
@@ -173,11 +174,10 @@ if enable_adjust then
     end
     if adjust_alpha_blur > 0 then
         obj.effect("ぼかし", "範囲", adjust_alpha_blur, "サイズ固定", 1)
-        obj.pixelshader("set_alpha",
-            "object", {
-                "cache:color_only",
-                "object",
-            })
+        obj.pixelshader("set_alpha", "object", {
+            "cache:color_only",
+            "object",
+        })
     end
 else
     obj.copybuffer("object", "cache:premult_alpha")

@@ -75,7 +75,10 @@ end
 
 local vertices_buffer = {}
 local function push_poly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3)
-    table.insert(vertices_buffer, {x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0, 0, obj.w, 0, obj.w, obj.h, obj.h, 0})
+    table.insert(
+        vertices_buffer,
+        { x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0, 0, obj.w, 0, obj.w, obj.h, obj.h, 0 }
+    )
 end
 local function flush_polys()
     obj.drawpoly(vertices_buffer)

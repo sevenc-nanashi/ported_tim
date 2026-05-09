@@ -30,6 +30,7 @@ float4 set_alpha_from_channel(float4 pos : SV_Position, float2 uv : TEXCOORD0)
     : SV_TARGET {
   float4 rgba = srcTex.Sample(srcSmp, uv);
   float3 straightRgb = to_straight_rgb(rgba);
-  float alpha = saturate(get_target_alpha(rgba, straightRgb, constants.targetMethod));
+  float alpha =
+      saturate(get_target_alpha(rgba, straightRgb, constants.targetMethod));
   return float4(0.0, 0.0, 0.0, alpha);
 }

@@ -31,7 +31,8 @@ uint normalize_shift24(int value) {
   return (uint)((((value / 24) + 1) * 24) - value);
 }
 
-float4 cycle_bit_shift(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
+float4 cycle_bit_shift(float4 pos : SV_Position, float2 uv : TEXCOORD0)
+    : SV_TARGET {
   float4 rgba = srcTex.Sample(srcSmp, uv);
   if (rgba.a <= 0.0) {
     return rgba;
@@ -48,7 +49,8 @@ float4 cycle_bit_shift(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TAR
   if (constants.cycle24Bit >= 0.5) {
     uint shift = normalize_shift24((int)round(constants.redShift)) & 31u;
     uint rgb = (r << 16) | (g << 8) | b;
-    uint rotated = ((rgb >> shift) | (rgb << ((24u - shift) & 31u))) & 0x00ffffffu;
+    uint rotated =
+        ((rgb >> shift) | (rgb << ((24u - shift) & 31u))) & 0x00ffffffu;
     outB = rotated & 0xffu;
     outG = (rotated >> 8) & 0xffu;
     outR = (rotated >> 16) & 0xffu;

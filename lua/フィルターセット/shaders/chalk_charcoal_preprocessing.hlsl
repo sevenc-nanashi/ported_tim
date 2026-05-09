@@ -21,8 +21,9 @@ float threshold_curve(float value, float threshold) {
                          : 1.0;
 }
 
-float4 chalk_charcoal_preprocessing(float4 pos : SV_Position, float2 uv
-                                    : TEXCOORD0) : SV_TARGET {
+float4 chalk_charcoal_preprocessing(float4 pos : SV_Position,
+                                    float2 uv : TEXCOORD0)
+    : SV_TARGET {
   int2 pixel = int2(floor(pos.xy));
   float4 rgba = srcTex.Load(int3(pixel, 0));
   float v = to_straight_rgb(rgba).b;

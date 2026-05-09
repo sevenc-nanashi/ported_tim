@@ -18,8 +18,7 @@ float4 blaster(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
   float alpha = prepared.b;
   if (inner) {
     alpha = 0.0;
-    [unroll]
-    for (int oy = -3; oy <= 3; ++oy) {
+    [unroll] for (int oy = -3; oy <= 3; ++oy) {
       for (int ox = -3; ox <= 3; ++ox) {
         alpha += srcTex.Load(int3(pixel + int2(ox, oy), 0)).g;
       }

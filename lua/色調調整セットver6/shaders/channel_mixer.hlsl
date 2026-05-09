@@ -18,7 +18,8 @@ cbuffer constants : register(b0) { Constants constants; }
 Texture2D srcTex : register(t0);
 SamplerState srcSmp : register(s0);
 
-float4 channel_mixer(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
+float4 channel_mixer(float4 pos : SV_Position, float2 uv : TEXCOORD0)
+    : SV_TARGET {
   float4 rgba = srcTex.Sample(srcSmp, uv);
   float4 straight = rgba.a > 0.0 ? rgba / rgba.a : float4(0.0, 0.0, 0.0, 0.0);
 

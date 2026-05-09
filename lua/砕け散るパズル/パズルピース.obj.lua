@@ -23,7 +23,6 @@ local color = 0xffffff
 local Pfig = track_p
 local SI = math.floor(track_size)
 
-
 local DrawUnitBase = function(SI2, ROT, ...)
     local arg = { ... }
     if arg[1] == 1 then

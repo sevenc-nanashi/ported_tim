@@ -106,7 +106,17 @@ obj.copybuffer("object", "cache:wave")
 obj.draw()
 obj.copybuffer("object", "tempbuffer")
 
-obj.effect("チャンネルシフト@T_Color_Module@tim.anm2", "アルファ", "赤", "赤", "赤", "緑", "赤", "青", "赤")
+obj.effect(
+    "チャンネルシフト@T_Color_Module@tim.anm2",
+    "アルファ",
+    "赤",
+    "赤",
+    "赤",
+    "緑",
+    "赤",
+    "青",
+    "赤"
+)
 
 -- local userdata, w, h = obj.getpixeldata("object", "bgra")
 -- T_Color_Module.color_tritone_v2(userdata, w, h, r1, g1, b1, r2, g2, b2, r3, g3, b3, 255, 128, 0)

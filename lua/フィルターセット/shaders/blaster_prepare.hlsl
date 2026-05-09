@@ -14,9 +14,7 @@ float trunc_zero(float value) {
   return value < 0.0 ? ceil(value) : floor(value);
 }
 
-float lut(float value) {
-  return clamp(value * 2.0 - 128.0, 0.0, 255.0);
-}
+float lut(float value) { return clamp(value * 2.0 - 128.0, 0.0, 255.0); }
 
 float4 straight_bgra_bytes(int2 pixel) {
   float4 rgba = srcTex.Load(int3(pixel, 0));
@@ -29,13 +27,9 @@ uint packed_bgra(int2 pixel) {
   return bgra.x | (bgra.y << 8) | (bgra.z << 16) | (bgra.w << 24);
 }
 
-float blue_byte(int2 pixel) {
-  return straight_bgra_bytes(pixel).x;
-}
+float blue_byte(int2 pixel) { return straight_bgra_bytes(pixel).x; }
 
-float alpha_byte(int2 pixel) {
-  return straight_bgra_bytes(pixel).w;
-}
+float alpha_byte(int2 pixel) { return straight_bgra_bytes(pixel).w; }
 
 float blaster_weight(int direction, int index) {
   if (direction == 0) {
@@ -99,11 +93,9 @@ float edge_convolution(int2 pixel) {
 
   int direction = ((uint)round(constants.direction) % 8 + 8) % 8;
   uint value = 0u;
-  [unroll]
-  for (int i = 0; i < 8; ++i) {
-    value =
-        add_weighted(value, packed_bgra(pixel + offsets[i]),
-                     blaster_weight(direction, i));
+  [unroll] for (int i = 0; i < 8; ++i) {
+    value = add_weighted(value, packed_bgra(pixel + offsets[i]),
+                         blaster_weight(direction, i));
   }
   return signed_i32_to_float(value);
 }

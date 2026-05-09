@@ -19,16 +19,14 @@ float flatten_channel(float value) {
     int den = 256 - high;
     if (den > 0) {
       mapped =
-          128.0 +
-          floor((float(src - max(high, 0) + 1) * 127.0) / float(den));
+          128.0 + floor((float(src - max(high, 0) + 1) * 127.0) / float(den));
     }
   }
 
   return clamp(mapped, 0.0, 255.0) / 255.0;
 }
 
-float4 flattening(float4 pos : SV_Position, float2 uv : TEXCOORD0)
-    : SV_TARGET {
+float4 flattening(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
   float4 src = srcTex.Sample(srcSampler, uv);
   return float4(flatten_channel(src.r), flatten_channel(src.g),
                 flatten_channel(src.b), src.a);

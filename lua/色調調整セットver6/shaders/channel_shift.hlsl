@@ -39,7 +39,8 @@ float3 rgb_to_hsv_255(float3 rgb) {
   return float3(hueDeg / 360.0, saturation, value);
 }
 
-float pick_channel(float4 rgba, float3 straightRgb, float3 hsv255, float source) {
+float pick_channel(float4 rgba, float3 straightRgb, float3 hsv255,
+                   float source) {
   if (source < 0.5) {
     return rgba.a;
   }
@@ -61,16 +62,18 @@ float pick_channel(float4 rgba, float3 straightRgb, float3 hsv255, float source)
   return hsv255.z;
 }
 
-float4 channel_shift(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
+float4 channel_shift(float4 pos : SV_Position, float2 uv : TEXCOORD0)
+    : SV_TARGET {
   float4 rgba = srcTex.Sample(srcSmp, uv);
   float3 straightRgb = to_straight_rgb(rgba);
   float3 hsv255 = rgb_to_hsv_255(straightRgb);
 
-  float outAlpha = pick_channel(rgba, straightRgb, hsv255, constants.alphaSource);
-  float3 outStraightRgb = float3(
-      pick_channel(rgba, straightRgb, hsv255, constants.redSource),
-      pick_channel(rgba, straightRgb, hsv255, constants.greenSource),
-      pick_channel(rgba, straightRgb, hsv255, constants.blueSource));
+  float outAlpha =
+      pick_channel(rgba, straightRgb, hsv255, constants.alphaSource);
+  float3 outStraightRgb =
+      float3(pick_channel(rgba, straightRgb, hsv255, constants.redSource),
+             pick_channel(rgba, straightRgb, hsv255, constants.greenSource),
+             pick_channel(rgba, straightRgb, hsv255, constants.blueSource));
 
   return float4(outStraightRgb * outAlpha, outAlpha);
 }

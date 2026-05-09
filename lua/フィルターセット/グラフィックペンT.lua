@@ -93,7 +93,7 @@ end
 
 if use_gpu then
     -- TODO: もっと最適化する
-    local dx, dy, length;
+    local dx, dy, length
     if direction == 0 then
         dx = 1
         dy = 1
@@ -119,7 +119,7 @@ if use_gpu then
         track_white_line_amount * 0.01,
         track_black_line_amount * 0.01,
         dx,
-        dy
+        dy,
     })
 else
     local userdata, w, h = obj.getpixeldata("object", "bgra")

@@ -37,18 +37,25 @@ float3 rgb_to_hsv(float3 rgb) {
 
 float3 rgb_to_lab(float3 rgb) {
   float3 rgb255 = rgb * 255.0;
-  float xr = (rgb255.r * 0.412453 + rgb255.g * 0.357580 + rgb255.b * 0.180423) / 98.072;
-  float yr = (rgb255.r * 0.212671 + rgb255.g * 0.715160 + rgb255.b * 0.072169) / 100.0;
-  float zr = (rgb255.r * 0.019334 + rgb255.g * 0.119193 + rgb255.b * 0.950227) / 118.225;
+  float xr = (rgb255.r * 0.412453 + rgb255.g * 0.357580 + rgb255.b * 0.180423) /
+             98.072;
+  float yr =
+      (rgb255.r * 0.212671 + rgb255.g * 0.715160 + rgb255.b * 0.072169) / 100.0;
+  float zr = (rgb255.r * 0.019334 + rgb255.g * 0.119193 + rgb255.b * 0.950227) /
+             118.225;
 
-  float f_x = xr <= 0.008856 ? (903.3 * xr + 16.0) / 116.0 : pow(abs(xr), 1.0 / 3.0);
-  float f_y = yr <= 0.008856 ? (903.3 * yr + 16.0) / 116.0 : pow(abs(yr), 1.0 / 3.0);
-  float f_z = zr <= 0.008856 ? (903.3 * zr + 16.0) / 116.0 : pow(abs(zr), 1.0 / 3.0);
+  float f_x =
+      xr <= 0.008856 ? (903.3 * xr + 16.0) / 116.0 : pow(abs(xr), 1.0 / 3.0);
+  float f_y =
+      yr <= 0.008856 ? (903.3 * yr + 16.0) / 116.0 : pow(abs(yr), 1.0 / 3.0);
+  float f_z =
+      zr <= 0.008856 ? (903.3 * zr + 16.0) / 116.0 : pow(abs(zr), 1.0 / 3.0);
 
   return float3(116.0 * f_y - 16.0, 500.0 * (f_x - f_y), 200.0 * (f_y - f_z));
 }
 
-float4 leave_color(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
+float4 leave_color(float4 pos : SV_Position, float2 uv : TEXCOORD0)
+    : SV_TARGET {
   float4 rgba = srcTex.Sample(srcSmp, uv);
   if (rgba.a <= 0.0) {
     return rgba;
@@ -73,7 +80,8 @@ float4 leave_color(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET 
   }
 
   float range = max(constants.colorDifferenceRange, 1.0);
-  float keepRaw = 1.0 - ((distance / range) - 1.0) * (2.0 * constants.edge + 1.0) * 0.5;
+  float keepRaw =
+      1.0 - ((distance / range) - 1.0) * (2.0 * constants.edge + 1.0) * 0.5;
   float keep = saturate(keepRaw);
 
   float avg = (rgba.r + rgba.g + rgba.b) / 3.0;

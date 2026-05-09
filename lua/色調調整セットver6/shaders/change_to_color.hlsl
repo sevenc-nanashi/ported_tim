@@ -49,10 +49,8 @@ float3 rgb_to_hsv_100(float3 rgb) {
     hue += 360.0;
   }
 
-  return float3(
-      trunc_i32_like(hue),
-      trunc_i32_like(delta * 100.0 / maxValue),
-      trunc_i32_like(100.0 * maxValue / 255.0));
+  return float3(trunc_i32_like(hue), trunc_i32_like(delta * 100.0 / maxValue),
+                trunc_i32_like(100.0 * maxValue / 255.0));
 }
 
 float circular_hue_diff(float pixelHue, float sourceHue) {
@@ -128,14 +126,11 @@ float4 change_to_color(float4 pos : SV_Position, float2 uv : TEXCOORD0)
 
   if (hueExcess == 0.0 && saturationExcess == 0.0) {
     float boundary = max(constants.boundaryAdjust, 0.000001);
-    float blend = clamp((abs(hueDiff) - constants.hueRange) / boundary + 1.0,
-                        0.0,
-                        1.0);
+    float blend =
+        clamp((abs(hueDiff) - constants.hueRange) / boundary + 1.0, 0.0, 1.0);
     outputRgb = outputRgb * (1.0 - blend) + original * blend;
   }
 
-  return float4(byte_to_norm(outputRgb.r),
-                byte_to_norm(outputRgb.g),
-                byte_to_norm(outputRgb.b),
-                src.a);
+  return float4(byte_to_norm(outputRgb.r), byte_to_norm(outputRgb.g),
+                byte_to_norm(outputRgb.b), src.a);
 }

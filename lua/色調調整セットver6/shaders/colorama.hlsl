@@ -64,8 +64,8 @@ float4 colorama(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
   float colorIndex = floor(wrap_index(base, maxColors));
   float nextIndex = floor(wrap_index(colorIndex + 1.0, maxColors));
 
-  float3 mapped = pick_color(colorIndex) * (1.0 - frac) +
-                  pick_color(nextIndex) * frac;
+  float3 mapped =
+      pick_color(colorIndex) * (1.0 - frac) + pick_color(nextIndex) * frac;
 
   return float4(floor(clamp(mapped, 0.0, 255.0)) / 255.0, 1.0) * src.a;
 }

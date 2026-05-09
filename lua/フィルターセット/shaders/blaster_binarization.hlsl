@@ -14,9 +14,9 @@ float4 blaster_binarization(float4 pos : SV_Position, float2 uv : TEXCOORD0)
   int2 pixel = int2(floor(pos.xy));
   float4 src = srcTex.Load(int3(pixel, 0));
   float3 straightRgb = to_straight_rgb(src);
-  float gray = dot(straightRgb, float3(1.0, 1.0, 1.0)) <=
-                       constants.threshold * 3.0
-                   ? 0.0
-                   : 1.0;
+  float gray =
+      dot(straightRgb, float3(1.0, 1.0, 1.0)) <= constants.threshold * 3.0
+          ? 0.0
+          : 1.0;
   return float4(gray, gray, gray, 1.0) * src.a;
 }

@@ -24,8 +24,7 @@ float scale_byte(float value, float invRange) {
   return (value - constants.minValue) * 255.0 * invRange;
 }
 
-float4 equalize(float4 pos : SV_Position, float2 uv : TEXCOORD0)
-    : SV_TARGET {
+float4 equalize(float4 pos : SV_Position, float2 uv : TEXCOORD0) : SV_TARGET {
   float4 rgba = srcTex.Load(int3(int2(floor(pos.xy)), 0));
   if (constants.active < 0.5 || rgba.a == 0.0) {
     return rgba;
@@ -45,8 +44,7 @@ float4 equalize(float4 pos : SV_Position, float2 uv : TEXCOORD0)
                   byte_to_unit(bScaled), rgba.a);
   }
 
-  float y =
-      (rScaled * 0.298912 + gScaled * 0.58661 + bScaled * 0.114478) * 4.0;
+  float y = (rScaled * 0.298912 + gScaled * 0.58661 + bScaled * 0.114478) * 4.0;
   float u = bScaled * 0.436 - (gScaled * 0.289 + rScaled * 0.147);
   float v = rScaled * 0.615 - gScaled * 0.515 - bScaled * 0.1;
 

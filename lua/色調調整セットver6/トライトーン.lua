@@ -37,7 +37,7 @@ local col1 = 0xffffff
 local points = {
     track_n_1,
     track_center,
-    track_n_2
+    track_n_2,
 }
 table.sort(points)
 
