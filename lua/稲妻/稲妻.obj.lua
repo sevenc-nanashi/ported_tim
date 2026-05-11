@@ -29,6 +29,8 @@ local pos = { 0, -150, 0, 150 }
 ---$color:コア色
 local c_col = 0xffffff
 
+--group:発光
+
 ---$color:発光色
 local g_col = 0x0000ff
 
@@ -56,6 +58,8 @@ local track_glow_threshold = 0
 ---step=0.1
 local track_glow_diffusion_speed = 10
 
+--group:軌道
+
 ---$track:軌道フォーク数
 ---min=0
 ---max=25
@@ -74,13 +78,59 @@ local track_straightness = 8
 ---step=0.1
 local track_branch_range = 30
 
+---$track:軌道折れ確率
+---min=0
+---max=100
+---step=0.1
+local c_tf = 50
+
+--group:
+
 ---$value:領域サイズ
 local AS = { -180, -180, 180, 180 }
 
 ---$check:枠表示
 local check_show_frame = true
 
-function Lightning(stx, sty, enx, eny, c_d, c_s, stl, f_n, gr)
+local frnd = math.floor(track_pattern)
+
+local at = 100 - track_unfold_amount
+at = (math.exp(0.10 * at) - 1) / 62
+
+local fast_draw_buffer = {}
+local function fast_draw(x, y, zoom)
+    table.insert(fast_draw_buffer, {
+        x - obj.w / 2 * zoom,
+        y - obj.h / 2 * zoom,
+        0,
+        x + obj.w / 2 * zoom,
+        y - obj.h / 2 * zoom,
+        0,
+        x + obj.w / 2 * zoom,
+        y + obj.h / 2 * zoom,
+        0,
+        x - obj.w / 2 * zoom,
+        y + obj.h / 2 * zoom,
+        0,
+        0,
+        0,
+        obj.w,
+        0,
+        obj.w,
+        obj.h,
+        0,
+        obj.h,
+    })
+end
+local function flush_fast_draw()
+    if #fast_draw_buffer == 0 then
+        return
+    end
+    obj.drawpoly(fast_draw_buffer)
+    fast_draw_buffer = {}
+end
+
+local function Lightning(stx, sty, enx, eny, c_d, c_s, stl, f_n, gr)
     if c_d < 0.3 then
         return
     end
@@ -91,7 +141,7 @@ function Lightning(stx, sty, enx, eny, c_d, c_s, stl, f_n, gr)
     local dLx = Lx * c_d / L
     local dLy = Ly * c_d / L
 
-    obj.draw(stx, sty, 0, c_s / Ac_s)
+    fast_draw(stx, sty, c_s / Ac_s)
 
     local ss = obj.rand(-75, 75, 0, 10 + frnd) * 0.01
     local sin = math.sin(ss)
@@ -115,21 +165,19 @@ function Lightning(stx, sty, enx, eny, c_d, c_s, stl, f_n, gr)
             return
         end
 
-        local dx, dy
-
         local ii = 0
         repeat
             ii = ii + 1
-            local ss = obj.rand(-75, 75, i, 12 + frnd + 100 * ii) * 0.01
-            local sin = math.sin(ss)
-            local cos = math.cos(ss)
+            ss = obj.rand(-75, 75, i, 12 + frnd + 100 * ii) * 0.01
+            sin = math.sin(ss)
+            cos = math.cos(ss)
             dx, dy = (cos * dLx + sin * dLy) * gen, (-sin * dLx + cos * dLy) * gen
         until dy * dLy > 0
 
         local rn = math.log(obj.rand(2, 100, i, 11 + frnd)) / math.log(c_tf) / c_d
 
         for k = 0, stl * rn do
-            obj.draw(stx + ox + k * dx, sty + oy + k * dy, 0, c_s / Ac_s * gen)
+            fast_draw(stx + ox + k * dx, sty + oy + k * dy, c_s / Ac_s * gen)
         end
 
         ox = ox + stl * rn * dx
@@ -151,10 +199,6 @@ function Szdrawpoly(x1, y1, x2, y2)
     obj.drawpoly(x1, y1, 0, x2, y1, 0, x2, y2, 0, x1, y2, 0, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h)
 end
 
-frnd = math.floor(track_pattern)
-at = 100 - track_unfold_amount
-at = (math.exp(0.10 * at) - 1) / 62
-
 Ac_s = track_size
 local f_n = math.floor(track_fork_count or 0)
 local stl = math.floor(track_straightness or 1)
@@ -164,15 +208,13 @@ local g_k = track_glow_diffusion or 300
 local g_th = track_glow_threshold or 0
 local g_kv = track_glow_diffusion_speed or 10
 
-c_d = track_interval
+local c_d = track_interval
 
 obj.setanchor("pos", 2, "line")
 local stx, sty, enx, eny = unpack(pos)
 obj.setanchor("AS", 2)
 local ASx0, ASy0, ASx1, ASy1 = unpack(AS)
-cx, cy = (ASx1 + ASx0) / 2, (ASy1 + ASy0) / 2
-
-c_tf = 80 --軌道折れ確率[%]
+local cx, cy = (ASx1 + ASx0) / 2, (ASy1 + ASy0) / 2
 
 if f_n > 25 then
     f_n = 25
@@ -188,6 +230,7 @@ obj.setoption("drawtarget", "tempbuffer", math.abs(ASx1 - ASx0), math.abs(ASy1 -
 obj.load("figure", "円", c_col, Ac_s)
 
 Lightning(stx - cx, sty - cy, enx - cx, eny - cy, c_d, Ac_s, stl, f_n, gr)
+flush_fast_draw()
 
 if obj.getoption("gui") == true and obj.getinfo("saving") == false and check_show_frame then
     obj.load("figure", "四角形", 0xffffff, 100)
