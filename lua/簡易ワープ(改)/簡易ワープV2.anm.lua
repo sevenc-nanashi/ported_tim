@@ -83,6 +83,8 @@ local is_enabled = function(value)
     return value == true or value == 1
 end
 
+obj.setanchor("track_base_x,track_base_y", 1)
+
 local TK = function(Z)
     if Z >= 1 then
         return 0
@@ -202,6 +204,7 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
     end
 
     -- 表示
+    local polygons = {}
     for i = 0, track_division_count - 1 do
         local u0 = i * dw
         local u1 = (i + 1) * dw
@@ -219,9 +222,10 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
             local py2 = v1 + dy[i + 1][j + 1] - h2
             local py3 = v1 + dy[i][j + 1] - h2
 
-            obj.drawpoly(px0, py0, 0, px1, py1, 0, px2, py2, 0, px3, py3, 0, u0, v0, u1, v0, u1, v1, u0, v1)
+            table.insert(polygons, { px0, py0, 0, px1, py1, 0, px2, py2, 0, px3, py3, 0, u0, v0, u1, v0, u1, v1, u0, v1 })
         end
     end
+    obj.drawpoly(polygons)
 
     -- 枠表示
     if is_enabled(check_show_path) and obj.getinfo("saving") == false then
