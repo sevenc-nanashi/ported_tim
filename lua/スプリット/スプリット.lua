@@ -24,10 +24,10 @@ local track_shape = 100
 local track_range = 100
 
 ---$check:上下を揃える
-local spC = 0
+local spC = false
 
 ---$check:穴だけ開ける
-local hoC = 0
+local hoC = false
 
 ---$track:横分割数
 ---min=2
@@ -155,7 +155,7 @@ for i = 0, spN do
     local z1 = sp1 * (z[i] ^ fig)
     local z2 = sp2 * (z[i] ^ fig)
 
-    if spC == 1 then
+    if spC then
         z2 = z1
     end
     z1 = -z1
@@ -164,7 +164,7 @@ for i = 0, spN do
         ys1[i][j] = z1 * (1 - j / spNy) - j / spNy
         ys2[i][j] = z2 * (1 - j / spNy) + j / spNy
     end --j
-end --i
+end     --i
 
 --表示座標計算
 local split_W2 = split_W * 0.5
@@ -182,7 +182,7 @@ for i = 0, spN do
         xs1[i][j], ys1[i][j] = cos * x[i] - sin * ys1[i][j] + split_CX, sin * x[i] + cos * ys1[i][j] + split_CY
         xs2[i][j], ys2[i][j] = cos * x[i] - sin * ys2[i][j] + split_CX, sin * x[i] + cos * ys2[i][j] + split_CY
     end --j
-end --i
+end     --i
 
 if hoC == 0 then
     for j = 0, spNy do
@@ -201,7 +201,8 @@ obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 
 obj.setoption("antialias", 0)
-if hoC == 0 then
+if hoC then
+    local polygons = {}
     for j = 0, spNy - 1 do
         for i = 0, spN - 1 do
             local x0, y0 = xs1[i][j], ys1[i][j]
@@ -212,19 +213,20 @@ if hoC == 0 then
             local u1, v1 = us1[i + 1][j], vs1[i + 1][j]
             local u2, v2 = us1[i + 1][j + 1], vs1[i + 1][j + 1]
             local u3, v3 = us1[i][j + 1], vs1[i][j + 1]
-            obj.drawpoly(x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, u0, v0, u1, v1, u2, v2, u3, v3)
+            table.insert(polygons, { x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, u0, v0, u1, v1, u2, v2, u3, v3 })
 
-            local x0, y0 = xs2[i][j], ys2[i][j]
-            local x1, y1 = xs2[i + 1][j], ys2[i + 1][j]
-            local x2, y2 = xs2[i + 1][j + 1], ys2[i + 1][j + 1]
-            local x3, y3 = xs2[i][j + 1], ys2[i][j + 1]
-            local u0, v0 = us2[i][j], vs2[i][j]
-            local u1, v1 = us2[i + 1][j], vs2[i + 1][j]
-            local u2, v2 = us2[i + 1][j + 1], vs2[i + 1][j + 1]
-            local u3, v3 = us2[i][j + 1], vs2[i][j + 1]
-            obj.drawpoly(x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, u0, v0, u1, v1, u2, v2, u3, v3)
+            x0, y0 = xs2[i][j], ys2[i][j]
+            x1, y1 = xs2[i + 1][j], ys2[i + 1][j]
+            x2, y2 = xs2[i + 1][j + 1], ys2[i + 1][j + 1]
+            x3, y3 = xs2[i][j + 1], ys2[i][j + 1]
+            u0, v0 = us2[i][j], vs2[i][j]
+            u1, v1 = us2[i + 1][j], vs2[i + 1][j]
+            u2, v2 = us2[i + 1][j + 1], vs2[i + 1][j + 1]
+            u3, v3 = us2[i][j + 1], vs2[i][j + 1]
+            table.insert(polygons, { x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, u0, v0, u1, v1, u2, v2, u3, v3 })
         end --i
-    end --j
+    end     --j
+    obj.drawpoly(polygons)
 end
 
 --穴あけ
