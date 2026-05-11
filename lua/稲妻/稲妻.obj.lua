@@ -82,7 +82,7 @@ local track_branch_range = 30
 ---min=0
 ---max=100
 ---step=0.1
-local c_tf = 50
+local c_tf = 80
 
 --group:
 
