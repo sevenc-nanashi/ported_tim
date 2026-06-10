@@ -398,6 +398,12 @@ namespace :i18n do
       content.lines.each_with_index do |line, index|
         if line.start_with?("@")
           current_script = line[1..-1].strip
+          group = "#{current_script}#{suffix}"
+          translations[group] ||= {}
+          translations[group][group] ||= {}
+          translations[group][group][DEFAULT_LANG] = group
+          translation_meta[group] ||= {}
+          translation_meta[group][group] = "script name"
           next
         end
         next unless current_script

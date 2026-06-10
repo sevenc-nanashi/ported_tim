@@ -1,15 +1,23 @@
 一時的に保存EXT@一時保存読込EXT@tim.anm2:
+  # script name
+  '一時的に保存EXT@一時保存読込EXT@tim.anm2': 一時的に保存EXT@一時保存読込EXT@tim.anm2
   # kind: track
   '保存先': 保存先
   # kind: check
   '非表示': 非表示
 保存画像の読込EXT@一時保存読込EXT@tim.anm2:
+  # script name
+  '保存画像の読込EXT@一時保存読込EXT@tim.anm2': 保存画像の読込EXT@一時保存読込EXT@tim.anm2
   # kind: track
   '読込先': 読込先
 保存画像のクリアEXT@一時保存読込EXT@tim.anm2:
+  # script name
+  '保存画像のクリアEXT@一時保存読込EXT@tim.anm2': 保存画像のクリアEXT@一時保存読込EXT@tim.anm2
   # kind: track
   '読込先': 読込先
 しきい値@T_Color_Module@tim.anm2:
+  # script name
+  'しきい値@T_Color_Module@tim.anm2': しきい値@T_Color_Module@tim.anm2
   # kind: track
   'しきい値1': しきい値1
   # kind: track
@@ -33,6 +41,8 @@
   # kind: check
   '範囲を反転': 範囲を反転
 イコライズ@T_Color_Module@tim.anm2:
+  # script name
+  'イコライズ@T_Color_Module@tim.anm2': イコライズ@T_Color_Module@tim.anm2
   # kind: select, options: イコライズ+RGB補正, イコライズ, RGB補正
   '計算法': 計算法
   # kind: select_option, parent: 計算法
@@ -42,6 +52,8 @@
   # kind: select_option, parent: 計算法
   'RGB補正': RGB補正
 ガンマ補正@T_Color_Module@tim.anm2:
+  # script name
+  'ガンマ補正@T_Color_Module@tim.anm2': ガンマ補正@T_Color_Module@tim.anm2
   # kind: track
   '赤': 赤
   # kind: track
@@ -51,6 +63,8 @@
   # kind: track
   'ALL': ALL
 グレースケール@T_Color_Module@tim.anm2:
+  # script name
+  'グレースケール@T_Color_Module@tim.anm2': グレースケール@T_Color_Module@tim.anm2
   # kind: select, options: RGB平均, NTSC加重平均法, HDTV法
   'グレー処理': グレー処理
   # kind: select_option, parent: グレー処理
@@ -66,6 +80,8 @@
   # kind: color
   '暗部色': 暗部色
 サイクルビットシフト@T_Color_Module@tim.anm2:
+  # script name
+  'サイクルビットシフト@T_Color_Module@tim.anm2': サイクルビットシフト@T_Color_Module@tim.anm2
   # kind: track
   'R8bit': R8bit
   # kind: track
@@ -77,6 +93,8 @@
   # kind: track
   '24bit': 24bit
 シャドウ・ハイライト@T_Color_Module@tim.anm2:
+  # script name
+  'シャドウ・ハイライト@T_Color_Module@tim.anm2': シャドウ・ハイライト@T_Color_Module@tim.anm2
   # kind: track
   '黒潰補正': 黒潰補正
   # kind: track
@@ -84,6 +102,8 @@
   # kind: track
   '範囲': 範囲
 チャンネルシフト@T_Color_Module@tim.anm2:
+  # script name
+  'チャンネルシフト@T_Color_Module@tim.anm2': チャンネルシフト@T_Color_Module@tim.anm2
   # kind: select_option, parent: 青
   'アルファ': アルファ
   # kind: select_option, parent: 青
@@ -99,6 +119,8 @@
   # kind: select_option, parent: 青
   '明度': 明度
 チャンネルミキサー@T_Color_Module@tim.anm2:
+  # script name
+  'チャンネルミキサー@T_Color_Module@tim.anm2': チャンネルミキサー@T_Color_Module@tim.anm2
   # kind: track
   '赤←赤％': 赤←赤％
   # kind: track
@@ -124,6 +146,8 @@
   # kind: track
   '青←定数': 青←定数
 テトラトーン@T_Color_Module@tim.anm2:
+  # script name
+  'テトラトーン@T_Color_Module@tim.anm2': テトラトーン@T_Color_Module@tim.anm2
   # kind: track
   '飽和点1': 飽和点1
   # kind: track
@@ -141,6 +165,8 @@
   # kind: color
   'ハイライト': ハイライト
 トライトーン@T_Color_Module@tim.anm2:
+  # script name
+  'トライトーン@T_Color_Module@tim.anm2': トライトーン@T_Color_Module@tim.anm2
   # kind: track
   '飽和点1': 飽和点1
   # kind: track
@@ -156,6 +182,8 @@
   # kind: color
   'ハイライト': ハイライト
 ネオン@T_Color_Module@tim.anm2:
+  # script name
+  'ネオン@T_Color_Module@tim.anm2': ネオン@T_Color_Module@tim.anm2
   # kind: track
   '輝度中心': 輝度中心
   # kind: track
@@ -165,6 +193,8 @@
   # kind: track
   'ぼかし': ぼかし
 バイアス消去@T_Color_Module@tim.anm2:
+  # script name
+  'バイアス消去@T_Color_Module@tim.anm2': バイアス消去@T_Color_Module@tim.anm2
   # kind: track
   '範囲': 範囲
   # kind: track
@@ -176,6 +206,8 @@
   # kind: check
   '偏差補正': 偏差補正
 パステル調@T_Color_Module@tim.anm2:
+  # script name
+  'パステル調@T_Color_Module@tim.anm2': パステル調@T_Color_Module@tim.anm2
   # kind: track
   '彩度': 彩度
   # kind: track
@@ -193,6 +225,8 @@
   # kind: track
   'エッジぼかし': エッジぼかし
 フリンジ修正@T_Color_Module@tim.anm2:
+  # script name
+  'フリンジ修正@T_Color_Module@tim.anm2': フリンジ修正@T_Color_Module@tim.anm2
   # kind: select, options: アルファ値の変更, 背景色の削除, フリンジの上書き, 透明度に応じたフリンジの上書き
   '補正法': 補正法
   # kind: select_option, parent: 補正法
@@ -212,6 +246,8 @@
   # kind: check
   '処理後α補正': 処理後α補正
 ブリーチバイパス@T_Color_Module@tim.anm2:
+  # script name
+  'ブリーチバイパス@T_Color_Module@tim.anm2': ブリーチバイパス@T_Color_Module@tim.anm2
   # kind: track
   '強度': 強度
   # kind: track
@@ -219,6 +255,8 @@
   # kind: track
   'ガンマ値': ガンマ値
 ポスタリゼーション@T_Color_Module@tim.anm2:
+  # script name
+  'ポスタリゼーション@T_Color_Module@tim.anm2': ポスタリゼーション@T_Color_Module@tim.anm2
   # kind: track
   'R階調数': R階調数
   # kind: track
@@ -232,6 +270,8 @@
   # kind: check
   '誤差拡散': 誤差拡散
 メタル化@T_Color_Module@tim.anm2:
+  # script name
+  'メタル化@T_Color_Module@tim.anm2': メタル化@T_Color_Module@tim.anm2
   # kind: track
   '反転濃度1': 反転濃度1
   # kind: track
@@ -245,6 +285,8 @@
   # kind: select_option, parent: グレー処理
   'HDTV法': HDTV法
 メディアンカット減色@T_Color_Module@tim.anm2:
+  # script name
+  'メディアンカット減色@T_Color_Module@tim.anm2': メディアンカット減色@T_Color_Module@tim.anm2
   # kind: track
   'MC色数': MC色数
   # kind: track
@@ -274,6 +316,8 @@
   # kind: check
   '指定色を有効にする': 指定色を有効にする
 単色化(T)@T_Color_Module@tim.anm2:
+  # script name
+  '単色化(T)@T_Color_Module@tim.anm2': 単色化(T)@T_Color_Module@tim.anm2
   # kind: color
   '色': 色
   # kind: track
@@ -283,6 +327,8 @@
   # kind: track
   'B': B
 単色化(T2)@T_Color_Module@tim.anm2:
+  # script name
+  '単色化(T2)@T_Color_Module@tim.anm2': 単色化(T2)@T_Color_Module@tim.anm2
   # kind: track
   'U': U
   # kind: track
@@ -294,6 +340,8 @@
   # kind: check
   '極座標指定': 極座標指定
 基準色変更@T_Color_Module@tim.anm2:
+  # script name
+  '基準色変更@T_Color_Module@tim.anm2': 基準色変更@T_Color_Module@tim.anm2
   # kind: track
   '変化': 変化
   # kind: track
@@ -307,6 +355,8 @@
   # kind: check
   '指定色からの距離': 指定色からの距離
 拡張コントラスト@T_Color_Module@tim.anm2:
+  # script name
+  '拡張コントラスト@T_Color_Module@tim.anm2': 拡張コントラスト@T_Color_Module@tim.anm2
   # kind: track
   '中心': 中心
   # kind: track
@@ -320,6 +370,8 @@
   # kind: check
   'カーブ表示': カーブ表示
 最大/最小@T_Color_Module@tim.anm2:
+  # script name
+  '最大/最小@T_Color_Module@tim.anm2': 最大/最小@T_Color_Module@tim.anm2
   # kind: select, options: 最大, 最小
   'モード': モード
   # kind: select_option, parent: モード
@@ -369,6 +421,8 @@
   # kind: check
   '結果を保存(同条件1度のみ)': 結果を保存(同条件1度のみ)
 減色パレット@T_Color_Module@tim.anm2:
+  # script name
+  '減色パレット@T_Color_Module@tim.anm2': 減色パレット@T_Color_Module@tim.anm2
   # kind: track
   '色数': 色数
   # kind: track
@@ -376,6 +430,8 @@
   # kind: track
   'Y分割': Y分割
 特定色域変換T@T_Color_Module@tim.anm2:
+  # script name
+  '特定色域変換T@T_Color_Module@tim.anm2': 特定色域変換T@T_Color_Module@tim.anm2
   # kind: track
   '色相範囲': 色相範囲
   # kind: track
@@ -391,6 +447,8 @@
   # kind: track
   '彩度調整': 彩度調整
 画像トーンカーブ@T_Color_Module@tim.anm2:
+  # script name
+  '画像トーンカーブ@T_Color_Module@tim.anm2': 画像トーンカーブ@T_Color_Module@tim.anm2
   # kind: track
   'X or R': X or R
   # kind: track
@@ -410,6 +468,8 @@
   # kind: check
   '極座標移動': 極座標移動
 白黒@T_Color_Module@tim.anm2:
+  # script name
+  '白黒@T_Color_Module@tim.anm2': 白黒@T_Color_Module@tim.anm2
   # kind: track
   'R%': R%
   # kind: track
@@ -429,6 +489,8 @@
   # kind: track
   'ガンマ値': ガンマ値
 簡易コロラマ@T_Color_Module@tim.anm2:
+  # script name
+  '簡易コロラマ@T_Color_Module@tim.anm2': 簡易コロラマ@T_Color_Module@tim.anm2
   # kind: track
   'Fシフト': Fシフト
   # kind: track
@@ -448,14 +510,20 @@
   # kind: color
   '色6': 色6
 簡易トーンカーブ@T_Color_Module@tim.anm2:
+  # script name
+  '簡易トーンカーブ@T_Color_Module@tim.anm2': 簡易トーンカーブ@T_Color_Module@tim.anm2
   # kind: check
   '赤カーブ全体統一': 赤カーブ全体統一
   # kind: check
   'データクリア': データクリア
 簡易減色@T_Color_Module@tim.anm2:
+  # script name
+  '簡易減色@T_Color_Module@tim.anm2': 簡易減色@T_Color_Module@tim.anm2
   # kind: track
   '減色量': 減色量
 粒状化@T_Color_Module@tim.anm2:
+  # script name
+  '粒状化@T_Color_Module@tim.anm2': 粒状化@T_Color_Module@tim.anm2
   # kind: track
   '量': 量
   # kind: track
@@ -477,6 +545,8 @@
   # kind: check
   '時間変動': 時間変動
 色抜き@T_Color_Module@tim.anm2:
+  # script name
+  '色抜き@T_Color_Module@tim.anm2': 色抜き@T_Color_Module@tim.anm2
   # kind: track
   '色抜き量': 色抜き量
   # kind: track
@@ -496,11 +566,15 @@
   # kind: color
   '抽出色': 抽出色
 金属質@T_Color_Module@tim.anm2:
+  # script name
+  '金属質@T_Color_Module@tim.anm2': 金属質@T_Color_Module@tim.anm2
   # kind: track
   '飽和点1': 飽和点1
   # kind: track
   '飽和点2': 飽和点2
 黄金質@T_Color_Module@tim.anm2:
+  # script name
+  '黄金質@T_Color_Module@tim.anm2': 黄金質@T_Color_Module@tim.anm2
   # kind: track
   '飽和点1': 飽和点1
   # kind: track
@@ -508,6 +582,8 @@
   # kind: track
   '飽和点2': 飽和点2
 ２値化@T_Color_Module@tim.anm2:
+  # script name
+  '２値化@T_Color_Module@tim.anm2': ２値化@T_Color_Module@tim.anm2
   # kind: track
   '閾値': 閾値
   # kind: select, options: RGB平均, NTSC加重平均法, HDTV法
@@ -541,6 +617,8 @@
   # kind: color
   '暗部色': 暗部色
 ２値化RGB@T_Color_Module@tim.anm2:
+  # script name
+  '２値化RGB@T_Color_Module@tim.anm2': ２値化RGB@T_Color_Module@tim.anm2
   # kind: track
   'R閾値': R閾値
   # kind: track
@@ -564,6 +642,8 @@
   # kind: select_option, parent: 自動判定
   'ラプラシアン・ヒストグラム法': ラプラシアン・ヒストグラム法
 カメレオン効果(背景)@カメレオン効果@tim.anm2:
+  # script name
+  'カメレオン効果(背景)@カメレオン効果@tim.anm2': カメレオン効果(背景)@カメレオン効果@tim.anm2
   # kind: track
   '中心X': 中心X
   # kind: track
@@ -579,6 +659,8 @@
   # kind: track
   '枠幅': 枠幅
 カメレオン効果(適応)@カメレオン効果@tim.anm2:
+  # script name
+  'カメレオン効果(適応)@カメレオン効果@tim.anm2': カメレオン効果(適応)@カメレオン効果@tim.anm2
   # kind: track
   '適応率': 適応率
   # kind: track
@@ -604,6 +686,8 @@
   # kind: track
   '強度': 強度
 多色グラデーション@多色グラデーション@tim.anm2:
+  # script name
+  '多色グラデーション@多色グラデーション@tim.anm2': 多色グラデーション@多色グラデーション@tim.anm2
   # kind: track
   '幅': 幅
   # kind: track
@@ -633,6 +717,8 @@
   # kind: color
   'ガイド色': ガイド色
 多色グラデーション拡張@多色グラデーション@tim.anm2:
+  # script name
+  '多色グラデーション拡張@多色グラデーション@tim.anm2': 多色グラデーション拡張@多色グラデーション@tim.anm2
   # kind: track
   '番号': 番号
   # kind: track
@@ -642,6 +728,8 @@
   # kind: track
   '中心Y': 中心Y
 ４色グラデーション@tim.anm2:
+  # script name
+  '４色グラデーション@tim.anm2': ４色グラデーション@tim.anm2
   # kind: track
   '幅': 幅
   # kind: track
@@ -659,6 +747,8 @@
   # kind: color
   '色4': 色4
 虹色グラデーション@tim.anm2:
+  # script name
+  '虹色グラデーション@tim.anm2': 虹色グラデーション@tim.anm2
   # kind: track
   '縮小率': 縮小率
   # kind: track
@@ -702,6 +792,8 @@
   # kind: check
   '位置ズレ補正': 位置ズレ補正
 ランダムブラー@T_RandomBlur_Module@tim.anm2:
+  # script name
+  'ランダムブラー@T_RandomBlur_Module@tim.anm2': ランダムブラー@T_RandomBlur_Module@tim.anm2
   # kind: track
   '最大ズレ量': 最大ズレ量
   # kind: track
@@ -713,6 +805,8 @@
   # kind: check
   'サイズ保持': サイズ保持
 回転ランダムブラー@T_RandomBlur_Module@tim.anm2:
+  # script name
+  '回転ランダムブラー@T_RandomBlur_Module@tim.anm2': 回転ランダムブラー@T_RandomBlur_Module@tim.anm2
   # kind: track
   '中心X': 中心X
   # kind: track
@@ -726,6 +820,8 @@
   # kind: track
   '変化固定': 変化固定
 放射ランダムブラー@T_RandomBlur_Module@tim.anm2:
+  # script name
+  '放射ランダムブラー@T_RandomBlur_Module@tim.anm2': 放射ランダムブラー@T_RandomBlur_Module@tim.anm2
   # kind: track
   '中心X': 中心X
   # kind: track
@@ -739,6 +835,8 @@
   # kind: track
   '変化固定': 変化固定
 回転ハードブラー@T_RotBlur_Module@tim.anm2:
+  # script name
+  '回転ハードブラー@T_RotBlur_Module@tim.anm2': 回転ハードブラー@T_RotBlur_Module@tim.anm2
   # kind: track
   '中心X': 中心X
   # kind: track
@@ -762,6 +860,8 @@
   # kind: track
   '変化固定': 変化固定
 回転ブラー@T_RotBlur_Module@tim.anm2:
+  # script name
+  '回転ブラー@T_RotBlur_Module@tim.anm2': 回転ブラー@T_RotBlur_Module@tim.anm2
   # kind: track
   '中心X': 中心X
   # kind: track
@@ -779,6 +879,8 @@
   # kind: check
   '高精度出力': 高精度出力
 放射ハードブラー@T_RotBlur_Module@tim.anm2:
+  # script name
+  '放射ハードブラー@T_RotBlur_Module@tim.anm2': 放射ハードブラー@T_RotBlur_Module@tim.anm2
   # kind: track
   '中心X': 中心X
   # kind: track
@@ -804,6 +906,8 @@
   # kind: track
   '表示限界倍率': 表示限界倍率
 放射ブラー@T_RotBlur_Module@tim.anm2:
+  # script name
+  '放射ブラー@T_RotBlur_Module@tim.anm2': 放射ブラー@T_RotBlur_Module@tim.anm2
   # kind: track
   '中心X': 中心X
   # kind: track
@@ -817,6 +921,8 @@
   # kind: track
   '表示限界倍率': 表示限界倍率
 方向ハードブラー@T_RotBlur_Module@tim.anm2:
+  # script name
+  '方向ハードブラー@T_RotBlur_Module@tim.anm2': 方向ハードブラー@T_RotBlur_Module@tim.anm2
   # kind: track
   'ブラー量': ブラー量
   # kind: track
@@ -840,6 +946,8 @@
   # kind: track
   '表示限界倍率': 表示限界倍率
 渦@T_RotBlur_Module@tim.anm2:
+  # script name
+  '渦@T_RotBlur_Module@tim.anm2': 渦@T_RotBlur_Module@tim.anm2
   # kind: track
   '中心X': 中心X
   # kind: track
@@ -855,6 +963,8 @@
   # kind: check
   'サイズ保持': サイズ保持
 2色リング(単)@カスタムフレア@tim.anm2:
+  # script name
+  '2色リング(単)@カスタムフレア@tim.anm2': 2色リング(単)@カスタムフレア@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -888,6 +998,8 @@
   # kind: track
   '点滅': 点滅
 ゆらめき@カスタムフレア@tim.anm2:
+  # script name
+  'ゆらめき@カスタムフレア@tim.anm2': ゆらめき@カスタムフレア@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -910,12 +1022,6 @@
   '光芒変化速度': 光芒変化速度
   # kind: select, options: 1, 2, 3, 4, 5, 6, 7, 8
   '形状': 形状
-  # kind: value
-  'クリップ位置幅ボカシ': クリップ位置幅ボカシ
-  # kind: check
-  'クリップ向き': クリップ向き
-  # kind: track
-  '点滅': 点滅
   # kind: select_option, parent: 形状
   '1': 1
   # kind: select_option, parent: 形状
@@ -932,7 +1038,15 @@
   '7': 7
   # kind: select_option, parent: 形状
   '8': 8
+  # kind: value
+  'クリップ位置幅ボカシ': クリップ位置幅ボカシ
+  # kind: check
+  'クリップ向き': クリップ向き
+  # kind: track
+  '点滅': 点滅
 アイリス@カスタムフレア@tim.anm2:
+  # script name
+  'アイリス@カスタムフレア@tim.anm2': アイリス@カスタムフレア@tim.anm2
   # kind: track
   '形状': 形状
   # kind: track
@@ -970,6 +1084,8 @@
   # kind: track
   '乱数シード': 乱数シード
 アイリス(単)@カスタムフレア@tim.anm2:
+  # script name
+  'アイリス(単)@カスタムフレア@tim.anm2': アイリス(単)@カスタムフレア@tim.anm2
   # kind: track
   '形状': 形状
   # kind: track
@@ -993,6 +1109,8 @@
   # kind: track
   '点滅': 点滅
 カラースパーク@カスタムフレア@tim.anm2:
+  # script name
+  'カラースパーク@カスタムフレア@tim.anm2': カラースパーク@カスタムフレア@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -1005,6 +1123,16 @@
   '数': 数
   # kind: select, options: 1, 2, 3, 4, 5
   'カラーパターン': カラーパターン
+  # kind: select_option, parent: カラーパターン
+  '1': 1
+  # kind: select_option, parent: カラーパターン
+  '2': 2
+  # kind: select_option, parent: カラーパターン
+  '3': 3
+  # kind: select_option, parent: カラーパターン
+  '4': 4
+  # kind: select_option, parent: カラーパターン
+  '5': 5
   # kind: track
   '幅比率％': 幅比率％
   # kind: track
@@ -1021,17 +1149,9 @@
   '点滅': 点滅
   # kind: track
   '乱数シード': 乱数シード
-  # kind: select_option, parent: カラーパターン
-  '1': 1
-  # kind: select_option, parent: カラーパターン
-  '2': 2
-  # kind: select_option, parent: カラーパターン
-  '3': 3
-  # kind: select_option, parent: カラーパターン
-  '4': 4
-  # kind: select_option, parent: カラーパターン
-  '5': 5
 コースティック@カスタムフレア@tim.anm2:
+  # script name
+  'コースティック@カスタムフレア@tim.anm2': コースティック@カスタムフレア@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -1051,6 +1171,8 @@
   # kind: track
   '点滅': 点滅
 ストリーク@カスタムフレア@tim.anm2:
+  # script name
+  'ストリーク@カスタムフレア@tim.anm2': ストリーク@カスタムフレア@tim.anm2
   # kind: track
   '光芒長': 光芒長
   # kind: track
@@ -1072,6 +1194,8 @@
   # kind: track
   '点滅': 点滅
 ストリーク(複)@カスタムフレア@tim.anm2:
+  # script name
+  'ストリーク(複)@カスタムフレア@tim.anm2': ストリーク(複)@カスタムフレア@tim.anm2
   # kind: track
   '光芒長': 光芒長
   # kind: track
@@ -1101,6 +1225,8 @@
   # kind: track
   '点滅': 点滅
 スパイク@カスタムフレア@tim.anm2:
+  # script name
+  'スパイク@カスタムフレア@tim.anm2': スパイク@カスタムフレア@tim.anm2
   # kind: track
   '長さ': 長さ
   # kind: track
@@ -1129,10 +1255,6 @@
   '位置オフセット％': 位置オフセット％
   # kind: select, options: 1, 2, 3, 4
   '形状': 形状
-  # kind: track
-  '点滅': 点滅
-  # kind: track
-  '乱数シード': 乱数シード
   # kind: select_option, parent: 形状
   '1': 1
   # kind: select_option, parent: 形状
@@ -1141,7 +1263,13 @@
   '3': 3
   # kind: select_option, parent: 形状
   '4': 4
+  # kind: track
+  '点滅': 点滅
+  # kind: track
+  '乱数シード': 乱数シード
 スパーク@カスタムフレア@tim.anm2:
+  # script name
+  'スパーク@カスタムフレア@tim.anm2': スパーク@カスタムフレア@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -1173,6 +1301,8 @@
   # kind: track
   '乱数シード': 乱数シード
 ベース@カスタムフレア@tim.anm2:
+  # script name
+  'ベース@カスタムフレア@tim.anm2': ベース@カスタムフレア@tim.anm2
   # kind: track
   '移動量': 移動量
   # kind: select, options: 加算, スクリーン
@@ -1188,6 +1318,8 @@
   # kind: value
   '座標': 座標
 リング@カスタムフレア@tim.anm2:
+  # script name
+  'リング@カスタムフレア@tim.anm2': リング@カスタムフレア@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -1221,6 +1353,8 @@
   # kind: track
   '乱数シード': 乱数シード
 リング(単)@カスタムフレア@tim.anm2:
+  # script name
+  'リング(単)@カスタムフレア@tim.anm2': リング(単)@カスタムフレア@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -1240,6 +1374,8 @@
   # kind: track
   '点滅': 点滅
 レンズ軌道@カスタムフレア@tim.anm2:
+  # script name
+  'レンズ軌道@カスタムフレア@tim.anm2': レンズ軌道@カスタムフレア@tim.anm2
   # kind: track
   '密度': 密度
   # kind: track
@@ -1269,6 +1405,8 @@
   # kind: track
   '乱数シード': 乱数シード
 円@カスタムフレア@tim.anm2:
+  # script name
+  '円@カスタムフレア@tim.anm2': 円@カスタムフレア@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -1286,6 +1424,8 @@
   # kind: track
   '点滅': 点滅
 発光@カスタムフレア@tim.anm2:
+  # script name
+  '発光@カスタムフレア@tim.anm2': 発光@カスタムフレア@tim.anm2
   # kind: track
   '大きさ': 大きさ
   # kind: track
@@ -1309,6 +1449,8 @@
   # kind: track
   '基準距離': 基準距離
 虹輪@カスタムフレア@tim.anm2:
+  # script name
+  '虹輪@カスタムフレア@tim.anm2': 虹輪@カスタムフレア@tim.anm2
   # kind: track
   '大きさ': 大きさ
   # kind: track
@@ -1335,14 +1477,6 @@
   'ぼかし': ぼかし
   # kind: select, options: 1, 2, 3, 4
   'パターン': パターン
-  # kind: check
-  '色上書き': 色上書き
-  # kind: color
-  '上書き色': 上書き色
-  # kind: track
-  '点滅': 点滅
-  # kind: value
-  '発光': 発光
   # kind: select_option, parent: パターン
   '1': 1
   # kind: select_option, parent: パターン
@@ -1351,7 +1485,17 @@
   '3': 3
   # kind: select_option, parent: パターン
   '4': 4
+  # kind: check
+  '色上書き': 色上書き
+  # kind: color
+  '上書き色': 上書き色
+  # kind: track
+  '点滅': 点滅
+  # kind: value
+  '発光': 発光
 ライトバースト@tim.anm2:
+  # script name
+  'ライトバースト@tim.anm2': ライトバースト@tim.anm2
   # kind: select_option, parent: 合成モード
   '輝度': 輝度
   # kind: track
@@ -1395,6 +1539,8 @@
   # kind: track
   'サイズ補正Y': サイズ補正Y
 オーラ放出@tim.anm2:
+  # script name
+  'オーラ放出@tim.anm2': オーラ放出@tim.anm2
   # kind: track
   '範囲': 範囲
   # kind: track
@@ -1416,6 +1562,8 @@
   # kind: check
   'オリジナル表示': オリジナル表示
 色収差@tim.anm2:
+  # script name
+  '色収差@tim.anm2': 色収差@tim.anm2
   # kind: track
   'ズレ量': ズレ量
   # kind: track
@@ -1439,6 +1587,8 @@
   # kind: check
   '逆順': 逆順
 スターバースト@tim.anm2:
+  # script name
+  'スターバースト@tim.anm2': スターバースト@tim.anm2
   # kind: track
   '強さ': 強さ
   # kind: track
@@ -1472,6 +1622,8 @@
   # kind: track
   'ぼかし': ぼかし
 領域枠@領域枠@tim.anm2:
+  # script name
+  '領域枠@領域枠@tim.anm2': 領域枠@領域枠@tim.anm2
   # kind: track
   '画線幅': 画線幅
   # kind: track
@@ -1487,6 +1639,8 @@
   # kind: value
   '基準': 基準
 領域枠(棘形)@領域枠@tim.anm2:
+  # script name
+  '領域枠(棘形)@領域枠@tim.anm2': 領域枠(棘形)@領域枠@tim.anm2
   # kind: track
   '画線幅％': 画線幅％
   # kind: track
@@ -1511,8 +1665,6 @@
   '回転': 回転
   # kind: select, options: 1, 2, 3, 4, 5
   '変形': 変形
-  # kind: value
-  '基準': 基準
   # kind: select_option, parent: 変形
   '1': 1
   # kind: select_option, parent: 変形
@@ -1523,7 +1675,11 @@
   '4': 4
   # kind: select_option, parent: 変形
   '5': 5
+  # kind: value
+  '基準': 基準
 領域枠(楕円)@領域枠@tim.anm2:
+  # script name
+  '領域枠(楕円)@領域枠@tim.anm2': 領域枠(楕円)@領域枠@tim.anm2
   # kind: track
   '画線幅': 画線幅
   # kind: track
@@ -1539,6 +1695,8 @@
   # kind: value
   '基準': 基準
 領域枠(角落ち)@領域枠@tim.anm2:
+  # script name
+  '領域枠(角落ち)@領域枠@tim.anm2': 領域枠(角落ち)@領域枠@tim.anm2
   # kind: track
   '画線幅': 画線幅
   # kind: select, options: 斜め, 円, 四角, 角丸
@@ -1568,6 +1726,8 @@
   # kind: check
   '楕円': 楕円
 領域枠(雲形)@領域枠@tim.anm2:
+  # script name
+  '領域枠(雲形)@領域枠@tim.anm2': 領域枠(雲形)@領域枠@tim.anm2
   # kind: track
   '画線幅％': 画線幅％
   # kind: track
@@ -1596,10 +1756,6 @@
   '回転': 回転
   # kind: select, options: 1, 2, 3, 4, 5
   '変形': 変形
-  # kind: track
-  '精度': 精度
-  # kind: value
-  '基準': 基準
   # kind: select_option, parent: 変形
   '1': 1
   # kind: select_option, parent: 変形
@@ -1610,7 +1766,13 @@
   '4': 4
   # kind: select_option, parent: 変形
   '5': 5
+  # kind: track
+  '精度': 精度
+  # kind: value
+  '基準': 基準
 ジグザグ塗りT@ジグザグ塗りT@tim.anm2:
+  # script name
+  'ジグザグ塗りT@ジグザグ塗りT@tim.anm2': ジグザグ塗りT@ジグザグ塗りT@tim.anm2
   # kind: track
   '進捗': 進捗
   # kind: track
@@ -1675,7 +1837,12 @@
   'イージング': イージング
   # kind: check
   '角丸なし': 角丸なし
+ジグザグ塗りT(先端座標)@ジグザグ塗りT@tim.anm2:
+  # script name
+  'ジグザグ塗りT(先端座標)@ジグザグ塗りT@tim.anm2': ジグザグ塗りT(先端座標)@ジグザグ塗りT@tim.anm2
 罫線T(Type1)@罫線T@tim.anm2:
+  # script name
+  '罫線T(Type1)@罫線T@tim.anm2': 罫線T(Type1)@罫線T@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -1685,6 +1852,8 @@
   # kind: track
   '縦横比[%]': 縦横比[%]
 罫線T(Type2)@罫線T@tim.anm2:
+  # script name
+  '罫線T(Type2)@罫線T@tim.anm2': 罫線T(Type2)@罫線T@tim.anm2
   # kind: track
   '制御点数': 制御点数
   # kind: track
@@ -1694,6 +1863,8 @@
   # kind: value
   '制御点座標': 制御点座標
 罫線T(obj配置)@罫線T@tim.anm2:
+  # script name
+  '罫線T(obj配置)@罫線T@tim.anm2': 罫線T(obj配置)@罫線T@tim.anm2
   # kind: track
   '開始位置': 開始位置
   # kind: track
@@ -1719,11 +1890,15 @@
   # kind: check
   '最終オブジェクト': 最終オブジェクト
 罫線T(削除)@罫線T@tim.anm2:
+  # script name
+  '罫線T(削除)@罫線T@tim.anm2': 罫線T(削除)@罫線T@tim.anm2
   # kind: track
   '削除点数': 削除点数
   # kind: value
   '削除アンカー': 削除アンカー
 罫線T(斜線)@罫線T@tim.anm2:
+  # script name
+  '罫線T(斜線)@罫線T@tim.anm2': 罫線T(斜線)@罫線T@tim.anm2
   # kind: track
   '斜線数': 斜線数
   # kind: track
@@ -1743,6 +1918,8 @@
   # kind: value
   '斜線アンカー': 斜線アンカー
 罫線T(表示)@罫線T@tim.anm2:
+  # script name
+  '罫線T(表示)@罫線T@tim.anm2': 罫線T(表示)@罫線T@tim.anm2
   # kind: track
   '線幅': 線幅
   # kind: track
@@ -1758,11 +1935,15 @@
   # kind: check
   'エッジ調整': エッジ調整
 ストローク用アンカー@ストロークT@tim.anm2:
+  # script name
+  'ストローク用アンカー@ストロークT@tim.anm2': ストローク用アンカー@ストロークT@tim.anm2
   # kind: track
   'アンカー数': アンカー数
   # kind: value
   '追加座標': 追加座標
 ストローク(反復)@ストロークT@tim.anm2:
+  # script name
+  'ストローク(反復)@ストロークT@tim.anm2': ストローク(反復)@ストロークT@tim.anm2
   # kind: track
   '進捗度': 進捗度
   # kind: track
@@ -1800,6 +1981,8 @@
   # kind: check
   'フレームバッファ表示': フレームバッファ表示
 ストローク(配置)@ストロークT@tim.anm2:
+  # script name
+  'ストローク(配置)@ストロークT@tim.anm2': ストローク(配置)@ストロークT@tim.anm2
   # kind: track
   '進捗度1': 進捗度1
   # kind: track
@@ -1831,6 +2014,8 @@
   # kind: track
   '精度': 精度
 ストローク(配置:変動)@ストロークT@tim.anm2:
+  # script name
+  'ストローク(配置:変動)@ストロークT@tim.anm2': ストローク(配置:変動)@ストロークT@tim.anm2
   # kind: track
   '誤差X': 誤差X
   # kind: track
@@ -1850,6 +2035,8 @@
   # kind: value
   '透明度変動[%]': 透明度変動[%]
 縁取りT@tim.anm2:
+  # script name
+  '縁取りT@tim.anm2': 縁取りT@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -1879,6 +2066,8 @@
   # kind: select_option, parent: モード
   '内側': 内側
 輪郭追跡@tim.anm2:
+  # script name
+  '輪郭追跡@tim.anm2': 輪郭追跡@tim.anm2
   # kind: track
   '描画度': 描画度
   # kind: track
@@ -1920,6 +2109,8 @@
   # kind: track
   '先端サイズ': 先端サイズ
 ラフ画線T@tim.anm2:
+  # script name
+  'ラフ画線T@tim.anm2': ラフ画線T@tim.anm2
   # kind: track
   '長さ': 長さ
   # kind: check
@@ -1957,6 +2148,8 @@
   # kind: value
   'PI': PI
 色付きエッジ抽出@tim.anm2:
+  # script name
+  '色付きエッジ抽出@tim.anm2': 色付きエッジ抽出@tim.anm2
   # kind: track
   'ズレX': ズレX
   # kind: track
@@ -1976,6 +2169,8 @@
   # kind: track
   'エッジぼかし': エッジぼかし
 色抽出T@tim.anm2:
+  # script name
+  '色抽出T@tim.anm2': 色抽出T@tim.anm2
   # kind: track
   '輝度範囲': 輝度範囲
   # kind: track
@@ -1987,6 +2182,8 @@
   # kind: check
   '簡易処理': 簡易処理
 ライン抽出T@tim.anm2:
+  # script name
+  'ライン抽出T@tim.anm2': ライン抽出T@tim.anm2
   # kind: track
   '半径': 半径
   # kind: track
@@ -2022,6 +2219,8 @@
   # kind: track
   '追加領域サイズ': 追加領域サイズ
 ラフエッジ@tim.anm2:
+  # script name
+  'ラフエッジ@tim.anm2': ラフエッジ@tim.anm2
   # kind: track
   '変形量': 変形量
   # kind: track
@@ -2030,14 +2229,6 @@
   '変化速度': 変化速度
   # kind: select, options: 1, 2, 3, 4, 5, 6
   '形状': 形状
-  # kind: track
-  'Y周期': Y周期
-  # kind: check
-  'X周期と同じ': X周期と同じ
-  # kind: track
-  '乱数シード': 乱数シード
-  # kind: check
-  '周囲を少し残す': 周囲を少し残す
   # kind: select_option, parent: 形状
   '1': 1
   # kind: select_option, parent: 形状
@@ -2050,7 +2241,17 @@
   '5': 5
   # kind: select_option, parent: 形状
   '6': 6
+  # kind: track
+  'Y周期': Y周期
+  # kind: check
+  'X周期と同じ': X周期と同じ
+  # kind: track
+  '乱数シード': 乱数シード
+  # kind: check
+  '周囲を少し残す': 周囲を少し残す
 サイズ指定@サイズ修正T@tim.anm2:
+  # script name
+  'サイズ指定@サイズ修正T@tim.anm2': サイズ指定@サイズ修正T@tim.anm2
   # kind: track
   '横': 横
   # kind: track
@@ -2060,6 +2261,8 @@
   # kind: track
   '基準Y[%]': 基準Y[%]
 領域サイズ指定+事前拡大回転@サイズ修正T@tim.anm2:
+  # script name
+  '領域サイズ指定+事前拡大回転@サイズ修正T@tim.anm2': 領域サイズ指定+事前拡大回転@サイズ修正T@tim.anm2
   # kind: track
   '幅': 幅
   # kind: track
@@ -2069,6 +2272,8 @@
   # kind: track
   '拡大率': 拡大率
 任意多角形カットA@任意多角形カット@tim.anm2:
+  # script name
+  '任意多角形カットA@任意多角形カット@tim.anm2': 任意多角形カットA@任意多角形カット@tim.anm2
   # kind: track
   '頂点X': 頂点X
   # kind: track
@@ -2082,6 +2287,8 @@
   # kind: value
   '領域': 領域
 任意多角形カットB(表示)@任意多角形カット@tim.anm2:
+  # script name
+  '任意多角形カットB(表示)@任意多角形カット@tim.anm2': 任意多角形カットB(表示)@任意多角形カット@tim.anm2
   # kind: track
   '厚み': 厚み
   # kind: color
@@ -2089,11 +2296,15 @@
   # kind: value
   'アンチエイリアス': アンチエイリアス
 任意多角形カットB(追加アンカー)@任意多角形カット@tim.anm2:
+  # script name
+  '任意多角形カットB(追加アンカー)@任意多角形カット@tim.anm2': 任意多角形カットB(追加アンカー)@任意多角形カット@tim.anm2
   # kind: track
   '頂点数': 頂点数
   # kind: value
   '領域': 領域
 スカイドーム@スカイドーム@tim.anm2:
+  # script name
+  'スカイドーム@スカイドーム@tim.anm2': スカイドーム@スカイドーム@tim.anm2
   # kind: track
   '水平回転': 水平回転
   # kind: track
@@ -2109,6 +2320,8 @@
   # kind: check
   '親カメラデータを使用': 親カメラデータを使用
 通常画像用前処理@スカイドーム@tim.anm2:
+  # script name
+  '通常画像用前処理@スカイドーム@tim.anm2': 通常画像用前処理@スカイドーム@tim.anm2
   # kind: track
   '水平範囲': 水平範囲
   # kind: track
@@ -2118,6 +2331,8 @@
   # kind: check
   '水平と垂直をリンク': 水平と垂直をリンク
 モーフィング-ポイント指定@モーフィング@tim.anm2:
+  # script name
+  'モーフィング-ポイント指定@モーフィング@tim.anm2': モーフィング-ポイント指定@モーフィング@tim.anm2
   # kind: track
   'ポイント数': ポイント数
   # kind: select, options: 変化前, 変化後
@@ -2139,11 +2354,15 @@
   # kind: check
   'ポイント表示': ポイント表示
 モーフィング-ポイント追加@モーフィング@tim.anm2:
+  # script name
+  'モーフィング-ポイント追加@モーフィング@tim.anm2': モーフィング-ポイント追加@モーフィング@tim.anm2
   # kind: track
   'ポイント数': ポイント数
   # kind: value
   '座標': 座標
 モーフィング-表示@モーフィング@tim.anm2:
+  # script name
+  'モーフィング-表示@モーフィング@tim.anm2': モーフィング-表示@モーフィング@tim.anm2
   # kind: track
   '変化度': 変化度
   # kind: track
@@ -2169,6 +2388,8 @@
   # kind: check
   'ガイド表示': ガイド表示
 モーフィング(輪郭)-オプション@モーフィング@tim.anm2:
+  # script name
+  'モーフィング(輪郭)-オプション@モーフィング@tim.anm2': モーフィング(輪郭)-オプション@モーフィング@tim.anm2
   # kind: track
   'ライン幅': ライン幅
   # kind: track
@@ -2180,6 +2401,8 @@
   # kind: color
   'ライン色': ライン色
 モーフィング(輪郭)-表示@モーフィング@tim.anm2:
+  # script name
+  'モーフィング(輪郭)-表示@モーフィング@tim.anm2': モーフィング(輪郭)-表示@モーフィング@tim.anm2
   # kind: track
   '変化度': 変化度
   # kind: track
@@ -2201,6 +2424,8 @@
   # kind: check
   '一時保存EXT': 一時保存EXT
 スプリット@スプリット@tim.anm2:
+  # script name
+  'スプリット@スプリット@tim.anm2': スプリット@スプリット@tim.anm2
   # kind: track
   'スプリット1': スプリット1
   # kind: track
@@ -2222,6 +2447,8 @@
   # kind: track
   '透明度境界ボカシ': 透明度境界ボカシ
 スプリット(位置拡張)@スプリット@tim.anm2:
+  # script name
+  'スプリット(位置拡張)@スプリット@tim.anm2': スプリット(位置拡張)@スプリット@tim.anm2
   # kind: track
   '中心X': 中心X
   # kind: track
@@ -2231,6 +2458,8 @@
   # kind: track
   '回転': 回転
 スプリット(形状拡張:ｱﾝｶｰ)@スプリット@tim.anm2:
+  # script name
+  'スプリット(形状拡張:ｱﾝｶｰ)@スプリット@tim.anm2': スプリット(形状拡張:ｱﾝｶｰ)@スプリット@tim.anm2
   # kind: track
   'オフセット': オフセット
   # kind: track
@@ -2244,6 +2473,8 @@
   # kind: value
   '座標': 座標
 スプリット(形状拡張:ﾌｧｲﾙ)@スプリット@tim.anm2:
+  # script name
+  'スプリット(形状拡張:ﾌｧｲﾙ)@スプリット@tim.anm2': スプリット(形状拡張:ﾌｧｲﾙ)@スプリット@tim.anm2
   # kind: track
   'オフセット': オフセット
   # kind: track
@@ -2255,6 +2486,8 @@
   # kind: file
   'ファイル': ファイル
 ワイヤー3D(マップ)@ワイヤー3D@tim.anm2:
+  # script name
+  'ワイヤー3D(マップ)@ワイヤー3D@tim.anm2': ワイヤー3D(マップ)@ワイヤー3D@tim.anm2
   # kind: track
   '横分割数': 横分割数
   # kind: track
@@ -2262,6 +2495,8 @@
   # kind: track
   'ライン幅': ライン幅
 ワイヤー3D(表示)@ワイヤー3D@tim.anm2:
+  # script name
+  'ワイヤー3D(表示)@ワイヤー3D@tim.anm2': ワイヤー3D(表示)@ワイヤー3D@tim.anm2
   # kind: track
   '横サイズ': 横サイズ
   # kind: track
@@ -2295,6 +2530,8 @@
   # kind: check
   'YZ反転': YZ反転
 二十六面体@tim.anm2:
+  # script name
+  '二十六面体@tim.anm2': 二十六面体@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -2304,6 +2541,8 @@
   # kind: color
   '色3': 色3
 直方体展開@tim.anm2:
+  # script name
+  '直方体展開@tim.anm2': 直方体展開@tim.anm2
   # kind: track
   '蓋角度': 蓋角度
   # kind: track
@@ -2325,6 +2564,8 @@
   # kind: check
   'アンチエイリアス': アンチエイリアス
 錐変形@tim.anm2:
+  # script name
+  '錐変形@tim.anm2': 錐変形@tim.anm2
   # kind: track
   '角数': 角数
   # kind: track
@@ -2346,6 +2587,8 @@
   # kind: check
   '角を整数化': 角を整数化
 つまむ@tim.anm2:
+  # script name
+  'つまむ@tim.anm2': つまむ@tim.anm2
   # kind: track
   'ツマミ量％': ツマミ量％
   # kind: track
@@ -2359,6 +2602,8 @@
   # kind: track
   '中心Y': 中心Y
 ぼかしミラー@tim.anm2:
+  # script name
+  'ぼかしミラー@tim.anm2': ぼかしミラー@tim.anm2
   # kind: track
   '中心Y': 中心Y
   # kind: track
@@ -2368,6 +2613,8 @@
   # kind: check
   '左右反転': 左右反転
 極座標変換T@tim.anm2:
+  # script name
+  '極座標変換T@tim.anm2': 極座標変換T@tim.anm2
   # kind: track
   '変換範囲': 変換範囲
   # kind: track
@@ -2375,6 +2622,8 @@
   # kind: check
   '逆変換': 逆変換
 正多面体@tim.anm2:
+  # script name
+  '正多面体@tim.anm2': 正多面体@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: select, options: 正四面体, 立方体, 正八面体, 正二十面体, 正十二面体
@@ -2398,6 +2647,8 @@
   # kind: check
   '90度回転': 90度回転
 ルービックキューブ配置V2@tim.anm2:
+  # script name
+  'ルービックキューブ配置V2@tim.anm2': ルービックキューブ配置V2@tim.anm2
   # kind: select, options: 配置1, 配置2, 配置3
   '配置': 配置
   # kind: select_option, parent: 配置
@@ -2413,6 +2664,8 @@
   # kind: check
   '内部表示': 内部表示
 簡易ワープV2@tim.anm2:
+  # script name
+  '簡易ワープV2@tim.anm2': 簡易ワープV2@tim.anm2
   # kind: track
   '基準X': 基準X
   # kind: track
@@ -2452,6 +2705,8 @@
   # kind: check
   '中心XY基準': 中心XY基準
 バニシングポイント@tim.anm2:
+  # script name
+  'バニシングポイント@tim.anm2': バニシングポイント@tim.anm2
   # kind: track
   '移動X': 移動X
   # kind: track
@@ -2479,6 +2734,8 @@
   # kind: value
   '領域': 領域
 バニシングポイント2@tim.anm2:
+  # script name
+  'バニシングポイント2@tim.anm2': バニシングポイント2@tim.anm2
   # kind: track
   'サイズ補正': サイズ補正
   # kind: select, options: ガイド, プレビュー, 変形
@@ -2502,6 +2759,8 @@
   # kind: track
   'ライン幅': ライン幅
 曲面変形@tim.anm2:
+  # script name
+  '曲面変形@tim.anm2': 曲面変形@tim.anm2
   # kind: track
   '変形1': 変形1
   # kind: track
@@ -2525,11 +2784,15 @@
   # kind: check
   '重心を中心にする': 重心を中心にする
 エンボスT@T_Filter_Module@tim.anm2:
+  # script name
+  'エンボスT@T_Filter_Module@tim.anm2': エンボスT@T_Filter_Module@tim.anm2
   # kind: track
   '強さ': 強さ
   # kind: track
   '向き': 向き
 ガラスT@T_Filter_Module@tim.anm2:
+  # script name
+  'ガラスT@T_Filter_Module@tim.anm2': ガラスT@T_Filter_Module@tim.anm2
   # kind: track
   '歪み量': 歪み量
   # kind: track
@@ -2551,6 +2814,8 @@
   # kind: track
   '乱数シード': 乱数シード
 グラフィックペンT@T_Filter_Module@tim.anm2:
+  # script name
+  'グラフィックペンT@T_Filter_Module@tim.anm2': グラフィックペンT@T_Filter_Module@tim.anm2
   # kind: track
   '線長': 線長
   # kind: track
@@ -2588,6 +2853,8 @@
   # kind: select_option, parent: 処理モード
   'GPU': GPU
 シャープT@T_Filter_Module@tim.anm2:
+  # script name
+  'シャープT@T_Filter_Module@tim.anm2': シャープT@T_Filter_Module@tim.anm2
   # kind: track
   '強さ': 強さ
   # kind: track
@@ -2599,6 +2866,8 @@
   # kind: select_option, parent: 処理方式
   'シャープ': シャープ
 チョーク・木炭T@T_Filter_Module@tim.anm2:
+  # script name
+  'チョーク・木炭T@T_Filter_Module@tim.anm2': チョーク・木炭T@T_Filter_Module@tim.anm2
   # kind: track
   '木炭適用': 木炭適用
   # kind: track
@@ -2622,6 +2891,8 @@
   # kind: track
   'シード': シード
 ノート用紙T@T_Filter_Module@tim.anm2:
+  # script name
+  'ノート用紙T@T_Filter_Module@tim.anm2': ノート用紙T@T_Filter_Module@tim.anm2
   # kind: track
   'しきい値': しきい値
   # kind: track
@@ -2651,6 +2922,8 @@
   # kind: color
   'ハイライト': ハイライト
 ブラスターT@T_Filter_Module@tim.anm2:
+  # script name
+  'ブラスターT@T_Filter_Module@tim.anm2': ブラスターT@T_Filter_Module@tim.anm2
   # kind: track
   'しきい値': しきい値
   # kind: track
@@ -2682,6 +2955,8 @@
   # kind: track
   'エッジ強度': エッジ強度
 モザイクタイルT@T_Filter_Module@tim.anm2:
+  # script name
+  'モザイクタイルT@T_Filter_Module@tim.anm2': モザイクタイルT@T_Filter_Module@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -2707,6 +2982,8 @@
   # kind: check
   'がさつきを有効化': がさつきを有効化
 網点分解(CMY)@網点分解T@tim.anm2:
+  # script name
+  '網点分解(CMY)@網点分解T@tim.anm2': 網点分解(CMY)@網点分解T@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -2742,6 +3019,8 @@
   # kind: check
   '簡易表示': 簡易表示
 網点分解(特色)@網点分解T@tim.anm2:
+  # script name
+  '網点分解(特色)@網点分解T@tim.anm2': 網点分解(特色)@網点分解T@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -2781,6 +3060,8 @@
   # kind: select_option, parent: 型抜法
   '網点と元画像': 網点と元画像
 蜂の巣モザイク@tim.anm2:
+  # script name
+  '蜂の巣モザイク@tim.anm2': 蜂の巣モザイク@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -2802,6 +3083,8 @@
   # kind: track
   '凸エッジ角度': 凸エッジ角度
 エンボスタイル@tim.anm2:
+  # script name
+  'エンボスタイル@tim.anm2': エンボスタイル@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -2813,6 +3096,8 @@
   # kind: track
   'エンボス透明度': エンボス透明度
 フィルム焦げ@tim.anm2:
+  # script name
+  'フィルム焦げ@tim.anm2': フィルム焦げ@tim.anm2
   # kind: track
   '焼け': 焼け
   # kind: track
@@ -2834,6 +3119,8 @@
   # kind: track
   '縁発光拡散(%)': 縁発光拡散(%)
 ハーフトーンT@tim.anm2:
+  # script name
+  'ハーフトーンT@tim.anm2': ハーフトーンT@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -2857,6 +3144,8 @@
   # kind: check
   '自分自身で型抜き': 自分自身で型抜き
 ライントーンT@tim.anm2:
+  # script name
+  'ライントーンT@tim.anm2': ライントーンT@tim.anm2
   # kind: track
   '分割数': 分割数
   # kind: track
@@ -2876,6 +3165,8 @@
   # kind: check
   '反転': 反転
 低解像度T@tim.anm2:
+  # script name
+  '低解像度T@tim.anm2': 低解像度T@tim.anm2
   # kind: track
   '強度': 強度
   # kind: track
@@ -2895,6 +3186,8 @@
   # kind: check
   'ブロック描画': ブロック描画
 点描T@tim.anm2:
+  # script name
+  '点描T@tim.anm2': 点描T@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -2928,6 +3221,8 @@
   # kind: check
   '色参照位置固定': 色参照位置固定
 リピーター(+時間)@簡易リピーター@tim.anm2:
+  # script name
+  'リピーター(+時間)@簡易リピーター@tim.anm2': リピーター(+時間)@簡易リピーター@tim.anm2
   # kind: track
   'ｵﾌｾｯﾄ(S)': ｵﾌｾｯﾄ(S)
   # kind: track
@@ -2939,6 +3234,8 @@
   # kind: file
   'ファイル': ファイル
 リピーター(基準)@簡易リピーター@tim.anm2:
+  # script name
+  'リピーター(基準)@簡易リピーター@tim.anm2': リピーター(基準)@簡易リピーター@tim.anm2
   # kind: track
   'X': X
   # kind: track
@@ -2948,6 +3245,8 @@
   # kind: track
   '拡大%': 拡大%
 リピーター(変化率)@簡易リピーター@tim.anm2:
+  # script name
+  'リピーター(変化率)@簡易リピーター@tim.anm2': リピーター(変化率)@簡易リピーター@tim.anm2
   # kind: track
   'X変化率': X変化率
   # kind: track
@@ -2957,6 +3256,8 @@
   # kind: track
   '回転変率': 回転変率
 リピーター(表示)@簡易リピーター@tim.anm2:
+  # script name
+  'リピーター(表示)@簡易リピーター@tim.anm2': リピーター(表示)@簡易リピーター@tim.anm2
   # kind: track
   '透過率%': 透過率%
   # kind: track
@@ -3004,6 +3305,8 @@
   # kind: check
   '位置ズレ補正': 位置ズレ補正
 MP-A1@モーションパスA@tim.anm2:
+  # script name
+  'MP-A1@モーションパスA@tim.anm2': MP-A1@モーションパスA@tim.anm2
   # kind: track
   'X座標': X座標
   # kind: track
@@ -3013,6 +3316,8 @@ MP-A1@モーションパスA@tim.anm2:
   # kind: track
   'ねじれ': ねじれ
 MP-A2(複数可)@モーションパスA@tim.anm2:
+  # script name
+  'MP-A2(複数可)@モーションパスA@tim.anm2': MP-A2(複数可)@モーションパスA@tim.anm2
   # kind: track
   'X座標': X座標
   # kind: track
@@ -3022,6 +3327,8 @@ MP-A2(複数可)@モーションパスA@tim.anm2:
   # kind: track
   'ねじれ': ねじれ
 MP-A3@モーションパスA@tim.anm2:
+  # script name
+  'MP-A3@モーションパスA@tim.anm2': MP-A3@モーションパスA@tim.anm2
   # kind: track
   'X座標': X座標
   # kind: track
@@ -3063,6 +3370,8 @@ MP-A3@モーションパスA@tim.anm2:
   # kind: select, options: タイプ0, タイプ1, タイプ2
   '内部': 内部
 MP-B1@モーションパスB@tim.anm2:
+  # script name
+  'MP-B1@モーションパスB@tim.anm2': MP-B1@モーションパスB@tim.anm2
   # kind: track
   'R座標': R座標
   # kind: track
@@ -3072,6 +3381,8 @@ MP-B1@モーションパスB@tim.anm2:
   # kind: track
   'ねじれ': ねじれ
 MP-B2(複数可)@モーションパスB@tim.anm2:
+  # script name
+  'MP-B2(複数可)@モーションパスB@tim.anm2': MP-B2(複数可)@モーションパスB@tim.anm2
   # kind: track
   'R座標': R座標
   # kind: track
@@ -3081,6 +3392,8 @@ MP-B2(複数可)@モーションパスB@tim.anm2:
   # kind: track
   'ねじれ': ねじれ
 MP-B3@モーションパスB@tim.anm2:
+  # script name
+  'MP-B3@モーションパスB@tim.anm2': MP-B3@モーションパスB@tim.anm2
   # kind: track
   'R座標': R座標
   # kind: track
@@ -3122,6 +3435,8 @@ MP-B3@モーションパスB@tim.anm2:
   # kind: select, options: タイプ0, タイプ1, タイプ2
   '内部': 内部
 MP-C@モーションパスC@tim.anm2:
+  # script name
+  'MP-C@モーションパスC@tim.anm2': MP-C@モーションパスC@tim.anm2
   # kind: track
   'X座標': X座標
   # kind: track
@@ -3165,6 +3480,8 @@ MP-C@モーションパスC@tim.anm2:
   # kind: select, options: タイプ0, タイプ1, タイプ2
   '内部': 内部
 MP-D@モーションパスD@tim.anm2:
+  # script name
+  'MP-D@モーションパスD@tim.anm2': MP-D@モーションパスD@tim.anm2
   # kind: track
   'R座標': R座標
   # kind: track
@@ -3208,6 +3525,8 @@ MP-D@モーションパスD@tim.anm2:
   # kind: select, options: タイプ0, タイプ1, タイプ2
   '内部': 内部
 TrackingラインEasy@TrackingラインEasy@tim.anm2:
+  # script name
+  'TrackingラインEasy@TrackingラインEasy@tim.anm2': TrackingラインEasy@TrackingラインEasy@tim.anm2
   # kind: track
   '開始/シフト': 開始/シフト
   # kind: track
@@ -3247,6 +3566,8 @@ TrackingラインEasy@TrackingラインEasy@tim.anm2:
   # kind: check
   '頂点群を分離': 頂点群を分離
 TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
+  # script name
+  'TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2': TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2
   # kind: track
   '+頂点数': +頂点数
   # kind: check
@@ -3256,6 +3577,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   '頂点追加を無効にする': 頂点追加を無効にする
 ミラーT@tim.anm2:
+  # script name
+  'ミラーT@tim.anm2': ミラーT@tim.anm2
   # kind: track
   '透明度': 透明度
   # kind: track
@@ -3269,6 +3592,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   '単色化(T)': 単色化(T)
 モーションタイルＴ@tim.anm2:
+  # script name
+  'モーションタイルＴ@tim.anm2': モーションタイルＴ@tim.anm2
   # kind: track
   '中心位置': 中心位置
   # kind: track
@@ -3286,6 +3611,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   '水平シフト': 水平シフト
 斜めブラインド(改)@tim.anm2:
+  # script name
+  '斜めブラインド(改)@tim.anm2': 斜めブラインド(改)@tim.anm2
   # kind: track
   '割合': 割合
   # kind: track
@@ -3299,6 +3626,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   '透明度反転': 透明度反転
 グリッドワイプ@tim.anm2:
+  # script name
+  'グリッドワイプ@tim.anm2': グリッドワイプ@tim.anm2
   # kind: track
   '展開': 展開
   # kind: track
@@ -3334,6 +3663,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   '中心座標Y': 中心座標Y
 輝度ワイプ@tim.anm2:
+  # script name
+  '輝度ワイプ@tim.anm2': 輝度ワイプ@tim.anm2
   # kind: track
   'ワイプ量': ワイプ量
   # kind: track
@@ -3343,6 +3674,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   '暗い所から透過': 暗い所から透過
 砕けたガラス(エンドレス)@砕けたガラス@tim.anm2:
+  # script name
+  '砕けたガラス(エンドレス)@砕けたガラス@tim.anm2': 砕けたガラス(エンドレス)@砕けたガラス@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -3376,6 +3709,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   '乱数パターン': 乱数パターン
 砕けたガラス(砕け散る)@砕けたガラス@tim.anm2:
+  # script name
+  '砕けたガラス(砕け散る)@砕けたガラス@tim.anm2': 砕けたガラス(砕け散る)@砕けたガラス@tim.anm2
   # kind: track
   '粉砕度': 粉砕度
   # kind: track
@@ -3431,6 +3766,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   '乱数パターン': 乱数パターン
 ブロックラスターT@tim.anm2:
+  # script name
+  'ブロックラスターT@tim.anm2': ブロックラスターT@tim.anm2
   # kind: track
   '高さ': 高さ
   # kind: track
@@ -3456,6 +3793,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   'シード': シード
 砕け散るパズル@tim.anm2:
+  # script name
+  '砕け散るパズル@tim.anm2': 砕け散るパズル@tim.anm2
   # kind: track
   '展開': 展開
   # kind: track
@@ -3501,6 +3840,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   'マップ反転': マップ反転
 砕け散るT@tim.anm2:
+  # script name
+  '砕け散るT@tim.anm2': 砕け散るT@tim.anm2
   # kind: track
   '粉砕度': 粉砕度
   # kind: track
@@ -3532,6 +3873,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   '再生速度': 再生速度
 砕け散る球@tim.anm2:
+  # script name
+  '砕け散る球@tim.anm2': 砕け散る球@tim.anm2
   # kind: track
   '粉砕度': 粉砕度
   # kind: track
@@ -3569,6 +3912,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   'ランダム方向': ランダム方向
 歯車@tim.anm2:
+  # script name
+  '歯車@tim.anm2': 歯車@tim.anm2
   # kind: track
   '厚さ': 厚さ
   # kind: track
@@ -3582,6 +3927,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   '内輪半径補正': 内輪半径補正
 燃焼T@tim.anm2:
+  # script name
+  '燃焼T@tim.anm2': 燃焼T@tim.anm2
   # kind: track
   '展開': 展開
   # kind: track
@@ -3631,6 +3978,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   '展開を調整': 展開を調整
 ひび割れガラスT@tim.anm2:
+  # script name
+  'ひび割れガラスT@tim.anm2': ひび割れガラスT@tim.anm2
   # kind: track
   'しきい値': しきい値
   # kind: track
@@ -3650,6 +3999,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   'マップ表示': マップ表示
 はためき@tim.anm2:
+  # script name
+  'はためき@tim.anm2': はためき@tim.anm2
   # kind: track
   '振幅': 振幅
   # kind: track
@@ -3673,6 +4024,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   '縦波数': 縦波数
 注ぎT@tim.anm2:
+  # script name
+  '注ぎT@tim.anm2': 注ぎT@tim.anm2
   # kind: track
   '水位': 水位
   # kind: track
@@ -3702,6 +4055,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   'ぼかし': ぼかし
 ぷよぷよT@tim.anm2:
+  # script name
+  'ぷよぷよT@tim.anm2': ぷよぷよT@tim.anm2
   # kind: track
   '枠サイズ': 枠サイズ
   # kind: track
@@ -3741,6 +4096,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   'マスク表示': マスク表示
 リール回転T@tim.anm2:
+  # script name
+  'リール回転T@tim.anm2': リール回転T@tim.anm2
   # kind: track
   '開始位置％': 開始位置％
   # kind: track
@@ -3772,6 +4129,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   '時間範囲終了％': 時間範囲終了％
 ゆらめき@tim.anm2:
+  # script name
+  'ゆらめき@tim.anm2': ゆらめき@tim.anm2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -3781,6 +4140,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
   '形状乱数シード': 形状乱数シード
 透明塗り@tim.anm2:
+  # script name
+  '透明塗り@tim.anm2': 透明塗り@tim.anm2
   # kind: track
   '指定位置X': 指定位置X
   # kind: track
@@ -3794,6 +4155,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   '改良計算': 改良計算
 透明度指定@tim.anm2:
+  # script name
+  '透明度指定@tim.anm2': 透明度指定@tim.anm2
   # kind: track
   'αレイヤー': αレイヤー
   # kind: select, options: α, R, G, B, グレー
@@ -3815,6 +4178,8 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: check
   '透明度反転': 透明度反転
 twitchっぽいものT@tim.anm2:
+  # script name
+  'twitchっぽいものT@tim.anm2': twitchっぽいものT@tim.anm2
   # kind: track
   '間隔ミリ秒': 間隔ミリ秒
   # kind: track
@@ -3866,6 +4231,8 @@ twitchっぽいものT@tim.anm2:
   # kind: check
   'レイヤー依存なし': レイヤー依存なし
 風揺れT@tim.anm2:
+  # script name
+  '風揺れT@tim.anm2': 風揺れT@tim.anm2
   # kind: track
   '揺れ角': 揺れ角
   # kind: track
@@ -3899,6 +4266,8 @@ twitchっぽいものT@tim.anm2:
   # kind: check
   'アルファ補正': アルファ補正
 ツイスター@tim.anm2:
+  # script name
+  'ツイスター@tim.anm2': ツイスター@tim.anm2
   # kind: track
   'ひねり量': ひねり量
   # kind: track
@@ -3922,6 +4291,8 @@ twitchっぽいものT@tim.anm2:
   # kind: track
   '範囲拡張Y': 範囲拡張Y
 な〜さりい☆らいむ風TA@tim.anm2:
+  # script name
+  'な〜さりい☆らいむ風TA@tim.anm2': な〜さりい☆らいむ風TA@tim.anm2
   # kind: track
   '時間mS': 時間mS
   # kind: track
@@ -3935,6 +4306,8 @@ twitchっぽいものT@tim.anm2:
   # kind: track
   '乱数シード': 乱数シード
 変色パーティクル@tim.anm2:
+  # script name
+  '変色パーティクル@tim.anm2': 変色パーティクル@tim.anm2
   # kind: track
   '出力頻度': 出力頻度
   # kind: track
@@ -3956,6 +4329,8 @@ twitchっぽいものT@tim.anm2:
   # kind: track
   '拡散角度終了': 拡散角度終了
 放射分布@tim.anm2:
+  # script name
+  '放射分布@tim.anm2': 放射分布@tim.anm2
   # kind: track
   '速度': 速度
   # kind: track
@@ -3985,6 +4360,8 @@ twitchっぽいものT@tim.anm2:
   # kind: track
   '乱数シード': 乱数シード
 カメラデータコピー(子)@カメラデータコピー@tim.cam2:
+  # script name
+  'カメラデータコピー(子)@カメラデータコピー@tim.cam2': カメラデータコピー(子)@カメラデータコピー@tim.cam2
   # kind: track
   '倍率[%]': 倍率[%]
   # kind: check
@@ -3993,7 +4370,12 @@ twitchっぽいものT@tim.anm2:
   'Y軸反転': Y軸反転
   # kind: check
   'Z軸反転': Z軸反転
+カメラデータコピー(親)@カメラデータコピー@tim.cam2:
+  # script name
+  'カメラデータコピー(親)@カメラデータコピー@tim.cam2': カメラデータコピー(親)@カメラデータコピー@tim.cam2
 オートターゲット@tim.cam2:
+  # script name
+  'オートターゲット@tim.cam2': オートターゲット@tim.cam2
   # kind: track
   'ターゲット': ターゲット
   # kind: track
@@ -4033,6 +4415,8 @@ twitchっぽいものT@tim.anm2:
   # kind: track
   'ターゲット10': ターゲット10
 オートターゲット100@tim.cam2:
+  # script name
+  'オートターゲット100@tim.cam2': オートターゲット100@tim.cam2
   # kind: track
   'ターゲット': ターゲット
   # kind: track
@@ -4072,6 +4456,8 @@ twitchっぽいものT@tim.anm2:
   # kind: track
   'ターゲット10': ターゲット10
 位置補正@tim.cam2:
+  # script name
+  '位置補正@tim.cam2': 位置補正@tim.cam2
   # kind: track
   '補正X': 補正X
   # kind: track
@@ -4087,9 +4473,13 @@ twitchっぽいものT@tim.anm2:
   # kind: select_option, parent: 補正方法
   '両方': 両方
 位置補正R@tim.cam2:
+  # script name
+  '位置補正R@tim.cam2': 位置補正R@tim.cam2
   # kind: track
   '補正RZ': 補正RZ
 MMDカメラデータ読込VMD@tim.cam2:
+  # script name
+  'MMDカメラデータ読込VMD@tim.cam2': MMDカメラデータ読込VMD@tim.cam2
   # kind: track
   'サイズ補正': サイズ補正
   # kind: track
@@ -4098,15 +4488,27 @@ MMDカメラデータ読込VMD@tim.cam2:
   '自動視野角': 自動視野角
   # kind: file
   'ファイル': ファイル
+一時的に保存@一時保存読込@tim.obj2:
+  # script name
+  '一時的に保存@一時保存読込@tim.obj2': 一時的に保存@一時保存読込@tim.obj2
 一時的に保存(4面)@一時保存読込@tim.obj2:
+  # script name
+  '一時的に保存(4面)@一時保存読込@tim.obj2': 一時的に保存(4面)@一時保存読込@tim.obj2
   # kind: track
   '保存先': 保存先
+保存画像の読込@一時保存読込@tim.obj2:
+  # script name
+  '保存画像の読込@一時保存読込@tim.obj2': 保存画像の読込@一時保存読込@tim.obj2
 保存画像の読込(4面)@一時保存読込@tim.obj2:
+  # script name
+  '保存画像の読込(4面)@一時保存読込@tim.obj2': 保存画像の読込(4面)@一時保存読込@tim.obj2
   # kind: track
   '読込先': 読込先
   # kind: check
   '中心調整': 中心調整
 ティーカップ@けいおんグッズ@tim.obj2:
+  # script name
+  'ティーカップ@けいおんグッズ@tim.obj2': ティーカップ@けいおんグッズ@tim.obj2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -4130,6 +4532,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: track
   '取っ手位置補正': 取っ手位置補正
 律部屋テーブル@けいおんグッズ@tim.obj2:
+  # script name
+  '律部屋テーブル@けいおんグッズ@tim.obj2': 律部屋テーブル@けいおんグッズ@tim.obj2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -4141,6 +4545,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: color
   '脚の色': 脚の色
 集中線T1@集中線T@tim.obj2:
+  # script name
+  '集中線T1@集中線T@tim.obj2': 集中線T1@集中線T@tim.obj2
   # kind: track
   '発生確率': 発生確率
   # kind: track
@@ -4176,6 +4582,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: check
   '最大本数自動計算': 最大本数自動計算
 集中線T2@集中線T@tim.obj2:
+  # script name
+  '集中線T2@集中線T@tim.obj2': 集中線T2@集中線T@tim.obj2
   # kind: track
   '発生量': 発生量
   # kind: track
@@ -4217,6 +4625,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: track
   '高さ': 高さ
 任意多角形@任意多角形@tim.obj2:
+  # script name
+  '任意多角形@任意多角形@tim.obj2': 任意多角形@任意多角形@tim.obj2
   # kind: color
   '色': 色
   # kind: check
@@ -4230,6 +4640,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: figure
   '図形': 図形
 任意多角形分離指定（座標）@任意多角形@tim.obj2:
+  # script name
+  '任意多角形分離指定（座標）@任意多角形@tim.obj2': 任意多角形分離指定（座標）@任意多角形@tim.obj2
   # kind: track
   'ガイドサイズ': ガイドサイズ
   # kind: color
@@ -4237,11 +4649,15 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: figure
   '図形': 図形
 任意多角形分離指定（表示）@任意多角形@tim.obj2:
+  # script name
+  '任意多角形分離指定（表示）@任意多角形@tim.obj2': 任意多角形分離指定（表示）@任意多角形@tim.obj2
   # kind: track
   '厚み': 厚み
   # kind: color
   '色': 色
 凸多角形@任意多角形@tim.obj2:
+  # script name
+  '凸多角形@任意多角形@tim.obj2': 凸多角形@任意多角形@tim.obj2
   # kind: color
   '色': 色
   # kind: check
@@ -4255,6 +4671,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: figure
   '図形': 図形
 二十六面体@tim.obj2:
+  # script name
+  '二十六面体@tim.obj2': 二十六面体@tim.obj2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -4268,6 +4686,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: color
   '色3': 色3
 バーコードT@tim.obj2:
+  # script name
+  'バーコードT@tim.obj2': バーコードT@tim.obj2
   # kind: track
   '最小幅': 最小幅
   # kind: track
@@ -4283,6 +4703,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: check
   'CodeCも併用': CodeCも併用
 ベジエ軌道Ｔ@tim.obj2:
+  # script name
+  'ベジエ軌道Ｔ@tim.obj2': ベジエ軌道Ｔ@tim.obj2
   # kind: track
   '軌道番号': 軌道番号
   # kind: select, options: 全リンク, リンク1, リンク2, リンク3
@@ -4302,6 +4724,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: check
   'グラフ表示': グラフ表示
 パズルピース@tim.obj2:
+  # script name
+  'パズルピース@tim.obj2': パズルピース@tim.obj2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -4311,6 +4735,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: color
   '色': 色
 泡@tim.obj2:
+  # script name
+  '泡@tim.obj2': 泡@tim.obj2
   # kind: track
   '個数': 個数
   # kind: track
@@ -4334,6 +4760,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: track
   '表示領域補正': 表示領域補正
 ヘブバン風音声波形T@tim.obj2:
+  # script name
+  'ヘブバン風音声波形T@tim.obj2': ヘブバン風音声波形T@tim.obj2
   # kind: track
   '外円サイズ': 外円サイズ
   # kind: track
@@ -4373,6 +4801,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: check
   '波形反転': 波形反転
 ひょうたんTM@tim.obj2:
+  # script name
+  'ひょうたんTM@tim.obj2': ひょうたんTM@tim.obj2
   # kind: track
   '高さ': 高さ
   # kind: track
@@ -4390,6 +4820,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: check
   '高精度': 高精度
 インクTM@tim.obj2:
+  # script name
+  'インクTM@tim.obj2': インクTM@tim.obj2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -4421,6 +4853,8 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: check
   '新描画法': 新描画法
 Lensflare@tim.obj2:
+  # script name
+  'Lensflare@tim.obj2': Lensflare@tim.obj2
   # kind: track
   '光中心(X)': 光中心(X)
   # kind: track
@@ -4434,6 +4868,8 @@ Lensflare@tim.obj2:
   # kind: track
   '点滅幅': 点滅幅
 稲妻@tim.obj2:
+  # script name
+  '稲妻@tim.obj2': 稲妻@tim.obj2
   # kind: track
   'パターン': パターン
   # kind: track
@@ -4469,6 +4905,8 @@ Lensflare@tim.obj2:
   # kind: check
   '枠表示': 枠表示
 マルチラインT@tim.obj2:
+  # script name
+  'マルチラインT@tim.obj2': マルチラインT@tim.obj2
   # kind: track
   'アンカー数': アンカー数
   # kind: track
@@ -4492,6 +4930,8 @@ Lensflare@tim.obj2:
   # kind: check
   '矢印位置反転': 矢印位置反転
 もじゃもじゃT@tim.obj2:
+  # script name
+  'もじゃもじゃT@tim.obj2': もじゃもじゃT@tim.obj2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -4545,6 +4985,8 @@ Lensflare@tim.obj2:
   # kind: value
   'PI': PI
 簡易トーンカーブ@tim.obj2:
+  # script name
+  '簡易トーンカーブ@tim.obj2': 簡易トーンカーブ@tim.obj2
   # kind: track
   'サイズX': サイズX
   # kind: track
@@ -4570,6 +5012,8 @@ Lensflare@tim.obj2:
   # kind: check
   'カーブ表示': カーブ表示
 簡易ヒストグラム@tim.obj2:
+  # script name
+  '簡易ヒストグラム@tim.obj2': 簡易ヒストグラム@tim.obj2
   # kind: track
   'レイヤー': レイヤー
   # kind: track
@@ -4589,6 +5033,8 @@ Lensflare@tim.obj2:
   # kind: check
   '輝度表示': 輝度表示
 色相環@tim.obj2:
+  # script name
+  '色相環@tim.obj2': 色相環@tim.obj2
   # kind: track
   '半径': 半径
   # kind: track
@@ -4600,6 +5046,8 @@ Lensflare@tim.obj2:
   # kind: track
   '分割数': 分割数
 ぐにゃ枠T@tim.obj2:
+  # script name
+  'ぐにゃ枠T@tim.obj2': ぐにゃ枠T@tim.obj2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -4637,6 +5085,8 @@ Lensflare@tim.obj2:
   # kind: check
   '単一線': 単一線
 ブラースライドT@シーンチェンジセットT@tim.scn2:
+  # script name
+  'ブラースライドT@シーンチェンジセットT@tim.scn2': ブラースライドT@シーンチェンジセットT@tim.scn2
   # kind: track
   'ブラー量': ブラー量
   # kind: select, options: 横, 縦
@@ -4648,6 +5098,8 @@ Lensflare@tim.obj2:
   # kind: track
   '分割数': 分割数
 ホールT@シーンチェンジセットT@tim.scn2:
+  # script name
+  'ホールT@シーンチェンジセットT@tim.scn2': ホールT@シーンチェンジセットT@tim.scn2
   # kind: track
   'サイズ': サイズ
   # kind: track
@@ -4657,6 +5109,8 @@ Lensflare@tim.obj2:
   # kind: track
   '乱数シード': 乱数シード
 モザイクT@シーンチェンジセットT@tim.scn2:
+  # script name
+  'モザイクT@シーンチェンジセットT@tim.scn2': モザイクT@シーンチェンジセットT@tim.scn2
   # kind: track
   'サイズ': サイズ
   # kind: check
@@ -4666,11 +5120,15 @@ Lensflare@tim.obj2:
   # kind: check
   '滑らか': 滑らか
 ルミナンスT@シーンチェンジセットT@tim.scn2:
+  # script name
+  'ルミナンスT@シーンチェンジセットT@tim.scn2': ルミナンスT@シーンチェンジセットT@tim.scn2
   # kind: track
   'ぼかし％': ぼかし％
   # kind: check
   '透過反転': 透過反転
 分割スライドT@シーンチェンジセットT@tim.scn2:
+  # script name
+  '分割スライドT@シーンチェンジセットT@tim.scn2': 分割スライドT@シーンチェンジセットT@tim.scn2
   # kind: track
   '単独量': 単独量
   # kind: select, options: 通常, 逆順, 交互, 逆順・交互
@@ -4688,6 +5146,8 @@ Lensflare@tim.obj2:
   # kind: check
   '縦': 縦
 矩形T@シーンチェンジセットT@tim.scn2:
+  # script name
+  '矩形T@シーンチェンジセットT@tim.scn2': 矩形T@シーンチェンジセットT@tim.scn2
   # kind: track
   '幅': 幅
   # kind: track
@@ -4696,3 +5156,6 @@ Lensflare@tim.obj2:
   '先端幅％': 先端幅％
   # kind: track
   '高さ': 高さ
+ベジエ軌道Ｔ@tim.tra2:
+  # script name
+  'ベジエ軌道Ｔ@tim.tra2': ベジエ軌道Ｔ@tim.tra2
