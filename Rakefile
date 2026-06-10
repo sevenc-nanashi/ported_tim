@@ -374,19 +374,21 @@ namespace :i18n do
   task :seed do
     require "yaml"
     translations = {}
-    Dir
-      .glob("./i18n/*.yaml")
-      .each do |file|
-        lang = File.basename(file, ".yaml")
-        content = YAML.load_file(file)
-        content&.each do |group, entries|
-          entries.each do |key, value|
-            translations[group] ||= {}
-            translations[group][key] ||= {}
-            translations[group][key][lang] = value
+    languages =
+      Dir
+        .glob("./i18n/*.yaml")
+        .map do |file|
+          lang = File.basename(file, ".yaml")
+          content = YAML.load_file(file)
+          content&.each do |group, entries|
+            entries.each do |key, value|
+              translations[group] ||= {}
+              translations[group][key] ||= {}
+              translations[group][key][lang] = value
+            end
           end
+          lang
         end
-      end
     files = Dir.glob("./build/@*.*")
     translation_meta = {}
     files.each do |file|
@@ -451,6 +453,7 @@ namespace :i18n do
     end
 
     translation_files = {}
+    languages.each { |lang| translation_files[lang] ||= {} }
     translations.each do |group, entries|
       entries.each do |key, langs|
         langs.each do |lang, value|
@@ -460,7 +463,7 @@ namespace :i18n do
         end
       end
     end
-    translation_files.each_keys do |lang|
+    translation_files.each_key do |lang|
       File.open("./i18n/#{lang}.yaml", "w") do |file|
         groups = translation_files[DEFAULT_LANG]
         groups.each do |group, entries|
@@ -468,7 +471,7 @@ namespace :i18n do
           entries.each do |key, value|
             meta = translation_meta.dig(group, key)
             file.puts "  # #{meta}" if meta
-            file.puts "  #{key}: #{translation_files[lang].dig(group, key) || value}"
+            file.puts "  '#{key}': #{translation_files[lang].dig(group, key) || value}"
           end
         end
       end
@@ -490,7 +493,9 @@ namespace :i18n do
       File.open("./build/#{lang}.ported_tim.aul2", "w") do |file|
         groups.each do |group, entries|
           file.puts("[#{group}]")
-          entries.each { |key, value| file.puts("#{key}=#{translations[lang].dig(group, key) || value}") }
+          entries.each do |key, value|
+            file.puts("#{key}=#{translations[lang].dig(group, key) || value}")
+          end
         end
       end
     end

@@ -1,25 +1,25 @@
 一時的に保存EXT@一時保存読込EXT@tim.anm2:
   # kind: track
-  '保存先': 保存先
+  '保存先': Save Slot
   # kind: check
-  '非表示': 非表示
+  '非表示': Hide
 保存画像の読込EXT@一時保存読込EXT@tim.anm2:
   # kind: track
-  '読込先': 読込先
+  '読込先': Load Slot
 保存画像のクリアEXT@一時保存読込EXT@tim.anm2:
   # kind: track
-  '読込先': 読込先
+  '読込先': Load Slot
 しきい値@T_Color_Module@tim.anm2:
   # kind: track
-  'しきい値1': しきい値1
+  'しきい値1': Threshold1
   # kind: track
-  'しきい値2': しきい値2
+  'しきい値2': Threshold2
   # kind: select, options: 平均, 視覚補正, R, G, B
-  '判定法': 判定法
+  '判定法': DetectionMethod
   # kind: select_option, parent: 判定法
-  '平均': 平均
+  '平均': Average
   # kind: select_option, parent: 判定法
-  '視覚補正': 視覚補正
+  '視覚補正': Perceptual Correction
   # kind: select_option, parent: 判定法
   'R': R
   # kind: select_option, parent: 判定法
@@ -27,44 +27,44 @@
   # kind: select_option, parent: 判定法
   'B': B
   # kind: track
-  '透明度': 透明度
+  '透明度': Opacity
   # kind: color
-  '置換色': 置換色
+  '置換色': ReplaceColor
   # kind: check
-  '範囲を反転': 範囲を反転
+  '範囲を反転': Invert Range
 イコライズ@T_Color_Module@tim.anm2:
   # kind: select, options: イコライズ+RGB補正, イコライズ, RGB補正
-  '計算法': 計算法
+  '計算法': CalculationMethod
   # kind: select_option, parent: 計算法
-  'イコライズ+RGB補正': イコライズ+RGB補正
+  'イコライズ+RGB補正': Equalize + RGB Correction
   # kind: select_option, parent: 計算法
-  'イコライズ': イコライズ
+  'イコライズ': Equalize
   # kind: select_option, parent: 計算法
-  'RGB補正': RGB補正
+  'RGB補正': RGB Correction
 ガンマ補正@T_Color_Module@tim.anm2:
   # kind: track
-  '赤': 赤
+  '赤': Red
   # kind: track
-  '緑': 緑
+  '緑': Green
   # kind: track
-  '青': 青
+  '青': Blue
   # kind: track
   'ALL': ALL
 グレースケール@T_Color_Module@tim.anm2:
   # kind: select, options: RGB平均, NTSC加重平均法, HDTV法
-  'グレー処理': グレー処理
+  'グレー処理': GrayProcessing
   # kind: select_option, parent: グレー処理
-  'RGB平均': RGB平均
+  'RGB平均': RGB Average
   # kind: select_option, parent: グレー処理
-  'NTSC加重平均法': NTSC加重平均法
+  'NTSC加重平均法': NTSC Weighted Average
   # kind: select_option, parent: グレー処理
-  'HDTV法': HDTV法
+  'HDTV法': HDTV Method
   # kind: track
-  'ガンマ値': ガンマ値
+  'ガンマ値': GammaValue
   # kind: color
-  '明部色': 明部色
+  '明部色': Highlight Color
   # kind: color
-  '暗部色': 暗部色
+  '暗部色': Shadow Color
 サイクルビットシフト@T_Color_Module@tim.anm2:
   # kind: track
   'R8bit': R8bit
@@ -73,209 +73,209 @@
   # kind: track
   'B8bit': B8bit
   # kind: check
-  '24ビットでシフト': 24ビットでシフト
+  '24ビットでシフト': Shift in 24-bit
   # kind: track
   '24bit': 24bit
 シャドウ・ハイライト@T_Color_Module@tim.anm2:
   # kind: track
-  '黒潰補正': 黒潰補正
+  '黒潰補正': Black Crush Correction
   # kind: track
-  '白飛補正': 白飛補正
+  '白飛補正': Highlight Clipping Correction
   # kind: track
-  '範囲': 範囲
+  '範囲': Range
 チャンネルシフト@T_Color_Module@tim.anm2:
   # kind: select_option, parent: 青
-  'アルファ': アルファ
+  'アルファ': Alpha
   # kind: select_option, parent: 青
-  '赤': 赤
+  '赤': Red
   # kind: select_option, parent: 青
-  '緑': 緑
+  '緑': Green
   # kind: select_option, parent: 青
-  '青': 青
+  '青': Blue
   # kind: select_option, parent: 青
-  '色相': 色相
+  '色相': Hue
   # kind: select_option, parent: 青
-  '彩度': 彩度
+  '彩度': Saturation
   # kind: select_option, parent: 青
-  '明度': 明度
+  '明度': Brightness
 チャンネルミキサー@T_Color_Module@tim.anm2:
   # kind: track
-  '赤←赤％': 赤←赤％
+  '赤←赤％': Red <- Red%
   # kind: track
-  '赤←緑％': 赤←緑％
+  '赤←緑％': Red <- Green%
   # kind: track
-  '赤←青％': 赤←青％
+  '赤←青％': Red <- Blue%
   # kind: track
-  '赤←定数': 赤←定数
+  '赤←定数': Red <- Constant
   # kind: track
-  '緑←赤％': 緑←赤％
+  '緑←赤％': Green <- Red%
   # kind: track
-  '緑←緑％': 緑←緑％
+  '緑←緑％': Green <- Green%
   # kind: track
-  '緑←青％': 緑←青％
+  '緑←青％': Green <- Blue%
   # kind: track
-  '緑←定数': 緑←定数
+  '緑←定数': Green <- Constant
   # kind: track
-  '青←赤％': 青←赤％
+  '青←赤％': Blue <- Red%
   # kind: track
-  '青←緑％': 青←緑％
+  '青←緑％': Blue <- Green%
   # kind: track
-  '青←青％': 青←青％
+  '青←青％': Blue <- Blue%
   # kind: track
-  '青←定数': 青←定数
+  '青←定数': Blue <- Constant
 テトラトーン@T_Color_Module@tim.anm2:
   # kind: track
-  '飽和点1': 飽和点1
+  '飽和点1': Saturation Point1
   # kind: track
-  '中間点1': 中間点1
+  '中間点1': Intermediate Point1
   # kind: track
-  '中間点2': 中間点2
+  '中間点2': Intermediate Point2
   # kind: track
-  '飽和点2': 飽和点2
+  '飽和点2': Saturation Point2
   # kind: color
-  'シャドウ': シャドウ
+  'シャドウ': Shadow
   # kind: color
   'ミッドトーン1': ミッドトーン1
   # kind: color
   'ミッドトーン2': ミッドトーン2
   # kind: color
-  'ハイライト': ハイライト
+  'ハイライト': Highlight
 トライトーン@T_Color_Module@tim.anm2:
   # kind: track
-  '飽和点1': 飽和点1
+  '飽和点1': Saturation Point1
   # kind: track
-  '中心点': 中心点
+  '中心点': CenterPoint
   # kind: track
-  '飽和点2': 飽和点2
+  '飽和点2': Saturation Point2
   # kind: check
-  'ミッドトーン色無視': ミッドトーン色無視
+  'ミッドトーン色無視': Ignore Midtone Color
   # kind: color
-  'シャドウ': シャドウ
+  'シャドウ': Shadow
   # kind: color
-  'ミッドトーン': ミッドトーン
+  'ミッドトーン': Midtone
   # kind: color
-  'ハイライト': ハイライト
+  'ハイライト': Highlight
 ネオン@T_Color_Module@tim.anm2:
   # kind: track
-  '輝度中心': 輝度中心
+  '輝度中心': LuminanceCenter
   # kind: track
-  '輝度範囲': 輝度範囲
+  '輝度範囲': LuminanceRange
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
 バイアス消去@T_Color_Module@tim.anm2:
   # kind: track
-  '範囲': 範囲
+  '範囲': Range
   # kind: track
-  '補正量': 補正量
+  '補正量': CorrectionAmount
   # kind: track
-  'オフセット': オフセット
+  'オフセット': Offset
   # kind: track
-  '偏差閾値': 偏差閾値
+  '偏差閾値': Deviation Threshold
   # kind: check
-  '偏差補正': 偏差補正
+  '偏差補正': Deviation Correction
 パステル調@T_Color_Module@tim.anm2:
   # kind: track
-  '彩度': 彩度
+  '彩度': Saturation
   # kind: track
-  '明度': 明度
+  '明度': Brightness
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: track
-  '色付ｴｯｼﾞ': 色付ｴｯｼﾞ
+  '色付ｴｯｼﾞ': Colored Edge
   # kind: track
-  '縁補正': 縁補正
+  '縁補正': Edge Correction
   # kind: track
-  'エッジ強さ': エッジ強さ
+  'エッジ強さ': Edge強さ
   # kind: track
-  'エッジしきい値': エッジしきい値
+  'エッジしきい値': EdgeThreshold
   # kind: track
-  'エッジぼかし': エッジぼかし
+  'エッジぼかし': EdgeBlur
 フリンジ修正@T_Color_Module@tim.anm2:
   # kind: select, options: アルファ値の変更, 背景色の削除, フリンジの上書き, 透明度に応じたフリンジの上書き
-  '補正法': 補正法
+  '補正法': CorrectionMethod
   # kind: select_option, parent: 補正法
-  'アルファ値の変更': アルファ値の変更
+  'アルファ値の変更': Change Alpha Value
   # kind: select_option, parent: 補正法
-  '背景色の削除': 背景色の削除
+  '背景色の削除': Remove Background Color
   # kind: select_option, parent: 補正法
-  'フリンジの上書き': フリンジの上書き
+  'フリンジの上書き': Overwrite Fringe
   # kind: select_option, parent: 補正法
-  '透明度に応じたフリンジの上書き': 透明度に応じたフリンジの上書き
+  '透明度に応じたフリンジの上書き': Opacity by Overwrite Fringe
   # kind: track
-  'α上限': α上限
+  'α上限': AlphaUpper Limit
   # kind: track
-  'α下限': α下限
+  'α下限': AlphaLower Limit
   # kind: color
-  '色': 色
+  '色': Color
   # kind: check
-  '処理後α補正': 処理後α補正
+  '処理後α補正': Post-process Alpha Correction
 ブリーチバイパス@T_Color_Module@tim.anm2:
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '彩度': 彩度
+  '彩度': Saturation
   # kind: track
-  'ガンマ値': ガンマ値
+  'ガンマ値': GammaValue
 ポスタリゼーション@T_Color_Module@tim.anm2:
   # kind: track
-  'R階調数': R階調数
+  'R階調数': RGradation Count
   # kind: track
-  'G階調数': G階調数
+  'G階調数': GGradation Count
   # kind: track
-  'B階調数': B階調数
+  'B階調数': BGradation Count
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: check
-  '全体をRで調整': 全体をRで調整
+  '全体をRで調整': Adjust Overall with R
   # kind: check
-  '誤差拡散': 誤差拡散
+  '誤差拡散': ErrorDiffusion
 メタル化@T_Color_Module@tim.anm2:
   # kind: track
-  '反転濃度1': 反転濃度1
+  '反転濃度1': Inversion Density1
   # kind: track
-  '反転濃度2': 反転濃度2
+  '反転濃度2': Inversion Density2
   # kind: select, options: RGB平均, NTSC加重平均法, HDTV法
-  'グレー処理': グレー処理
+  'グレー処理': GrayProcessing
   # kind: select_option, parent: グレー処理
-  'RGB平均': RGB平均
+  'RGB平均': RGB Average
   # kind: select_option, parent: グレー処理
-  'NTSC加重平均法': NTSC加重平均法
+  'NTSC加重平均法': NTSC Weighted Average
   # kind: select_option, parent: グレー処理
-  'HDTV法': HDTV法
+  'HDTV法': HDTV Method
 メディアンカット減色@T_Color_Module@tim.anm2:
   # kind: track
-  'MC色数': MC色数
+  'MC色数': MCColorCount
   # kind: track
-  'CL色数': CL色数
+  'CL色数': CLColorCount
   # kind: color
-  '指定色1': 指定色1
+  '指定色1': SpecifiedColor1
   # kind: color
-  '指定色2': 指定色2
+  '指定色2': SpecifiedColor2
   # kind: color
-  '指定色3': 指定色3
+  '指定色3': SpecifiedColor3
   # kind: color
-  '指定色4': 指定色4
+  '指定色4': SpecifiedColor4
   # kind: color
-  '指定色5': 指定色5
+  '指定色5': SpecifiedColor5
   # kind: color
-  '指定色6': 指定色6
+  '指定色6': SpecifiedColor6
   # kind: color
-  '指定色7': 指定色7
+  '指定色7': SpecifiedColor7
   # kind: color
-  '指定色8': 指定色8
+  '指定色8': SpecifiedColor8
   # kind: color
-  '指定色9': 指定色9
+  '指定色9': SpecifiedColor9
   # kind: color
-  '指定色10': 指定色10
+  '指定色10': SpecifiedColor10
   # kind: check
-  '色表示': 色表示
+  '色表示': ColorShow
   # kind: check
-  '指定色を有効にする': 指定色を有効にする
+  '指定色を有効にする': Enable Specified Colors
 単色化(T)@T_Color_Module@tim.anm2:
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
   'R': R
   # kind: track
@@ -288,48 +288,48 @@
   # kind: track
   'V': V
   # kind: track
-  'ガンマ': ガンマ
+  'ガンマ': Gamma
   # kind: check
-  '参考表示': 参考表示
+  '参考表示': ReferenceShow
   # kind: check
-  '極座標指定': 極座標指定
+  '極座標指定': Use Polar Coordinates
 基準色変更@T_Color_Module@tim.anm2:
   # kind: track
-  '変化': 変化
+  '変化': Change
   # kind: track
-  '定数': 定数
+  '定数': Constant
   # kind: track
-  'スケール': スケール
+  'スケール': Scale
   # kind: color
-  '指定色1': 指定色1
+  '指定色1': SpecifiedColor1
   # kind: color
-  '指定色2': 指定色2
+  '指定色2': SpecifiedColor2
   # kind: check
-  '指定色からの距離': 指定色からの距離
+  '指定色からの距離': Distance from Specified Color
 拡張コントラスト@T_Color_Module@tim.anm2:
   # kind: track
-  '中心': 中心
+  '中心': Center
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '明るさ': 明るさ
+  '明るさ': Brightness
   # kind: track
-  'なめらか': なめらか
+  'なめらか': Smooth
   # kind: track
-  'カーブサイズ': カーブサイズ
+  'カーブサイズ': CurveSize
   # kind: check
-  'カーブ表示': カーブ表示
+  'カーブ表示': CurveShow
 最大/最小@T_Color_Module@tim.anm2:
   # kind: select, options: 最大, 最小
-  'モード': モード
+  'モード': Mode
   # kind: select_option, parent: モード
-  '最大': 最大
+  '最大': Maximum
   # kind: select_option, parent: モード
-  '最小': 最小
+  '最小': Minimum
   # kind: select, options: 全て, R, G, B
-  'チャンネル': チャンネル
+  'チャンネル': Channel
   # kind: select_option, parent: チャンネル
-  '全て': 全て
+  '全て': All
   # kind: select_option, parent: チャンネル
   'R': R
   # kind: select_option, parent: チャンネル
@@ -337,78 +337,78 @@
   # kind: select_option, parent: チャンネル
   'B': B
   # kind: track
-  '範囲': 範囲
+  '範囲': Range
   # kind: track
-  '角度': 角度
+  '角度': Angle
   # kind: check
-  '水平': 水平
+  '水平': Horizontal
   # kind: check
-  '垂直': 垂直
+  '垂直': Vertical
   # kind: track
-  '縦横比': 縦横比
+  '縦横比': Aspect Ratio
   # kind: check
-  '範囲対称': 範囲対称
+  '範囲対称': Symmetric Range
   # kind: check
-  '色も保存': 色も保存
+  '色も保存': Save Color Too
   # kind: select, options: 四角, 円, 菱形, 十字, 六角形
-  '形状': 形状
+  '形状': Shape
   # kind: select_option, parent: 形状
-  '四角': 四角
+  '四角': Square
   # kind: select_option, parent: 形状
-  '円': 円
+  '円': Circle
   # kind: select_option, parent: 形状
-  '菱形': 菱形
+  '菱形': Diamond
   # kind: select_option, parent: 形状
-  '十字': 十字
+  '十字': Cross
   # kind: select_option, parent: 形状
-  '六角形': 六角形
+  '六角形': Hexagon
   # kind: track
-  '限界範囲': 限界範囲
+  '限界範囲': LimitRange
   # kind: track
-  'α拡張': α拡張
+  'α拡張': Alpha拡張
   # kind: check
-  '結果を保存(同条件1度のみ)': 結果を保存(同条件1度のみ)
+  '結果を保存(同条件1度のみ)': Save Result (once per condition)
 減色パレット@T_Color_Module@tim.anm2:
   # kind: track
-  '色数': 色数
+  '色数': ColorCount
   # kind: track
-  'X分割': X分割
+  'X分割': XDivision
   # kind: track
-  'Y分割': Y分割
+  'Y分割': YDivision
 特定色域変換T@T_Color_Module@tim.anm2:
   # kind: track
-  '色相範囲': 色相範囲
+  '色相範囲': HueRange
   # kind: track
-  '彩度範囲': 彩度範囲
+  '彩度範囲': SaturationRange
   # kind: track
-  '輝度調整': 輝度調整
+  '輝度調整': LuminanceAdjustment
   # kind: track
-  '境界補正': 境界補正
+  '境界補正': BoundaryCorrection
   # kind: color
-  '変更前': 変更前
+  '変更前': Before Change
   # kind: color
-  '変更後': 変更後
+  '変更後': After Change
   # kind: track
-  '彩度調整': 彩度調整
+  '彩度調整': SaturationAdjustment
 画像トーンカーブ@T_Color_Module@tim.anm2:
   # kind: track
   'X or R': X or R
   # kind: track
   'Y or θ': Y or θ
   # kind: track
-  '角度': 角度
+  '角度': Angle
   # kind: track
-  '幅％': 幅％
+  '幅％': Width%
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: color
-  '線色': 線色
+  '線色': LineColor
   # kind: check
-  '線を非表示': 線を非表示
+  '線を非表示': Hide Line
   # kind: check
-  '極座標移動': 極座標移動
+  '極座標移動': Polar Coordinate Move
 白黒@T_Color_Module@tim.anm2:
   # kind: track
   'R%': R%
@@ -425,45 +425,45 @@
   # kind: track
   'Y%': Y%
   # kind: color
-  '色付け': 色付け
+  '色付け': Colorize
   # kind: track
-  'ガンマ値': ガンマ値
+  'ガンマ値': GammaValue
 簡易コロラマ@T_Color_Module@tim.anm2:
   # kind: track
-  'Fシフト': Fシフト
+  'Fシフト': FShift
   # kind: track
-  'ｻｲｸﾙ数': ｻｲｸﾙ数
+  'ｻｲｸﾙ数': CycleCount
   # kind: track
-  '最大色数': 最大色数
+  '最大色数': MaximumColorCount
   # kind: color
-  '色1': 色1
+  '色1': Color1
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: color
-  '色3': 色3
+  '色3': Color3
   # kind: color
-  '色4': 色4
+  '色4': Color4
   # kind: color
-  '色5': 色5
+  '色5': Color5
   # kind: color
-  '色6': 色6
+  '色6': Color6
 簡易トーンカーブ@T_Color_Module@tim.anm2:
   # kind: check
-  '赤カーブ全体統一': 赤カーブ全体統一
+  '赤カーブ全体統一': Unify Entire Red Curve
   # kind: check
-  'データクリア': データクリア
+  'データクリア': Clear Data
 簡易減色@T_Color_Module@tim.anm2:
   # kind: track
-  '減色量': 減色量
+  '減色量': Color Reduction Amount
 粒状化@T_Color_Module@tim.anm2:
   # kind: track
-  '量': 量
+  '量': Amount
   # kind: track
-  'ｺﾝﾄﾗｽﾄ': ｺﾝﾄﾗｽﾄ
+  'ｺﾝﾄﾗｽﾄ': Contrast
   # kind: track
-  'シード': シード
+  'シード': Seed
   # kind: select, options: A, B, C
-  '処理法': 処理法
+  '処理法': ProcessingMethod
   # kind: select_option, parent: 処理法
   'A': A
   # kind: select_option, parent: 処理法
@@ -471,451 +471,451 @@
   # kind: select_option, parent: 処理法
   'C': C
   # kind: color
-  '色1': 色1
+  '色1': Color1
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: check
-  '時間変動': 時間変動
+  '時間変動': TimeVariation
 色抜き@T_Color_Module@tim.anm2:
   # kind: track
-  '色抜き量': 色抜き量
+  '色抜き量': Color Extraction Amount
   # kind: track
-  '色差範囲': 色差範囲
+  '色差範囲': Color DifferenceRange
   # kind: track
-  'エッジ': エッジ
+  'エッジ': Edge
   # kind: select, options: RGB, L*a*b*色相, L*a*b*輝度, HSV色相
-  'マッチング法': マッチング法
+  'マッチング法': Matching Method
   # kind: select_option, parent: マッチング法
   'RGB': RGB
   # kind: select_option, parent: マッチング法
-  'L*a*b*色相': L*a*b*色相
+  'L*a*b*色相': L*a*b* Hue
   # kind: select_option, parent: マッチング法
-  'L*a*b*輝度': L*a*b*輝度
+  'L*a*b*輝度': L*a*b* Luminance
   # kind: select_option, parent: マッチング法
-  'HSV色相': HSV色相
+  'HSV色相': HSV Hue
   # kind: color
-  '抽出色': 抽出色
+  '抽出色': Extract Color
 金属質@T_Color_Module@tim.anm2:
   # kind: track
-  '飽和点1': 飽和点1
+  '飽和点1': Saturation Point1
   # kind: track
-  '飽和点2': 飽和点2
+  '飽和点2': Saturation Point2
 黄金質@T_Color_Module@tim.anm2:
   # kind: track
-  '飽和点1': 飽和点1
+  '飽和点1': Saturation Point1
   # kind: track
-  '中心点': 中心点
+  '中心点': CenterPoint
   # kind: track
-  '飽和点2': 飽和点2
+  '飽和点2': Saturation Point2
 ２値化@T_Color_Module@tim.anm2:
   # kind: track
-  '閾値': 閾値
+  '閾値': Threshold
   # kind: select, options: RGB平均, NTSC加重平均法, HDTV法
-  'グレー処理': グレー処理
+  'グレー処理': GrayProcessing
   # kind: select_option, parent: グレー処理
-  'RGB平均': RGB平均
+  'RGB平均': RGB Average
   # kind: select_option, parent: グレー処理
-  'NTSC加重平均法': NTSC加重平均法
+  'NTSC加重平均法': NTSC Weighted Average
   # kind: select_option, parent: グレー処理
-  'HDTV法': HDTV法
+  'HDTV法': HDTV Method
   # kind: select, options: なし, 平均値, 中央値, 判別分析法, Kittlerらの閾値選定法, 微分ヒストグラム法, ラプラシアン・ヒストグラム法
-  '自動判定': 自動判定
+  '自動判定': AutoDetection
   # kind: select_option, parent: 自動判定
-  'なし': なし
+  'なし': None
   # kind: select_option, parent: 自動判定
-  '平均値': 平均値
+  '平均値': Mean
   # kind: select_option, parent: 自動判定
-  '中央値': 中央値
+  '中央値': Median
   # kind: select_option, parent: 自動判定
-  '判別分析法': 判別分析法
+  '判別分析法': Discriminant Analysis
   # kind: select_option, parent: 自動判定
-  'Kittlerらの閾値選定法': Kittlerらの閾値選定法
+  'Kittlerらの閾値選定法': Kittler Thresholding
   # kind: select_option, parent: 自動判定
-  '微分ヒストグラム法': 微分ヒストグラム法
+  '微分ヒストグラム法': Differential Histogram
   # kind: select_option, parent: 自動判定
-  'ラプラシアン・ヒストグラム法': ラプラシアン・ヒストグラム法
+  'ラプラシアン・ヒストグラム法': Laplacian Histogram
   # kind: check
-  '色付け': 色付け
+  '色付け': Colorize
   # kind: color
-  '明部色': 明部色
+  '明部色': Highlight Color
   # kind: color
-  '暗部色': 暗部色
+  '暗部色': Shadow Color
 ２値化RGB@T_Color_Module@tim.anm2:
   # kind: track
-  'R閾値': R閾値
+  'R閾値': RThreshold
   # kind: track
-  'G閾値': G閾値
+  'G閾値': GThreshold
   # kind: track
-  'B閾値': B閾値
+  'B閾値': BThreshold
   # kind: select, options: なし, 平均値, 中央値, 判別分析法, Kittlerらの閾値選定法, 微分ヒストグラム法, ラプラシアン・ヒストグラム法
-  '自動判定': 自動判定
+  '自動判定': AutoDetection
   # kind: select_option, parent: 自動判定
-  'なし': なし
+  'なし': None
   # kind: select_option, parent: 自動判定
-  '平均値': 平均値
+  '平均値': Mean
   # kind: select_option, parent: 自動判定
-  '中央値': 中央値
+  '中央値': Median
   # kind: select_option, parent: 自動判定
-  '判別分析法': 判別分析法
+  '判別分析法': Discriminant Analysis
   # kind: select_option, parent: 自動判定
-  'Kittlerらの閾値選定法': Kittlerらの閾値選定法
+  'Kittlerらの閾値選定法': Kittler Thresholding
   # kind: select_option, parent: 自動判定
-  '微分ヒストグラム法': 微分ヒストグラム法
+  '微分ヒストグラム法': Differential Histogram
   # kind: select_option, parent: 自動判定
-  'ラプラシアン・ヒストグラム法': ラプラシアン・ヒストグラム法
+  'ラプラシアン・ヒストグラム法': Laplacian Histogram
 カメレオン効果(背景)@カメレオン効果@tim.anm2:
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
   # kind: check
-  '範囲を表示': 範囲を表示
+  '範囲を表示': Show Range
   # kind: color
-  '枠色': 枠色
+  '枠色': FrameColor
   # kind: track
-  '枠幅': 枠幅
+  '枠幅': FrameWidth
 カメレオン効果(適応)@カメレオン効果@tim.anm2:
   # kind: track
-  '適応率': 適応率
+  '適応率': Adaptation Rate
   # kind: track
-  '明度補正': 明度補正
+  '明度補正': BrightnessCorrection
   # kind: track
-  '逆光強度': 逆光強度
+  '逆光強度': Backlight Strength
   # kind: track
-  '逆光拡散': 逆光拡散
+  '逆光拡散': Backlight Diffusion
   # kind: check
-  'フレームバッファを背景': フレームバッファを背景
+  'フレームバッファを背景': Use Frame Buffer as Background
   # kind: check
-  '輝度補正': 輝度補正
+  '輝度補正': LuminanceCorrection
   # kind: check
-  '彩度補正': 彩度補正
+  '彩度補正': SaturationCorrection
   # kind: color
-  '逆光色': 逆光色
+  '逆光色': Backlight Color
   # kind: check
-  '逆光自動調整': 逆光自動調整
+  '逆光自動調整': Auto Adjust Backlight
   # kind: track
-  '逆光強度補正': 逆光強度補正
+  '逆光強度補正': Backlight Strength Correction
   # kind: check
-  '有効化': 有効化
+  '有効化': Enable
   # kind: track
-  '強度': 強度
+  '強度': Strength
 多色グラデーション@多色グラデーション@tim.anm2:
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: check
-  '表示': 表示
+  '表示': Show
   # kind: color
-  '色1': 色1
+  '色1': Color1
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: color
-  '色3': 色3
+  '色3': Color3
   # kind: color
-  '色4': 色4
+  '色4': Color4
   # kind: color
-  '色5': 色5
+  '色5': Color5
   # kind: color
-  '色6': 色6
+  '色6': Color6
   # kind: color
-  '色7': 色7
+  '色7': Color7
   # kind: color
-  '色8': 色8
+  '色8': Color8
   # kind: track
-  'ガイド半径': ガイド半径
+  'ガイド半径': GuideRadius
   # kind: color
-  'ガイド色': ガイド色
+  'ガイド色': GuideColor
 多色グラデーション拡張@多色グラデーション@tim.anm2:
   # kind: track
-  '番号': 番号
+  '番号': Number
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
 ４色グラデーション@tim.anm2:
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '中心ズレ1': 中心ズレ1
+  '中心ズレ1': CenterOffset1
   # kind: track
-  '中心ズレ2': 中心ズレ2
+  '中心ズレ2': CenterOffset2
   # kind: track
-  '中心ズレ3': 中心ズレ3
+  '中心ズレ3': CenterOffset3
   # kind: color
-  '色1': 色1
+  '色1': Color1
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: color
-  '色3': 色3
+  '色3': Color3
   # kind: color
-  '色4': 色4
+  '色4': Color4
 虹色グラデーション@tim.anm2:
   # kind: track
-  '縮小率': 縮小率
+  '縮小率': Reduction
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: track
-  'シフト': シフト
+  'シフト': Shift
   # kind: track
-  '元画像': 元画像
+  '元画像': OriginalImage
   # kind: check
-  '円形配置': 円形配置
+  '円形配置': CircularPlacement
   # kind: check
-  '反転': 反転
+  '反転': Invert
   # kind: check
-  '繰返し': 繰返し
+  '繰返し': Repeat
   # kind: track
-  '混色度合': 混色度合
+  '混色度合': Color Blend Amount
   # kind: track
-  '境界補正': 境界補正
+  '境界補正': BoundaryCorrection
   # kind: select, options: 通常, 加算, 減算, 乗算, スクリーン, オーバーレイ, 比較(明), 比較(暗), 輝度, 陰影
-  '合成モード': 合成モード
+  '合成モード': BlendMode
   # kind: select_option, parent: 合成モード
-  '通常': 通常
+  '通常': Normal
   # kind: select_option, parent: 合成モード
-  '加算': 加算
+  '加算': Add
   # kind: select_option, parent: 合成モード
-  '減算': 減算
+  '減算': Subtract
   # kind: select_option, parent: 合成モード
-  '乗算': 乗算
+  '乗算': Multiply
   # kind: select_option, parent: 合成モード
-  'スクリーン': スクリーン
+  'スクリーン': Screen
   # kind: select_option, parent: 合成モード
-  'オーバーレイ': オーバーレイ
+  'オーバーレイ': Overlay
   # kind: select_option, parent: 合成モード
-  '比較(明)': 比較(明)
+  '比較(明)': Lighten
   # kind: select_option, parent: 合成モード
-  '比較(暗)': 比較(暗)
+  '比較(暗)': Darken
   # kind: select_option, parent: 合成モード
-  '輝度': 輝度
+  '輝度': Luminance
   # kind: select_option, parent: 合成モード
-  '陰影': 陰影
+  '陰影': Shade
   # kind: check
-  '位置ズレ補正': 位置ズレ補正
+  '位置ズレ補正': PositionOffsetCorrection
 ランダムブラー@T_RandomBlur_Module@tim.anm2:
   # kind: track
-  '最大ズレ量': 最大ズレ量
+  '最大ズレ量': MaximumOffsetAmount
   # kind: track
-  '角度': 角度
+  '角度': Angle
   # kind: track
-  '基準位置': 基準位置
+  '基準位置': BasePosition
   # kind: track
-  '変化固定': 変化固定
+  '変化固定': ChangeFixed
   # kind: check
-  'サイズ保持': サイズ保持
+  'サイズ保持': SizeKeep
 回転ランダムブラー@T_RandomBlur_Module@tim.anm2:
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  '最大ズレ量': 最大ズレ量
+  '最大ズレ量': MaximumOffsetAmount
   # kind: track
-  '基準位置': 基準位置
+  '基準位置': BasePosition
   # kind: check
-  'サイズ保持': サイズ保持
+  'サイズ保持': SizeKeep
   # kind: track
-  '変化固定': 変化固定
+  '変化固定': ChangeFixed
 放射ランダムブラー@T_RandomBlur_Module@tim.anm2:
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  '最大ズレ量': 最大ズレ量
+  '最大ズレ量': MaximumOffsetAmount
   # kind: track
-  '基準位置': 基準位置
+  '基準位置': BasePosition
   # kind: check
-  'サイズ保持': サイズ保持
+  'サイズ保持': SizeKeep
   # kind: track
-  '変化固定': 変化固定
+  '変化固定': ChangeFixed
 回転ハードブラー@T_RotBlur_Module@tim.anm2:
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  'ブラー量': ブラー量
+  'ブラー量': BlurAmount
   # kind: track
-  '凹凸量': 凹凸量
+  '凹凸量': Relief Amount
   # kind: check
-  'サイズ保持': サイズ保持
+  'サイズ保持': SizeKeep
   # kind: track
-  '基準位置': 基準位置
+  '基準位置': BasePosition
   # kind: track
-  '幅ランダム[%]': 幅ランダム[%]
+  '幅ランダム[%]': WidthRandom[%]
   # kind: track
   '丸み': 丸み
   # kind: check
-  '簡易補正': 簡易補正
+  '簡易補正': SimpleCorrection
   # kind: track
-  '補正係数[%]': 補正係数[%]
+  '補正係数[%]': Correction Coefficient[%]
   # kind: track
-  '変化固定': 変化固定
+  '変化固定': ChangeFixed
 回転ブラー@T_RotBlur_Module@tim.anm2:
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  'ブラー量': ブラー量
+  'ブラー量': BlurAmount
   # kind: track
-  '基準位置': 基準位置
+  '基準位置': BasePosition
   # kind: check
-  'サイズ保持': サイズ保持
+  'サイズ保持': SizeKeep
   # kind: track
-  '角度解像度ダウン': 角度解像度ダウン
+  '角度解像度ダウン': Lower Angle Resolution
   # kind: check
-  '高精度表示': 高精度表示
+  '高精度表示': 高PrecisionShow
   # kind: check
-  '高精度出力': 高精度出力
+  '高精度出力': 高PrecisionOutput
 放射ハードブラー@T_RotBlur_Module@tim.anm2:
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  'ブラー量': ブラー量
+  'ブラー量': BlurAmount
   # kind: track
-  '凸数': 凸数
+  '凸数': 凸Count
   # kind: check
-  'サイズ保持': サイズ保持
+  'サイズ保持': SizeKeep
   # kind: track
-  '基準位置': 基準位置
+  '基準位置': BasePosition
   # kind: track
-  '幅ランダム[%]': 幅ランダム[%]
+  '幅ランダム[%]': WidthRandom[%]
   # kind: track
   '丸み': 丸み
   # kind: check
-  '簡易補正': 簡易補正
+  '簡易補正': SimpleCorrection
   # kind: track
-  '補正係数[%]': 補正係数[%]
+  '補正係数[%]': Correction Coefficient[%]
   # kind: track
-  '変化固定': 変化固定
+  '変化固定': ChangeFixed
   # kind: track
-  '表示限界倍率': 表示限界倍率
+  '表示限界倍率': Display Limit Scale
 放射ブラー@T_RotBlur_Module@tim.anm2:
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  'ブラー量': ブラー量
+  'ブラー量': BlurAmount
   # kind: track
-  '基準位置': 基準位置
+  '基準位置': BasePosition
   # kind: check
-  'サイズ保持': サイズ保持
+  'サイズ保持': SizeKeep
   # kind: track
-  '表示限界倍率': 表示限界倍率
+  '表示限界倍率': Display Limit Scale
 方向ハードブラー@T_RotBlur_Module@tim.anm2:
   # kind: track
-  'ブラー量': ブラー量
+  'ブラー量': BlurAmount
   # kind: track
-  '凹凸サイズ': 凹凸サイズ
+  '凹凸サイズ': 凹凸Size
   # kind: track
-  '角度': 角度
+  '角度': Angle
   # kind: track
   '丸み': 丸み
   # kind: check
-  'サイズ保持': サイズ保持
+  'サイズ保持': SizeKeep
   # kind: track
-  '基準位置': 基準位置
+  '基準位置': BasePosition
   # kind: track
-  '幅ランダム[%]': 幅ランダム[%]
+  '幅ランダム[%]': WidthRandom[%]
   # kind: check
-  '簡易補正': 簡易補正
+  '簡易補正': SimpleCorrection
   # kind: track
-  '補正係数[%]': 補正係数[%]
+  '補正係数[%]': Correction Coefficient[%]
   # kind: track
-  '変化固定': 変化固定
+  '変化固定': ChangeFixed
   # kind: track
-  '表示限界倍率': 表示限界倍率
+  '表示限界倍率': Display Limit Scale
 渦@T_RotBlur_Module@tim.anm2:
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  '渦量': 渦量
+  '渦量': 渦Amount
   # kind: select, options: 二乗減衰, 指数減衰
-  '変化': 変化
+  '変化': Change
   # kind: select_option, parent: 変化
-  '二乗減衰': 二乗減衰
+  '二乗減衰': Quadratic Attenuation
   # kind: select_option, parent: 変化
-  '指数減衰': 指数減衰
+  '指数減衰': Exponential Attenuation
   # kind: check
-  'サイズ保持': サイズ保持
+  'サイズ保持': SizeKeep
 2色リング(単)@カスタムフレア@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '色1': 色1
+  '色1': Color1
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: track
-  'グラデ幅': グラデ幅
+  'グラデ幅': Gradient Width
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '開口量％': 開口量％
+  '開口量％': Aperture Amount%
   # kind: track
-  '開口ぼかし％': 開口ぼかし％
+  '開口ぼかし％': Aperture Blur%
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット': 位置オフセット
+  '位置オフセット': PositionOffset
   # kind: check
-  '自動消去': 自動消去
+  '自動消去': Auto Erase
   # kind: track
-  '基準距離': 基準距離
+  '基準距離': BaseDistance
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
 ゆらめき@カスタムフレア@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '光芒量': 光芒量
+  '光芒量': Ray Amount
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '光芒色': 光芒色
+  '光芒色': Ray Color
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット％': 位置オフセット％
+  '位置オフセット％': PositionOffset%
   # kind: track
-  '先端ぼかし％': 先端ぼかし％
+  '先端ぼかし％': Tip Blur%
   # kind: track
-  '光芒変化速度': 光芒変化速度
+  '光芒変化速度': Ray Change Speed
   # kind: select, options: 1, 2, 3, 4, 5, 6, 7, 8
-  '形状': 形状
+  '形状': Shape
   # kind: value
-  'クリップ位置幅ボカシ': クリップ位置幅ボカシ
+  'クリップ位置幅ボカシ': Clip Position Width Blur
   # kind: check
-  'クリップ向き': クリップ向き
+  'クリップ向き': Clip Direction
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
   # kind: select_option, parent: 形状
   '1': 1
   # kind: select_option, parent: 形状
@@ -934,93 +934,93 @@
   '8': 8
 アイリス@カスタムフレア@tim.anm2:
   # kind: track
-  '形状': 形状
+  '形状': Shape
   # kind: track
-  '数': 数
+  '数': Count
   # kind: track
-  'サイズ％': サイズ％
+  'サイズ％': Size%
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  'サイズ幅％': サイズ幅％
+  'サイズ幅％': SizeWidth%
   # kind: check
-  '順次拡大': 順次拡大
+  '順次拡大': Sequential Scale Up
   # kind: track
-  '強度幅％': 強度幅％
+  '強度幅％': StrengthWidth%
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '色幅％': 色幅％
+  '色幅％': ColorWidth%
   # kind: value
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット': 位置オフセット
+  '位置オフセット': PositionOffset
   # kind: value
-  '散らばり％': 散らばり％
+  '散らばり％': Scatter%
   # kind: value
-  '回転': 回転
+  '回転': Rotation
   # kind: check
-  'アンカーに合わせる': アンカーに合わせる
+  'アンカーに合わせる': Fit to Anchor
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
 アイリス(単)@カスタムフレア@tim.anm2:
   # kind: track
-  '形状': 形状
+  '形状': Shape
   # kind: track
-  'サイズ％': サイズ％
+  'サイズ％': Size%
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置ズレ％': 位置ズレ％
+  '位置ズレ％': PositionOffset%
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: check
-  'アンカーに合わせる': アンカーに合わせる
+  'アンカーに合わせる': Fit to Anchor
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
 カラースパーク@カスタムフレア@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '長さ': 長さ
+  '長さ': Length
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: track
-  '数': 数
+  '数': Count
   # kind: select, options: 1, 2, 3, 4, 5
-  'カラーパターン': カラーパターン
+  'カラーパターン': Color Pattern
   # kind: track
-  '幅比率％': 幅比率％
+  '幅比率％': WidthRatio%
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '放射ブラー': 放射ブラー
+  '放射ブラー': RadialBlur
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット％': 位置オフセット％
+  '位置オフセット％': PositionOffset%
   # kind: track
-  '動径方向バラツキ％': 動径方向バラツキ％
+  '動径方向バラツキ％': Radial Direction Variation%
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
   # kind: select_option, parent: カラーパターン
   '1': 1
   # kind: select_option, parent: カラーパターン
@@ -1033,106 +1033,106 @@
   '5': 5
 コースティック@カスタムフレア@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット％': 位置オフセット％
+  '位置オフセット％': PositionOffset%
   # kind: track
-  '最大半径': 最大半径
+  '最大半径': MaximumRadius
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
 ストリーク@カスタムフレア@tim.anm2:
   # kind: track
-  '光芒長': 光芒長
+  '光芒長': Ray Length
   # kind: track
-  '光芒高さ': 光芒高さ
+  '光芒高さ': Ray Height
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '光芒色': 光芒色
+  '光芒色': Ray Color
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット％': 位置オフセット％
+  '位置オフセット％': PositionOffset%
   # kind: check
-  'アンカーに合わせる': アンカーに合わせる
+  'アンカーに合わせる': Fit to Anchor
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
 ストリーク(複)@カスタムフレア@tim.anm2:
   # kind: track
-  '光芒長': 光芒長
+  '光芒長': Ray Length
   # kind: track
-  '光芒高さ': 光芒高さ
+  '光芒高さ': Ray Height
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '光芒色': 光芒色
+  '光芒色': Ray Color
   # kind: track
-  '本数': 本数
+  '本数': Count
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット％': 位置オフセット％
+  '位置オフセット％': PositionOffset%
   # kind: track
-  '拡大率': 拡大率
+  '拡大率': Scale
   # kind: track
-  '間隔': 間隔
+  '間隔': Interval
   # kind: track
-  '間隔ランダム': 間隔ランダム
+  '間隔ランダム': IntervalRandom
   # kind: track
-  '横ランダム': 横ランダム
+  '横ランダム': HorizontalRandom
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
 スパイク@カスタムフレア@tim.anm2:
   # kind: track
-  '長さ': 長さ
+  '長さ': Length
   # kind: track
-  '数': 数
+  '数': Count
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '光芒色': 光芒色
+  '光芒色': Ray Color
   # kind: track
-  '幅比率％': 幅比率％
+  '幅比率％': WidthRatio%
   # kind: track
-  '高さランダム％': 高さランダム％
+  '高さランダム％': HeightRandom%
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  'ステップ角度': ステップ角度
+  'ステップ角度': Step Angle
   # kind: track
-  '誤差角度': 誤差角度
+  '誤差角度': ErrorAngle
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット％': 位置オフセット％
+  '位置オフセット％': PositionOffset%
   # kind: select, options: 1, 2, 3, 4
-  '形状': 形状
+  '形状': Shape
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
   # kind: select_option, parent: 形状
   '1': 1
   # kind: select_option, parent: 形状
@@ -1143,206 +1143,206 @@
   '4': 4
 スパーク@カスタムフレア@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '長さ': 長さ
+  '長さ': Length
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: track
-  '数': 数
+  '数': Count
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '光芒色': 光芒色
+  '光芒色': Ray Color
   # kind: track
-  '幅比率％': 幅比率％
+  '幅比率％': WidthRatio%
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '放射ブラー': 放射ブラー
+  '放射ブラー': RadialBlur
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット％': 位置オフセット％
+  '位置オフセット％': PositionOffset%
   # kind: track
-  '動径方向バラツキ％': 動径方向バラツキ％
+  '動径方向バラツキ％': Radial Direction Variation%
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
 ベース@カスタムフレア@tim.anm2:
   # kind: track
-  '移動量': 移動量
+  '移動量': MoveAmount
   # kind: select, options: 加算, スクリーン
-  '合成モード': 合成モード
+  '合成モード': BlendMode
   # kind: select_option, parent: 合成モード
-  '加算': 加算
+  '加算': Add
   # kind: select_option, parent: 合成モード
-  'スクリーン': スクリーン
+  'スクリーン': Screen
   # kind: color
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: check
-  '位置移動': 位置移動
+  '位置移動': PositionMove
   # kind: value
-  '座標': 座標
+  '座標': Coordinate
 リング@カスタムフレア@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '数': 数
+  '数': Count
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  'サイズ幅％': サイズ幅％
+  'サイズ幅％': SizeWidth%
   # kind: check
-  '順次拡大': 順次拡大
+  '順次拡大': Sequential Scale Up
   # kind: track
-  '強度幅％': 強度幅％
+  '強度幅％': StrengthWidth%
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '色幅％': 色幅％
+  '色幅％': ColorWidth%
   # kind: value
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット': 位置オフセット
+  '位置オフセット': PositionOffset
   # kind: value
-  '散らばり％': 散らばり％
+  '散らばり％': Scatter%
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
 リング(単)@カスタムフレア@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット': 位置オフセット
+  '位置オフセット': PositionOffset
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
 レンズ軌道@カスタムフレア@tim.anm2:
   # kind: track
-  '密度': 密度
+  '密度': Density
   # kind: track
-  'サイズ％': サイズ％
+  'サイズ％': Size%
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '減衰率': 減衰率
+  '減衰率': Attenuation Rate
   # kind: figure
-  '形状': 形状
+  '形状': Shape
   # kind: track
-  'サイズ幅％': サイズ幅％
+  'サイズ幅％': SizeWidth%
   # kind: track
-  '強度幅％': 強度幅％
+  '強度幅％': StrengthWidth%
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '色幅％': 色幅％
+  '色幅％': ColorWidth%
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: track
-  '回転幅': 回転幅
+  '回転幅': RotationWidth
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
 円@カスタムフレア@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  'ぼかし％': ぼかし％
+  'ぼかし％': Blur%
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '色': 色
+  '色': Color
   # kind: value
-  '位置ズレ％': 位置ズレ％
+  '位置ズレ％': PositionOffset%
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
 発光@カスタムフレア@tim.anm2:
   # kind: track
-  '大きさ': 大きさ
+  '大きさ': Size
   # kind: track
-  'ぼかし％': ぼかし％
+  'ぼかし％': Blur%
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  '中心強度': 中心強度
+  '中心強度': CenterStrength
   # kind: check
-  'ベースカラー': ベースカラー
+  'ベースカラー': Base Color
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: value
-  '位置オフセット％': 位置オフセット％
+  '位置オフセット％': PositionOffset%
   # kind: track
-  '発光中心サイズ％': 発光中心サイズ％
+  '発光中心サイズ％': GlowCenterSize%
   # kind: check
-  '自動拡大': 自動拡大
+  '自動拡大': AutoScale Up
   # kind: track
-  '基準距離': 基準距離
+  '基準距離': BaseDistance
 虹輪@カスタムフレア@tim.anm2:
   # kind: track
-  '大きさ': 大きさ
+  '大きさ': Size
   # kind: track
-  '長さ％': 長さ％
+  '長さ％': Length%
   # kind: track
-  '強度％': 強度％
+  '強度％': Strength%
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: track
-  '位置％': 位置％
+  '位置％': Position%
   # kind: track
-  '虹輪開％': 虹輪開％
+  '虹輪開％': 虹輪開%
   # kind: track
-  '裁ち落とし％': 裁ち落とし％
+  '裁ち落とし％': 裁ち落 and し%
   # kind: value
-  '位置オフセット％': 位置オフセット％
+  '位置オフセット％': PositionOffset%
   # kind: check
-  '自動拡大': 自動拡大
+  '自動拡大': AutoScale Up
   # kind: track
-  '基準距離': 基準距離
+  '基準距離': BaseDistance
   # kind: track
-  '偏平率％': 偏平率％
+  '偏平率％': 偏平Rate%
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: select, options: 1, 2, 3, 4
-  'パターン': パターン
+  'パターン': Pattern
   # kind: check
-  '色上書き': 色上書き
+  '色上書き': ColorOverwrite
   # kind: color
-  '上書き色': 上書き色
+  '上書き色': OverwriteColor
   # kind: track
-  '点滅': 点滅
+  '点滅': Blink
   # kind: value
-  '発光': 発光
+  '発光': Glow
   # kind: select_option, parent: パターン
   '1': 1
   # kind: select_option, parent: パターン
@@ -1353,81 +1353,81 @@
   '4': 4
 ライトバースト@tim.anm2:
   # kind: select_option, parent: 合成モード
-  '輝度': 輝度
+  '輝度': Luminance
   # kind: track
-  'コントラスト': コントラスト
+  'コントラスト': Contrast
   # kind: track
-  '範囲': 範囲
+  '範囲': Range
   # kind: track
-  '透明度': 透明度
+  '透明度': Opacity
   # kind: color
-  '発光色': 発光色
+  '発光色': GlowColor
   # kind: check
-  'オリジナル色発光': オリジナル色発光
+  'オリジナル色発光': OriginalColorGlow
   # kind: track
-  '発光中心X': 発光中心X
+  '発光中心X': GlowCenterX
   # kind: track
-  '発光中心Y': 発光中心Y
+  '発光中心Y': GlowCenterY
   # kind: select, options: 通常, 加算, 減算, 乗算, スクリーン, オーバーレイ, 比較(明), 比較(暗), 輝度, 陰影
-  '合成モード': 合成モード
+  '合成モード': BlendMode
   # kind: select_option, parent: 合成モード
-  '通常': 通常
+  '通常': Normal
   # kind: select_option, parent: 合成モード
-  '加算': 加算
+  '加算': Add
   # kind: select_option, parent: 合成モード
-  '減算': 減算
+  '減算': Subtract
   # kind: select_option, parent: 合成モード
-  '乗算': 乗算
+  '乗算': Multiply
   # kind: select_option, parent: 合成モード
-  'スクリーン': スクリーン
+  'スクリーン': Screen
   # kind: select_option, parent: 合成モード
-  'オーバーレイ': オーバーレイ
+  'オーバーレイ': Overlay
   # kind: select_option, parent: 合成モード
-  '比較(明)': 比較(明)
+  '比較(明)': Lighten
   # kind: select_option, parent: 合成モード
-  '比較(暗)': 比較(暗)
+  '比較(暗)': Darken
   # kind: select_option, parent: 合成モード
-  '陰影': 陰影
+  '陰影': Shade
   # kind: track
-  '追加合成数': 追加合成数
+  '追加合成数': AddBlendCount
   # kind: track
-  'サイズ補正X': サイズ補正X
+  'サイズ補正X': SizeCorrectionX
   # kind: track
-  'サイズ補正Y': サイズ補正Y
+  'サイズ補正Y': SizeCorrectionY
 オーラ放出@tim.anm2:
   # kind: track
-  '範囲': 範囲
+  '範囲': Range
   # kind: track
-  'サイクル': サイクル
+  'サイクル': Cycle
   # kind: track
-  '速度': 速度
+  '速度': Speed
   # kind: track
-  'オフセット': オフセット
+  'オフセット': Offset
   # kind: check
   'ミッドトーン無視': ミッドトーン無視
   # kind: color
-  'ハイライト': ハイライト
+  'ハイライト': Highlight
   # kind: color
-  'ミッドトーン': ミッドトーン
+  'ミッドトーン': Midtone
   # kind: color
-  'シャドウ': シャドウ
+  'シャドウ': Shadow
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: check
-  'オリジナル表示': オリジナル表示
+  'オリジナル表示': OriginalShow
 色収差@tim.anm2:
   # kind: track
-  'ズレ量': ズレ量
+  'ズレ量': OffsetAmount
   # kind: track
-  '放射ボカシ': 放射ボカシ
+  '放射ボカシ': RadialBlur
   # kind: track
-  '焦点ズレ': 焦点ズレ
+  '焦点ズレ': 焦PointOffset
   # kind: track
-  'オリジナル': オリジナル
+  'オリジナル': Original
   # kind: check
-  '位置ズレ補正': 位置ズレ補正
+  '位置ズレ補正': PositionOffsetCorrection
   # kind: select, options: RGB, GRB, RBG
-  '色配置': 色配置
+  '色配置': ColorPlacement
   # kind: select_option, parent: 色配置
   'RGB': RGB
   # kind: select_option, parent: 色配置
@@ -1435,28 +1435,28 @@
   # kind: select_option, parent: 色配置
   'RBG': RBG
   # kind: track
-  'ピンボケ量': ピンボケ量
+  'ピンボケ量': ピンボケAmount
   # kind: check
-  '逆順': 逆順
+  '逆順': Reverse Order
 スターバースト@tim.anm2:
   # kind: track
   '強さ': 強さ
   # kind: track
-  '拡散': 拡散
+  '拡散': Diffusion
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: track
-  '発光回転': 発光回転
+  '発光回転': GlowRotation
   # kind: color
-  '発光色': 発光色
+  '発光色': GlowColor
   # kind: check
-  'オリジナル色発光': オリジナル色発光
+  'オリジナル色発光': OriginalColorGlow
   # kind: check
-  '光のみ': 光のみ
+  '光のみ': Light only
   # kind: select, options: 通常, クロス(4本), クロス(6本), クロス(8本), クロス(10本), クロス(12本), ライン
-  '形状': 形状
+  '形状': Shape
   # kind: select_option, parent: 形状
-  '通常': 通常
+  '通常': Normal
   # kind: select_option, parent: 形状
   'クロス(4本)': クロス(4本)
   # kind: select_option, parent: 形状
@@ -1468,51 +1468,51 @@
   # kind: select_option, parent: 形状
   'クロス(12本)': クロス(12本)
   # kind: select_option, parent: 形状
-  'ライン': ライン
+  'ライン': Line
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
 領域枠@領域枠@tim.anm2:
   # kind: track
-  '画線幅': 画線幅
+  '画線幅': 画LineWidth
   # kind: track
-  '追加幅': 追加幅
+  '追加幅': AddWidth
   # kind: track
-  '追加高さ': 追加高さ
+  '追加高さ': AddHeight
   # kind: track
-  '背景濃度': 背景濃度
+  '背景濃度': BackgroundDensityDegree
   # kind: color
-  '枠色': 枠色
+  '枠色': FrameColor
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: value
-  '基準': 基準
+  '基準': Base
 領域枠(棘形)@領域枠@tim.anm2:
   # kind: track
-  '画線幅％': 画線幅％
+  '画線幅％': 画LineWidth%
   # kind: track
-  '密度': 密度
+  '密度': Density
   # kind: track
-  '形状変化': 形状変化
+  '形状変化': ShapeChange
   # kind: track
-  '背景濃度': 背景濃度
+  '背景濃度': BackgroundDensityDegree
   # kind: color
-  '枠色': 枠色
+  '枠色': FrameColor
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: track
-  '追加幅': 追加幅
+  '追加幅': AddWidth
   # kind: track
-  '追加高さ': 追加高さ
+  '追加高さ': AddHeight
   # kind: track
-  '棘幅ランダム性[%]': 棘幅ランダム性[%]
+  '棘幅ランダム性[%]': 棘WidthRandomness[%]
   # kind: value
-  '棘高さ[%]': 棘高さ[%]
+  '棘高さ[%]': 棘Height[%]
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: select, options: 1, 2, 3, 4, 5
   '変形': 変形
   # kind: value
-  '基準': 基準
+  '基準': Base
   # kind: select_option, parent: 変形
   '1': 1
   # kind: select_option, parent: 変形
@@ -1525,81 +1525,81 @@
   '5': 5
 領域枠(楕円)@領域枠@tim.anm2:
   # kind: track
-  '画線幅': 画線幅
+  '画線幅': 画LineWidth
   # kind: track
-  '追加幅': 追加幅
+  '追加幅': AddWidth
   # kind: track
-  '追加高さ': 追加高さ
+  '追加高さ': AddHeight
   # kind: track
-  '背景濃度': 背景濃度
+  '背景濃度': BackgroundDensityDegree
   # kind: color
-  '枠色': 枠色
+  '枠色': FrameColor
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: value
-  '基準': 基準
+  '基準': Base
 領域枠(角落ち)@領域枠@tim.anm2:
   # kind: track
-  '画線幅': 画線幅
+  '画線幅': 画LineWidth
   # kind: select, options: 斜め, 円, 四角, 角丸
-  '形状': 形状
+  '形状': Shape
   # kind: select_option, parent: 形状
-  '斜め': 斜め
+  '斜め': Diagonal
   # kind: select_option, parent: 形状
-  '円': 円
+  '円': Circle
   # kind: select_option, parent: 形状
-  '四角': 四角
+  '四角': Square
   # kind: select_option, parent: 形状
   '角丸': 角丸
   # kind: track
-  '切込量': 切込量
+  '切込量': 切込Amount
   # kind: track
-  '背景濃度': 背景濃度
+  '背景濃度': BackgroundDensityDegree
   # kind: color
-  '枠色': 枠色
+  '枠色': FrameColor
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: track
-  '追加幅': 追加幅
+  '追加幅': AddWidth
   # kind: track
-  '追加高さ': 追加高さ
+  '追加高さ': AddHeight
   # kind: value
-  '基準': 基準
+  '基準': Base
   # kind: check
-  '楕円': 楕円
+  '楕円': Ellipse
 領域枠(雲形)@領域枠@tim.anm2:
   # kind: track
-  '画線幅％': 画線幅％
+  '画線幅％': 画LineWidth%
   # kind: track
-  '密度': 密度
+  '密度': Density
   # kind: track
-  '形状変化': 形状変化
+  '形状変化': ShapeChange
   # kind: track
-  '背景濃度': 背景濃度
+  '背景濃度': BackgroundDensityDegree
   # kind: color
-  '枠色': 枠色
+  '枠色': FrameColor
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: track
-  '追加幅': 追加幅
+  '追加幅': AddWidth
   # kind: track
-  '追加高さ': 追加高さ
+  '追加高さ': AddHeight
   # kind: track
-  '平滑度[%]': 平滑度[%]
+  '平滑度[%]': 平滑Degree[%]
   # kind: value
-  '雲横位置[%]': 雲横位置[%]
+  '雲横位置[%]': CloudHorizontalPosition[%]
   # kind: value
-  '雲横重なり[%]': 雲横重なり[%]
+  '雲横重なり[%]': CloudHorizontal重なり[%]
   # kind: value
-  '雲高さ[%]': 雲高さ[%]
+  '雲高さ[%]': CloudHeight[%]
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: select, options: 1, 2, 3, 4, 5
   '変形': 変形
   # kind: track
-  '精度': 精度
+  '精度': Precision
   # kind: value
-  '基準': 基準
+  '基準': Base
   # kind: select_option, parent: 変形
   '1': 1
   # kind: select_option, parent: 変形
@@ -1614,35 +1614,35 @@
   # kind: track
   '進捗': 進捗
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '線間隔': 線間隔
+  '線間隔': LineInterval
   # kind: track
-  '領域調整': 領域調整
+  '領域調整': 領域Adjustment
   # kind: select, options: 通常(本体→ライン), 通常(ライン→本体), アルファ減算(本体→ライン), アルファ減算(ライン→本体), 反転+アルファ減算(本体→ライン), 反転+アルファ減算(ライン→本体)
-  '表示モード': 表示モード
+  '表示モード': ShowMode
   # kind: select_option, parent: 表示モード
-  '通常(本体→ライン)': 通常(本体→ライン)
+  '通常(本体→ライン)': Normal(本体 -> Line)
   # kind: select_option, parent: 表示モード
-  '通常(ライン→本体)': 通常(ライン→本体)
+  '通常(ライン→本体)': Normal(Line -> 本体)
   # kind: select_option, parent: 表示モード
-  'アルファ減算(本体→ライン)': アルファ減算(本体→ライン)
+  'アルファ減算(本体→ライン)': AlphaSubtract(本体 -> Line)
   # kind: select_option, parent: 表示モード
-  'アルファ減算(ライン→本体)': アルファ減算(ライン→本体)
+  'アルファ減算(ライン→本体)': AlphaSubtract(Line -> 本体)
   # kind: select_option, parent: 表示モード
-  '反転+アルファ減算(本体→ライン)': 反転+アルファ減算(本体→ライン)
+  '反転+アルファ減算(本体→ライン)': Invert+AlphaSubtract(本体 -> Line)
   # kind: select_option, parent: 表示モード
-  '反転+アルファ減算(ライン→本体)': 反転+アルファ減算(ライン→本体)
+  '反転+アルファ減算(ライン→本体)': Invert+AlphaSubtract(Line -> 本体)
   # kind: track
-  '角度': 角度
+  '角度': Angle
   # kind: color
-  '線色': 線色
+  '線色': LineColor
   # kind: track
-  '本体α': 本体α
+  '本体α': 本体Alpha
   # kind: track
-  'ラインα': ラインα
+  'ラインα': LineAlpha
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
   'MAPレイヤ': MAPレイヤ
   # kind: track
@@ -1650,394 +1650,394 @@
   # kind: track
   '変形Y': 変形Y
   # kind: track
-  '変形方法': 変形方法
+  '変形方法': 変形Method
   # kind: track
-  'ディスプレイスメントぼかし': ディスプレイスメントぼかし
+  'ディスプレイスメントぼかし': ディスプレイスメントBlur
   # kind: track
   '領域拡張X': 領域拡張X
   # kind: track
   '領域拡張Y': 領域拡張Y
   # kind: check
-  'MAPサイズ調整': MAPサイズ調整
+  'MAPサイズ調整': MAPSizeAdjustment
   # kind: track
-  '水平ランダム': 水平ランダム
+  '水平ランダム': HorizontalRandom
   # kind: track
-  '垂直ランダム': 垂直ランダム
+  '垂直ランダム': VerticalRandom
   # kind: track
-  'シード': シード
+  'シード': Seed
   # kind: track
-  '変動フレーム長': 変動フレーム長
+  '変動フレーム長': VariationFrame長
   # kind: track
-  'αしきい値': αしきい値
+  'αしきい値': AlphaThreshold
   # kind: check
-  '距離∝時間ﾓｰﾄﾞ': 距離∝時間ﾓｰﾄﾞ
+  '距離∝時間ﾓｰﾄﾞ': Distance∝TimeMode
   # kind: track
-  'イージング': イージング
+  'イージング': Easing
   # kind: check
   '角丸なし': 角丸なし
 罫線T(Type1)@罫線T@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '横数': 横数
+  '横数': HorizontalCount
   # kind: track
-  '縦数': 縦数
+  '縦数': VerticalCount
   # kind: track
-  '縦横比[%]': 縦横比[%]
+  '縦横比[%]': Aspect Ratio[%]
 罫線T(Type2)@罫線T@tim.anm2:
   # kind: track
-  '制御点数': 制御点数
+  '制御点数': 制御PointCount
   # kind: track
-  'スナップX': スナップX
+  'スナップX': SnapX
   # kind: track
-  'スナップY': スナップY
+  'スナップY': SnapY
   # kind: value
-  '制御点座標': 制御点座標
+  '制御点座標': 制御PointCoordinate
 罫線T(obj配置)@罫線T@tim.anm2:
   # kind: track
-  '開始位置': 開始位置
+  '開始位置': StartPosition
   # kind: track
-  '終了位置(0で単独)': 終了位置(0で単独)
+  '終了位置(0で単独)': EndPosition(0 単独)
   # kind: track
-  'サイズ補正[%]': サイズ補正[%]
+  'サイズ補正[%]': SizeCorrection[%]
   # kind: check
-  '行列反転': 行列反転
+  '行列反転': 行列Invert
   # kind: check
-  'サイズ自動調整': サイズ自動調整
+  'サイズ自動調整': SizeAutoAdjustment
   # kind: check
-  '自動配置': 自動配置
+  '自動配置': AutoPlacement
   # kind: select, options: 左上, 右上, 左下, 右下
-  '配置順': 配置順
+  '配置順': Placement順
   # kind: select_option, parent: 配置順
-  '左上': 左上
+  '左上': Upper Left
   # kind: select_option, parent: 配置順
-  '右上': 右上
+  '右上': Upper Right
   # kind: select_option, parent: 配置順
-  '左下': 左下
+  '左下': Lower Left
   # kind: select_option, parent: 配置順
-  '右下': 右下
+  '右下': Lower Right
   # kind: check
-  '最終オブジェクト': 最終オブジェクト
+  '最終オブジェクト': Finalオブジェクト
 罫線T(削除)@罫線T@tim.anm2:
   # kind: track
-  '削除点数': 削除点数
+  '削除点数': DeletePointCount
   # kind: value
-  '削除アンカー': 削除アンカー
+  '削除アンカー': DeleteAnchor
 罫線T(斜線)@罫線T@tim.anm2:
   # kind: track
-  '斜線数': 斜線数
+  '斜線数': 斜LineCount
   # kind: track
-  '線幅': 線幅
+  '線幅': LineWidth
   # kind: track
-  '長さ[%]': 長さ[%]
+  '長さ[%]': Length[%]
   # kind: select, options: 右上がり, 右下がり, 交差
-  '形状': 形状
+  '形状': Shape
   # kind: select_option, parent: 形状
-  '右上がり': 右上がり
+  '右上がり': Upward Right
   # kind: select_option, parent: 形状
-  '右下がり': 右下がり
+  '右下がり': Downward Right
   # kind: select_option, parent: 形状
   '交差': 交差
   # kind: color
-  '線色': 線色
+  '線色': LineColor
   # kind: value
-  '斜線アンカー': 斜線アンカー
+  '斜線アンカー': 斜LineAnchor
 罫線T(表示)@罫線T@tim.anm2:
   # kind: track
-  '線幅': 線幅
+  '線幅': LineWidth
   # kind: track
-  '1行目高さ比[%]': 1行目高さ比[%]
+  '1行目高さ比[%]': 1行目Height比[%]
   # kind: track
-  '1列目幅比[%]': 1列目幅比[%]
+  '1列目幅比[%]': 1列目Width比[%]
   # kind: track
-  '背景透明度': 背景透明度
+  '背景透明度': BackgroundOpacity
   # kind: color
-  '線色': 線色
+  '線色': LineColor
   # kind: check
-  '座標保存': 座標保存
+  '座標保存': CoordinateSave
   # kind: check
-  'エッジ調整': エッジ調整
+  'エッジ調整': EdgeAdjustment
 ストローク用アンカー@ストロークT@tim.anm2:
   # kind: track
-  'アンカー数': アンカー数
+  'アンカー数': AnchorCount
   # kind: value
-  '追加座標': 追加座標
+  '追加座標': AddCoordinate
 ストローク(反復)@ストロークT@tim.anm2:
   # kind: track
-  '進捗度': 進捗度
+  '進捗度': 進捗Degree
   # kind: track
-  '左端残し': 左端残し
+  '左端残し': Left Edge残し
   # kind: track
-  '右端残し': 右端残し
+  '右端残し': Right Edge残し
   # kind: select, options: 根本固定, 先端固定, ランダム
-  '繰返モード': 繰返モード
+  '繰返モード': 繰返Mode
   # kind: select_option, parent: 繰返モード
-  '根本固定': 根本固定
+  '根本固定': 根本Fixed
   # kind: select_option, parent: 繰返モード
-  '先端固定': 先端固定
+  '先端固定': 先端Fixed
   # kind: select_option, parent: 繰返モード
-  'ランダム': ランダム
+  'ランダム': Random
   # kind: track
-  '軌道精度': 軌道精度
+  '軌道精度': PathPrecision
   # kind: check
-  '環状軌道': 環状軌道
+  '環状軌道': RingPath
   # kind: select, options: 曲線, 円
-  '軌道': 軌道
+  '軌道': Path
   # kind: select_option, parent: 軌道
-  '曲線': 曲線
+  '曲線': Curve
   # kind: select_option, parent: 軌道
-  '円': 円
+  '円': Circle
   # kind: check
-  '先頭調整': 先頭調整
+  '先頭調整': 先頭Adjustment
   # kind: value
-  '幅変動[%]': 幅変動[%]
+  '幅変動[%]': WidthVariation[%]
   # kind: value
-  'z軸方向': z軸方向
+  'z軸方向': z軸Direction
   # kind: track
-  '最大ランダム長[%]': 最大ランダム長[%]
+  '最大ランダム長[%]': MaximumRandom長[%]
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
   # kind: check
-  'フレームバッファ表示': フレームバッファ表示
+  'フレームバッファ表示': Frame BufferShow
 ストローク(配置)@ストロークT@tim.anm2:
   # kind: track
-  '進捗度1': 進捗度1
+  '進捗度1': 進捗Degree1
   # kind: track
-  '進捗度2': 進捗度2
+  '進捗度2': 進捗Degree2
   # kind: track
-  '区間個数': 区間個数
+  '区間個数': 区間Count
   # kind: track
-  'ランダム性': ランダム性
+  'ランダム性': Randomness
   # kind: check
-  '重なり反転': 重なり反転
+  '重なり反転': 重なりInvert
   # kind: check
-  '環状軌道': 環状軌道
+  '環状軌道': RingPath
   # kind: select, options: 曲線, 円, 直線
-  '軌道': 軌道
+  '軌道': Path
   # kind: select_option, parent: 軌道
-  '曲線': 曲線
+  '曲線': Curve
   # kind: select_option, parent: 軌道
-  '円': 円
+  '円': Circle
   # kind: select_option, parent: 軌道
-  '直線': 直線
+  '直線': Line
   # kind: check
-  '進行方向': 進行方向
+  '進行方向': 進行Direction
   # kind: check
-  '先頭表示': 先頭表示
+  '先頭表示': 先頭Show
   # kind: track
-  '位置ランダム性': 位置ランダム性
+  '位置ランダム性': PositionRandomness
   # kind: track
-  '領域拡大': 領域拡大
+  '領域拡大': 領域Scale Up
   # kind: track
-  '精度': 精度
+  '精度': Precision
 ストローク(配置:変動)@ストロークT@tim.anm2:
   # kind: track
-  '誤差X': 誤差X
+  '誤差X': ErrorX
   # kind: track
-  '誤差Y': 誤差Y
+  '誤差Y': ErrorY
   # kind: track
-  '誤差サイズ': 誤差サイズ
+  '誤差サイズ': ErrorSize
   # kind: track
-  '誤差角度': 誤差角度
+  '誤差角度': ErrorAngle
   # kind: track
-  '誤差透明度': 誤差透明度
+  '誤差透明度': ErrorOpacity
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
   # kind: value
-  '拡大率変動[%]': 拡大率変動[%]
+  '拡大率変動[%]': ScaleVariation[%]
   # kind: value
-  '角度変動': 角度変動
+  '角度変動': AngleVariation
   # kind: value
-  '透明度変動[%]': 透明度変動[%]
+  '透明度変動[%]': OpacityVariation[%]
 縁取りT@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '境界ぼかし': 境界ぼかし
+  '境界ぼかし': BoundaryBlur
   # kind: track
-  'α基準': α基準
+  'α基準': AlphaBase
   # kind: track
-  '合成量': 合成量
+  '合成量': BlendAmount
   # kind: color
-  '色1': 色1
+  '色1': Color1
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: check
-  '距離グラデ': 距離グラデ
+  '距離グラデ': Distanceグラデ
   # kind: check
-  '錯覚補正を有効化': 錯覚補正を有効化
+  '錯覚補正を有効化': 錯覚Correction Enable化
   # kind: track
-  '色ぼかし量%': 色ぼかし量%
+  '色ぼかし量%': ColorBlurAmount%
   # kind: track
-  'αぼかし量%': αぼかし量%
+  'αぼかし量%': AlphaBlurAmount%
   # kind: select, options: 外側, 両方, 内側
-  'モード': モード
+  'モード': Mode
   # kind: select_option, parent: モード
-  '外側': 外側
+  '外側': Outside
   # kind: select_option, parent: モード
-  '両方': 両方
+  '両方': Both
   # kind: select_option, parent: モード
-  '内側': 内側
+  '内側': Inside
 輪郭追跡@tim.anm2:
   # kind: track
-  '描画度': 描画度
+  '描画度': 描画Degree
   # kind: track
-  '線幅': 線幅
+  '線幅': LineWidth
   # kind: track
-  '開始点': 開始点
+  '開始点': StartPoint
   # kind: track
-  '閾値': 閾値
+  '閾値': Threshold
   # kind: color
-  '色': 色
+  '色': Color
   # kind: check
-  '逆回転': 逆回転
+  '逆回転': 逆Rotation
   # kind: check
-  '輪郭のみ': 輪郭のみ
+  '輪郭のみ': 輪郭 only
   # kind: check
-  '輪郭を下に': 輪郭を下に
+  '輪郭を下に': 輪郭 Bottom
   # kind: check
-  '中心補正': 中心補正
+  '中心補正': CenterCorrection
   # kind: track
   'スキャン粗さ': スキャン粗さ
   # kind: check
-  '拡張機能を使用': 拡張機能を使用
+  '拡張機能を使用': 拡張機能 使用
   # kind: track
-  '破線周期': 破線周期
+  '破線周期': 破LinePeriod
   # kind: track
-  '破線間隔': 破線間隔
+  '破線間隔': 破LineInterval
   # kind: track
-  '滑らかさ': 滑らかさ
+  '滑らかさ': Smoothさ
   # kind: track
-  '本体透明度': 本体透明度
+  '本体透明度': 本体Opacity
   # kind: figure
-  '形状': 形状
+  '形状': Shape
   # kind: check
-  '進行方向': 進行方向
+  '進行方向': 進行Direction
   # kind: check
-  '先端表示': 先端表示
+  '先端表示': 先端Show
   # kind: figure
-  '先端図形': 先端図形
+  '先端図形': 先端Figure
   # kind: track
-  '先端サイズ': 先端サイズ
+  '先端サイズ': 先端Size
 ラフ画線T@tim.anm2:
   # kind: track
-  '長さ': 長さ
+  '長さ': Length
   # kind: check
-  '画線のみ': 画線のみ
+  '画線のみ': 画Line only
   # kind: check
-  'スクリーン合成': スクリーン合成
+  'スクリーン合成': スクリーンBlend
   # kind: track
-  '画線ガンマ': 画線ガンマ
+  '画線ガンマ': 画LineGamma
   # kind: color
-  '線色': 線色
+  '線色': LineColor
   # kind: track
-  '強度上限': 強度上限
+  '強度上限': StrengthUpper Limit
   # kind: track
-  '強度下限': 強度下限
+  '強度下限': StrengthLower Limit
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: track
-  '元絵比率': 元絵比率
+  '元絵比率': Original ImageRatio
   # kind: track
-  '背景透明度': 背景透明度
+  '背景透明度': BackgroundOpacity
   # kind: check
-  '有効': 有効
+  '有効': Enabled
   # kind: color
-  '補正色': 補正色
+  '補正色': CorrectionColor
   # kind: track
-  '抽出サイズ': 抽出サイズ
+  '抽出サイズ': ExtractSize
   # kind: track
-  '抽出強度': 抽出強度
+  '抽出強度': ExtractStrength
   # kind: track
-  '抽出しきい値': 抽出しきい値
+  '抽出しきい値': ExtractThreshold
   # kind: track
-  '参照レイヤー': 参照レイヤー
+  '参照レイヤー': ReferenceLayer
   # kind: value
   'PI': PI
 色付きエッジ抽出@tim.anm2:
   # kind: track
-  'ズレX': ズレX
+  'ズレX': OffsetX
   # kind: track
-  'ズレY': ズレY
+  'ズレY': OffsetY
   # kind: track
-  '輝度': 輝度
+  '輝度': Luminance
   # kind: track
-  '縁補正': 縁補正
+  '縁補正': Edge Correction
   # kind: check
-  '透明度エッジ': 透明度エッジ
+  '透明度エッジ': OpacityEdge
   # kind: check
-  'オリジナル表示': オリジナル表示
+  'オリジナル表示': OriginalShow
   # kind: track
-  'エッジ強さ': エッジ強さ
+  'エッジ強さ': Edge強さ
   # kind: track
-  'エッジしきい値': エッジしきい値
+  'エッジしきい値': EdgeThreshold
   # kind: track
-  'エッジぼかし': エッジぼかし
+  'エッジぼかし': EdgeBlur
 色抽出T@tim.anm2:
   # kind: track
-  '輝度範囲': 輝度範囲
+  '輝度範囲': LuminanceRange
   # kind: track
-  '色差範囲': 色差範囲
+  '色差範囲': Color DifferenceRange
   # kind: track
-  '境界補正': 境界補正
+  '境界補正': BoundaryCorrection
   # kind: color
-  '抽出色': 抽出色
+  '抽出色': Extract Color
   # kind: check
-  '簡易処理': 簡易処理
+  '簡易処理': SimpleProcessing
 ライン抽出T@tim.anm2:
   # kind: track
-  '半径': 半径
+  '半径': Radius
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: color
-  'ライン色': ライン色
+  'ライン色': LineColor
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: track
-  '背景透明度': 背景透明度
+  '背景透明度': BackgroundOpacity
   # kind: track
-  'オリジナル透明度': オリジナル透明度
+  'オリジナル透明度': OriginalOpacity
   # kind: check
-  '輝度反転': 輝度反転
+  '輝度反転': LuminanceInvert
   # kind: check
-  'ラインのみ': ラインのみ
+  'ラインのみ': Line only
   # kind: track
-  '粒子化幅': 粒子化幅
+  '粒子化幅': 粒Child化Width
   # kind: check
-  '粒子[移動/参照]': 粒子[移動/参照]
+  '粒子[移動/参照]': 粒Child[Move/Reference]
   # kind: track
-  '飛散方向(開始)': 飛散方向(開始)
+  '飛散方向(開始)': Clip散Direction(Start)
   # kind: track
-  '飛散方向(終了)': 飛散方向(終了)
+  '飛散方向(終了)': Clip散Direction(End)
   # kind: check
-  '飛散ループ': 飛散ループ
+  '飛散ループ': Clip散ループ
   # kind: track
-  'シード': シード
+  'シード': Seed
   # kind: track
-  'シード変化間隔': シード変化間隔
+  'シード変化間隔': SeedChangeInterval
   # kind: track
-  '追加領域サイズ': 追加領域サイズ
+  '追加領域サイズ': Add領域Size
 ラフエッジ@tim.anm2:
   # kind: track
-  '変形量': 変形量
+  '変形量': 変形Amount
   # kind: track
-  'X周期': X周期
+  'X周期': XPeriod
   # kind: track
-  '変化速度': 変化速度
+  '変化速度': ChangeSpeed
   # kind: select, options: 1, 2, 3, 4, 5, 6
-  '形状': 形状
+  '形状': Shape
   # kind: track
-  'Y周期': Y周期
+  'Y周期': YPeriod
   # kind: check
-  'X周期と同じ': X周期と同じ
+  'X周期と同じ': XPeriod and 同じ
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
   # kind: check
-  '周囲を少し残す': 周囲を少し残す
+  '周囲を少し残す': 周囲 少し残す
   # kind: select_option, parent: 形状
   '1': 1
   # kind: select_option, parent: 形状
@@ -2052,537 +2052,537 @@
   '6': 6
 サイズ指定@サイズ修正T@tim.anm2:
   # kind: track
-  '横': 横
+  '横': Horizontal
   # kind: track
-  '縦': 縦
+  '縦': Vertical
   # kind: track
-  '基準X[%]': 基準X[%]
+  '基準X[%]': BaseX[%]
   # kind: track
-  '基準Y[%]': 基準Y[%]
+  '基準Y[%]': BaseY[%]
 領域サイズ指定+事前拡大回転@サイズ修正T@tim.anm2:
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
   # kind: track
-  '回転角': 回転角
+  '回転角': Rotation角
   # kind: track
-  '拡大率': 拡大率
+  '拡大率': Scale
 任意多角形カットA@任意多角形カット@tim.anm2:
   # kind: track
-  '頂点X': 頂点X
+  '頂点X': VertexX
   # kind: track
-  '頂点Y': 頂点Y
+  '頂点Y': VertexY
   # kind: track
-  '頂点数': 頂点数
+  '頂点数': VertexCount
   # kind: track
-  '厚み': 厚み
+  '厚み': Thickness
   # kind: color
-  '側面色': 側面色
+  '側面色': 側FaceColor
   # kind: value
   '領域': 領域
 任意多角形カットB(表示)@任意多角形カット@tim.anm2:
   # kind: track
-  '厚み': 厚み
+  '厚み': Thickness
   # kind: color
-  '側面色': 側面色
+  '側面色': 側FaceColor
   # kind: value
   'アンチエイリアス': アンチエイリアス
 任意多角形カットB(追加アンカー)@任意多角形カット@tim.anm2:
   # kind: track
-  '頂点数': 頂点数
+  '頂点数': VertexCount
   # kind: value
   '領域': 領域
 スカイドーム@スカイドーム@tim.anm2:
   # kind: track
-  '水平回転': 水平回転
+  '水平回転': HorizontalRotation
   # kind: track
-  '垂直回転': 垂直回転
+  '垂直回転': VerticalRotation
   # kind: track
-  '側方回転': 側方回転
+  '側方回転': 側方Rotation
   # kind: track
   '視野角': 視野角
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: check
-  '描画処理': 描画処理
+  '描画処理': 描画Processing
   # kind: check
-  '親カメラデータを使用': 親カメラデータを使用
+  '親カメラデータを使用': ParentCameraデータ 使用
 通常画像用前処理@スカイドーム@tim.anm2:
   # kind: track
-  '水平範囲': 水平範囲
+  '水平範囲': HorizontalRange
   # kind: track
-  '垂直範囲': 垂直範囲
+  '垂直範囲': VerticalRange
   # kind: check
-  '画像サイズ調整': 画像サイズ調整
+  '画像サイズ調整': ImageSizeAdjustment
   # kind: check
-  '水平と垂直をリンク': 水平と垂直をリンク
+  '水平と垂直をリンク': Horizontal and Vertical リンク
 モーフィング-ポイント指定@モーフィング@tim.anm2:
   # kind: track
-  'ポイント数': ポイント数
+  'ポイント数': ポイントCount
   # kind: select, options: 変化前, 変化後
-  '画像種別': 画像種別
+  '画像種別': Image種別
   # kind: select_option, parent: 画像種別
-  '変化前': 変化前
+  '変化前': ChangePrevious
   # kind: select_option, parent: 画像種別
-  '変化後': 変化後
+  '変化後': ChangeAfter
   # kind: track
-  'ポイントサイズ': ポイントサイズ
+  'ポイントサイズ': ポイントSize
   # kind: track
-  'フォントサイズ': フォントサイズ
+  'フォントサイズ': Font Size
   # kind: color
-  'ポイント色': ポイント色
+  'ポイント色': ポイントColor
   # kind: color
-  '文字色': 文字色
+  '文字色': 文字Color
   # kind: value
-  '座標': 座標
+  '座標': Coordinate
   # kind: check
-  'ポイント表示': ポイント表示
+  'ポイント表示': ポイントShow
 モーフィング-ポイント追加@モーフィング@tim.anm2:
   # kind: track
-  'ポイント数': ポイント数
+  'ポイント数': ポイントCount
   # kind: value
-  '座標': 座標
+  '座標': Coordinate
 モーフィング-表示@モーフィング@tim.anm2:
   # kind: track
-  '変化度': 変化度
+  '変化度': ChangeDegree
   # kind: track
-  'ポイントサイズ': ポイントサイズ
+  'ポイントサイズ': ポイントSize
   # kind: track
-  'フォントサイズ': フォントサイズ
+  'フォントサイズ': Font Size
   # kind: check
-  'レイヤースクリプト1': レイヤースクリプト1
+  'レイヤースクリプト1': Layerスクリプト1
   # kind: check
-  'レイヤースクリプト2': レイヤースクリプト2
+  'レイヤースクリプト2': Layerスクリプト2
   # kind: check
-  'ライン表示': ライン表示
+  'ライン表示': LineShow
   # kind: color
-  '線色': 線色
+  '線色': LineColor
   # kind: track
-  '線幅': 線幅
+  '線幅': LineWidth
   # kind: check
-  'ポイント表示': ポイント表示
+  'ポイント表示': ポイントShow
   # kind: color
-  'ポイント色': ポイント色
+  'ポイント色': ポイントColor
   # kind: color
-  '文字色': 文字色
+  '文字色': 文字Color
   # kind: check
-  'ガイド表示': ガイド表示
+  'ガイド表示': GuideShow
 モーフィング(輪郭)-オプション@モーフィング@tim.anm2:
   # kind: track
-  'ライン幅': ライン幅
+  'ライン幅': LineWidth
   # kind: track
-  '回転角': 回転角
+  '回転角': Rotation角
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: track
-  '対応点ズレ': 対応点ズレ
+  '対応点ズレ': 対応PointOffset
   # kind: color
-  'ライン色': ライン色
+  'ライン色': LineColor
 モーフィング(輪郭)-表示@モーフィング@tim.anm2:
   # kind: track
-  '変化度': 変化度
+  '変化度': ChangeDegree
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '点数': 点数
+  '点数': PointCount
   # kind: track
-  'オフセット': オフセット
+  'オフセット': Offset
   # kind: track
-  '変形前画像レイヤー': 変形前画像レイヤー
+  '変形前画像レイヤー': 変形PreviousImageLayer
   # kind: check
-  'エフェクト取得': エフェクト取得
+  'エフェクト取得': エフェクトGet
   # kind: figure
-  '形状': 形状
+  '形状': Shape
   # kind: color
-  'ドット色': ドット色
+  'ドット色': DotColor
   # kind: check
-  '自動方向': 自動方向
+  '自動方向': AutoDirection
   # kind: check
-  '一時保存EXT': 一時保存EXT
+  '一時保存EXT': 一時SaveEXT
 スプリット@スプリット@tim.anm2:
   # kind: track
   'スプリット1': スプリット1
   # kind: track
   'スプリット2': スプリット2
   # kind: track
-  '形状': 形状
+  '形状': Shape
   # kind: track
-  '影響範囲': 影響範囲
+  '影響範囲': Shadow響Range
   # kind: check
-  '上下を揃える': 上下を揃える
+  '上下を揃える': Vertical 揃える
   # kind: check
   '穴だけ開ける': 穴だけ開ける
   # kind: track
-  '横分割数': 横分割数
+  '横分割数': HorizontalDivisionCount
   # kind: track
-  '縦分割数': 縦分割数
+  '縦分割数': VerticalDivisionCount
   # kind: value
-  '位置': 位置
+  '位置': Position
   # kind: track
-  '透明度境界ボカシ': 透明度境界ボカシ
+  '透明度境界ボカシ': OpacityBoundaryBlur
 スプリット(位置拡張)@スプリット@tim.anm2:
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '回転': 回転
+  '回転': Rotation
 スプリット(形状拡張:ｱﾝｶｰ)@スプリット@tim.anm2:
   # kind: track
-  'オフセット': オフセット
+  'オフセット': Offset
   # kind: track
-  '繰り返し': 繰り返し
+  '繰り返し': Repeat
   # kind: track
   '傾斜': 傾斜
   # kind: track
-  'アンカー数': アンカー数
+  'アンカー数': AnchorCount
   # kind: check
-  '滑らかに': 滑らかに
+  '滑らかに': Smooth
   # kind: value
-  '座標': 座標
+  '座標': Coordinate
 スプリット(形状拡張:ﾌｧｲﾙ)@スプリット@tim.anm2:
   # kind: track
-  'オフセット': オフセット
+  'オフセット': Offset
   # kind: track
-  '繰り返し': 繰り返し
+  '繰り返し': Repeat
   # kind: track
   '傾斜': 傾斜
   # kind: check
-  '滑らかに': 滑らかに
+  '滑らかに': Smooth
   # kind: file
-  'ファイル': ファイル
+  'ファイル': File
 ワイヤー3D(マップ)@ワイヤー3D@tim.anm2:
   # kind: track
-  '横分割数': 横分割数
+  '横分割数': HorizontalDivisionCount
   # kind: track
-  '縦分割数': 縦分割数
+  '縦分割数': VerticalDivisionCount
   # kind: track
-  'ライン幅': ライン幅
+  'ライン幅': LineWidth
 ワイヤー3D(表示)@ワイヤー3D@tim.anm2:
   # kind: track
-  '横サイズ': 横サイズ
+  '横サイズ': HorizontalSize
   # kind: track
-  '縦サイズ': 縦サイズ
+  '縦サイズ': VerticalSize
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
   # kind: track
-  '高さ基準': 高さ基準
+  '高さ基準': HeightBase
   # kind: color
-  '線色': 線色
+  '線色': LineColor
   # kind: check
   '塗り': 塗り
   # kind: color
-  '塗色': 塗色
+  '塗色': 塗Color
   # kind: check
   'アンチエイリアス': アンチエイリアス
   # kind: check
-  '高精度(線のみ)': 高精度(線のみ)
+  '高精度(線のみ)': 高Precision(Line only)
   # kind: track
-  '高精度間隔': 高精度間隔
+  '高精度間隔': 高PrecisionInterval
   # kind: figure
-  '高精度形状': 高精度形状
+  '高精度形状': 高PrecisionShape
   # kind: check
-  '高精度自動向き': 高精度自動向き
+  '高精度自動向き': 高PrecisionAutoDirection
   # kind: track
-  '単体横分割数': 単体横分割数
+  '単体横分割数': SingleHorizontalDivisionCount
   # kind: track
-  '単体縦分割数': 単体縦分割数
+  '単体縦分割数': SingleVerticalDivisionCount
   # kind: track
-  '単体ライン幅': 単体ライン幅
+  '単体ライン幅': SingleLineWidth
   # kind: check
-  'YZ反転': YZ反転
+  'YZ反転': YZInvert
 二十六面体@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '切込量': 切込量
+  '切込量': 切込Amount
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: color
-  '色3': 色3
+  '色3': Color3
 直方体展開@tim.anm2:
   # kind: track
-  '蓋角度': 蓋角度
+  '蓋角度': 蓋Angle
   # kind: track
-  '側面角度': 側面角度
+  '側面角度': 側FaceAngle
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
   '奥行き(%)': 奥行き(%)
   # kind: track
-  '高さ(%)': 高さ(%)
+  '高さ(%)': Height(%)
   # kind: select, options: 同一画像, 展開画像(3x2)
-  '配置': 配置
+  '配置': Placement
   # kind: select_option, parent: 配置
-  '同一画像': 同一画像
+  '同一画像': SameImage
   # kind: select_option, parent: 配置
-  '展開画像(3x2)': 展開画像(3x2)
+  '展開画像(3x2)': 展開Image(3x2)
   # kind: check
-  '表裏反転': 表裏反転
+  '表裏反転': 表裏Invert
   # kind: check
   'アンチエイリアス': アンチエイリアス
 錐変形@tim.anm2:
   # kind: track
-  '角数': 角数
+  '角数': 角Count
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
   # kind: track
-  '上半径': 上半径
+  '上半径': Top Radius
   # kind: track
-  '下半径': 下半径
+  '下半径': Bottom Radius
   # kind: check
   '蓋': 蓋
   # kind: check
-  '中心基準': 中心基準
+  '中心基準': CenterBase
   # kind: check
-  '両面化': 両面化
+  '両面化': 両Face化
   # kind: check
   '星型化': 星型化
   # kind: track
-  'くびれ率': くびれ率
+  'くびれ率': くびれRate
   # kind: check
-  '角を整数化': 角を整数化
+  '角を整数化': 角 整Count化
 つまむ@tim.anm2:
   # kind: track
-  'ツマミ量％': ツマミ量％
+  'ツマミ量％': ツマミAmount%
   # kind: track
-  '半径％': 半径％
+  '半径％': Radius%
   # kind: track
-  '横比％': 横比％
+  '横比％': Horizontal比%
   # kind: track
-  '分割量': 分割量
+  '分割量': DivisionAmount
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
 ぼかしミラー@tim.anm2:
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  '角度': 角度
+  '角度': Angle
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: check
-  '左右反転': 左右反転
+  '左右反転': HorizontalInvert
 極座標変換T@tim.anm2:
   # kind: track
-  '変換範囲': 変換範囲
+  '変換範囲': 変換Range
   # kind: track
-  '適用度': 適用度
+  '適用度': ApplyDegree
   # kind: check
   '逆変換': 逆変換
 正多面体@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: select, options: 正四面体, 立方体, 正八面体, 正二十面体, 正十二面体
-  'タイプ': タイプ
+  'タイプ': Type
   # kind: select_option, parent: タイプ
-  '正四面体': 正四面体
+  '正四面体': 正四Face体
   # kind: select_option, parent: タイプ
   '立方体': 立方体
   # kind: select_option, parent: タイプ
-  '正八面体': 正八面体
+  '正八面体': 正八Face体
   # kind: select_option, parent: タイプ
-  '正二十面体': 正二十面体
+  '正二十面体': 正二十Face体
   # kind: select_option, parent: タイプ
-  '正十二面体': 正十二面体
+  '正十二面体': 正十二Face体
   # kind: track
-  '枠％': 枠％
+  '枠％': Frame%
   # kind: color
-  '枠色': 枠色
+  '枠色': FrameColor
   # kind: check
-  '縮尺補正': 縮尺補正
+  '縮尺補正': ScaleCorrection
   # kind: check
-  '90度回転': 90度回転
+  '90度回転': 90DegreeRotation
 ルービックキューブ配置V2@tim.anm2:
   # kind: select, options: 配置1, 配置2, 配置3
-  '配置': 配置
+  '配置': Placement
   # kind: select_option, parent: 配置
-  '配置1': 配置1
+  '配置1': Placement1
   # kind: select_option, parent: 配置
-  '配置2': 配置2
+  '配置2': Placement2
   # kind: select_option, parent: 配置
-  '配置3': 配置3
+  '配置3': Placement3
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '間隔(%)': 間隔(%)
+  '間隔(%)': Interval(%)
   # kind: check
-  '内部表示': 内部表示
+  '内部表示': Inner部Show
 簡易ワープV2@tim.anm2:
   # kind: track
-  '基準X': 基準X
+  '基準X': BaseX
   # kind: track
-  '基準Y': 基準Y
+  '基準Y': BaseY
   # kind: track
-  '移動X': 移動X
+  '移動X': MoveX
   # kind: track
-  '移動Y': 移動Y
+  '移動Y': MoveY
   # kind: track
-  '影響範囲': 影響範囲
+  '影響範囲': Shadow響Range
   # kind: track
-  '被影響範囲': 被影響範囲
+  '被影響範囲': 被Shadow響Range
   # kind: select, options: 絶対, 相対
-  '移動座標': 移動座標
+  '移動座標': MoveCoordinate
   # kind: select_option, parent: 移動座標
-  '絶対': 絶対
+  '絶対': Absolute
   # kind: select_option, parent: 移動座標
-  '相対': 相対
+  '相対': Relative
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: check
-  '境界固定': 境界固定
+  '境界固定': BoundaryFixed
   # kind: check
-  'パス表示': パス表示
+  'パス表示': PathShow
   # kind: color
-  '移動色': 移動色
+  '移動色': MoveColor
   # kind: color
-  '影響範囲色': 影響範囲色
+  '影響範囲色': Shadow響RangeColor
   # kind: color
-  '被影響範囲色': 被影響範囲色
+  '被影響範囲色': 被Shadow響RangeColor
   # kind: color
-  '文字色': 文字色
+  '文字色': 文字Color
   # kind: track
-  '表示サイズ': 表示サイズ
+  '表示サイズ': ShowSize
   # kind: track
-  '線幅': 線幅
+  '線幅': LineWidth
   # kind: check
-  '中心XY基準': 中心XY基準
+  '中心XY基準': CenterXYBase
 バニシングポイント@tim.anm2:
   # kind: track
-  '移動X': 移動X
+  '移動X': MoveX
   # kind: track
-  '移動Y': 移動Y
+  '移動Y': MoveY
   # kind: track
-  '浮上X': 浮上X
+  '浮上X': 浮TopX
   # kind: track
-  '浮上Y': 浮上Y
+  '浮上Y': 浮TopY
   # kind: select, options: なし, 左右, 上下, 上下左右
-  '反転': 反転
+  '反転': Invert
   # kind: select_option, parent: 反転
-  'なし': なし
+  'なし': None
   # kind: select_option, parent: 反転
-  '左右': 左右
+  '左右': Horizontal
   # kind: select_option, parent: 反転
-  '上下': 上下
+  '上下': Vertical
   # kind: select_option, parent: 反転
-  '上下左右': 上下左右
+  '上下左右': All Sides
   # kind: check
-  '参照領域': 参照領域
+  '参照領域': Reference領域
   # kind: check
-  'オリジナル表示': オリジナル表示
+  'オリジナル表示': OriginalShow
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: value
   '領域': 領域
 バニシングポイント2@tim.anm2:
   # kind: track
-  'サイズ補正': サイズ補正
+  'サイズ補正': SizeCorrection
   # kind: select, options: ガイド, プレビュー, 変形
-  '表示モード': 表示モード
+  '表示モード': ShowMode
   # kind: select_option, parent: 表示モード
-  'ガイド': ガイド
+  'ガイド': Guide
   # kind: select_option, parent: 表示モード
-  'プレビュー': プレビュー
+  'プレビュー': Preview
   # kind: select_option, parent: 表示モード
   '変形': 変形
   # kind: track
-  '視X/深度': 視X/深度
+  '視X/深度': 視X/深Degree
   # kind: track
-  '視点Y': 視点Y
+  '視点Y': 視PointY
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: value
   '領域': 領域
   # kind: track
-  'ガイド径': ガイド径
+  'ガイド径': Guide径
   # kind: track
-  'ライン幅': ライン幅
+  'ライン幅': LineWidth
 曲面変形@tim.anm2:
   # kind: track
   '変形1': 変形1
   # kind: track
   '変形2': 変形2
   # kind: track
-  '個数': 個数
+  '個数': Count
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: track
-  '領域サイズX': 領域サイズX
+  '領域サイズX': 領域SizeX
   # kind: track
-  '領域サイズY': 領域サイズY
+  '領域サイズY': 領域SizeY
   # kind: track
-  '領域サイズZ': 領域サイズZ
+  '領域サイズZ': 領域SizeZ
   # kind: track
-  '移動速度': 移動速度
+  '移動速度': MoveSpeed
   # kind: track
-  '移動方向誤差': 移動方向誤差
+  '移動方向誤差': MoveDirectionError
   # kind: track
-  '回転速度': 回転速度
+  '回転速度': RotationSpeed
   # kind: check
-  '重心を中心にする': 重心を中心にする
+  '重心を中心にする': 重心 Center
 エンボスT@T_Filter_Module@tim.anm2:
   # kind: track
   '強さ': 強さ
   # kind: track
-  '向き': 向き
+  '向き': Direction
 ガラスT@T_Filter_Module@tim.anm2:
   # kind: track
-  '歪み量': 歪み量
+  '歪み量': 歪みAmount
   # kind: track
-  '滑らか': 滑らか
+  '滑らか': Smooth
   # kind: track
-  '周期/サイズ': 周期/サイズ
+  '周期/サイズ': Period/Size
   # kind: track
   '分断': 分断
   # kind: select, options: ノイズ四角, 四角ガラス, 円ガラス
-  '形状': 形状
+  '形状': Shape
   # kind: select_option, parent: 形状
-  'ノイズ四角': ノイズ四角
+  'ノイズ四角': NoiseSquare
   # kind: select_option, parent: 形状
-  '四角ガラス': 四角ガラス
+  '四角ガラス': SquareGlass
   # kind: select_option, parent: 形状
-  '円ガラス': 円ガラス
+  '円ガラス': CircleGlass
   # kind: track
-  '変化速度': 変化速度
+  '変化速度': ChangeSpeed
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
 グラフィックペンT@T_Filter_Module@tim.anm2:
   # kind: track
-  '線長': 線長
+  '線長': Line長
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: track
-  '白線量': 白線量
+  '白線量': WhiteLineAmount
   # kind: track
-  '黒線量': 黒線量
+  '黒線量': BlackLineAmount
   # kind: select, options: 斜め右下, 縦, 斜め左下, 横
-  '向き': 向き
+  '向き': Direction
   # kind: select_option, parent: 向き
-  '斜め右下': 斜め右下
+  '斜め右下': Diagonal Down Right
   # kind: select_option, parent: 向き
-  '縦': 縦
+  '縦': Vertical
   # kind: select_option, parent: 向き
-  '斜め左下': 斜め左下
+  '斜め左下': Diagonal Down Left
   # kind: select_option, parent: 向き
-  '横': 横
+  '横': Horizontal
   # kind: color
-  'シャドウ': シャドウ
+  'シャドウ': Shadow
   # kind: color
-  'ハイライト': ハイライト
+  'ハイライト': Highlight
   # kind: check
-  'シード固定': シード固定
+  'シード固定': SeedFixed
   # kind: track
-  'シード': シード
+  'シード': Seed
   # kind: check
-  'しきい値を自動計算': しきい値を自動計算
+  'しきい値を自動計算': Threshold AutoCalculation
   # kind: select, options: 自動, CPU, GPU
-  '処理モード': 処理モード
+  '処理モード': ProcessingMode
   # kind: select_option, parent: 処理モード
-  '自動': 自動
+  '自動': Auto
   # kind: select_option, parent: 処理モード
   'CPU': CPU
   # kind: select_option, parent: 処理モード
@@ -2591,1215 +2591,1215 @@
   # kind: track
   '強さ': 強さ
   # kind: track
-  '半径': 半径
+  '半径': Radius
   # kind: select, options: アンシャープマスク, シャープ
-  '処理方式': 処理方式
+  '処理方式': ProcessingMethod
   # kind: select_option, parent: 処理方式
-  'アンシャープマスク': アンシャープマスク
+  'アンシャープマスク': アンSharpMask
   # kind: select_option, parent: 処理方式
-  'シャープ': シャープ
+  'シャープ': Sharp
 チョーク・木炭T@T_Filter_Module@tim.anm2:
   # kind: track
-  '木炭適用': 木炭適用
+  '木炭適用': 木炭Apply
   # kind: track
-  'チョーク適用': チョーク適用
+  'チョーク適用': チョークApply
   # kind: track
   '筆圧': 筆圧
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: check
-  'しきい値を自動計算': しきい値を自動計算
+  'しきい値を自動計算': Threshold AutoCalculation
   # kind: track
-  '長さ': 長さ
+  '長さ': Length
   # kind: track
-  'ノイズ強度': ノイズ強度
+  'ノイズ強度': NoiseStrength
   # kind: color
-  'シャドウ': シャドウ
+  'シャドウ': Shadow
   # kind: color
-  'ハイライト': ハイライト
+  'ハイライト': Highlight
   # kind: check
-  'シード固定': シード固定
+  'シード固定': SeedFixed
   # kind: track
-  'シード': シード
+  'シード': Seed
 ノート用紙T@T_Filter_Module@tim.anm2:
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: track
   'きめ': きめ
   # kind: track
   'レリーフ': レリーフ
   # kind: select, options: 左, 左上, 上, 右上, 右, 右下, 下, 左下
-  '向き': 向き
+  '向き': Direction
   # kind: select_option, parent: 向き
-  '左': 左
+  '左': Left
   # kind: select_option, parent: 向き
-  '左上': 左上
+  '左上': Upper Left
   # kind: select_option, parent: 向き
-  '上': 上
+  '上': Top
   # kind: select_option, parent: 向き
-  '右上': 右上
+  '右上': Upper Right
   # kind: select_option, parent: 向き
-  '右': 右
+  '右': Right
   # kind: select_option, parent: 向き
-  '右下': 右下
+  '右下': Lower Right
   # kind: select_option, parent: 向き
-  '下': 下
+  '下': Bottom
   # kind: select_option, parent: 向き
-  '左下': 左下
+  '左下': Lower Left
   # kind: color
-  'シャドウ': シャドウ
+  'シャドウ': Shadow
   # kind: color
-  'ハイライト': ハイライト
+  'ハイライト': Highlight
 ブラスターT@T_Filter_Module@tim.anm2:
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: track
-  'なめらか': なめらか
+  'なめらか': Smooth
   # kind: select, options: 右下, 下, 左下, 左, 左上, 上, 右上, 右
-  '向き': 向き
+  '向き': Direction
   # kind: select_option, parent: 向き
-  '右下': 右下
+  '右下': Lower Right
   # kind: select_option, parent: 向き
-  '下': 下
+  '下': Bottom
   # kind: select_option, parent: 向き
-  '左下': 左下
+  '左下': Lower Left
   # kind: select_option, parent: 向き
-  '左': 左
+  '左': Left
   # kind: select_option, parent: 向き
-  '左上': 左上
+  '左上': Upper Left
   # kind: select_option, parent: 向き
-  '上': 上
+  '上': Top
   # kind: select_option, parent: 向き
-  '右上': 右上
+  '右上': Upper Right
   # kind: select_option, parent: 向き
-  '右': 右
+  '右': Right
   # kind: track
-  '距離': 距離
+  '距離': Distance
   # kind: color
-  'シャドウ': シャドウ
+  'シャドウ': Shadow
   # kind: color
-  'ハイライト': ハイライト
+  'ハイライト': Highlight
   # kind: track
-  'エッジ強度': エッジ強度
+  'エッジ強度': EdgeStrength
 モザイクタイルT@T_Filter_Module@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '溝幅': 溝幅
+  '溝幅': 溝Width
   # kind: track
   '細かさ': 細かさ
   # kind: track
-  '変形量': 変形量
+  '変形量': 変形Amount
   # kind: track
-  '縦横比%': 縦横比%
+  '縦横比%': Aspect Ratio%
   # kind: track
-  '溝明度': 溝明度
+  '溝明度': 溝Brightness
   # kind: track
-  '凸エッジ幅': 凸エッジ幅
+  '凸エッジ幅': 凸EdgeWidth
   # kind: track
-  '凸エッジ高さ': 凸エッジ高さ
+  '凸エッジ高さ': 凸EdgeHeight
   # kind: track
   'がさつき': がさつき
   # kind: track
-  '変化速度': 変化速度
+  '変化速度': ChangeSpeed
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
   # kind: check
-  'がさつきを有効化': がさつきを有効化
+  'がさつきを有効化': がさつき Enable化
 網点分解(CMY)@網点分解T@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '最小': 最小
+  '最小': Minimum
   # kind: track
-  '最大': 最大
+  '最大': Maximum
   # kind: track
-  'ボカシ補正': ボカシ補正
+  'ボカシ補正': BlurCorrection
   # kind: figure
-  '形状': 形状
+  '形状': Shape
   # kind: track
-  '網点角度C': 網点角度C
+  '網点角度C': 網PointAngleC
   # kind: track
-  '網点角度M': 網点角度M
+  '網点角度M': 網PointAngleM
   # kind: track
-  '網点角度Y': 網点角度Y
+  '網点角度Y': 網PointAngleY
   # kind: check
-  '網点も回転': 網点も回転
+  '網点も回転': 網Point tooRotation
   # kind: track
-  '公転速度': 公転速度
+  '公転速度': 公転Speed
   # kind: track
-  '自転速度': 自転速度
+  '自転速度': 自転Speed
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: select, options: なし, 網点のみ, 網点と元画像
-  '型抜法': 型抜法
+  '型抜法': 型抜Method
   # kind: select_option, parent: 型抜法
-  'なし': なし
+  'なし': None
   # kind: select_option, parent: 型抜法
-  '網点のみ': 網点のみ
+  '網点のみ': 網Point only
   # kind: select_option, parent: 型抜法
-  '網点と元画像': 網点と元画像
+  '網点と元画像': 網Point and OriginalImage
   # kind: check
-  '簡易表示': 簡易表示
+  '簡易表示': SimpleShow
 網点分解(特色)@網点分解T@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '最小': 最小
+  '最小': Minimum
   # kind: track
-  '最大': 最大
+  '最大': Maximum
   # kind: track
-  'ボカシ補正': ボカシ補正
+  'ボカシ補正': BlurCorrection
   # kind: figure
-  '形状': 形状
+  '形状': Shape
   # kind: track
-  '網点角度1': 網点角度1
+  '網点角度1': 網PointAngle1
   # kind: track
-  '網点角度2': 網点角度2
+  '網点角度2': 網PointAngle2
   # kind: track
-  '網点角度3': 網点角度3
+  '網点角度3': 網PointAngle3
   # kind: check
-  '網点も回転': 網点も回転
+  '網点も回転': 網Point tooRotation
   # kind: track
-  '公転速度': 公転速度
+  '公転速度': 公転Speed
   # kind: track
-  '自転速度': 自転速度
+  '自転速度': 自転Speed
   # kind: color
-  '色1': 色1
+  '色1': Color1
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: color
-  '色3': 色3
+  '色3': Color3
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: select, options: なし, 網点のみ, 網点と元画像
-  '型抜法': 型抜法
+  '型抜法': 型抜Method
   # kind: select_option, parent: 型抜法
-  'なし': なし
+  'なし': None
   # kind: select_option, parent: 型抜法
-  '網点のみ': 網点のみ
+  '網点のみ': 網Point only
   # kind: select_option, parent: 型抜法
-  '網点と元画像': 網点と元画像
+  '網点と元画像': 網Point and OriginalImage
 蜂の巣モザイク@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '補正': 補正
+  '補正': Correction
   # kind: track
-  '最小ｻｲｽﾞ': 最小ｻｲｽﾞ
+  '最小ｻｲｽﾞ': MinimumSize
   # kind: track
-  'ﾓｻﾞｲｸ回転': ﾓｻﾞｲｸ回転
+  'ﾓｻﾞｲｸ回転': ﾓｻﾞｲｸRotation
   # kind: check
-  '背景を透明': 背景を透明
+  '背景を透明': Background 透明
   # kind: check
-  '背景をシャープ': 背景をシャープ
+  '背景をシャープ': Background Sharp
   # kind: check
-  '凸エッジ有効': 凸エッジ有効
+  '凸エッジ有効': 凸EdgeEnable
   # kind: track
-  '凸エッジ幅': 凸エッジ幅
+  '凸エッジ幅': 凸EdgeWidth
   # kind: value
-  '凸エッジ高さ': 凸エッジ高さ
+  '凸エッジ高さ': 凸EdgeHeight
   # kind: track
-  '凸エッジ角度': 凸エッジ角度
+  '凸エッジ角度': 凸EdgeAngle
 エンボスタイル@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
   # kind: track
-  '角度': 角度
+  '角度': Angle
   # kind: track
-  'エンボス透明度': エンボス透明度
+  'エンボス透明度': エンボスOpacity
 フィルム焦げ@tim.anm2:
   # kind: track
   '焼け': 焼け
   # kind: track
-  '輪郭ぼかし': 輪郭ぼかし
+  '輪郭ぼかし': 輪郭Blur
   # kind: track
-  '燃焼半径': 燃焼半径
+  '燃焼半径': BurnRadius
   # kind: track
-  '乱数': 乱数
+  '乱数': 乱Count
   # kind: track
-  '発火点集中': 発火点集中
+  '発火点集中': 発火Point集中
   # kind: color
-  '燃焼色': 燃焼色
+  '燃焼色': BurnColor
   # kind: track
-  '燃焼ぼかし(%)': 燃焼ぼかし(%)
+  '燃焼ぼかし(%)': BurnBlur(%)
   # kind: track
-  '位置ズレ(%)': 位置ズレ(%)
+  '位置ズレ(%)': PositionOffset(%)
   # kind: check
-  '縁発光': 縁発光
+  '縁発光': EdgeGlow
   # kind: track
-  '縁発光拡散(%)': 縁発光拡散(%)
+  '縁発光拡散(%)': EdgeGlowDiffusion(%)
 ハーフトーンT@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
   'トーン小': トーン小
   # kind: track
   'トーン大': トーン大
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: color
-  'シャドウ色': シャドウ色
+  'シャドウ色': シャドウColor
   # kind: color
-  'ハイライト色': ハイライト色
+  'ハイライト色': ハイライトColor
   # kind: figure
-  'トーン形状': トーン形状
+  'トーン形状': トーンShape
   # kind: check
   '段違い': 段違い
   # kind: check
-  '背景色非表示': 背景色非表示
+  '背景色非表示': BackgroundColor非Show
   # kind: check
-  'トーン反転': トーン反転
+  'トーン反転': トーンInvert
   # kind: check
-  '自分自身で型抜き': 自分自身で型抜き
+  '自分自身で型抜き': 自分Self 型抜き
 ライントーンT@tim.anm2:
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: track
-  'ライン細％': ライン細％
+  'ライン細％': Line細%
   # kind: track
-  'ライン太％': ライン太％
+  'ライン太％': Line太%
   # kind: track
-  'シフト': シフト
+  'シフト': Shift
   # kind: color
-  'ライン色': ライン色
+  'ライン色': LineColor
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: check
-  '背景色非表示': 背景色非表示
+  '背景色非表示': BackgroundColor非Show
   # kind: track
-  '横分割倍率%': 横分割倍率%
+  '横分割倍率%': HorizontalDivisionScaleRate%
   # kind: check
-  '反転': 反転
+  '反転': Invert
 低解像度T@tim.anm2:
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '角度': 角度
+  '角度': Angle
   # kind: track
-  'ぼかし%': ぼかし%
+  'ぼかし%': Blur%
   # kind: color
-  '色1': 色1
+  '色1': Color1
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: check
-  '直線': 直線
+  '直線': Line
   # kind: check
-  '網表示': 網表示
+  '網表示': 網Show
   # kind: check
   'ブロック描画': ブロック描画
 点描T@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '位置ズレ[%]': 位置ズレ[%]
+  '位置ズレ[%]': PositionOffset[%]
   # kind: track
-  'ピッチ[%]': ピッチ[%]
+  'ピッチ[%]': Pitch[%]
   # kind: track
-  '色幅': 色幅
+  '色幅': ColorWidth
   # kind: check
-  '背景に着色': 背景に着色
+  '背景に着色': Background 着Color
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: check
-  '背景を元絵に': 背景を元絵に
+  '背景を元絵に': Background Original Image
   # kind: check
-  '3D表示': 3D表示
+  '3D表示': 3DShow
   # kind: track
-  '環境光[%]': 環境光[%]
+  '環境光[%]': 環境Light[%]
   # kind: track
-  '拡散光[%]': 拡散光[%]
+  '拡散光[%]': DiffusionLight[%]
   # kind: track
-  '鏡面光[%]': 鏡面光[%]
+  '鏡面光[%]': 鏡FaceLight[%]
   # kind: track
-  '光沢度': 光沢度
+  '光沢度': Light沢Degree
   # kind: track
-  'シード': シード
+  'シード': Seed
   # kind: track
-  '変化間隔': 変化間隔
+  '変化間隔': ChangeInterval
   # kind: value
   'PI': PI
   # kind: check
-  '色参照位置固定': 色参照位置固定
+  '色参照位置固定': ColorReferencePositionFixed
 リピーター(+時間)@簡易リピーター@tim.anm2:
   # kind: track
-  'ｵﾌｾｯﾄ(S)': ｵﾌｾｯﾄ(S)
+  'ｵﾌｾｯﾄ(S)': Offset(S)
   # kind: track
   '送り(mS)': 送り(mS)
   # kind: track
-  'ループ': ループ
+  'ループ': Loop
   # kind: track
-  'α読込': α読込
+  'α読込': AlphaLoad
   # kind: file
-  'ファイル': ファイル
+  'ファイル': File
 リピーター(基準)@簡易リピーター@tim.anm2:
   # kind: track
   'X': X
   # kind: track
   'Y': Y
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: track
-  '拡大%': 拡大%
+  '拡大%': Scale Up%
 リピーター(変化率)@簡易リピーター@tim.anm2:
   # kind: track
-  'X変化率': X変化率
+  'X変化率': XChangeRate
   # kind: track
-  'Y変化率': Y変化率
+  'Y変化率': YChangeRate
   # kind: track
-  '拡大変率': 拡大変率
+  '拡大変率': Scale Up変Rate
   # kind: track
-  '回転変率': 回転変率
+  '回転変率': Rotation変Rate
 リピーター(表示)@簡易リピーター@tim.anm2:
   # kind: track
-  '透過率%': 透過率%
+  '透過率%': TransparencyRate%
   # kind: track
-  '個数': 個数
+  '個数': Count
   # kind: track
-  '基準回転': 基準回転
+  '基準回転': BaseRotation
   # kind: track
-  '基準拡大': 基準拡大
+  '基準拡大': BaseScale Up
   # kind: check
   '重なり順': 重なり順
   # kind: check
-  '色の上書き': 色の上書き
+  '色の上書き': Color Overwrite
   # kind: color
-  '基準色': 基準色
+  '基準色': BaseColor
   # kind: color
-  '最終色': 最終色
+  '最終色': FinalColor
   # kind: select, options: 通常, 加算, 減算, 乗算, スクリーン, オーバーレイ, 比較(明), 比較(暗), 輝度, 色差, 陰影, 明暗, 差分
-  '合成モード': 合成モード
+  '合成モード': BlendMode
   # kind: select_option, parent: 合成モード
-  '通常': 通常
+  '通常': Normal
   # kind: select_option, parent: 合成モード
-  '加算': 加算
+  '加算': Add
   # kind: select_option, parent: 合成モード
-  '減算': 減算
+  '減算': Subtract
   # kind: select_option, parent: 合成モード
-  '乗算': 乗算
+  '乗算': Multiply
   # kind: select_option, parent: 合成モード
-  'スクリーン': スクリーン
+  'スクリーン': Screen
   # kind: select_option, parent: 合成モード
-  'オーバーレイ': オーバーレイ
+  'オーバーレイ': Overlay
   # kind: select_option, parent: 合成モード
-  '比較(明)': 比較(明)
+  '比較(明)': Lighten
   # kind: select_option, parent: 合成モード
-  '比較(暗)': 比較(暗)
+  '比較(暗)': Darken
   # kind: select_option, parent: 合成モード
-  '輝度': 輝度
+  '輝度': Luminance
   # kind: select_option, parent: 合成モード
-  '色差': 色差
+  '色差': Color Difference
   # kind: select_option, parent: 合成モード
-  '陰影': 陰影
+  '陰影': Shade
   # kind: select_option, parent: 合成モード
   '明暗': 明暗
   # kind: select_option, parent: 合成モード
   '差分': 差分
   # kind: check
-  '位置ズレ補正': 位置ズレ補正
+  '位置ズレ補正': PositionOffsetCorrection
 MP-A1@モーションパスA@tim.anm2:
   # kind: track
-  'X座標': X座標
+  'X座標': XCoordinate
   # kind: track
-  'Y座標': Y座標
+  'Y座標': YCoordinate
   # kind: track
-  'Z座標': Z座標
+  'Z座標': ZCoordinate
   # kind: track
   'ねじれ': ねじれ
 MP-A2(複数可)@モーションパスA@tim.anm2:
   # kind: track
-  'X座標': X座標
+  'X座標': XCoordinate
   # kind: track
-  'Y座標': Y座標
+  'Y座標': YCoordinate
   # kind: track
-  'Z座標': Z座標
+  'Z座標': ZCoordinate
   # kind: track
   'ねじれ': ねじれ
 MP-A3@モーションパスA@tim.anm2:
   # kind: track
-  'X座標': X座標
+  'X座標': XCoordinate
   # kind: track
-  'Y座標': Y座標
+  'Y座標': YCoordinate
   # kind: track
-  'Z座標': Z座標
+  'Z座標': ZCoordinate
   # kind: track
   'ねじれ': ねじれ
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: select, options: タイプ0, タイプ1, タイプ2, タイプ3, タイプ4
-  '描画方法': 描画方法
+  '描画方法': 描画Method
   # kind: select_option, parent: 内部
-  'タイプ0': タイプ0
+  'タイプ0': Type0
   # kind: select_option, parent: 内部
-  'タイプ1': タイプ1
+  'タイプ1': Type1
   # kind: select_option, parent: 内部
-  'タイプ2': タイプ2
+  'タイプ2': Type2
   # kind: select_option, parent: 描画方法
-  'タイプ3': タイプ3
+  'タイプ3': Type3
   # kind: select_option, parent: 描画方法
-  'タイプ4': タイプ4
+  'タイプ4': Type4
   # kind: select, options: 相対, 絶対
   '相対/絶対': 相対/絶対
   # kind: select_option, parent: 相対/絶対
-  '相対': 相対
+  '相対': Relative
   # kind: select_option, parent: 相対/絶対
-  '絶対': 絶対
+  '絶対': Absolute
   # kind: check
-  'パス描画': パス描画
+  'パス描画': Path描画
   # kind: color
-  'パス描画色1': パス描画色1
+  'パス描画色1': Path描画Color1
   # kind: color
-  'パス描画色2': パス描画色2
+  'パス描画色2': Path描画Color2
   # kind: track
-  'フォーカス': フォーカス
+  'フォーカス': Focus
   # kind: check
-  '先頭表示': 先頭表示
+  '先頭表示': 先頭Show
   # kind: select, options: タイプ0, タイプ1, タイプ2
-  '内部': 内部
+  '内部': Inside
 MP-B1@モーションパスB@tim.anm2:
   # kind: track
-  'R座標': R座標
+  'R座標': RCoordinate
   # kind: track
-  'θ座標': θ座標
+  'θ座標': θCoordinate
   # kind: track
-  'φ座標': φ座標
+  'φ座標': φCoordinate
   # kind: track
   'ねじれ': ねじれ
 MP-B2(複数可)@モーションパスB@tim.anm2:
   # kind: track
-  'R座標': R座標
+  'R座標': RCoordinate
   # kind: track
-  'θ座標': θ座標
+  'θ座標': θCoordinate
   # kind: track
-  'φ座標': φ座標
+  'φ座標': φCoordinate
   # kind: track
   'ねじれ': ねじれ
 MP-B3@モーションパスB@tim.anm2:
   # kind: track
-  'R座標': R座標
+  'R座標': RCoordinate
   # kind: track
-  'θ座標': θ座標
+  'θ座標': θCoordinate
   # kind: track
-  'φ座標': φ座標
+  'φ座標': φCoordinate
   # kind: track
   'ねじれ': ねじれ
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: select, options: タイプ0, タイプ1, タイプ2, タイプ3, タイプ4
-  '描画方法': 描画方法
+  '描画方法': 描画Method
   # kind: select_option, parent: 内部
-  'タイプ0': タイプ0
+  'タイプ0': Type0
   # kind: select_option, parent: 内部
-  'タイプ1': タイプ1
+  'タイプ1': Type1
   # kind: select_option, parent: 内部
-  'タイプ2': タイプ2
+  'タイプ2': Type2
   # kind: select_option, parent: 描画方法
-  'タイプ3': タイプ3
+  'タイプ3': Type3
   # kind: select_option, parent: 描画方法
-  'タイプ4': タイプ4
+  'タイプ4': Type4
   # kind: select, options: 相対, 絶対
   '相対/絶対': 相対/絶対
   # kind: select_option, parent: 相対/絶対
-  '相対': 相対
+  '相対': Relative
   # kind: select_option, parent: 相対/絶対
-  '絶対': 絶対
+  '絶対': Absolute
   # kind: check
-  'パス描画': パス描画
+  'パス描画': Path描画
   # kind: color
-  'パス描画色1': パス描画色1
+  'パス描画色1': Path描画Color1
   # kind: color
-  'パス描画色2': パス描画色2
+  'パス描画色2': Path描画Color2
   # kind: track
-  'フォーカス': フォーカス
+  'フォーカス': Focus
   # kind: check
-  '先頭表示': 先頭表示
+  '先頭表示': 先頭Show
   # kind: select, options: タイプ0, タイプ1, タイプ2
-  '内部': 内部
+  '内部': Inside
 MP-C@モーションパスC@tim.anm2:
   # kind: track
-  'X座標': X座標
+  'X座標': XCoordinate
   # kind: track
-  'Y座標': Y座標
+  'Y座標': YCoordinate
   # kind: track
-  'Z座標': Z座標
+  'Z座標': ZCoordinate
   # kind: track
   'ねじれ': ねじれ
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: select, options: タイプ0, タイプ1, タイプ2, タイプ3, タイプ4
-  '描画方法': 描画方法
+  '描画方法': 描画Method
   # kind: select_option, parent: 内部
-  'タイプ0': タイプ0
+  'タイプ0': Type0
   # kind: select_option, parent: 内部
-  'タイプ1': タイプ1
+  'タイプ1': Type1
   # kind: select_option, parent: 内部
-  'タイプ2': タイプ2
+  'タイプ2': Type2
   # kind: select_option, parent: 描画方法
-  'タイプ3': タイプ3
+  'タイプ3': Type3
   # kind: select_option, parent: 描画方法
-  'タイプ4': タイプ4
+  'タイプ4': Type4
   # kind: select, options: 相対, 絶対
   '相対/絶対': 相対/絶対
   # kind: select_option, parent: 相対/絶対
-  '相対': 相対
+  '相対': Relative
   # kind: select_option, parent: 相対/絶対
-  '絶対': 絶対
+  '絶対': Absolute
   # kind: check
-  'パス描画': パス描画
+  'パス描画': Path描画
   # kind: color
-  'パス描画色1': パス描画色1
+  'パス描画色1': Path描画Color1
   # kind: color
-  'パス描画色2': パス描画色2
+  'パス描画色2': Path描画Color2
   # kind: track
-  'フォーカス': フォーカス
+  'フォーカス': Focus
   # kind: track
-  '文字サイズ補正': 文字サイズ補正
+  '文字サイズ補正': 文字SizeCorrection
   # kind: check
-  '先頭表示': 先頭表示
+  '先頭表示': 先頭Show
   # kind: select, options: タイプ0, タイプ1, タイプ2
-  '内部': 内部
+  '内部': Inside
 MP-D@モーションパスD@tim.anm2:
   # kind: track
-  'R座標': R座標
+  'R座標': RCoordinate
   # kind: track
-  'θ座標': θ座標
+  'θ座標': θCoordinate
   # kind: track
-  'φ座標': φ座標
+  'φ座標': φCoordinate
   # kind: track
   'ねじれ': ねじれ
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: select, options: タイプ0, タイプ1, タイプ2, タイプ3, タイプ4
-  '描画方法': 描画方法
+  '描画方法': 描画Method
   # kind: select_option, parent: 内部
-  'タイプ0': タイプ0
+  'タイプ0': Type0
   # kind: select_option, parent: 内部
-  'タイプ1': タイプ1
+  'タイプ1': Type1
   # kind: select_option, parent: 内部
-  'タイプ2': タイプ2
+  'タイプ2': Type2
   # kind: select_option, parent: 描画方法
-  'タイプ3': タイプ3
+  'タイプ3': Type3
   # kind: select_option, parent: 描画方法
-  'タイプ4': タイプ4
+  'タイプ4': Type4
   # kind: select, options: 相対, 絶対
   '相対/絶対': 相対/絶対
   # kind: select_option, parent: 相対/絶対
-  '相対': 相対
+  '相対': Relative
   # kind: select_option, parent: 相対/絶対
-  '絶対': 絶対
+  '絶対': Absolute
   # kind: check
-  'パス描画': パス描画
+  'パス描画': Path描画
   # kind: color
-  'パス描画色1': パス描画色1
+  'パス描画色1': Path描画Color1
   # kind: color
-  'パス描画色2': パス描画色2
+  'パス描画色2': Path描画Color2
   # kind: track
-  'フォーカス': フォーカス
+  'フォーカス': Focus
   # kind: track
-  '文字サイズ補正': 文字サイズ補正
+  '文字サイズ補正': 文字SizeCorrection
   # kind: check
-  '先頭表示': 先頭表示
+  '先頭表示': 先頭Show
   # kind: select, options: タイプ0, タイプ1, タイプ2
-  '内部': 内部
+  '内部': Inside
 TrackingラインEasy@TrackingラインEasy@tim.anm2:
   # kind: track
-  '開始/シフト': 開始/シフト
+  '開始/シフト': Start/Shift
   # kind: track
-  '終了/全長': 終了/全長
+  '終了/全長': End/Total Length
   # kind: track
-  '頂点数': 頂点数
+  '頂点数': VertexCount
   # kind: track
-  '間隔': 間隔
+  '間隔': Interval
   # kind: select, options: 直線, 曲線, 方法2
-  '描画方法': 描画方法
+  '描画方法': 描画Method
   # kind: select_option, parent: 描画方法
-  '直線': 直線
+  '直線': Line
   # kind: select_option, parent: 描画方法
-  '曲線': 曲線
+  '曲線': Curve
   # kind: select_option, parent: 描画方法
-  '方法2': 方法2
+  '方法2': Method2
   # kind: track
-  '定数(方法2のみ)': 定数(方法2のみ)
+  '定数(方法2のみ)': Constant(Method2 only)
   # kind: check
-  '等速度_等間隔': 等速度_等間隔
+  '等速度_等間隔': 等Speed_等Interval
   # kind: track
-  '精度': 精度
+  '精度': Precision
   # kind: check
-  '環状にする': 環状にする
+  '環状にする': Ring
   # kind: check
-  '同時に出現': 同時に出現
+  '同時に出現': 同時 出現
   # kind: check
-  '全長指定表示': 全長指定表示
+  '全長指定表示': Total LengthSpecifiedShow
   # kind: value
-  '線幅': 線幅
+  '線幅': LineWidth
   # kind: color
-  '変化色': 変化色
+  '変化色': ChangeColor
   # kind: value
   '領域拡張': 領域拡張
   # kind: value
-  '座標': 座標
+  '座標': Coordinate
   # kind: check
-  '頂点群を分離': 頂点群を分離
+  '頂点群を分離': Vertex群 分離
 TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: track
-  '+頂点数': +頂点数
+  '+頂点数': +VertexCount
   # kind: check
-  '環状にする': 環状にする
+  '環状にする': Ring
   # kind: value
-  '座標': 座標
+  '座標': Coordinate
   # kind: check
-  '頂点追加を無効にする': 頂点追加を無効にする
+  '頂点追加を無効にする': VertexAdd Disable
 ミラーT@tim.anm2:
   # kind: track
-  '透明度': 透明度
+  '透明度': Opacity
   # kind: track
-  '境目調整': 境目調整
+  '境目調整': BoundaryAdjustment
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '基準': 基準
+  '基準': Base
   # kind: color
-  '色': 色
+  '色': Color
   # kind: check
-  '単色化(T)': 単色化(T)
+  '単色化(T)': 単Color化(T)
 モーションタイルＴ@tim.anm2:
   # kind: track
-  '中心位置': 中心位置
+  '中心位置': CenterPosition
   # kind: track
-  '出力幅％': 出力幅％
+  '出力幅％': OutputWidth%
   # kind: track
-  '出力高％': 出力高％
+  '出力高％': Output高%
   # kind: track
-  'フェーズ': フェーズ
+  'フェーズ': Phase
   # kind: track
-  '速度方向(度)': 速度方向(度)
+  '速度方向(度)': SpeedDirection(Degree)
   # kind: check
-  'X反転配置': X反転配置
+  'X反転配置': XInvertPlacement
   # kind: check
-  'Y反転配置': Y反転配置
+  'Y反転配置': YInvertPlacement
   # kind: check
-  '水平シフト': 水平シフト
+  '水平シフト': HorizontalShift
 斜めブラインド(改)@tim.anm2:
   # kind: track
   '割合': 割合
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '角度': 角度
+  '角度': Angle
   # kind: track
-  '基準': 基準
+  '基準': Base
   # kind: track
-  '時間差[%]': 時間差[%]
+  '時間差[%]': Time差[%]
   # kind: check
-  '透明度反転': 透明度反転
+  '透明度反転': OpacityInvert
 グリッドワイプ@tim.anm2:
   # kind: track
   '展開': 展開
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: track
-  '縦横比[%]': 縦横比[%]
+  '縦横比[%]': Aspect Ratio[%]
   # kind: select, options: 扉, 放射(十字), 矩形(十字), 十字線, 菱形(十字), 放射, 矩形, 直線, 菱形
-  'ワイプタイプ': ワイプタイプ
+  'ワイプタイプ': ワイプType
   # kind: select_option, parent: ワイプタイプ
-  '扉': 扉
+  '扉': Door
   # kind: select_option, parent: ワイプタイプ
-  '放射(十字)': 放射(十字)
+  '放射(十字)': Radial(Cross)
   # kind: select_option, parent: ワイプタイプ
-  '矩形(十字)': 矩形(十字)
+  '矩形(十字)': Rectangle(Cross)
   # kind: select_option, parent: ワイプタイプ
-  '十字線': 十字線
+  '十字線': CrossLine
   # kind: select_option, parent: ワイプタイプ
-  '菱形(十字)': 菱形(十字)
+  '菱形(十字)': Diamond(Cross)
   # kind: select_option, parent: ワイプタイプ
-  '放射': 放射
+  '放射': Radial
   # kind: select_option, parent: ワイプタイプ
-  '矩形': 矩形
+  '矩形': Rectangle
   # kind: select_option, parent: ワイプタイプ
-  '直線': 直線
+  '直線': Line
   # kind: select_option, parent: ワイプタイプ
-  '菱形': 菱形
+  '菱形': Diamond
   # kind: check
-  '反転': 反転
+  '反転': Invert
   # kind: track
-  '中心座標X': 中心座標X
+  '中心座標X': CenterCoordinateX
   # kind: track
-  '中心座標Y': 中心座標Y
+  '中心座標Y': CenterCoordinateY
 輝度ワイプ@tim.anm2:
   # kind: track
-  'ワイプ量': ワイプ量
+  'ワイプ量': ワイプAmount
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '読込先': 読込先
+  '読込先': Load Slot
   # kind: check
-  '暗い所から透過': 暗い所から透過
+  '暗い所から透過': 暗い所かTransparency
 砕けたガラス(エンドレス)@砕けたガラス@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  'ガラス量': ガラス量
+  'ガラス量': GlassAmount
   # kind: track
-  '屈折率': 屈折率
+  '屈折率': 屈折Rate
   # kind: track
-  '移動速度': 移動速度
+  '移動速度': MoveSpeed
   # kind: check
-  'オリジナル表示': オリジナル表示
+  'オリジナル表示': OriginalShow
   # kind: track
-  '回転速度': 回転速度
+  '回転速度': RotationSpeed
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '透明度[%]': 透明度[%]
+  '透明度[%]': Opacity[%]
   # kind: track
-  '厚さ': 厚さ
+  '厚さ': Thickness
   # kind: value
-  '光線方向': 光線方向
+  '光線方向': LightLineDirection
   # kind: track
-  '正反射強度[%]': 正反射強度[%]
+  '正反射強度[%]': 正反射Strength[%]
   # kind: track
-  '形状ランダム性[%]': 形状ランダム性[%]
+  '形状ランダム性[%]': ShapeRandomness[%]
   # kind: track
-  'サイズランダム性[%]': サイズランダム性[%]
+  'サイズランダム性[%]': SizeRandomness[%]
   # kind: track
-  '小サイズ出現度': 小サイズ出現度
+  '小サイズ出現度': 小Size出現Degree
   # kind: track
-  '速度ランダム性[%]': 速度ランダム性[%]
+  '速度ランダム性[%]': SpeedRandomness[%]
   # kind: track
-  '乱数パターン': 乱数パターン
+  '乱数パターン': 乱CountPattern
 砕けたガラス(砕け散る)@砕けたガラス@tim.anm2:
   # kind: track
-  '粉砕度': 粉砕度
+  '粉砕度': 粉砕Degree
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '屈折率': 屈折率
+  '屈折率': 屈折Rate
   # kind: track
-  '動径速度': 動径速度
+  '動径速度': RadialSpeed
   # kind: select, options: ファイル読込, 四角形, 四角形+三角形, ランダム四角形, ランダム四角形+三角形
-  '分割パターン': 分割パターン
+  '分割パターン': DivisionPattern
   # kind: select_option, parent: 分割パターン
-  'ファイル読込': ファイル読込
+  'ファイル読込': FileLoad
   # kind: select_option, parent: 分割パターン
-  '四角形': 四角形
+  '四角形': Rectangle
   # kind: select_option, parent: 分割パターン
-  '四角形+三角形': 四角形+三角形
+  '四角形+三角形': Rectangle+三角形
   # kind: select_option, parent: 分割パターン
-  'ランダム四角形': ランダム四角形
+  'ランダム四角形': RandomRectangle
   # kind: select_option, parent: 分割パターン
-  'ランダム四角形+三角形': ランダム四角形+三角形
+  'ランダム四角形+三角形': RandomRectangle+三角形
   # kind: track
-  '限界サイズ': 限界サイズ
+  '限界サイズ': LimitSize
   # kind: track
-  '光散乱': 光散乱
+  '光散乱': Light散乱
   # kind: track
-  '拡大率': 拡大率
+  '拡大率': Scale
   # kind: file
-  'ファイル': ファイル
+  'ファイル': File
   # kind: check
-  'オリジナル表示': オリジナル表示
+  'オリジナル表示': OriginalShow
   # kind: track
-  '回転速度': 回転速度
+  '回転速度': RotationSpeed
   # kind: track
-  'Z速度': Z速度
+  'Z速度': ZSpeed
   # kind: track
-  'XY速度中心X': XY速度中心X
+  'XY速度中心X': XYSpeedCenterX
   # kind: track
-  'XY速度中心Y': XY速度中心Y
+  'XY速度中心Y': XYSpeedCenterY
   # kind: value
-  '重力方向': 重力方向
+  '重力方向': GravityDirection
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '透明度[%]': 透明度[%]
+  '透明度[%]': Opacity[%]
   # kind: track
-  '厚さ': 厚さ
+  '厚さ': Thickness
   # kind: value
-  '光線方向': 光線方向
+  '光線方向': LightLineDirection
   # kind: track
-  '正反射強度[%]': 正反射強度[%]
+  '正反射強度[%]': 正反射Strength[%]
   # kind: value
-  '形状&速度ランダム性[%]': 形状&速度ランダム性[%]
+  '形状&速度ランダム性[%]': Shape&SpeedRandomness[%]
   # kind: track
-  '乱数パターン': 乱数パターン
+  '乱数パターン': 乱CountPattern
 ブロックラスターT@tim.anm2:
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
   # kind: track
-  '振幅': 振幅
+  '振幅': 振Width
   # kind: track
-  '波長': 波長
+  '波長': Wave長
   # kind: track
-  'ﾗﾝﾀﾞﾑ性': ﾗﾝﾀﾞﾑ性
+  'ﾗﾝﾀﾞﾑ性': Random性
   # kind: check
-  '縦方向': 縦方向
+  '縦方向': VerticalDirection
   # kind: track
-  '速度(px/s)': 速度(px/s)
+  '速度(px/s)': Speed(px/s)
   # kind: track
-  'オフセット(px)': オフセット(px)
+  'オフセット(px)': Offset(px)
   # kind: track
-  '振幅単位': 振幅単位
+  '振幅単位': 振Width単位
   # kind: check
-  '画像もシフト(px)': 画像もシフト(px)
+  '画像もシフト(px)': Image tooShift(px)
   # kind: track
-  '開始振幅%': 開始振幅%
+  '開始振幅%': Start振Width%
   # kind: track
-  '終了振幅%': 終了振幅%
+  '終了振幅%': End振Width%
   # kind: track
-  'シード': シード
+  'シード': Seed
 砕け散るパズル@tim.anm2:
   # kind: track
   '展開': 展開
   # kind: track
-  '速度': 速度
+  '速度': Speed
   # kind: track
-  '向き': 向き
+  '向き': Direction
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  'P形状': P形状
+  'P形状': PShape
   # kind: check
-  '読込画像表示': 読込画像表示
+  '読込画像表示': LoadImageShow
   # kind: check
-  '配置ズレ': 配置ズレ
+  '配置ズレ': PlacementOffset
   # kind: track
-  '飛散中心X': 飛散中心X
+  '飛散中心X': Clip散CenterX
   # kind: track
-  '飛散中心Y': 飛散中心Y
+  '飛散中心Y': Clip散CenterY
   # kind: track
-  '回転速度': 回転速度
+  '回転速度': RotationSpeed
   # kind: track
-  '重力X': 重力X
+  '重力X': GravityX
   # kind: track
-  '重力Y': 重力Y
+  '重力Y': GravityY
   # kind: track
-  '重力Z': 重力Z
+  '重力Z': GravityZ
   # kind: check
-  'マップ画像読込': マップ画像読込
+  'マップ画像読込': MapImageLoad
   # kind: track
-  'MAP番号': MAP番号
+  'MAP番号': MAPNumber
   # kind: track
-  'マップ角度': マップ角度
+  'マップ角度': MapAngle
   # kind: value
-  'マップ中心': マップ中心
+  'マップ中心': MapCenter
   # kind: track
-  'マップ限界%': マップ限界%
+  'マップ限界%': MapLimit%
   # kind: track
   '隙間': 隙間
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
   # kind: check
-  '表裏反転': 表裏反転
+  '表裏反転': 表裏Invert
   # kind: check
-  'マップ反転': マップ反転
+  'マップ反転': MapInvert
 砕け散るT@tim.anm2:
   # kind: track
-  '粉砕度': 粉砕度
+  '粉砕度': 粉砕Degree
   # kind: track
-  '時間差': 時間差
+  '時間差': Time差
   # kind: track
-  '限界半径': 限界半径
+  '限界半径': LimitRadius
   # kind: track
-  '厚さ': 厚さ
+  '厚さ': Thickness
   # kind: track
-  '破片サイズ': 破片サイズ
+  '破片サイズ': 破片Size
   # kind: track
-  'ランダム形状': ランダム形状
+  'ランダム形状': RandomShape
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  '中心Z': 中心Z
+  '中心Z': CenterZ
   # kind: track
-  '速度': 速度
+  '速度': Speed
   # kind: track
-  '重力': 重力
+  '重力': Gravity
   # kind: track
-  '距離影響': 距離影響
+  '距離影響': DistanceShadow響
   # kind: track
-  'ランダム回転': ランダム回転
+  'ランダム回転': RandomRotation
   # kind: track
-  'ランダム方向': ランダム方向
+  'ランダム方向': RandomDirection
   # kind: track
-  '再生速度': 再生速度
+  '再生速度': 再生Speed
 砕け散る球@tim.anm2:
   # kind: track
-  '粉砕度': 粉砕度
+  '粉砕度': 粉砕Degree
   # kind: track
-  '時間差': 時間差
+  '時間差': Time差
   # kind: track
-  '半径': 半径
+  '半径': Radius
   # kind: track
-  '限界距離': 限界距離
+  '限界距離': LimitDistance
   # kind: track
-  '厚さ': 厚さ
+  '厚さ': Thickness
   # kind: track
-  '破片サイズ': 破片サイズ
+  '破片サイズ': 破片Size
   # kind: track
-  'ランダム形状': ランダム形状
+  'ランダム形状': RandomShape
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  '中心Z': 中心Z
+  '中心Z': CenterZ
   # kind: track
-  '速度': 速度
+  '速度': Speed
   # kind: track
-  '距離影響': 距離影響
+  '距離影響': DistanceShadow響
   # kind: track
-  '円周方向初速度': 円周方向初速度
+  '円周方向初速度': Circle周Direction初Speed
   # kind: track
-  '重力X': 重力X
+  '重力X': GravityX
   # kind: track
-  '重力Y': 重力Y
+  '重力Y': GravityY
   # kind: track
-  '重力Z': 重力Z
+  '重力Z': GravityZ
   # kind: track
-  'ランダム回転': ランダム回転
+  'ランダム回転': RandomRotation
   # kind: track
-  'ランダム方向': ランダム方向
+  'ランダム方向': RandomDirection
 歯車@tim.anm2:
   # kind: track
-  '厚さ': 厚さ
+  '厚さ': Thickness
   # kind: track
-  '幅比補正': 幅比補正
+  '幅比補正': Width比Correction
   # kind: track
-  '段差補正': 段差補正
+  '段差補正': 段差Correction
   # kind: track
-  '厚さ補正': 厚さ補正
+  '厚さ補正': ThicknessCorrection
   # kind: track
-  '歯数': 歯数
+  '歯数': 歯Count
   # kind: track
-  '内輪半径補正': 内輪半径補正
+  '内輪半径補正': Inner輪RadiusCorrection
 燃焼T@tim.anm2:
   # kind: track
   '展開': 展開
   # kind: track
-  '強度': 強度
+  '強度': Strength
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: track
-  '周期/燃幅': 周期/燃幅
+  '周期/燃幅': Period/燃Width
   # kind: color
-  '燃焼色1': 燃焼色1
+  '燃焼色1': BurnColor1
   # kind: color
-  '燃焼色2': 燃焼色2
+  '燃焼色2': BurnColor2
   # kind: check
-  '画像表示': 画像表示
+  '画像表示': ImageShow
   # kind: check
-  '炎表示': 炎表示
+  '炎表示': FlameShow
   # kind: track
-  'シード': シード
+  'シード': Seed
   # kind: select, options: 通常, 加算, 減算, 乗算, スクリーン, オーバーレイ, 比較(明), 比較(暗), 輝度, 陰影
-  '合成モード': 合成モード
+  '合成モード': BlendMode
   # kind: select_option, parent: 合成モード
-  '通常': 通常
+  '通常': Normal
   # kind: select_option, parent: 合成モード
-  '加算': 加算
+  '加算': Add
   # kind: select_option, parent: 合成モード
-  '減算': 減算
+  '減算': Subtract
   # kind: select_option, parent: 合成モード
-  '乗算': 乗算
+  '乗算': Multiply
   # kind: select_option, parent: 合成モード
-  'スクリーン': スクリーン
+  'スクリーン': Screen
   # kind: select_option, parent: 合成モード
-  'オーバーレイ': オーバーレイ
+  'オーバーレイ': Overlay
   # kind: select_option, parent: 合成モード
-  '比較(明)': 比較(明)
+  '比較(明)': Lighten
   # kind: select_option, parent: 合成モード
-  '比較(暗)': 比較(暗)
+  '比較(暗)': Darken
   # kind: select_option, parent: 合成モード
-  '輝度': 輝度
+  '輝度': Luminance
   # kind: select_option, parent: 合成モード
-  '陰影': 陰影
+  '陰影': Shade
   # kind: track
-  'レイヤー指定': レイヤー指定
+  'レイヤー指定': LayerSpecified
   # kind: check
-  'エフェクト取得': エフェクト取得
+  'エフェクト取得': エフェクトGet
   # kind: check
-  '一時保存EXT': 一時保存EXT
+  '一時保存EXT': 一時SaveEXT
   # kind: check
-  '展開を調整': 展開を調整
+  '展開を調整': 展開 Adjustment
 ひび割れガラスT@tim.anm2:
   # kind: track
-  'しきい値': しきい値
+  'しきい値': Threshold
   # kind: track
-  'ずれ': ずれ
+  'ずれ': Offset
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  'ｶﾞﾗｽ強度': ｶﾞﾗｽ強度
+  'ｶﾞﾗｽ強度': GlassStrength
   # kind: track
-  'ガラス画像': ガラス画像
+  'ガラス画像': GlassImage
   # kind: check
-  '境界を透過': 境界を透過
+  '境界を透過': Boundary Transparency
   # kind: color
-  'マップ背景色': マップ背景色
+  'マップ背景色': MapBackgroundColor
   # kind: track
-  'パターン': パターン
+  'パターン': Pattern
   # kind: check
-  'マップ表示': マップ表示
+  'マップ表示': MapShow
 はためき@tim.anm2:
   # kind: track
-  '振幅': 振幅
+  '振幅': 振Width
   # kind: track
-  '波数': 波数
+  '波数': WaveCount
   # kind: track
-  '位相ズレX': 位相ズレX
+  '位相ズレX': 位相OffsetX
   # kind: track
-  '位相ズレY': 位相ズレY
+  '位相ズレY': 位相OffsetY
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: check
-  '左端を基準': 左端を基準
+  '左端を基準': Left Edge Base
   # kind: check
-  '上端を基準': 上端を基準
+  '上端を基準': Top Edge Base
   # kind: check
-  '右端を基準': 右端を基準
+  '右端を基準': Right Edge Base
   # kind: check
-  '下端を基準': 下端を基準
+  '下端を基準': Bottom Edge Base
   # kind: check
-  '縦波数を別指定': 縦波数を別指定
+  '縦波数を別指定': VerticalWaveCount 別Specified
   # kind: track
-  '縦波数': 縦波数
+  '縦波数': VerticalWaveCount
 注ぎT@tim.anm2:
   # kind: track
   '水位': 水位
   # kind: track
-  '振幅': 振幅
+  '振幅': 振Width
   # kind: track
-  '波長': 波長
+  '波長': Wave長
   # kind: track
-  '本体α': 本体α
+  '本体α': 本体Alpha
   # kind: track
-  '波α': 波α
+  '波α': WaveAlpha
   # kind: color
-  '波色': 波色
+  '波色': WaveColor
   # kind: track
-  '振動速度': 振動速度
+  '振動速度': 振動Speed
   # kind: track
-  '位相ズレ': 位相ズレ
+  '位相ズレ': 位相Offset
   # kind: track
-  '位相速度': 位相速度
+  '位相速度': 位相Speed
   # kind: check
-  '表示': 表示
+  '表示': Show
   # kind: color
-  '反転色': 反転色
+  '反転色': InvertColor
   # kind: color
-  '枠色': 枠色
+  '枠色': FrameColor
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
 ぷよぷよT@tim.anm2:
   # kind: track
-  '枠サイズ': 枠サイズ
+  '枠サイズ': FrameSize
   # kind: track
-  '変形量': 変形量
+  '変形量': 変形Amount
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: track
-  '変形速度': 変形速度
+  '変形速度': 変形Speed
   # kind: track
-  '波数': 波数
+  '波数': WaveCount
   # kind: track
-  '波形分割': 波形分割
+  '波形分割': WaveformDivision
   # kind: track
-  '凹凸ランダム性%': 凹凸ランダム性%
+  '凹凸ランダム性%': 凹凸Randomness%
   # kind: value
-  '中心＆マスク座標': 中心＆マスク座標
+  '中心＆マスク座標': Center & MaskCoordinate
   # kind: figure
-  '形状': 形状
+  '形状': Shape
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '縦横比%': 縦横比%
+  '縦横比%': Aspect Ratio%
   # kind: track
-  'マスク回転': マスク回転
+  'マスク回転': MaskRotation
   # kind: track
-  '境界ブラー': 境界ブラー
+  '境界ブラー': BoundaryBlur
   # kind: track
-  'マップサイズ': マップサイズ
+  'マップサイズ': MapSize
   # kind: track
-  '滑らかさ': 滑らかさ
+  '滑らかさ': Smoothさ
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
   # kind: check
-  'マップ表示': マップ表示
+  'マップ表示': MapShow
   # kind: check
-  'マスク表示': マスク表示
+  'マスク表示': MaskShow
 リール回転T@tim.anm2:
   # kind: track
-  '開始位置％': 開始位置％
+  '開始位置％': StartPosition%
   # kind: track
-  'オーバー量％': オーバー量％
+  'オーバー量％': OverAmount%
   # kind: track
-  '方向': 方向
+  '方向': Direction
   # kind: track
-  'ブラー': ブラー
+  'ブラー': Blur
   # kind: select, options: 縦, 横
-  '基準軸': 基準軸
+  '基準軸': Base軸
   # kind: select_option, parent: 基準軸
-  '縦': 縦
+  '縦': Vertical
   # kind: select_option, parent: 基準軸
-  '横': 横
+  '横': Horizontal
   # kind: check
-  '開始位置角度自動調整': 開始位置角度自動調整
+  '開始位置角度自動調整': StartPositionAngleAutoAdjustment
   # kind: track
-  '開始オーバー補正％': 開始オーバー補正％
+  '開始オーバー補正％': StartOverCorrection%
   # kind: track
-  '終了オーバー補正％': 終了オーバー補正％
+  '終了オーバー補正％': EndOverCorrection%
   # kind: track
-  '開始オーバー時間％': 開始オーバー時間％
+  '開始オーバー時間％': StartOverTime%
   # kind: track
-  '終了オーバー時間％': 終了オーバー時間％
+  '終了オーバー時間％': EndOverTime%
   # kind: track
-  'オフセット％': オフセット％
+  'オフセット％': Offset%
   # kind: track
-  '時間範囲開始％': 時間範囲開始％
+  '時間範囲開始％': TimeRangeStart%
   # kind: track
-  '時間範囲終了％': 時間範囲終了％
+  '時間範囲終了％': TimeRangeEnd%
 ゆらめき@tim.anm2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '形状変化': 形状変化
+  '形状変化': ShapeChange
   # kind: track
-  'ランダム形状[%]': ランダム形状[%]
+  'ランダム形状[%]': RandomShape[%]
   # kind: track
-  '形状乱数シード': 形状乱数シード
+  '形状乱数シード': ShapeRandom Seed
 透明塗り@tim.anm2:
   # kind: track
-  '指定位置X': 指定位置X
+  '指定位置X': SpecifiedPositionX
   # kind: track
-  '指定位置Y': 指定位置Y
+  '指定位置Y': SpecifiedPositionY
   # kind: track
-  'α調整': α調整
+  'α調整': AlphaAdjustment
   # kind: track
-  '透明度': 透明度
+  '透明度': Opacity
   # kind: color
-  '塗り潰し色': 塗り潰し色
+  '塗り潰し色': 塗りCrushしColor
   # kind: check
-  '改良計算': 改良計算
+  '改良計算': 改良Calculation
 透明度指定@tim.anm2:
   # kind: track
-  'αレイヤー': αレイヤー
+  'αレイヤー': AlphaLayer
   # kind: select, options: α, R, G, B, グレー
-  '指定方法': 指定方法
+  '指定方法': SpecifiedMethod
   # kind: select_option, parent: 指定方法
-  'α': α
+  'α': Alpha
   # kind: select_option, parent: 指定方法
   'R': R
   # kind: select_option, parent: 指定方法
@@ -3807,486 +3807,486 @@ TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2:
   # kind: select_option, parent: 指定方法
   'B': B
   # kind: select_option, parent: 指定方法
-  'グレー': グレー
+  'グレー': Gray
   # kind: check
-  'エフェクト適用': エフェクト適用
+  'エフェクト適用': エフェクトApply
   # kind: check
-  'サイズを揃える': サイズを揃える
+  'サイズを揃える': Size 揃える
   # kind: check
-  '透明度反転': 透明度反転
+  '透明度反転': OpacityInvert
 twitchっぽいものT@tim.anm2:
   # kind: track
-  '間隔ミリ秒': 間隔ミリ秒
+  '間隔ミリ秒': Intervalミリ秒
   # kind: track
-  'ズームブラー': ズームブラー
+  'ズームブラー': ズームBlur
   # kind: track
-  'スライドブラー': スライドブラー
+  'スライドブラー': スライドBlur
   # kind: track
-  '色ずれ補正': 色ずれ補正
+  '色ずれ補正': ColorOffsetCorrection
   # kind: track
-  'ぼかし量': ぼかし量
+  'ぼかし量': BlurAmount
   # kind: track
-  'ぼかし発生率％': ぼかし発生率％
+  'ぼかし発生率％': BlurGenerationRate%
   # kind: track
-  '色量': 色量
+  '色量': ColorAmount
   # kind: track
-  '色発生率％': 色発生率％
+  '色発生率％': ColorGenerationRate%
   # kind: track
-  '明るさ量': 明るさ量
+  '明るさ量': BrightnessAmount
   # kind: track
-  '明るさ発生率％': 明るさ発生率％
+  '明るさ発生率％': BrightnessGenerationRate%
   # kind: track
-  'ズーム量': ズーム量
+  'ズーム量': ズームAmount
   # kind: track
-  'ズーム発生率％': ズーム発生率％
+  'ズーム発生率％': ズームGenerationRate%
   # kind: track
-  'スライド量': スライド量
+  'スライド量': スライドAmount
   # kind: track
-  'スライド発生率％': スライド発生率％
+  'スライド発生率％': スライドGenerationRate%
   # kind: check
-  '方向指定': 方向指定
+  '方向指定': DirectionSpecified
   # kind: track
-  '指定方向（度）': 指定方向（度）
+  '指定方向（度）': SpecifiedDirection(Degree)
   # kind: select, options: 赤緑A, 赤青A, 緑青A, 赤緑B, 赤青B, 緑青B
-  '色ずれタイプ': 色ずれタイプ
+  '色ずれタイプ': ColorOffsetType
   # kind: select_option, parent: 色ずれタイプ
-  '赤緑A': 赤緑A
+  '赤緑A': RedGreenA
   # kind: select_option, parent: 色ずれタイプ
-  '赤青A': 赤青A
+  '赤青A': RedBlueA
   # kind: select_option, parent: 色ずれタイプ
-  '緑青A': 緑青A
+  '緑青A': GreenBlueA
   # kind: select_option, parent: 色ずれタイプ
-  '赤緑B': 赤緑B
+  '赤緑B': RedGreenB
   # kind: select_option, parent: 色ずれタイプ
-  '赤青B': 赤青B
+  '赤青B': RedBlueB
   # kind: select_option, parent: 色ずれタイプ
-  '緑青B': 緑青B
+  '緑青B': GreenBlueB
   # kind: value
-  'シード': シード
+  'シード': Seed
   # kind: check
-  'レイヤー依存なし': レイヤー依存なし
+  'レイヤー依存なし': Layer依存なし
 風揺れT@tim.anm2:
   # kind: track
   '揺れ角': 揺れ角
   # kind: track
-  '揺れ周期': 揺れ周期
+  '揺れ周期': 揺れPeriod
   # kind: track
-  '揺れズレ': 揺れズレ
+  '揺れズレ': 揺れOffset
   # kind: track
   'センター': センター
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: track
-  '上固定長％': 上固定長％
+  '上固定長％': TopFixed長%
   # kind: track
-  '下固定長％': 下固定長％
+  '下固定長％': BottomFixed長%
   # kind: check
-  '下を基準': 下を基準
+  '下を基準': Bottom Base
   # kind: check
-  'ランダム揺れ量': ランダム揺れ量
+  'ランダム揺れ量': Random揺れAmount
   # kind: track
-  'ランダム揺れパターン': ランダム揺れパターン
+  'ランダム揺れパターン': Random揺れPattern
   # kind: track
-  '時間ずれ': 時間ずれ
+  '時間ずれ': TimeOffset
   # kind: check
-  '横に繰り返す': 横に繰り返す
+  '横に繰り返す': Horizontal 繰り返す
   # kind: track
-  '繰り返し個数': 繰り返し個数
+  '繰り返し個数': 繰り返しCount
   # kind: track
-  '間隔': 間隔
+  '間隔': Interval
   # kind: check
   '破綻軽減': 破綻軽減
   # kind: check
-  'アルファ補正': アルファ補正
+  'アルファ補正': AlphaCorrection
 ツイスター@tim.anm2:
   # kind: track
-  'ひねり量': ひねり量
+  'ひねり量': ひねりAmount
   # kind: track
-  '回転': 回転
+  '回転': Rotation
   # kind: track
-  '中心ズレ': 中心ズレ
+  '中心ズレ': CenterOffset
   # kind: track
   '切替映像': 切替映像
   # kind: check
-  'レイヤー読込': レイヤー読込
+  'レイヤー読込': LayerLoad
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: track
-  '収束半径': 収束半径
+  '収束半径': ConvergenceRadius
   # kind: track
   'シェーディング[%]': シェーディング[%]
   # kind: check
-  'シェーディングを逆に': シェーディングを逆に
+  'シェーディングを逆に': シェーディング 逆
   # kind: track
-  '範囲拡張X': 範囲拡張X
+  '範囲拡張X': Range拡張X
   # kind: track
-  '範囲拡張Y': 範囲拡張Y
+  '範囲拡張Y': Range拡張Y
 な〜さりい☆らいむ風TA@tim.anm2:
   # kind: track
-  '時間mS': 時間mS
+  '時間mS': TimemS
   # kind: track
-  'サイズ％': サイズ％
+  'サイズ％': Size%
   # kind: track
-  'サイズ誤差': サイズ誤差
+  'サイズ誤差': SizeError
   # kind: track
-  '横ズレ量': 横ズレ量
+  '横ズレ量': HorizontalOffsetAmount
   # kind: track
-  '中心ズレ': 中心ズレ
+  '中心ズレ': CenterOffset
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
 変色パーティクル@tim.anm2:
   # kind: track
-  '出力頻度': 出力頻度
+  '出力頻度': Output頻Degree
   # kind: track
-  '出力速度': 出力速度
+  '出力速度': OutputSpeed
   # kind: track
-  '初期半径': 初期半径
+  '初期半径': InitialRadius
   # kind: track
-  '生存時間': 生存時間
+  '生存時間': LifetimeTime
   # kind: color
-  '色1': 色1
+  '色1': Color1
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: track
-  '最終拡大率[%]': 最終拡大率[%]
+  '最終拡大率[%]': FinalScale[%]
   # kind: track
-  '最終透過度[%]': 最終透過度[%]
+  '最終透過度[%]': FinalTransparencyDegree[%]
   # kind: track
-  '拡散角度開始': 拡散角度開始
+  '拡散角度開始': DiffusionAngleStart
   # kind: track
-  '拡散角度終了': 拡散角度終了
+  '拡散角度終了': DiffusionAngleEnd
 放射分布@tim.anm2:
   # kind: track
-  '速度': 速度
+  '速度': Speed
   # kind: track
-  '放射度': 放射度
+  '放射度': RadialDegree
   # kind: track
-  '初期半径': 初期半径
+  '初期半径': InitialRadius
   # kind: track
-  '個数': 個数
+  '個数': Count
   # kind: track
-  '速度誤差': 速度誤差
+  '速度誤差': SpeedError
   # kind: check
-  '均等動径配置': 均等動径配置
+  '均等動径配置': 均等RadialPlacement
   # kind: check
-  '均等角配置': 均等角配置
+  '均等角配置': 均等角Placement
   # kind: track
-  '初期回転角誤差': 初期回転角誤差
+  '初期回転角誤差': InitialRotation角Error
   # kind: track
-  '最大回転速度': 最大回転速度
+  '最大回転速度': MaximumRotationSpeed
   # kind: track
-  '消滅時間': 消滅時間
+  '消滅時間': DisappearTime
   # kind: track
-  '消滅速度': 消滅速度
+  '消滅速度': DisappearSpeed
   # kind: track
-  '中心X': 中心X
+  '中心X': CenterX
   # kind: track
-  '中心Y': 中心Y
+  '中心Y': CenterY
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
 カメラデータコピー(子)@カメラデータコピー@tim.cam2:
   # kind: track
-  '倍率[%]': 倍率[%]
+  '倍率[%]': ScaleRate[%]
   # kind: check
-  'X軸反転': X軸反転
+  'X軸反転': X軸Invert
   # kind: check
-  'Y軸反転': Y軸反転
+  'Y軸反転': Y軸Invert
   # kind: check
-  'Z軸反転': Z軸反転
+  'Z軸反転': Z軸Invert
 オートターゲット@tim.cam2:
   # kind: track
-  'ターゲット': ターゲット
+  'ターゲット': Target
   # kind: track
-  'カメラ距離': カメラ距離
+  'カメラ距離': CameraDistance
   # kind: track
-  'イーズ': イーズ
+  'イーズ': Ease
   # kind: check
-  'なめらか': なめらか
+  'なめらか': Smooth
   # kind: select, options: 絶対値, カメラからの相対値, 前ターゲットからの相対値
-  '指定方法': 指定方法
+  '指定方法': SpecifiedMethod
   # kind: select_option, parent: 指定方法
-  '絶対値': 絶対値
+  '絶対値': Absolute
   # kind: select_option, parent: 指定方法
-  'カメラからの相対値': カメラからの相対値
+  'カメラからの相対値': Camera from 相対Value
   # kind: select_option, parent: 指定方法
-  '前ターゲットからの相対値': 前ターゲットからの相対値
+  '前ターゲットからの相対値': PreviousTarget from 相対Value
   # kind: value
-  'ターゲット一覧': ターゲット一覧
+  'ターゲット一覧': Target一覧
   # kind: track
-  'ターゲット1': ターゲット1
+  'ターゲット1': Target1
   # kind: track
-  'ターゲット2': ターゲット2
+  'ターゲット2': Target2
   # kind: track
-  'ターゲット3': ターゲット3
+  'ターゲット3': Target3
   # kind: track
-  'ターゲット4': ターゲット4
+  'ターゲット4': Target4
   # kind: track
-  'ターゲット5': ターゲット5
+  'ターゲット5': Target5
   # kind: track
-  'ターゲット6': ターゲット6
+  'ターゲット6': Target6
   # kind: track
-  'ターゲット7': ターゲット7
+  'ターゲット7': Target7
   # kind: track
-  'ターゲット8': ターゲット8
+  'ターゲット8': Target8
   # kind: track
-  'ターゲット9': ターゲット9
+  'ターゲット9': Target9
   # kind: track
-  'ターゲット10': ターゲット10
+  'ターゲット10': Target10
 オートターゲット100@tim.cam2:
   # kind: track
-  'ターゲット': ターゲット
+  'ターゲット': Target
   # kind: track
-  'カメラ距離': カメラ距離
+  'カメラ距離': CameraDistance
   # kind: track
-  'イーズ': イーズ
+  'イーズ': Ease
   # kind: check
-  'なめらか': なめらか
+  'なめらか': Smooth
   # kind: select, options: 絶対値, カメラからの相対値, 前ターゲットからの相対値
-  '指定方法': 指定方法
+  '指定方法': SpecifiedMethod
   # kind: select_option, parent: 指定方法
-  '絶対値': 絶対値
+  '絶対値': Absolute
   # kind: select_option, parent: 指定方法
-  'カメラからの相対値': カメラからの相対値
+  'カメラからの相対値': Camera from 相対Value
   # kind: select_option, parent: 指定方法
-  '前ターゲットからの相対値': 前ターゲットからの相対値
+  '前ターゲットからの相対値': PreviousTarget from 相対Value
   # kind: value
-  'ターゲット一覧': ターゲット一覧
+  'ターゲット一覧': Target一覧
   # kind: track
-  'ターゲット1': ターゲット1
+  'ターゲット1': Target1
   # kind: track
-  'ターゲット2': ターゲット2
+  'ターゲット2': Target2
   # kind: track
-  'ターゲット3': ターゲット3
+  'ターゲット3': Target3
   # kind: track
-  'ターゲット4': ターゲット4
+  'ターゲット4': Target4
   # kind: track
-  'ターゲット5': ターゲット5
+  'ターゲット5': Target5
   # kind: track
-  'ターゲット6': ターゲット6
+  'ターゲット6': Target6
   # kind: track
-  'ターゲット7': ターゲット7
+  'ターゲット7': Target7
   # kind: track
-  'ターゲット8': ターゲット8
+  'ターゲット8': Target8
   # kind: track
-  'ターゲット9': ターゲット9
+  'ターゲット9': Target9
   # kind: track
-  'ターゲット10': ターゲット10
+  'ターゲット10': Target10
 位置補正@tim.cam2:
   # kind: track
-  '補正X': 補正X
+  '補正X': CorrectionX
   # kind: track
-  '補正Y': 補正Y
+  '補正Y': CorrectionY
   # kind: track
-  '補正Z': 補正Z
+  '補正Z': CorrectionZ
   # kind: select, options: カメラ位置, ターゲット位置, 両方
-  '補正方法': 補正方法
+  '補正方法': CorrectionMethod
   # kind: select_option, parent: 補正方法
-  'カメラ位置': カメラ位置
+  'カメラ位置': CameraPosition
   # kind: select_option, parent: 補正方法
-  'ターゲット位置': ターゲット位置
+  'ターゲット位置': TargetPosition
   # kind: select_option, parent: 補正方法
-  '両方': 両方
+  '両方': Both
 位置補正R@tim.cam2:
   # kind: track
-  '補正RZ': 補正RZ
+  '補正RZ': CorrectionRZ
 MMDカメラデータ読込VMD@tim.cam2:
   # kind: track
-  'サイズ補正': サイズ補正
+  'サイズ補正': SizeCorrection
   # kind: track
-  'フレームオフセット': フレームオフセット
+  'フレームオフセット': FrameOffset
   # kind: check
-  '自動視野角': 自動視野角
+  '自動視野角': Auto視野角
   # kind: file
-  'ファイル': ファイル
+  'ファイル': File
 一時的に保存(4面)@一時保存読込@tim.obj2:
   # kind: track
-  '保存先': 保存先
+  '保存先': Save Slot
 保存画像の読込(4面)@一時保存読込@tim.obj2:
   # kind: track
-  '読込先': 読込先
+  '読込先': Load Slot
   # kind: check
-  '中心調整': 中心調整
+  '中心調整': CenterAdjustment
 ティーカップ@けいおんグッズ@tim.obj2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '水面高さ': 水面高さ
+  '水面高さ': 水FaceHeight
   # kind: track
-  '透明度': 透明度
+  '透明度': Opacity
   # kind: track
-  'カップソーサー間': カップソーサー間
+  'カップソーサー間': CupSaucer間
   # kind: value
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: color
-  'カップ(色)': カップ(色)
+  'カップ(色)': Cup(Color)
   # kind: color
-  'ソーサー(色)': ソーサー(色)
+  'ソーサー(色)': Saucer(Color)
   # kind: color
-  'ティー(色)': ティー(色)
+  'ティー(色)': Tea(Color)
   # kind: track
-  'ティー境界補正': ティー境界補正
+  'ティー境界補正': TeaBoundaryCorrection
   # kind: track
-  '取っ手幅': 取っ手幅
+  '取っ手幅': 取っ手Width
   # kind: track
-  '取っ手位置補正': 取っ手位置補正
+  '取っ手位置補正': 取っ手PositionCorrection
 律部屋テーブル@けいおんグッズ@tim.obj2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '厚さ補正': 厚さ補正
+  '厚さ補正': ThicknessCorrection
   # kind: track
-  '脚長補正': 脚長補正
+  '脚長補正': 脚長Correction
   # kind: color
-  'テーブル色': テーブル色
+  'テーブル色': TableColor
   # kind: color
-  '脚の色': 脚の色
+  '脚の色': 脚 Color
 集中線T1@集中線T@tim.obj2:
   # kind: track
-  '発生確率': 発生確率
+  '発生確率': Generation確Rate
   # kind: track
-  '線幅': 線幅
+  '線幅': LineWidth
   # kind: track
-  '中心': 中心
+  '中心': Center
   # kind: track
-  '局所性': 局所性
+  '局所性': Local性
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '中心位置X': 中心位置X
+  '中心位置X': CenterPositionX
   # kind: track
-  '中心位置Y': 中心位置Y
+  '中心位置Y': CenterPositionY
   # kind: track
-  '中心ランダム度': 中心ランダム度
+  '中心ランダム度': CenterRandomDegree
   # kind: track
-  '局所ジャンプ率[%]': 局所ジャンプ率[%]
+  '局所ジャンプ率[%]': LocalジャンプRate[%]
   # kind: track
-  '変化速度': 変化速度
+  '変化速度': ChangeSpeed
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '最大本数': 最大本数
+  '最大本数': MaximumCount
   # kind: track
-  'シード': シード
+  'シード': Seed
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
   # kind: track
-  '中心追尾レイヤー': 中心追尾レイヤー
+  '中心追尾レイヤー': Center追尾Layer
   # kind: check
-  '最大本数自動計算': 最大本数自動計算
+  '最大本数自動計算': MaximumCountAutoCalculation
 集中線T2@集中線T@tim.obj2:
   # kind: track
-  '発生量': 発生量
+  '発生量': GenerationAmount
   # kind: track
-  '中心': 中心
+  '中心': Center
   # kind: track
-  '分布': 分布
+  '分布': Distribution
   # kind: track
-  '放射周期': 放射周期
+  '放射周期': RadialPeriod
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '明るさ': 明るさ
+  '明るさ': Brightness
   # kind: track
-  '放射速度': 放射速度
+  '放射速度': RadialSpeed
   # kind: track
-  '変化速度': 変化速度
+  '変化速度': ChangeSpeed
   # kind: track
-  '回転速度': 回転速度
+  '回転速度': RotationSpeed
   # kind: track
   '渦巻': 渦巻
   # kind: select, options: Type1, Type2, Type3, Type4, Type5, Type6
-  'タイプ': タイプ
+  'タイプ': Type
   # kind: select_option, parent: タイプ
-  'Type1': Type1
+  'Type1': Type 1
   # kind: select_option, parent: タイプ
-  'Type2': Type2
+  'Type2': Type 2
   # kind: select_option, parent: タイプ
-  'Type3': Type3
+  'Type3': Type 3
   # kind: select_option, parent: タイプ
-  'Type4': Type4
+  'Type4': Type 4
   # kind: select_option, parent: タイプ
-  'Type5': Type5
+  'Type5': Type 5
   # kind: select_option, parent: タイプ
-  'Type6': Type6
+  'Type6': Type 6
   # kind: track
-  'シード': シード
+  'シード': Seed
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
 任意多角形@任意多角形@tim.obj2:
   # kind: color
-  '色': 色
+  '色': Color
   # kind: check
-  'ガイド表示': ガイド表示
+  'ガイド表示': GuideShow
   # kind: track
-  'ガイドサイズ': ガイドサイズ
+  'ガイドサイズ': GuideSize
   # kind: track
-  '厚み': 厚み
+  '厚み': Thickness
   # kind: color
-  'ガイド色': ガイド色
+  'ガイド色': GuideColor
   # kind: figure
-  '図形': 図形
+  '図形': Figure
 任意多角形分離指定（座標）@任意多角形@tim.obj2:
   # kind: track
-  'ガイドサイズ': ガイドサイズ
+  'ガイドサイズ': GuideSize
   # kind: color
-  'ガイド色': ガイド色
+  'ガイド色': GuideColor
   # kind: figure
-  '図形': 図形
+  '図形': Figure
 任意多角形分離指定（表示）@任意多角形@tim.obj2:
   # kind: track
-  '厚み': 厚み
+  '厚み': Thickness
   # kind: color
-  '色': 色
+  '色': Color
 凸多角形@任意多角形@tim.obj2:
   # kind: color
-  '色': 色
+  '色': Color
   # kind: check
-  'ガイド表示': ガイド表示
+  'ガイド表示': GuideShow
   # kind: track
-  'ガイドサイズ': ガイドサイズ
+  'ガイドサイズ': GuideSize
   # kind: track
-  '厚み': 厚み
+  '厚み': Thickness
   # kind: color
-  'ガイド色': ガイド色
+  'ガイド色': GuideColor
   # kind: figure
-  '図形': 図形
+  '図形': Figure
 二十六面体@tim.obj2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '切込量': 切込量
+  '切込量': 切込Amount
   # kind: track
-  '枠': 枠
+  '枠': Frame
   # kind: color
-  '色1': 色1
+  '色1': Color1
   # kind: color
-  '色2': 色2
+  '色2': Color2
   # kind: color
-  '色3': 色3
+  '色3': Color3
 バーコードT@tim.obj2:
   # kind: track
-  '最小幅': 最小幅
+  '最小幅': MinimumWidth
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
   # kind: track
-  '左右余白': 左右余白
+  '左右余白': Horizontal余White
   # kind: track
-  '上下余白': 上下余白
+  '上下余白': Vertical余White
   # kind: color
-  '線色': 線色
+  '線色': LineColor
   # kind: color
-  '背景色': 背景色
+  '背景色': BackgroundColor
   # kind: check
-  'CodeCも併用': CodeCも併用
+  'CodeCも併用': CodeC too併用
 ベジエ軌道Ｔ@tim.obj2:
   # kind: track
-  '軌道番号': 軌道番号
+  '軌道番号': PathNumber
   # kind: select, options: 全リンク, リンク1, リンク2, リンク3
-  '軌道指定': 軌道指定
+  '軌道指定': PathSpecified
   # kind: select_option, parent: 軌道指定
   '全リンク': 全リンク
   # kind: select_option, parent: 軌道指定
@@ -4296,403 +4296,403 @@ MMDカメラデータ読込VMD@tim.cam2:
   # kind: select_option, parent: 軌道指定
   'リンク3': リンク3
   # kind: track
-  'グラフサイズ': グラフサイズ
+  'グラフサイズ': GraphSize
   # kind: value
-  'アンカー': アンカー
+  'アンカー': Anchor
   # kind: check
-  'グラフ表示': グラフ表示
+  'グラフ表示': GraphShow
 パズルピース@tim.obj2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  'P形状': P形状
+  'P形状': PShape
   # kind: track
   '凹凸': 凹凸
   # kind: color
-  '色': 色
+  '色': Color
 泡@tim.obj2:
   # kind: track
-  '個数': 個数
+  '個数': Count
   # kind: track
-  '速度': 速度
+  '速度': Speed
   # kind: track
-  '方向': 方向
+  '方向': Direction
   # kind: track
-  '形状補正': 形状補正
+  '形状補正': ShapeCorrection
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  'ゆらぎ幅': ゆらぎ幅
+  'ゆらぎ幅': ゆぎWidth
   # kind: track
-  'ゆらぎ速度': ゆらぎ速度
+  'ゆらぎ速度': ゆぎSpeed
   # kind: track
   '奥行き': 奥行き
   # kind: check
-  '事後エフェクト': 事後エフェクト
+  '事後エフェクト': 事Afterエフェクト
   # kind: track
-  '表示領域補正': 表示領域補正
+  '表示領域補正': Show領域Correction
 ヘブバン風音声波形T@tim.obj2:
   # kind: track
-  '外円サイズ': 外円サイズ
+  '外円サイズ': OuterCircleSize
   # kind: track
-  '分割量': 分割量
+  '分割量': DivisionAmount
   # kind: track
-  '最大長%': 最大長%
+  '最大長%': Maximum長%
   # kind: track
-  '音量上限': 音量上限
+  '音量上限': 音AmountUpper Limit
   # kind: color
-  '波形色1': 波形色1
+  '波形色1': WaveformColor1
   # kind: color
-  '波形色2': 波形色2
+  '波形色2': WaveformColor2
   # kind: color
-  '波形色3': 波形色3
+  '波形色3': WaveformColor3
   # kind: color
-  '円色1': 円色1
+  '円色1': CircleColor1
   # kind: color
-  '円色2': 円色2
+  '円色2': CircleColor2
   # kind: track
-  '音量下限': 音量下限
+  '音量下限': 音AmountLower Limit
   # kind: track
-  '境界補正': 境界補正
+  '境界補正': BoundaryCorrection
   # kind: value
-  'サイズ配列': サイズ配列
+  'サイズ配列': Size配列
   # kind: value
-  '個数配列': 個数配列
+  '個数配列': Count配列
   # kind: value
-  '速度配列': 速度配列
+  '速度配列': Speed配列
   # kind: check
-  'オリジナル背景を使用': オリジナル背景を使用
+  'オリジナル背景を使用': OriginalBackground 使用
   # kind: track
-  '波形透明度％': 波形透明度％
+  '波形透明度％': WaveformOpacity%
   # kind: track
-  '時間オフセット': 時間オフセット
+  '時間オフセット': TimeOffset
   # kind: value
   'PI': PI
   # kind: check
-  '波形反転': 波形反転
+  '波形反転': WaveformInvert
 ひょうたんTM@tim.obj2:
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
   'くびれ': くびれ
   # kind: track
   'つぶれ': つぶれ
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: track
-  '繰り返し': 繰り返し
+  '繰り返し': Repeat
   # kind: check
-  '高精度': 高精度
+  '高精度': 高Precision
 インクTM@tim.obj2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '円形度合': 円形度合
+  '円形度合': CircularDegree合
   # kind: track
-  '形状': 形状
+  '形状': Shape
   # kind: track
   '展開': 展開
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '本体拡大率%': 本体拡大率%
+  '本体拡大率%': 本体Scale%
   # kind: track
-  '飛沫数1': 飛沫数1
+  '飛沫数1': Clip沫Count1
   # kind: track
-  '飛沫数2': 飛沫数2
+  '飛沫数2': Clip沫Count2
   # kind: track
-  '飛散1幅拡大率%': 飛散1幅拡大率%
+  '飛散1幅拡大率%': Clip散1WidthScale%
   # kind: track
-  '飛散2拡大率%': 飛散2拡大率%
+  '飛散2拡大率%': Clip散2Scale%
   # kind: track
-  '飛散2歪み%': 飛散2歪み%
+  '飛散2歪み%': Clip散2歪み%
   # kind: track
-  '本体変化乱数': 本体変化乱数
+  '本体変化乱数': 本体Change乱Count
   # kind: track
-  '飛散変化乱数1': 飛散変化乱数1
+  '飛散変化乱数1': Clip散Change乱Count1
   # kind: track
-  '飛散変化乱数2': 飛散変化乱数2
+  '飛散変化乱数2': Clip散Change乱Count2
   # kind: check
-  '新描画法': 新描画法
+  '新描画法': 新描画Method
 Lensflare@tim.obj2:
   # kind: track
-  '光中心(X)': 光中心(X)
+  '光中心(X)': LightCenter(X)
   # kind: track
-  '光中心(Y)': 光中心(Y)
+  '光中心(Y)': LightCenter(Y)
   # kind: track
-  'ずれ(X)': ずれ(X)
+  'ずれ(X)': Offset(X)
   # kind: track
-  'ずれ(Y)': ずれ(Y)
+  'ずれ(Y)': Offset(Y)
   # kind: track
-  'ぼかし': ぼかし
+  'ぼかし': Blur
   # kind: track
-  '点滅幅': 点滅幅
+  '点滅幅': BlinkWidth
 稲妻@tim.obj2:
   # kind: track
-  'パターン': パターン
+  'パターン': Pattern
   # kind: track
-  '展開度': 展開度
+  '展開度': 展開Degree
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  'コア間隔': コア間隔
+  'コア間隔': コアInterval
   # kind: value
-  '位置': 位置
+  '位置': Position
   # kind: color
-  'コア色': コア色
+  'コア色': コアColor
   # kind: color
-  '発光色': 発光色
+  '発光色': GlowColor
   # kind: track
-  '発光強さ': 発光強さ
+  '発光強さ': Glow強さ
   # kind: track
-  '発光拡散': 発光拡散
+  '発光拡散': GlowDiffusion
   # kind: track
-  '発光しきい値': 発光しきい値
+  '発光しきい値': GlowThreshold
   # kind: track
-  '発光拡散速度': 発光拡散速度
+  '発光拡散速度': GlowDiffusionSpeed
   # kind: track
-  '軌道フォーク数': 軌道フォーク数
+  '軌道フォーク数': PathフォークCount
   # kind: track
-  '軌道直進性': 軌道直進性
+  '軌道直進性': Path直進性
   # kind: track
-  '軌道設置範囲': 軌道設置範囲
+  '軌道設置範囲': Path設置Range
   # kind: track
-  '軌道折れ確率': 軌道折れ確率
+  '軌道折れ確率': Path折れ確Rate
   # kind: value
-  '領域サイズ': 領域サイズ
+  '領域サイズ': 領域Size
   # kind: check
-  '枠表示': 枠表示
+  '枠表示': FrameShow
 マルチラインT@tim.obj2:
   # kind: track
-  'アンカー数': アンカー数
+  'アンカー数': AnchorCount
   # kind: track
-  '線幅': 線幅
+  '線幅': LineWidth
   # kind: track
-  '矢尻幅％': 矢尻幅％
+  '矢尻幅％': 矢尻Width%
   # kind: track
-  '矢尻長％': 矢尻長％
+  '矢尻長％': 矢尻長%
   # kind: color
-  '線色': 線色
+  '線色': LineColor
   # kind: check
   '角丸': 角丸
   # kind: check
   '結合': 結合
   # kind: track
-  'Xスナップ': Xスナップ
+  'Xスナップ': XSnap
   # kind: track
-  'Yスナップ': Yスナップ
+  'Yスナップ': YSnap
   # kind: value
-  '座標': 座標
+  '座標': Coordinate
   # kind: check
-  '矢印位置反転': 矢印位置反転
+  '矢印位置反転': 矢印PositionInvert
 もじゃもじゃT@tim.obj2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '誤差％': 誤差％
+  '誤差％': Error%
   # kind: track
-  '線幅': 線幅
+  '線幅': LineWidth
   # kind: track
-  '巻き数': 巻き数
+  '巻き数': 巻きCount
   # kind: check
-  '時間展開': 時間展開
+  '時間展開': Time展開
   # kind: color
-  '色': 色
+  '色': Color
   # kind: track
-  '間隔': 間隔
+  '間隔': Interval
   # kind: track
-  '中心ずれX': 中心ずれX
+  '中心ずれX': CenterOffsetX
   # kind: track
-  '中心ずれY': 中心ずれY
+  '中心ずれY': CenterOffsetY
   # kind: track
-  '減衰速度％': 減衰速度％
+  '減衰速度％': AttenuationSpeed%
   # kind: track
-  '減衰形状': 減衰形状
+  '減衰形状': AttenuationShape
   # kind: track
-  '円状': 円状
+  '円状': Circle状
   # kind: track
-  '開始角度': 開始角度
+  '開始角度': StartAngle
   # kind: track
-  '半径ｵﾌｾｯﾄ': 半径ｵﾌｾｯﾄ
+  '半径ｵﾌｾｯﾄ': RadiusOffset
   # kind: track
-  '誤差比': 誤差比
+  '誤差比': Error比
   # kind: select, options: 等速度, 等角速度, 反転等速度, 反転等角速度
-  '時間展開法': 時間展開法
+  '時間展開法': Time展開Method
   # kind: select_option, parent: 時間展開法
-  '等速度': 等速度
+  '等速度': 等Speed
   # kind: select_option, parent: 時間展開法
-  '等角速度': 等角速度
+  '等角速度': 等角Speed
   # kind: select_option, parent: 時間展開法
-  '反転等速度': 反転等速度
+  '反転等速度': Invert等Speed
   # kind: select_option, parent: 時間展開法
-  '反転等角速度': 反転等角速度
+  '反転等角速度': Invert等角Speed
   # kind: track
-  '周分割': 周分割
+  '周分割': 周Division
   # kind: track
   '分解能': 分解能
   # kind: track
   '重ね描き': 重ね描き
   # kind: track
-  'シード': シード
+  'シード': Seed
   # kind: track
-  '変化間隔': 変化間隔
+  '変化間隔': ChangeInterval
   # kind: value
   'PI': PI
 簡易トーンカーブ@tim.obj2:
   # kind: track
-  'サイズX': サイズX
+  'サイズX': SizeX
   # kind: track
-  'サイズY': サイズY
+  'サイズY': SizeY
   # kind: track
-  '表示方式': 表示方式
+  '表示方式': ShowMethod
   # kind: track
-  '赤凹凸': 赤凹凸
+  '赤凹凸': Red凹凸
   # kind: track
-  '緑凹凸': 緑凹凸
+  '緑凹凸': Green凹凸
   # kind: track
-  '青凹凸': 青凹凸
+  '青凹凸': Blue凹凸
   # kind: check
-  'Rのみ設定': Rのみ設定
+  'Rのみ設定': R only設定
   # kind: check
-  'Gのみ設定': Gのみ設定
+  'Gのみ設定': G only設定
   # kind: check
-  'Bのみ設定': Bのみ設定
+  'Bのみ設定': B only設定
   # kind: value
-  'カーブ': カーブ
+  'カーブ': Curve
   # kind: track
-  '表示精度': 表示精度
+  '表示精度': ShowPrecision
   # kind: check
-  'カーブ表示': カーブ表示
+  'カーブ表示': CurveShow
 簡易ヒストグラム@tim.obj2:
   # kind: track
-  'レイヤー': レイヤー
+  'レイヤー': Layer
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
   # kind: track
-  '縦倍率%': 縦倍率%
+  '縦倍率%': VerticalScaleRate%
   # kind: check
-  'エフェクト読込': エフェクト読込
+  'エフェクト読込': エフェクトLoad
   # kind: check
-  'R表示': R表示
+  'R表示': RShow
   # kind: check
-  'G表示': G表示
+  'G表示': GShow
   # kind: check
-  'B表示': B表示
+  'B表示': BShow
   # kind: check
-  '輝度表示': 輝度表示
+  '輝度表示': LuminanceShow
 色相環@tim.obj2:
   # kind: track
-  '半径': 半径
+  '半径': Radius
   # kind: track
-  '彩度': 彩度
+  '彩度': Saturation
   # kind: track
-  '明度': 明度
+  '明度': Brightness
   # kind: track
-  '幅％': 幅％
+  '幅％': Width%
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
 ぐにゃ枠T@tim.obj2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '線幅': 線幅
+  '線幅': LineWidth
   # kind: track
-  '変動量': 変動量
+  '変動量': VariationAmount
   # kind: track
-  '変動長': 変動長
+  '変動長': Variation長
   # kind: color
-  '線色': 線色
+  '線色': LineColor
   # kind: figure
-  '形状': 形状
+  '形状': Shape
   # kind: track
   '延長%': 延長%
   # kind: track
-  '縦横比': 縦横比
+  '縦横比': Aspect Ratio
   # kind: track
-  '点間隔': 点間隔
+  '点間隔': PointInterval
   # kind: track
-  '分割精度': 分割精度
+  '分割精度': DivisionPrecision
   # kind: track
-  '追加角度': 追加角度
+  '追加角度': AddAngle
   # kind: check
-  '自動方向': 自動方向
+  '自動方向': AutoDirection
   # kind: track
-  '重ね描き回数': 重ね描き回数
+  '重ね描き回数': 重ね描き回Count
   # kind: check
-  '自動調整': 自動調整
+  '自動調整': AutoAdjustment
   # kind: track
-  'シード': シード
+  'シード': Seed
   # kind: track
-  '変化間隔': 変化間隔
+  '変化間隔': ChangeInterval
   # kind: value
   'PI': PI
   # kind: check
-  '単一線': 単一線
+  '単一線': SingleLine
 ブラースライドT@シーンチェンジセットT@tim.scn2:
   # kind: track
-  'ブラー量': ブラー量
+  'ブラー量': BlurAmount
   # kind: select, options: 横, 縦
-  '流れ方向': 流れ方向
+  '流れ方向': 流れDirection
   # kind: select_option, parent: 流れ方向
-  '横': 横
+  '横': Horizontal
   # kind: select_option, parent: 流れ方向
-  '縦': 縦
+  '縦': Vertical
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
 ホールT@シーンチェンジセットT@tim.scn2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: track
-  '開時間％': 開時間％
+  '開時間％': 開Time%
   # kind: track
-  'ランダム性％': ランダム性％
+  'ランダム性％': Randomness%
   # kind: track
-  '乱数シード': 乱数シード
+  '乱数シード': Random Seed
 モザイクT@シーンチェンジセットT@tim.scn2:
   # kind: track
-  'サイズ': サイズ
+  'サイズ': Size
   # kind: check
   'タイル風': タイル風
   # kind: check
-  'タイル補正': タイル補正
+  'タイル補正': タイルCorrection
   # kind: check
-  '滑らか': 滑らか
+  '滑らか': Smooth
 ルミナンスT@シーンチェンジセットT@tim.scn2:
   # kind: track
-  'ぼかし％': ぼかし％
+  'ぼかし％': Blur%
   # kind: check
-  '透過反転': 透過反転
+  '透過反転': TransparencyInvert
 分割スライドT@シーンチェンジセットT@tim.scn2:
   # kind: track
-  '単独量': 単独量
+  '単独量': 単独Amount
   # kind: select, options: 通常, 逆順, 交互, 逆順・交互
-  'モード': モード
+  'モード': Mode
   # kind: select_option, parent: モード
-  '通常': 通常
+  '通常': Normal
   # kind: select_option, parent: モード
-  '逆順': 逆順
+  '逆順': Reverse Order
   # kind: select_option, parent: モード
-  '交互': 交互
+  '交互': Alternating
   # kind: select_option, parent: モード
-  '逆順・交互': 逆順・交互
+  '逆順・交互': Reverse Alternating
   # kind: track
-  '分割数': 分割数
+  '分割数': DivisionCount
   # kind: check
-  '縦': 縦
+  '縦': Vertical
 矩形T@シーンチェンジセットT@tim.scn2:
   # kind: track
-  '幅': 幅
+  '幅': Width
   # kind: track
-  '角度': 角度
+  '角度': Angle
   # kind: track
-  '先端幅％': 先端幅％
+  '先端幅％': 先端Width%
   # kind: track
-  '高さ': 高さ
+  '高さ': Height
