@@ -15,7 +15,7 @@ stylua = "latest"
 npm = { package_manager = "bun" }
 
 [tasks.build]
-run = ["aulua build"]
+run = ["aulua build", "rake i18n:build"]
 
 [tasks.dev]
 run = ["mise watch -w aulua.yaml -w Rakefile -w lua -e yaml,lua,hlsl build"]

@@ -62,12 +62,20 @@ build = { group = "aulua" }
 source = "build/@tim.scn2.scn2"
 destination = "Script/@tim.scn2.scn2"
 
+[artifacts.tim2_English_aul2]
+build = "rake i18n:build"
+source = "build/English.ported_tim.aul2"
+destination = "Language/English.ported_tim.aul2"
+
+# Debug
+
+[artifacts.English_aul2]
+source = "https://github.com/aviutl2/aviutl2_community_translation/raw/main/locales/community_en.aul2"
+destination = "Language/English.aul2"
+profiles.release.enabled = false
+
 [artifacts.mcp_agent]
 destination = "Plugin/mcp_agent.aux2"
-
-[artifacts.mcp_agent.profiles.debug]
 build = "cargo build -p ported_tim_tester"
 source = "target/debug/ported_tim_tester.dll"
-
-[artifacts.mcp_agent.profiles.release]
-enabled = false
+profiles.release.enabled = false
