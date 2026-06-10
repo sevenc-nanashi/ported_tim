@@ -33,15 +33,17 @@ jobs:
         with:
           tool: cargo-binstall
 
+      # NOTE: Rubyのlock関連で何故か落ちるのでインストールは手動で
       - name: Set up mise
         uses: jdx/mise-action@v4
         with:
-          install: true
+          install: false
           experimental: true
 
       - name: Prepare release
         shell: bash
         run: |
+          mise install
           mkdir release
           cargo set-version "${{ github.event.inputs.version }}" -p ported_tim
           au2 release --set-version "${{ github.event.inputs.version }}"
