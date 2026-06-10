@@ -7,7 +7,7 @@ build:
   embed_search_dirs:
     - "./lua/extbuffer"
 scripts:
-  - name: "@tim.anm2"
+  - name: "@tim.anm2.anm2"
     sources:
       - path: "./lua/extbuffer/一時的に保存EXT.anm2.lua"
         label: 一時的に保存EXT@一時保存読込EXT
@@ -383,11 +383,11 @@ scripts:
         label: 変色パーティクル
       - path: "./lua/放射分布・変色パーティクル/放射分布.anm.lua"
         label: 放射分布
-  - name: "@tim.tra2"
+  - name: "@tim.tra2.tra2"
     sources:
       - path: "./lua/ベジエ曲線による軌道調整/ベジエ軌道Ｔ.tra.lua"
         label: ベジエ軌道Ｔ
-  - name: "@tim.obj2"
+  - name: "@tim.obj2.obj2"
     sources:
       - path: "./lua/一時保存読込/一時的に保存.lua"
         label: 一時的に保存@一時保存読込
@@ -445,7 +445,7 @@ scripts:
         label: 色相環
       - path: "./lua/ぐにゃ枠T/ぐにゃ枠T.obj.lua"
         label: ぐにゃ枠T
-  - name: "@tim.cam2"
+  - name: "@tim.cam2.cam2"
     sources:
       - path: "./lua/小物(カメラデータコピー等)/カメラデータコピー(子).lua"
         label: カメラデータコピー(子)@カメラデータコピー
@@ -461,7 +461,7 @@ scripts:
         label: 位置補正R
       - path: "./lua/MMDカメラデータ読込/MMDカメラデータ読込VMD.cam.lua"
         label: MMDカメラデータ読込VMD
-  - name: "@tim.scn2"
+  - name: "@tim.scn2.scn2"
     sources:
       - path: "./lua/シーンチェンジセット/ブラースライドT.lua"
         label: ブラースライドT@シーンチェンジセットT

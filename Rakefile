@@ -245,41 +245,43 @@ end
 task :check_setanchor_variables do
   issues = []
 
-  Dir.glob("./lua/**/*.lua").sort.each do |file|
-    lines = File.readlines(file, chomp: true)
-    anchorable_variables = {}
-    pending_kind = nil
+  Dir
+    .glob("./lua/**/*.lua")
+    .sort
+    .each do |file|
+      lines = File.readlines(file, chomp: true)
+      anchorable_variables = {}
+      pending_kind = nil
 
-    lines.each_with_index do |line, index|
-      if (match = line.match(/^---\$(track|value):/))
-        pending_kind = match[1]
-        next
-      end
-
-      if pending_kind
-        if (match = line.match(/^\s*local\s+([A-Za-z_][A-Za-z0-9_]*)\s*=/))
-          anchorable_variables[match[1]] = pending_kind
-          pending_kind = nil
+      lines.each_with_index do |line, index|
+        if (match = line.match(/^---\$(track|value):/))
+          pending_kind = match[1]
           next
         end
 
-        next if line.strip.empty? || line.start_with?("---")
+        if pending_kind
+          if (match = line.match(/^\s*local\s+([A-Za-z_][A-Za-z0-9_]*)\s*=/))
+            anchorable_variables[match[1]] = pending_kind
+            pending_kind = nil
+            next
+          end
 
-        pending_kind = nil
-      end
+          next if line.strip.empty? || line.start_with?("---")
 
-      next unless (match = line.match(/obj\.setanchor\("([^"]+)"/))
+          pending_kind = nil
+        end
 
-      variable_names =
-        match[1].split(",").map(&:strip).reject(&:empty?)
+        next unless (match = line.match(/obj\.setanchor\("([^"]+)"/))
 
-      variable_names.each do |variable_name|
-        next if anchorable_variables.key?(variable_name)
+        variable_names = match[1].split(",").map(&:strip).reject(&:empty?)
 
-        issues << "#{file}:#{index + 1}: setanchor target `#{variable_name}` is not declared as ---$track or ---$value"
+        variable_names.each do |variable_name|
+          next if anchorable_variables.key?(variable_name)
+
+          issues << "#{file}:#{index + 1}: setanchor target `#{variable_name}` is not declared as ---$track or ---$value"
+        end
       end
     end
-  end
 
   if issues.empty?
     puts "All setanchor targets are declared as ---$track or ---$value."
@@ -317,18 +319,11 @@ task :tasklist do
     end
   end
 
-  header = [
-    "カテゴリ",
-    "スクリプト",
-    "エフェクト名",
-    "動作確認",
-    "DLL",
-    "パラメーター改善",
-    "シェーダー化・最適化"
-  ]
-  widths = header.map.with_index do |cell, index|
-    ([cell] + rows.map { |row| row[index] }).map(&:length).max
-  end
+  header = %w[カテゴリ スクリプト エフェクト名 動作確認 DLL パラメーター改善 シェーダー化・最適化]
+  widths =
+    header.map.with_index do |cell, index|
+      ([cell] + rows.map { |row| row[index] }).map(&:length).max
+    end
 
   puts "| #{header.each_with_index.map { |cell, index| cell.ljust(widths[index]) }.join(" | ")} |"
   puts "| #{widths.map { |width| "-" * width }.join(" | ")} |"
@@ -372,4 +367,132 @@ task :current_progress do
   puts "DLL移植: #{num_dll_ported}/#{num_dll_all} (#{num_dll_all > 0 ? (num_dll_ported.to_f / num_dll_all * 100).round(1) : "N/A"}%)"
   puts "パラメーター改善: #{num_parameter_improved}/#{num_scripts} (#{(num_parameter_improved.to_f / num_scripts * 100).round(1)}%)"
   puts "シェーダー化/最適化: #{num_shader_ported}/#{num_shader_all} (#{num_shader_all > 0 ? (num_shader_ported.to_f / num_shader_all * 100).round(1) : "N/A"}%)"
+end
+
+namespace :i18n do
+  DEFAULT_LANG = "Default"
+  task :seed do
+    require "yaml"
+    translations = {}
+    Dir
+      .glob("./i18n/*.yaml")
+      .each do |file|
+        lang = File.basename(file, ".yaml")
+        content = YAML.load_file(file)
+        content&.each do |group, entries|
+          entries.each do |key, value|
+            translations[group] ||= {}
+            translations[group][key] ||= {}
+            translations[group][key][lang] = value
+          end
+        end
+      end
+    files = Dir.glob("./build/@*.*")
+    translation_meta = {}
+    files.each do |file|
+      content = File.read(file)
+      current_script = nil
+      suffix = file.match(/(@.+\..+)\..*/, 1)[1]
+      content.lines.each_with_index do |line, index|
+        if line.start_with?("@")
+          current_script = line[1..-1].strip
+          next
+        end
+        next unless current_script
+
+        line.chomp!
+        group = "#{current_script}#{suffix}"
+        kinds = %w[
+          track
+          check
+          color
+          file
+          folder
+          font
+          figure
+          text
+          value
+          group
+          separator
+        ].join("|")
+        if (match = line.match(/--(#{kinds})@[^:]+:(?:[^:,]+::)*([^,]+)/))
+          kind = match[1]
+          label = match[2]
+          translations[group] ||= {}
+          translations[group][label] ||= {}
+          translations[group][label][DEFAULT_LANG] = label
+          translation_meta[group] ||= {}
+          translation_meta[group][label] = "kind: #{kind}"
+        elsif (
+              match =
+                line.match(/--select@[^:]+:(?:[^,]+::)*([^,=]+)=[0-9]+,(.*)/)
+            )
+          label = match[1]
+          options = match[2].split(",").map { |option| option.split("=", 2)[0] }
+          translations[group] ||= {}
+          translations[group][label] ||= {}
+          translations[group][label][DEFAULT_LANG] = label
+          translation_meta[group] ||= {}
+          translation_meta[group][
+            label
+          ] = "kind: select, options: #{options.join(", ")}"
+          options.each do |option|
+            translations[group][option] ||= {}
+            translations[group][option][DEFAULT_LANG] = option
+            translation_meta[group] ||= {}
+            translation_meta[group][
+              option
+            ] = "kind: select_option, parent: #{label}"
+          end
+        else
+          next
+        end
+      end
+    end
+
+    translation_files = {}
+    translations.each do |group, entries|
+      entries.each do |key, langs|
+        langs.each do |lang, value|
+          translation_files[lang] ||= {}
+          translation_files[lang][group] ||= {}
+          translation_files[lang][group][key] = value
+        end
+      end
+    end
+    translation_files.each_keys do |lang|
+      File.open("./i18n/#{lang}.yaml", "w") do |file|
+        groups = translation_files[DEFAULT_LANG]
+        groups.each do |group, entries|
+          file.puts "#{group}:"
+          entries.each do |key, value|
+            meta = translation_meta.dig(group, key)
+            file.puts "  # #{meta}" if meta
+            file.puts "  #{key}: #{translation_files[lang].dig(group, key) || value}"
+          end
+        end
+      end
+    end
+  end
+
+  task :build do
+    require "yaml"
+    translations =
+      Dir
+        .glob("./i18n/*.yaml")
+        .to_h do |file|
+          lang = File.basename(file, ".yaml")
+          content = YAML.load_file(file)
+          [lang, content]
+        end
+    groups = translations[DEFAULT_LANG]
+    translations.each_key do |lang|
+      File.open("./build/#{lang}.ported_tim.aul2", "w") do |file|
+        groups.each do |group, entries|
+          file.puts("[#{group}]")
+          entries.each { |key, value| file.puts("#{key}=#{translations[lang].dig(group, key) || value}") }
+        end
+      end
+    end
+  end
 end
