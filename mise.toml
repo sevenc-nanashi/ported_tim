@@ -9,7 +9,7 @@ bun = "latest"
 ruby = "latest"
 stylua = "latest"
 "cargo-prebuilt:cargo-edit" = "latest"
-"cargo:cargo-about" = "latest"
+"github:EmbarkStudios/cargo-about" = "latest"
 
 [settings]
 npm = { package_manager = "bun" }
