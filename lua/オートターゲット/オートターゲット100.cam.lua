@@ -171,6 +171,13 @@ for i = 1, tarN do
         rz = obj.getvalue("layer" .. target[i] .. ".rz"),
     }
 end
+for i = tarN, 1, -1 do
+    if tarData[i].x == nil then
+        table.remove(tarData, i)
+        tarN = tarN - 1
+    end
+end
+
 
 local tn1 = math.floor(tn)
 local tn2 = tn1 + 1
@@ -199,11 +206,11 @@ if not is_enabled(check_smooth) then
     cryd = tni * tarData[tn1].ry + tn * tarData[tn2].ry
     crzd = tni * tarData[tn1].rz + tn * tarData[tn2].rz
 else
-    tn0 = tn1 - 1
+    local tn0 = tn1 - 1
     if tn0 < 1 then
         tn0 = 1
     end
-    tn3 = tn2 + 1
+    local tn3 = tn2 + 1
     if tn3 > tarN then
         tn3 = tarN
     end
