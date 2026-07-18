@@ -11,7 +11,7 @@ aulua = "aulua build"
 
 [development]
 aviutl2_version = "latest"
-catalog_dependencies = ["sevenc-nanashi.aviutl2-rs.rusty_image_rs_input", "sevenc-nanashi.aviutl2-rs.rusty_scripts_search", "sevenc-nanashi.clipboard-aux2", "sigma-axis.Basic_S"]
+catalog_dependencies = ["sevenc-nanashi.aviutl2-rs.rusty_image_rs_input", "sevenc-nanashi.aviutl2-rs.rusty_scripts_search", "sevenc-nanashi.clipboard-aux2", "sigma-axis.Basic_S", "aviutl2-community.aviutl2_community_translation_companion"]
 
 [preview]
 aviutl2_version = "latest"
@@ -68,11 +68,6 @@ source = "build/English.ported_tim.aul2"
 destination = "Language/English.ported_tim.aul2"
 
 # Debug
-
-[artifacts.English_aul2]
-source = "https://github.com/aviutl2/aviutl2_community_translation/raw/main/locales/community_en.aul2"
-destination = "Language/English.aul2"
-profiles.release.enabled = false
 
 [artifacts.mcp_agent]
 destination = "Plugin/mcp_agent.aux2"

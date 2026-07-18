@@ -391,6 +391,7 @@ namespace :i18n do
         end
     files = Dir.glob("./build/@*.*")
     translation_meta = {}
+    translation_labels = Set[]
     files.each do |file|
       content = File.read(file)
       current_script = nil
@@ -452,6 +453,9 @@ namespace :i18n do
               option
             ] = "kind: select_option, parent: #{label}"
           end
+        elsif (match = line.match(/--label:(.*)/))
+          label = match[1]
+          translation_labels << label
         else
           next
         end
@@ -480,6 +484,11 @@ namespace :i18n do
             file.puts "  '#{key}': #{translation_files[lang].dig(group, key) || value}"
           end
         end
+        file.puts
+        file.puts "labels:"
+        translation_labels.each do |label|
+          file.puts "  '#{label}': #{translation_files[lang].dig("labels", label) || label}"
+        end
       end
     end
   end
@@ -498,7 +507,11 @@ namespace :i18n do
     translations.each_key do |lang|
       File.open("./build/#{lang}.ported_tim.aul2", "w") do |file|
         groups.each do |group, entries|
-          file.puts("[#{group}]")
+          if group == "labels"
+            file.puts("[Effect]")
+          else
+            file.puts("[#{group}]")
+          end
           entries.each do |key, value|
             file.puts("#{key}=#{translations[lang].dig(group, key) || value}")
           end

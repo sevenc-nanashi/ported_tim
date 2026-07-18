@@ -5159,3 +5159,50 @@ Lensflare@tim.obj2:
 ベジエ軌道Ｔ@tim.tra2:
   # script name
   "ベジエ軌道Ｔ@tim.tra2": Bezier Path T@tim.tra2
+
+labels:
+  'tim\オブジェクト制御\@一時保存読込EXT': tim\Object Control\@Temporary Save
+  'tim\色調整\@T_Color_Module': tim\Color Adjustment\@T_Color_Module
+  'tim\色調整\@カメレオン効果': tim\Color Adjustment\@Chameleon Effect
+  'tim\色調整\@多色グラデーション': tim\Color Adjustment\@Multi-Color Gradient
+  'tim\色調整': tim\Color Adjustment
+  'tim\ぼかし\@T_RandomBlur_Module': tim\Blur\@T_RandomBlur_Module
+  'tim\ぼかし\@T_RotBlur_Module': tim\Blur\@T_RotBlur_Module
+  'tim\光効果\@カスタムフレア': tim\Light Effects\@Custom Flare
+  'tim\光効果\@ライトバースト': tim\Light Effects\@Light Burst
+  'tim\光効果': tim\Light Effects
+  'tim\装飾\@領域枠': tim\Decoration\@Area Frame
+  'tim\装飾\@ジグザグ塗りT': tim\Decoration\@Zigzag Fill T
+  'tim\装飾\@罫線T': tim\Decoration\@Ruled Lines T
+  'tim\装飾\@ストロークT': tim\Decoration\@Stroke T
+  'tim\装飾': tim\Decoration
+  'tim\抽出': tim\Extraction
+  'tim\変形\@サイズ修正T': tim\Deformation\@Size Adjustment T
+  'tim\変形\@任意多角形カット': tim\Deformation\@Arbitrary Polygon Cut
+  'tim\変形\@スカイドーム': tim\Deformation\@Skydome
+  'tim\変形\@モーフィング': tim\Deformation\@Morphing
+  'tim\変形\@スプリット': tim\Deformation\@Split
+  'tim\変形\@ワイヤー3D': tim\Deformation\@Wire 3D
+  'tim\変形': tim\Deformation
+  'tim\加工\@T_Filter_Module': tim\Processing\@T_Filter_Module
+  'tim\加工\@網点分解T': tim\Processing\@Halftone Separation T
+  'tim\加工': tim\Processing
+  'tim\配置\@簡易リピーター': tim\Arrangement\@Simple Repeater
+  'tim\配置\@モーションパスA': tim\Arrangement\@Motion Path A
+  'tim\配置\@モーションパスB': tim\Arrangement\@Motion Path B
+  'tim\配置\@モーションパスC': tim\Arrangement\@Motion Path C
+  'tim\配置\@モーションパスD': tim\Arrangement\@Motion Path D
+  'tim\配置\@TrackingラインEasy': tim\Arrangement\@Tracking Line Easy
+  'tim\配置': tim\Arrangement
+  'tim\切り替え効果': tim\Transition Effects
+  'tim\アニメーション効果\@砕けたガラス': tim\Animation Effects\@Shattered Glass
+  'tim\アニメーション効果': tim\Animation Effects
+  'tim\カメラ制御\@カメラデータコピー': tim\Camera Control\@Camera Data Copy
+  'tim\カメラ制御': tim\Camera Control
+  'tim\オブジェクト制御\@一時保存読込': tim\Object Control\@Temporary Save/Load
+  'tim\カスタムオブジェクト\@けいおんグッズ': tim\Custom Objects\@K-ON! Goods
+  'tim\カスタムオブジェクト\@集中線T': tim\Custom Objects\@Focus Lines T
+  'tim\カスタムオブジェクト\@任意多角形': tim\Custom Objects\@Arbitrary Polygon
+  'tim\カスタムオブジェクト': tim\Custom Objects
+  'tim\シーンチェンジ\@シーンチェンジセットT': tim\Scene Change\@Scene Change Set T
+  'tim\トラックバー制御': tim\Trackbar Control
