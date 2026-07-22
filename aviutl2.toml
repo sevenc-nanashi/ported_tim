@@ -11,7 +11,7 @@ aulua = "aulua build"
 
 [development]
 aviutl2_version = "latest"
-catalog_dependencies = ["sevenc-nanashi.aviutl2-rs.rusty_image_rs_input", "sevenc-nanashi.aviutl2-rs.rusty_scripts_search", "sevenc-nanashi.clipboard-aux2", "sigma-axis.Basic_S", "aviutl2-community.aviutl2_community_translation_companion"]
+catalog_dependencies = ["sevenc-nanashi.aviutl2-rs.rusty_image_rs_input", "sevenc-nanashi.aviutl2-rs.rusty_scripts_search", "sevenc-nanashi.clipboard-aux2", "sigma-axis.Basic_S", "aviutl2-community.aviutl2_community_translation_companion", "kanade-ak.kazeyureT"]
 
 [preview]
 aviutl2_version = "latest"

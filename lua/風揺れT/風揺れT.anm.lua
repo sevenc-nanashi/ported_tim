@@ -3,331 +3,476 @@
 ---min=0
 ---max=360
 ---step=0.1
-local track_sway_angle = 30
+local sway_angle = 30
 
 ---$track:揺れ周期
 ---min=0.01
 ---max=100
 ---step=0.01
-local track_sway_period = 2
+local sway_period = 2
 
 ---$track:揺れズレ
 ---min=-360
 ---max=360
 ---step=0.1
-local track_sway_offset = 90
+local sway_phase_offset = 90
 
 ---$track:センター
 ---min=-180
 ---max=180
 ---step=0.1
-local track_center = 0
+local center_angle = 0
 
 ---$track:分割数
 ---min=2
 ---max=300
 ---step=1
-local N = 10
+local segment_count = 10
 
 ---$track:上固定長％
 ---min=0
 ---max=100
 ---step=0.1
-local dL = 10
+local top_fixed_percent = 10
 
 ---$track:下固定長％
 ---min=0
 ---max=100
 ---step=0.1
-local dL2 = 10
+local bottom_fixed_percent = 10
 
 ---$check:下を基準
-local UB = 0
+local anchor_at_bottom = 0
 
 ---$check:ランダム揺れ量
-local rndF = 0
+local randomize_sway = 0
 
 ---$track:ランダム揺れパターン
 ---min=0
 ---max=10000
 ---step=1
-local seed = 0
+local random_pattern = 0
 
 ---$track:時間ずれ
 ---min=-10
 ---max=10
 ---step=0.01
-local sft = 0.1
+local time_offset = 0.1
 
 ---$check:横に繰り返す
-local rep = 0
+local repeat_horizontally = 0
 
 ---$track:繰り返し個数
 ---min=1
 ---max=50
 ---step=1
-local repN = 3
+local repeat_count = 3
 
 ---$track:間隔
 ---min=0
 ---max=1000
 ---step=0.1
-local stepX = 50
+local repeat_spacing = 50
 
 ---$check:破綻軽減
-local Frd = 0
+local reduce_distortion = 0
 
 ---$check:アルファ補正
-local check0 = true
+local correct_alpha = true
 
-local w, h = obj.getpixel()
-local w2, h2 = w / 2, h / 2
-local t = obj.time
-if UB == 1 then
-    dL, dL2 = dL2, dL
+--[[pixelshader@extract_straight_color
+---$include "./shaders/alpha_correction.hlsl"
+]]
+--[[pixelshader@extract_alpha
+---$include "./shaders/alpha_correction.hlsl"
+]]
+--[[pixelshader@combine_color_alpha
+---$include "./shaders/alpha_correction.hlsl"
+]]
+
+--[[
+NOTE: https://github.com/kanade-ak/kazeyureT を参考に高速化されました。
+
+MIT License
+
+Copyright (c) 2026 kanade-ak
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+]]
+
+local object_width, object_height = obj.getpixel()
+local half_width, half_height = object_width / 2, object_height / 2
+local base_time = obj.time
+
+if anchor_at_bottom == 1 then
+    top_fixed_percent, bottom_fixed_percent = bottom_fixed_percent, top_fixed_percent
 end
-if dL < 0 then
-    dL = 0
-elseif dL > 100 then
-    dL = 100
+if top_fixed_percent < 0 then
+    top_fixed_percent = 0
+elseif top_fixed_percent > 100 then
+    top_fixed_percent = 100
 end
-if dL2 < 0 then
-    dL2 = 0
-elseif dL2 > 100 - dL then
-    dL2 = 100 - dL
+if bottom_fixed_percent < 0 then
+    bottom_fixed_percent = 0
+elseif bottom_fixed_percent > 100 - top_fixed_percent then
+    bottom_fixed_percent = 100 - top_fixed_percent
 end
-dL = dL * 0.01 * h
-dL2 = dL2 * 0.01 * h
-local L = h - dL - dL2 --長さ
-local F = math.pi * track_sway_angle / 180 --揺れ幅
-local dt = track_sway_period
-local c = 2 * math.pi / dt --揺れ速度
-local d = 2 * track_sway_offset * math.pi / 180 --揺れズレ
-local CNT = track_center * math.pi / 180 --センター
-local alp = check0 and 1 or 0
-seed = 10 + math.abs(seed)
 
-WindShakeT = function(n)
-    local t = t - n * sft
-    local F = F
-    if rndF == 1 then
-        local s = t / dt
-        local n1 = math.floor(s)
-        local n0 = n1 - 1
-        local n2 = n1 + 1
-        local n3 = n1 + 2
-        local m0 = n0 + 1
-        local m1 = n1 + 1
-        local m2 = n2 + 1
-        local m3 = n3 + 1
+local top_fixed_length = top_fixed_percent * 0.01 * object_height
+local bottom_fixed_length = bottom_fixed_percent * 0.01 * object_height
+local flexible_length = object_height - top_fixed_length - bottom_fixed_length
+local sway_amplitude = math.pi * sway_angle / 180
+local angular_velocity = 2 * math.pi / sway_period
+local phase_offset = 2 * sway_phase_offset * math.pi / 180
+local center_angle_radians = center_angle * math.pi / 180
+local random_seed = 10 + math.abs(random_pattern)
 
-        if n0 < 0 then
-            m0 = 10000 - n0
+local sin = math.sin
+local cos = math.cos
+local sqrt = math.sqrt
+local floor = math.floor
+
+local function build_wind_geometry(repeat_index)
+    local render_time = base_time - repeat_index * time_offset
+    local current_sway_amplitude = sway_amplitude
+    if randomize_sway == 1 then
+        local cycle_position = render_time / sway_period
+        local current_cycle = floor(cycle_position)
+        local previous_cycle = current_cycle - 1
+        local next_cycle = current_cycle + 1
+        local following_cycle = current_cycle + 2
+        local previous_random_index = previous_cycle + 1
+        local current_random_index = current_cycle + 1
+        local next_random_index = next_cycle + 1
+        local following_random_index = following_cycle + 1
+
+        if previous_cycle < 0 then
+            previous_random_index = 10000 - previous_cycle
         end
-        if n1 < 0 then
-            m1 = 10000 - n1
+        if current_cycle < 0 then
+            current_random_index = 10000 - current_cycle
         end
-        if n2 < 0 then
-            m2 = 10000 - n2
+        if next_cycle < 0 then
+            next_random_index = 10000 - next_cycle
         end
-        if n3 < 0 then
-            m3 = 10000 - n3
+        if following_cycle < 0 then
+            following_random_index = 10000 - following_cycle
         end
 
-        s = s - n1
-        local f0 = obj.rand(0, 1000, -seed, m0) * F * 0.001
-        local f1 = obj.rand(0, 1000, -seed, m1) * F * 0.001
-        local f2 = obj.rand(0, 1000, -seed, m2) * F * 0.001
-        local f3 = obj.rand(0, 1000, -seed, m3) * F * 0.001
-        F = obj.interpolation(s, f0, f1, f2, f3)
+        local cycle_fraction = cycle_position - current_cycle
+        local previous_sway = obj.rand(0, 1000, -random_seed, previous_random_index) * sway_amplitude * 0.001
+        local current_sway = obj.rand(0, 1000, -random_seed, current_random_index) * sway_amplitude * 0.001
+        local next_sway = obj.rand(0, 1000, -random_seed, next_random_index) * sway_amplitude * 0.001
+        local following_sway = obj.rand(0, 1000, -random_seed, following_random_index) * sway_amplitude * 0.001
+        current_sway_amplitude =
+            obj.interpolation(cycle_fraction, previous_sway, current_sway, next_sway, following_sway)
     end
-    local X = {}
-    local Y = {}
-    local V = {}
-    X[0] = 0
-    Y[0] = 0
-    for i = 1, N do
-        local Si = (F * math.sin((c * t - i * d / N)) + CNT) * (1 - (1 - i / N) ^ 4)
-        X[i] = X[i - 1] + math.sin(Si)
-        Y[i] = Y[i - 1] + math.cos(Si)
-    end
-    local a = L / N
-    for i = 0, N do
-        X[i] = X[i] * a
-        Y[i] = Y[i] * a + dL - h2
-        V[i] = a * i + dL
-    end
-    X[-1] = 0
-    Y[-1] = -h2
-    V[-1] = 0
-    local X1 = {}
-    local X2 = {}
-    local Y1 = {}
-    local Y2 = {}
-    X1[-1] = -w2
-    X2[-1] = w2
-    Y1[-1] = -h2
-    Y2[-1] = -h2
 
-    for i = 0, N do
-        local dx = X[i] - X[i - 1]
-        local dy = Y[i] - Y[i - 1]
-        dx, dy = -dy, dx
-        local dr = math.sqrt(dx * dx + dy * dy)
-        if dr ~= 0 then
-            dx, dy = dx / dr * w2, dy / dr * w2
-            X1[i] = X[i] + dx
-            X2[i] = X[i] - dx
-            Y1[i] = Y[i] + dy
-            Y2[i] = Y[i] - dy
+    local base_segment_count = segment_count
+    local geometry_segment_count = base_segment_count
+    local inverse_segment_count = 1 / base_segment_count
+    local segment_length = flexible_length * inverse_segment_count
+    local center_x_positions = { [0] = 0 }
+    local center_y_positions = { [0] = top_fixed_length - half_height }
+    local texture_y_positions = { [0] = top_fixed_length }
+    local phase_per_segment = phase_offset * inverse_segment_count
+    local phase_step_sin = sin(phase_per_segment)
+    local phase_step_cos = cos(phase_per_segment)
+    local wave_sin = sin(angular_velocity * render_time - phase_per_segment)
+    local wave_cos = cos(angular_velocity * render_time - phase_per_segment)
+
+    for segment_index = 1, base_segment_count do
+        local taper = 1 - segment_index * inverse_segment_count
+        local taper2 = taper * taper
+        local bend_angle = (current_sway_amplitude * wave_sin + center_angle_radians) * (1 - taper2 * taper2)
+        center_x_positions[segment_index] = center_x_positions[segment_index - 1] + sin(bend_angle) * segment_length
+        center_y_positions[segment_index] = center_y_positions[segment_index - 1] + cos(bend_angle) * segment_length
+        texture_y_positions[segment_index] = segment_length * segment_index + top_fixed_length
+
+        if segment_index < base_segment_count then
+            if segment_index % 64 == 0 then
+                local phase = angular_velocity * render_time - (segment_index + 1) * phase_per_segment
+                wave_sin = sin(phase)
+                wave_cos = cos(phase)
+            else
+                local next_wave_sin = wave_sin * phase_step_cos - wave_cos * phase_step_sin
+                wave_cos = wave_cos * phase_step_cos + wave_sin * phase_step_sin
+                wave_sin = next_wave_sin
+            end
+        end
+    end
+
+    center_x_positions[-1] = 0
+    center_y_positions[-1] = -half_height
+    texture_y_positions[-1] = 0
+    local left_x_positions = { [-1] = -half_width }
+    local right_x_positions = { [-1] = half_width }
+    local left_y_positions = { [-1] = -half_height }
+    local right_y_positions = { [-1] = -half_height }
+
+    for segment_index = 0, base_segment_count do
+        local direction_x = center_x_positions[segment_index] - center_x_positions[segment_index - 1]
+        local direction_y = center_y_positions[segment_index] - center_y_positions[segment_index - 1]
+        local direction_length = sqrt(direction_x * direction_x + direction_y * direction_y)
+        if direction_length > 0 then
+            local normal_x = -direction_y / direction_length * half_width
+            local normal_y = direction_x / direction_length * half_width
+            left_x_positions[segment_index] = center_x_positions[segment_index] + normal_x
+            right_x_positions[segment_index] = center_x_positions[segment_index] - normal_x
+            left_y_positions[segment_index] = center_y_positions[segment_index] + normal_y
+            right_y_positions[segment_index] = center_y_positions[segment_index] - normal_y
         else
-            X1[i] = X1[i - 1]
-            X2[i] = X2[i - 1]
-            Y1[i] = Y1[i - 1]
-            Y2[i] = Y2[i - 1]
+            left_x_positions[segment_index] = left_x_positions[segment_index - 1]
+            right_x_positions[segment_index] = right_x_positions[segment_index - 1]
+            left_y_positions[segment_index] = left_y_positions[segment_index - 1]
+            right_y_positions[segment_index] = right_y_positions[segment_index - 1]
         end
     end
 
-    if dL2 > 0 then
-        local dx = X[N] - X[N - 1]
-        local dy = Y[N] - Y[N - 1]
-        local dr = math.sqrt(dx * dx + dy * dy)
-        dx, dy = dx / dr * dL2, dy / dr * dL2
-        X1[N + 1] = X1[N] + dx
-        X2[N + 1] = X2[N] + dx
-        Y1[N + 1] = Y1[N] + dy
-        Y2[N + 1] = Y2[N] + dy
-        V[N + 1] = h
-        N = N + 1
+    if bottom_fixed_length > 0 then
+        local direction_x = center_x_positions[base_segment_count] - center_x_positions[base_segment_count - 1]
+        local direction_y = center_y_positions[base_segment_count] - center_y_positions[base_segment_count - 1]
+        local direction_length = sqrt(direction_x * direction_x + direction_y * direction_y)
+        assert(direction_length > 0, "Segment length must be positive")
+
+        local extension_x = direction_x / direction_length * bottom_fixed_length
+        local extension_y = direction_y / direction_length * bottom_fixed_length
+        local extension_index = base_segment_count + 1
+        left_x_positions[extension_index] = left_x_positions[base_segment_count] + extension_x
+        right_x_positions[extension_index] = right_x_positions[base_segment_count] + extension_x
+        left_y_positions[extension_index] = left_y_positions[base_segment_count] + extension_y
+        right_y_positions[extension_index] = right_y_positions[base_segment_count] + extension_y
+        texture_y_positions[extension_index] = object_height
+        geometry_segment_count = extension_index
     end
 
-    local minX = -w2
-    local maxX = w2
-    local minY = -h2
-    local maxY = -h2
-    for i = 0, N do
-        if minX > X1[i] then
-            minX = X1[i]
-        elseif maxX < X1[i] then
-            maxX = X1[i]
+    local min_x = -half_width
+    local max_x = half_width
+    local min_y = -half_height
+    local max_y = -half_height
+    for segment_index = 0, geometry_segment_count do
+        if min_x > left_x_positions[segment_index] then
+            min_x = left_x_positions[segment_index]
+        elseif max_x < left_x_positions[segment_index] then
+            max_x = left_x_positions[segment_index]
         end
-        if minX > X2[i] then
-            minX = X2[i]
-        elseif maxX < X2[i] then
-            maxX = X2[i]
+        if min_x > right_x_positions[segment_index] then
+            min_x = right_x_positions[segment_index]
+        elseif max_x < right_x_positions[segment_index] then
+            max_x = right_x_positions[segment_index]
         end
-        if minY > Y1[i] then
-            minY = Y1[i]
-        elseif maxY < Y1[i] then
-            maxY = Y1[i]
+        if min_y > left_y_positions[segment_index] then
+            min_y = left_y_positions[segment_index]
+        elseif max_y < left_y_positions[segment_index] then
+            max_y = left_y_positions[segment_index]
         end
-        if minY > Y2[i] then
-            minY = Y2[i]
-        elseif maxY < Y2[i] then
-            maxY = Y2[i]
+        if min_y > right_y_positions[segment_index] then
+            min_y = right_y_positions[segment_index]
+        elseif max_y < right_y_positions[segment_index] then
+            max_y = right_y_positions[segment_index]
         end
     end
-    local WW = maxX - minX
-    local HH = maxY - minY
-    local CX = (maxX + minX) * 0.5
-    local CY = (maxY + minY) * 0.5
-    for i = -1, N do
-        X1[i] = X1[i] - CX
-        X2[i] = X2[i] - CX
-        Y1[i] = Y1[i] - CY
-        Y2[i] = Y2[i] - CY
-    end
-    obj.setoption("drawtarget", "tempbuffer", WW, HH)
-    obj.setoption("blend", "alpha_add2")
+
+    local bounds_width = max_x - min_x
+    local bounds_height = max_y - min_y
+    local bounds_center_x = (max_x + min_x) * 0.5
+    local bounds_center_y = (max_y + min_y) * 0.5
     local vertices = {}
-    local drawpolyT = (function()
-        if Frd == 1 then
-            return function(x0, y0, x1, y1, x2, y2, x3, y3, v0, v1)
-                local xc, yc = (x0 + x1 + x2 + x3) / 4, (y0 + y1 + y2 + y3) / 4
-                local vc = (v0 + v1) / 2
-                vertices[#vertices + 1] = { x0, y0, 0, x1, y1, 0, xc, yc, 0, xc, yc, 0, 0, v0, w, v0, w2, vc, w2, vc }
-                vertices[#vertices + 1] = { x1, y1, 0, x2, y2, 0, xc, yc, 0, xc, yc, 0, w, v0, w, v1, w2, vc, w2, vc }
-                vertices[#vertices + 1] = { x3, y3, 0, x0, y0, 0, xc, yc, 0, xc, yc, 0, 0, v1, 0, v0, w2, vc, w2, vc }
-                vertices[#vertices + 1] = { x2, y2, 0, x3, y3, 0, xc, yc, 0, xc, yc, 0, w, v1, 0, v1, w2, vc, w2, vc }
-            end
-        else
-            return function(x0, y0, x1, y1, x2, y2, x3, y3, v0, v1)
-                vertices[#vertices + 1] = { x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, 0, v0, w, v0, w, v1, 0, v1 }
-            end
+    local vertex_count = 0
+
+    if reduce_distortion == 1 then
+        for segment_index = 0, geometry_segment_count do
+            local x0 = left_x_positions[segment_index - 1] - bounds_center_x
+            local y0 = left_y_positions[segment_index - 1] - bounds_center_y
+            local x1 = right_x_positions[segment_index - 1] - bounds_center_x
+            local y1 = right_y_positions[segment_index - 1] - bounds_center_y
+            local x2 = right_x_positions[segment_index] - bounds_center_x
+            local y2 = right_y_positions[segment_index] - bounds_center_y
+            local x3 = left_x_positions[segment_index] - bounds_center_x
+            local y3 = left_y_positions[segment_index] - bounds_center_y
+            local v0 = texture_y_positions[segment_index - 1]
+            local v1 = texture_y_positions[segment_index]
+            local xc = (x0 + x1 + x2 + x3) * 0.25
+            local yc = (y0 + y1 + y2 + y3) * 0.25
+            local vc = (v0 + v1) * 0.5
+            vertices[vertex_count + 1] =
+                { x0, y0, 0, x1, y1, 0, xc, yc, 0, xc, yc, 0, 0, v0, object_width, v0, half_width, vc, half_width, vc }
+            vertices[vertex_count + 2] = {
+                x1,
+                y1,
+                0,
+                x2,
+                y2,
+                0,
+                xc,
+                yc,
+                0,
+                xc,
+                yc,
+                0,
+                object_width,
+                v0,
+                object_width,
+                v1,
+                half_width,
+                vc,
+                half_width,
+                vc,
+            }
+            vertices[vertex_count + 3] =
+                { x3, y3, 0, x0, y0, 0, xc, yc, 0, xc, yc, 0, 0, v1, 0, v0, half_width, vc, half_width, vc }
+            vertices[vertex_count + 4] =
+                { x2, y2, 0, x3, y3, 0, xc, yc, 0, xc, yc, 0, object_width, v1, 0, v1, half_width, vc, half_width, vc }
+            vertex_count = vertex_count + 4
         end
-    end)()
-    for i = 0, N do
-        drawpolyT(X1[i - 1], Y1[i - 1], X2[i - 1], Y2[i - 1], X2[i], Y2[i], X1[i], Y1[i], V[i - 1], V[i])
-    end
-    if #vertices > 0 then
-        obj.drawpoly(vertices)
-    end
-    if alp == 1 then
-        obj.copybuffer("cache:col", "tmp")
-        obj.load("figure", "四角形", 0x0, 1)
-        obj.effect("リサイズ", "X", w, "Y", h, "ドット数でサイズ指定", 1)
-        obj.copybuffer("tmp", "obj")
-        obj.copybuffer("obj", "cache:org")
-        obj.effect("単色化", "輝度を保持する", 0)
-        obj.setoption("blend", 0)
-        obj.draw()
-        obj.copybuffer("obj", "tmp")
-        obj.setoption("drawtarget", "tempbuffer", WW, HH)
-        obj.setoption("blend", "alpha_add2")
-        vertices = {}
-        for i = 0, N do
-            --obj.drawpoly(X1[i-1],Y1[i-1],0, X2[i-1],Y2[i-1],0, X2[i],Y2[i],0, X1[i],Y1[i],0, 0,V[i-1], w,V[i-1], w,V[i], 0,V[i])
-            drawpolyT(X1[i - 1], Y1[i - 1], X2[i - 1], Y2[i - 1], X2[i], Y2[i], X1[i], Y1[i], V[i - 1], V[i])
+    else
+        for segment_index = 0, geometry_segment_count do
+            local x0 = left_x_positions[segment_index - 1] - bounds_center_x
+            local y0 = left_y_positions[segment_index - 1] - bounds_center_y
+            local x1 = right_x_positions[segment_index - 1] - bounds_center_x
+            local y1 = right_y_positions[segment_index - 1] - bounds_center_y
+            local x2 = right_x_positions[segment_index] - bounds_center_x
+            local y2 = right_y_positions[segment_index] - bounds_center_y
+            local x3 = left_x_positions[segment_index] - bounds_center_x
+            local y3 = left_y_positions[segment_index] - bounds_center_y
+            local v0 = texture_y_positions[segment_index - 1]
+            local v1 = texture_y_positions[segment_index]
+            vertex_count = vertex_count + 1
+            vertices[vertex_count] =
+                { x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, 0, v0, object_width, v0, object_width, v1, 0, v1 }
         end
-        if #vertices > 0 then
-            obj.drawpoly(vertices)
-        end
-        obj.copybuffer("obj", "tmp")
-        obj.effect("ルミナンスキー", "基準輝度", 0, "ぼかし", 4096, "type", 1)
-        obj.copybuffer("tmp", "cache:col")
-        obj.setoption("blend", "alpha_sub")
-        obj.draw()
-        obj.setoption("blend", 0)
     end
-    return WW, HH, CX, CY
+
+    return vertices, bounds_width, bounds_height, bounds_center_x, bounds_center_y
 end
 
-if UB == 1 then
+local function draw_wind_geometry(vertices, bounds_width, bounds_height)
+    obj.setoption("drawtarget", "tempbuffer", bounds_width, bounds_height)
+    obj.setoption("blend", "alpha_add2")
+    obj.drawpoly(vertices)
+
+    if correct_alpha then
+        obj.copybuffer("cache:color", "tempbuffer")
+        obj.pixelshader("extract_alpha", "object", "cache:original")
+        obj.setoption("drawtarget", "tempbuffer", bounds_width, bounds_height)
+        obj.setoption("blend", "alpha_add2")
+        obj.drawpoly(vertices)
+        obj.copybuffer("object", "tempbuffer")
+        obj.pixelshader("combine_color_alpha", "tempbuffer", {
+            "cache:color",
+            "object",
+        })
+        obj.setoption("blend", "none")
+    end
+end
+
+local function render_wind_geometry(repeat_index)
+    local vertices, bounds_width, bounds_height, bounds_center_x, bounds_center_y = build_wind_geometry(repeat_index)
+    draw_wind_geometry(vertices, bounds_width, bounds_height)
+    return bounds_width, bounds_height, bounds_center_x, bounds_center_y
+end
+
+local function append_translated_vertices(destination, destination_count, source, delta_x, delta_y)
+    for i = 1, #source do
+        local vertex = source[i]
+        destination_count = destination_count + 1
+        destination[destination_count] = {
+            vertex[1] + delta_x,
+            vertex[2] + delta_y,
+            vertex[3],
+            vertex[4] + delta_x,
+            vertex[5] + delta_y,
+            vertex[6],
+            vertex[7] + delta_x,
+            vertex[8] + delta_y,
+            vertex[9],
+            vertex[10] + delta_x,
+            vertex[11] + delta_y,
+            vertex[12],
+            vertex[13],
+            vertex[14],
+            vertex[15],
+            vertex[16],
+            vertex[17],
+            vertex[18],
+            vertex[19],
+            vertex[20],
+        }
+    end
+    return destination_count
+end
+
+if anchor_at_bottom == 1 then
     obj.effect("反転", "上下反転", 1)
 end
-if alp == 1 then
-    obj.setoption("drawtarget", "tempbuffer", w, h)
-    obj.copybuffer("cache:org", "obj")
-    obj.copybuffer("tmp", "obj")
-    obj.effect("反転", "透明度反転", 1)
-    obj.setoption("blend", "alpha_add2")
-    obj.draw()
-    obj.copybuffer("obj", "tmp")
+if correct_alpha then
+    obj.copybuffer("cache:original", "object")
+    obj.pixelshader("extract_straight_color", "object", "object")
 end
-if rep == 0 then
-    local WW, HH, CX, CY = WindShakeT(1)
+if repeat_horizontally == 0 then
+    local _, _, bounds_center_x, bounds_center_y = render_wind_geometry(1)
     obj.load("tempbuffer")
-    obj.cx = -CX
-    if UB == 1 then
+    obj.cx = -bounds_center_x
+    if anchor_at_bottom == 1 then
         obj.effect("反転", "上下反転", 1)
-        obj.cy = CY
+        obj.cy = bounds_center_y
     else
-        obj.cy = -CY
+        obj.cy = -bounds_center_y
     end
+elseif not correct_alpha and anchor_at_bottom == 0 then
+    local vertices = {}
+    local vertex_count = 0
+    local repeat_center = (repeat_count + 1) * 0.5
+
+    if time_offset == 0 then
+        local source_vertices, _, _, bounds_center_x, bounds_center_y = build_wind_geometry(1)
+        for repeat_index = 1, repeat_count do
+            local offset_x = (repeat_index - repeat_center) * repeat_spacing + bounds_center_x
+            vertex_count =
+                append_translated_vertices(vertices, vertex_count, source_vertices, offset_x, bounds_center_y)
+        end
+    else
+        for repeat_index = 1, repeat_count do
+            local source_vertices, _, _, bounds_center_x, bounds_center_y = build_wind_geometry(repeat_index)
+            local offset_x = (repeat_index - repeat_center) * repeat_spacing + bounds_center_x
+            vertex_count =
+                append_translated_vertices(vertices, vertex_count, source_vertices, offset_x, bounds_center_y)
+        end
+    end
+
+    obj.setoption("drawtarget", "framebuffer")
+    obj.setoption("blend", "alpha_add2")
+    obj.drawpoly(vertices)
 else
-    obj.copybuffer("cache:orgI", "obj")
-    for i = 1, repN do
-        obj.copybuffer("obj", "cache:orgI")
-        local WW, HH, CX, CY = WindShakeT(i)
-        CX = (i - (repN + 1) / 2) * stepX + CX
+    obj.copybuffer("cache:rep_original", "object")
+    for repeat_index = 1, repeat_count do
+        obj.copybuffer("object", "cache:rep_original")
+        local _, _, bounds_center_x, bounds_center_y = render_wind_geometry(repeat_index)
+        bounds_center_x = (repeat_index - (repeat_count + 1) * 0.5) * repeat_spacing + bounds_center_x
         obj.load("tempbuffer")
         obj.setoption("drawtarget", "framebuffer")
 
-        if UB == 1 then
+        if anchor_at_bottom == 1 then
             obj.effect("反転", "上下反転", 1)
-            obj.draw(CX, -CY)
+            obj.draw(bounds_center_x, -bounds_center_y)
         else
-            obj.draw(CX, CY)
+            obj.draw(bounds_center_x, bounds_center_y)
         end
     end
 end
