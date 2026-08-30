@@ -25,35 +25,35 @@ local track_luminance_adjust = 100
 local track_boundary_adjust = 2
 
 ---$color:変更前
-local col1 = 0x0000ff
+local source_color = 0x0000ff
 
 ---$color:変更後
-local col2 = 0xff0000
+local target_color = 0xff0000
 
 ---$track:彩度調整
 ---min=0
 ---max=100
 ---step=0.1
-local pS = 100
+local track_saturation_adjustment = 100
 
-local pS2 = pS or 100
-local src_r, src_g, src_b = RGB(col1)
-local dst_r, dst_g, dst_b = RGB(col2)
+local saturation_adjustment = track_saturation_adjustment or 100
+local source_red, source_green, source_blue = RGB(source_color)
+local target_red, target_green, target_blue = RGB(target_color)
 
 --[[pixelshader@change_to_color
 ---$include "./shaders/change_to_color.hlsl"
 ]]
 
 obj.pixelshader("change_to_color", "object", "object", {
-    src_r,
-    src_g,
-    src_b,
-    dst_r,
-    dst_g,
-    dst_b,
+    source_red,
+    source_green,
+    source_blue,
+    target_red,
+    target_green,
+    target_blue,
     track_hue_range,
     track_saturation_range,
-    pS2 * 0.01,
+    saturation_adjustment * 0.01,
     track_luminance_adjust * 0.01,
     track_boundary_adjust,
 })

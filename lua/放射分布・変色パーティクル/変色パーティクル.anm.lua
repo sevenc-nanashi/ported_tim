@@ -24,10 +24,10 @@ local track_radius = 50
 local track_lifetime = 300
 
 ---$color:色1
-local col1 = 0xffff00
+local start_color = 0xffff00
 
 ---$color:色2
-local col2 = 0xffffff
+local end_color = 0xffffff
 
 ---$track:最終拡大率[%]
 ---min=0
@@ -53,56 +53,66 @@ local track_scatter_angle_start = -180
 ---step=0.1
 local track_scatter_angle_end = 180
 
-local T = obj.time
+local current_time = obj.time
 local output_frequency = track_output_frequency
 local speed = track_speed
 local initial_radius = track_radius
 local lifetime = track_lifetime * 0.01
 local spawn_interval = 1 / output_frequency
-local first_index = math.max(math.floor(1 + (T - lifetime) * output_frequency), 0)
-local last_index = math.floor(T * output_frequency)
+local first_index = math.max(math.floor(1 + (current_time - lifetime) * output_frequency), 0)
+local last_index = math.floor(current_time * output_frequency)
 local final_zoom = track_final_zoom_percent * 0.01
 local final_alpha = track_final_alpha_percent * 0.01
 local scatter_angle_start = math.min(track_scatter_angle_start or -180, track_scatter_angle_end or 180)
 local scatter_angle_end = math.max(track_scatter_angle_start or -180, track_scatter_angle_end or 180)
 
 for i = first_index, last_index do
-    local T0 = i * spawn_interval
-    local dTi = T - T0
+    local spawn_time = i * spawn_interval
+    local particle_age = current_time - spawn_time
 
-    if dTi < lifetime then
-        local p1 = dTi / lifetime
-        local p2 = 1 - p1
-        local r1, g1, b1 = RGB(col1)
-        local r2, g2, b2 = RGB(col2)
+    if particle_age < lifetime then
+        local life_progress = particle_age / lifetime
+        local inverse_life_progress = 1 - life_progress
+        local start_red, start_green, start_blue = RGB(start_color)
+        local end_red, end_green, end_blue = RGB(end_color)
 
         obj.effect(
             "単色化",
             "color",
-            RGB(r1 * p2 + r2 * p1, g1 * p2 + g2 * p1, b1 * p2 + b2 * p1),
+            RGB(
+                start_red * inverse_life_progress + end_red * life_progress,
+                start_green * inverse_life_progress + end_green * life_progress,
+                start_blue * inverse_life_progress + end_blue * life_progress
+            ),
             "輝度を保持する",
             0
         )
 
-        local dx = obj.getvalue("x", T0, 0)
-        local dy = obj.getvalue("y", T0, 0)
+        local spawn_x = obj.getvalue("particle_x", spawn_time, 0)
+        local spawn_y = obj.getvalue("particle_y", spawn_time, 0)
 
-        local ddx = dx - obj.getvalue("x", T0 - 1 / obj.framerate, 0)
-        local ddy = dy - obj.getvalue("y", T0 - 1 / obj.framerate, 0)
+        local source_velocity_x = spawn_x - obj.getvalue("particle_x", spawn_time - 1 / obj.framerate, 0)
+        local source_velocity_y = spawn_y - obj.getvalue("particle_y", spawn_time - 1 / obj.framerate, 0)
 
-        local th = math.atan2(ddx, ddy)
+        local trajectory_angle = math.atan2(source_velocity_x, source_velocity_y)
             + math.rad(obj.rand(10 * scatter_angle_start + 1800, 10 * scatter_angle_end + 1800, i, 1000) * 0.1)
 
-        local Pth = math.rad(obj.rand(0, 3600, i, 2000) * 0.1)
-        local iR0 = initial_radius * obj.rand(0, 1000, i, 3000) * 0.001
+        local radius_angle = math.rad(obj.rand(0, 3600, i, 2000) * 0.1)
+        local random_initial_radius = initial_radius * obj.rand(0, 1000, i, 3000) * 0.001
 
-        local vx = speed * math.sin(th)
-        local vy = speed * math.cos(th)
+        local velocity_x = speed * math.sin(trajectory_angle)
+        local velocity_y = speed * math.cos(trajectory_angle)
 
-        local x = vx * dTi + dx - obj.getvalue("x") + iR0 * math.cos(Pth)
-        local y = vy * dTi + dy - obj.getvalue("y") + iR0 * math.sin(Pth)
-        local zoom = p2 + final_zoom * p1
-        local alpha = p2 + final_alpha * p1
-        obj.draw(x, y, 0, zoom, alpha)
+        local particle_x = velocity_x * particle_age
+            + spawn_x
+            - obj.getvalue("particle_x")
+            + random_initial_radius * math.cos(radius_angle)
+        local particle_y = velocity_y * particle_age
+            + spawn_y
+            - obj.getvalue("particle_y")
+            + random_initial_radius * math.sin(radius_angle)
+        local zoom = inverse_life_progress + final_zoom * life_progress
+        local alpha = inverse_life_progress + final_alpha * life_progress
+        obj.draw(particle_x, particle_y, 0, zoom, alpha)
     end
 end

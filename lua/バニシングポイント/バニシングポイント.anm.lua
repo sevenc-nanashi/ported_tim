@@ -39,10 +39,10 @@ local track_up_y = 0
 local select_reverse = 0
 
 ---$check:参照領域
-local tar = 1
+local check_use_reference_area = 1
 
 ---$check:オリジナル表示
-local ora = 1
+local check_show_original = 1
 
 ---$track:分割数
 ---min=1
@@ -54,154 +54,222 @@ local track_division_count = 10
 -- local ANT = 1
 
 ---$value:領域
-local are = { -80, -100, 80, -105, 100, 105, -100, 100 }
+local area_vertices = { -80, -100, 80, -105, 100, 105, -100, 100 }
 
---hide@track_division_count:tar==1
+--hide@track_division_count:check_use_reference_area==1
 
-local b, c, tx, ty, flx, fly
+local horizontal_vanishing_point, vertical_vanishing_point, area_center_x, area_center_y, lift_x, lift_y
 
-local function cal_koten(a, b, c, d)
-    local g
-    local f = (d.y - c.y) * (c.x - a.x) - (d.x - c.x) * (c.y - a.y)
-    local z = (b.x - a.x) * (d.y - c.y) - (b.y - a.y) * (d.x - c.x)
-    if z ~= 0 then
-        g = f / z
+local function line_intersection(point_a, point_b, point_c, point_d)
+    local line_ratio
+    local cross_product = (point_d.y - point_c.y) * (point_c.x - point_a.x)
+        - (point_d.x - point_c.x) * (point_c.y - point_a.y)
+    local denominator = (point_b.x - point_a.x) * (point_d.y - point_c.y)
+        - (point_b.y - point_a.y) * (point_d.x - point_c.x)
+    if denominator ~= 0 then
+        line_ratio = cross_product / denominator
     else
-        g = f > 0 and 2000000000 or -2000000000
+        line_ratio = cross_product > 0 and 2000000000 or -2000000000
     end
-    return a.x + g * (b.x - a.x), a.y + g * (b.y - a.y)
+    return point_a.x + line_ratio * (point_b.x - point_a.x), point_a.y + line_ratio * (point_b.y - point_a.y)
 end
 
-local function muki(a, b, c, d)
-    return (b.x - a.x) * (d.y - c.y) - (b.y - a.y) * (d.x - c.x) > 0 and -1 or 1
+local function orientation_sign(point_a, point_b, point_c, point_d)
+    return (point_b.x - point_a.x) * (point_d.y - point_c.y) - (point_b.y - point_a.y) * (point_d.x - point_c.x) > 0
+            and -1
+        or 1
 end
 
-local function Lrate(x, y, ex, ey, fx, fy)
-    return (1 - (x * ex + y * ey) / (ex * ex + ey * ey)) * (1 - (x * fx + y * fy) / (fx * fx + fy * fy))
+local function lift_rate(position_x, position_y, horizontal_x, horizontal_y, vertical_x, vertical_y)
+    return (
+        1
+        - (position_x * horizontal_x + position_y * horizontal_y)
+            / (horizontal_x * horizontal_x + horizontal_y * horizontal_y)
+    )
+        * (
+            1
+            - (position_x * vertical_x + position_y * vertical_y)
+                / (vertical_x * vertical_x + vertical_y * vertical_y)
+        )
 end
 
-local function cal_pos(p1, p2)
-    local x, y = cal_koten(p1, c, p2, b)
-    local hi = Lrate(x - tx, y - ty, b.x - tx, b.y - ty, c.x - tx, c.y - ty)
-    return x + flx * hi, y + fly * hi
+local function map_position(horizontal_point, vertical_point)
+    local mapped_x, mapped_y =
+        line_intersection(horizontal_point, vertical_vanishing_point, vertical_point, horizontal_vanishing_point)
+    local lift_amount = lift_rate(
+        mapped_x - area_center_x,
+        mapped_y - area_center_y,
+        horizontal_vanishing_point.x - area_center_x,
+        horizontal_vanishing_point.y - area_center_y,
+        vertical_vanishing_point.x - area_center_x,
+        vertical_vanishing_point.y - area_center_y
+    )
+    return mapped_x + lift_x * lift_amount, mapped_y + lift_y * lift_amount
 end
 
 local reverse_mode = select_reverse or 0
 local division_count = math.max(1, track_division_count or 10)
-obj.setanchor("are", 4, "loop")
-local w, h = obj.getpixel()
-local w2 = w / 2
-local h2 = h / 2
-local ps = {}
-ps[1] = { x = are[1], y = are[2] }
-ps[2] = { x = are[3], y = are[4] }
-ps[3] = { x = are[5], y = are[6] }
-ps[4] = { x = are[7], y = are[8] }
+obj.setanchor("area_vertices", 4, "loop")
+local width, height = obj.getpixel()
+local half_width = width / 2
+local half_height = height / 2
+local source_points = {}
+source_points[1] = { x = area_vertices[1], y = area_vertices[2] }
+source_points[2] = { x = area_vertices[3], y = area_vertices[4] }
+source_points[3] = { x = area_vertices[5], y = area_vertices[6] }
+source_points[4] = { x = area_vertices[7], y = area_vertices[8] }
 
-if muki(ps[1], ps[2], ps[2], ps[3]) == 1 then
-    ps[1], ps[2] = ps[2], ps[1]
-    ps[3], ps[4] = ps[4], ps[3]
+if orientation_sign(source_points[1], source_points[2], source_points[2], source_points[3]) == 1 then
+    source_points[1], source_points[2] = source_points[2], source_points[1]
+    source_points[3], source_points[4] = source_points[4], source_points[3]
 end
 
-local dx = track_move_x / 100
-local dy = track_move_y / 100
+local move_x = track_move_x / 100
+local move_y = track_move_y / 100
 
-flx = track_up_x
-fly = track_up_y
+lift_x = track_up_x
+lift_y = track_up_y
 
-b = {}
-c = {}
-b.x, b.y = cal_koten(ps[1], ps[2], ps[4], ps[3])
-c.x, c.y = cal_koten(ps[1], ps[4], ps[2], ps[3])
+horizontal_vanishing_point = {}
+vertical_vanishing_point = {}
+horizontal_vanishing_point.x, horizontal_vanishing_point.y =
+    line_intersection(source_points[1], source_points[2], source_points[4], source_points[3])
+vertical_vanishing_point.x, vertical_vanishing_point.y =
+    line_intersection(source_points[1], source_points[4], source_points[2], source_points[3])
 
-local bmuki = muki(b, ps[1], ps[1], ps[4])
-local cmuki = muki(c, ps[2], ps[2], ps[1])
+local horizontal_orientation =
+    orientation_sign(horizontal_vanishing_point, source_points[1], source_points[1], source_points[4])
+local vertical_orientation =
+    orientation_sign(vertical_vanishing_point, source_points[2], source_points[2], source_points[1])
 
-local w0 = math.sqrt((ps[1].x - ps[2].x) ^ 2 + (ps[1].y - ps[2].y) ^ 2)
-local h0 = math.sqrt((ps[1].x - ps[4].x) ^ 2 + (ps[1].y - ps[4].y) ^ 2)
-local wa
-local ha
-if bmuki > 0 then
-    wa = math.sqrt((ps[1].x - b.x) ^ 2 + (ps[1].y - b.y) ^ 2)
+local source_top_width =
+    math.sqrt((source_points[1].x - source_points[2].x) ^ 2 + (source_points[1].y - source_points[2].y) ^ 2)
+local source_left_height =
+    math.sqrt((source_points[1].x - source_points[4].x) ^ 2 + (source_points[1].y - source_points[4].y) ^ 2)
+local horizontal_vanishing_distance
+local vertical_vanishing_distance
+if horizontal_orientation > 0 then
+    horizontal_vanishing_distance = math.sqrt(
+        (source_points[1].x - horizontal_vanishing_point.x) ^ 2
+            + (source_points[1].y - horizontal_vanishing_point.y) ^ 2
+    )
 else
-    dx = -dx
-    wa = math.sqrt((ps[2].x - b.x) ^ 2 + (ps[2].y - b.y) ^ 2)
+    move_x = -move_x
+    horizontal_vanishing_distance = math.sqrt(
+        (source_points[2].x - horizontal_vanishing_point.x) ^ 2
+            + (source_points[2].y - horizontal_vanishing_point.y) ^ 2
+    )
 end
 
-if cmuki > 0 then
-    ha = math.sqrt((ps[1].x - c.x) ^ 2 + (ps[1].y - c.y) ^ 2)
+if vertical_orientation > 0 then
+    vertical_vanishing_distance = math.sqrt(
+        (source_points[1].x - vertical_vanishing_point.x) ^ 2 + (source_points[1].y - vertical_vanishing_point.y) ^ 2
+    )
 else
-    dy = -dy
-    ha = math.sqrt((ps[4].x - c.x) ^ 2 + (ps[4].y - c.y) ^ 2)
+    move_y = -move_y
+    vertical_vanishing_distance = math.sqrt(
+        (source_points[4].x - vertical_vanishing_point.x) ^ 2 + (source_points[4].y - vertical_vanishing_point.y) ^ 2
+    )
 end
 
-tx = (ps[1].x + ps[2].x + ps[3].x + ps[4].x) / 4
-ty = (ps[1].y + ps[2].y + ps[3].y + ps[4].y) / 4
+area_center_x = (source_points[1].x + source_points[2].x + source_points[3].x + source_points[4].x) / 4
+area_center_y = (source_points[1].y + source_points[2].y + source_points[3].y + source_points[4].y) / 4
 
-local ss = 1 - w0 / wa
-local tt = 1 - h0 / ha
+local horizontal_perspective_ratio = 1 - source_top_width / horizontal_vanishing_distance
+local vertical_perspective_ratio = 1 - source_left_height / vertical_vanishing_distance
 
-local lx1 = (1 - ss ^ dx) / (1 - ss)
-local lx2 = (1 - ss ^ (dx + 1)) / (1 - ss)
-local qx = {}
+local horizontal_ratio_1 = (1 - horizontal_perspective_ratio ^ move_x) / (1 - horizontal_perspective_ratio)
+local horizontal_ratio_2 = (1 - horizontal_perspective_ratio ^ (move_x + 1)) / (1 - horizontal_perspective_ratio)
+local horizontal_points = {}
 
-if bmuki > 0 then
-    qx[1] = { x = ps[1].x + (ps[2].x - ps[1].x) * lx1, y = ps[1].y + (ps[2].y - ps[1].y) * lx1 }
-    qx[2] = { x = ps[1].x + (ps[2].x - ps[1].x) * lx2, y = ps[1].y + (ps[2].y - ps[1].y) * lx2 }
+if horizontal_orientation > 0 then
+    horizontal_points[1] = {
+        x = source_points[1].x + (source_points[2].x - source_points[1].x) * horizontal_ratio_1,
+        y = source_points[1].y + (source_points[2].y - source_points[1].y) * horizontal_ratio_1,
+    }
+    horizontal_points[2] = {
+        x = source_points[1].x + (source_points[2].x - source_points[1].x) * horizontal_ratio_2,
+        y = source_points[1].y + (source_points[2].y - source_points[1].y) * horizontal_ratio_2,
+    }
 else
-    qx[2] = { x = ps[2].x + (ps[1].x - ps[2].x) * lx1, y = ps[2].y + (ps[1].y - ps[2].y) * lx1 }
-    qx[1] = { x = ps[2].x + (ps[1].x - ps[2].x) * lx2, y = ps[2].y + (ps[1].y - ps[2].y) * lx2 }
+    horizontal_points[2] = {
+        x = source_points[2].x + (source_points[1].x - source_points[2].x) * horizontal_ratio_1,
+        y = source_points[2].y + (source_points[1].y - source_points[2].y) * horizontal_ratio_1,
+    }
+    horizontal_points[1] = {
+        x = source_points[2].x + (source_points[1].x - source_points[2].x) * horizontal_ratio_2,
+        y = source_points[2].y + (source_points[1].y - source_points[2].y) * horizontal_ratio_2,
+    }
 end
 
-local ly1 = (1 - tt ^ dy) / (1 - tt)
-local ly2 = (1 - tt ^ (1 + dy)) / (1 - tt)
-local qy = {}
+local vertical_ratio_1 = (1 - vertical_perspective_ratio ^ move_y) / (1 - vertical_perspective_ratio)
+local vertical_ratio_2 = (1 - vertical_perspective_ratio ^ (1 + move_y)) / (1 - vertical_perspective_ratio)
+local vertical_points = {}
 
-if cmuki > 0 then
-    qy[1] = { x = ps[1].x + (ps[4].x - ps[1].x) * ly1, y = ps[1].y + (ps[4].y - ps[1].y) * ly1 }
-    qy[2] = { x = ps[1].x + (ps[4].x - ps[1].x) * ly2, y = ps[1].y + (ps[4].y - ps[1].y) * ly2 }
+if vertical_orientation > 0 then
+    vertical_points[1] = {
+        x = source_points[1].x + (source_points[4].x - source_points[1].x) * vertical_ratio_1,
+        y = source_points[1].y + (source_points[4].y - source_points[1].y) * vertical_ratio_1,
+    }
+    vertical_points[2] = {
+        x = source_points[1].x + (source_points[4].x - source_points[1].x) * vertical_ratio_2,
+        y = source_points[1].y + (source_points[4].y - source_points[1].y) * vertical_ratio_2,
+    }
 else
-    qy[2] = { x = ps[4].x + (ps[1].x - ps[4].x) * ly1, y = ps[4].y + (ps[1].y - ps[4].y) * ly1 }
-    qy[1] = { x = ps[4].x + (ps[1].x - ps[4].x) * ly2, y = ps[4].y + (ps[1].y - ps[4].y) * ly2 }
+    vertical_points[2] = {
+        x = source_points[4].x + (source_points[1].x - source_points[4].x) * vertical_ratio_1,
+        y = source_points[4].y + (source_points[1].y - source_points[4].y) * vertical_ratio_1,
+    }
+    vertical_points[1] = {
+        x = source_points[4].x + (source_points[1].x - source_points[4].x) * vertical_ratio_2,
+        y = source_points[4].y + (source_points[1].y - source_points[4].y) * vertical_ratio_2,
+    }
 end
 
-local x0, y0 = cal_pos(qx[1], qy[1])
-local x1, y1 = cal_pos(qx[2], qy[1])
-local x2, y2 = cal_pos(qx[2], qy[2])
-local x3, y3 = cal_pos(qx[1], qy[2])
+local x0, y0 = map_position(horizontal_points[1], vertical_points[1])
+local x1, y1 = map_position(horizontal_points[2], vertical_points[1])
+local x2, y2 = map_position(horizontal_points[2], vertical_points[2])
+local x3, y3 = map_position(horizontal_points[1], vertical_points[2])
 
-local tpw_max, tph_max, tpw_min, tph_min
-if ora == 1 then
-    tpw_max = math.max(x3, x2, x1, x0, w2)
-    tph_max = math.max(y3, y2, y1, y0, h2)
-    tpw_min = math.min(x3, x2, x1, x0, -w2)
-    tph_min = math.min(y3, y2, y1, y0, -h2)
+local output_max_x, output_max_y, output_min_x, output_min_y
+if check_show_original == 1 then
+    output_max_x = math.max(x3, x2, x1, x0, half_width)
+    output_max_y = math.max(y3, y2, y1, y0, half_height)
+    output_min_x = math.min(x3, x2, x1, x0, -half_width)
+    output_min_y = math.min(y3, y2, y1, y0, -half_height)
 else
-    tpw_max = math.max(x3, x2, x1, x0)
-    tph_max = math.max(y3, y2, y1, y0)
-    tpw_min = math.min(x3, x2, x1, x0)
-    tph_min = math.min(y3, y2, y1, y0)
+    output_max_x = math.max(x3, x2, x1, x0)
+    output_max_y = math.max(y3, y2, y1, y0)
+    output_min_x = math.min(x3, x2, x1, x0)
+    output_min_y = math.min(y3, y2, y1, y0)
 end
 
-local tpw = tpw_max - tpw_min
-local tph = tph_max - tph_min
-local cx = (tpw_max + tpw_min) / 2
-local cy = (tph_max + tph_min) / 2
+local output_width = output_max_x - output_min_x
+local output_height = output_max_y - output_min_y
+local output_center_x = (output_max_x + output_min_x) / 2
+local output_center_y = (output_max_y + output_min_y) / 2
 
-obj.setoption("drawtarget", "tempbuffer", tpw, tph)
+obj.setoption("drawtarget", "tempbuffer", output_width, output_height)
 -- obj.setoption("antialias", ANT)
 
-if ora == 1 then
-    obj.draw(-cx, -cy, 0)
+if check_show_original == 1 then
+    obj.draw(-output_center_x, -output_center_y, 0)
 else
     obj.setoption("blend", "alpha_add")
 end
 
-if tar == 1 then
-    x0, x1, x2, x3 = x0 - cx, x1 - cx, x2 - cx, x3 - cx
-    y0, y1, y2, y3 = y0 - cy, y1 - cy, y2 - cy, y3 - cy
+if check_use_reference_area == 1 then
+    x0, x1, x2, x3 = x0 - output_center_x, x1 - output_center_x, x2 - output_center_x, x3 - output_center_x
+    y0, y1, y2, y3 = y0 - output_center_y, y1 - output_center_y, y2 - output_center_y, y3 - output_center_y
     local u0, v0, u1, v1, u2, v2, u3, v3 =
-        ps[1].x + w2, ps[1].y + h2, ps[2].x + w2, ps[2].y + h2, ps[3].x + w2, ps[3].y + h2, ps[4].x + w2, ps[4].y + h2
+        source_points[1].x + half_width,
+        source_points[1].y + half_height,
+        source_points[2].x + half_width,
+        source_points[2].y + half_height,
+        source_points[3].x + half_width,
+        source_points[3].y + half_height,
+        source_points[4].x + half_width,
+        source_points[4].y + half_height
 
     if AND(reverse_mode, 1) == 1 then
         u0, v0, u1, v1 = u1, v1, u0, v0
@@ -218,61 +286,89 @@ else
     local vertices = {}
     for i = 0, division_count - 1 do
         for j = 0, division_count - 1 do
-            local lx1 = (1 - ss ^ (dx + i / division_count)) / (1 - ss)
-            local lx2 = (1 - ss ^ (dx + (i + 1) / division_count)) / (1 - ss)
-            local qx = {}
+            local horizontal_ratio_1 = (1 - horizontal_perspective_ratio ^ (move_x + i / division_count))
+                / (1 - horizontal_perspective_ratio)
+            local horizontal_ratio_2 = (1 - horizontal_perspective_ratio ^ (move_x + (i + 1) / division_count))
+                / (1 - horizontal_perspective_ratio)
+            local horizontal_points = {}
 
-            if bmuki > 0 then
-                qx[1] = { x = ps[1].x + (ps[2].x - ps[1].x) * lx1, y = ps[1].y + (ps[2].y - ps[1].y) * lx1 }
-                qx[2] = { x = ps[1].x + (ps[2].x - ps[1].x) * lx2, y = ps[1].y + (ps[2].y - ps[1].y) * lx2 }
+            if horizontal_orientation > 0 then
+                horizontal_points[1] = {
+                    x = source_points[1].x + (source_points[2].x - source_points[1].x) * horizontal_ratio_1,
+                    y = source_points[1].y + (source_points[2].y - source_points[1].y) * horizontal_ratio_1,
+                }
+                horizontal_points[2] = {
+                    x = source_points[1].x + (source_points[2].x - source_points[1].x) * horizontal_ratio_2,
+                    y = source_points[1].y + (source_points[2].y - source_points[1].y) * horizontal_ratio_2,
+                }
             else
-                qx[2] = { x = ps[2].x + (ps[1].x - ps[2].x) * lx1, y = ps[2].y + (ps[1].y - ps[2].y) * lx1 }
-                qx[1] = { x = ps[2].x + (ps[1].x - ps[2].x) * lx2, y = ps[2].y + (ps[1].y - ps[2].y) * lx2 }
+                horizontal_points[2] = {
+                    x = source_points[2].x + (source_points[1].x - source_points[2].x) * horizontal_ratio_1,
+                    y = source_points[2].y + (source_points[1].y - source_points[2].y) * horizontal_ratio_1,
+                }
+                horizontal_points[1] = {
+                    x = source_points[2].x + (source_points[1].x - source_points[2].x) * horizontal_ratio_2,
+                    y = source_points[2].y + (source_points[1].y - source_points[2].y) * horizontal_ratio_2,
+                }
             end
 
-            local ly1 = (1 - tt ^ (dy + j / division_count)) / (1 - tt)
-            local ly2 = (1 - tt ^ (dy + (j + 1) / division_count)) / (1 - tt)
-            local qy = {}
+            local vertical_ratio_1 = (1 - vertical_perspective_ratio ^ (move_y + j / division_count))
+                / (1 - vertical_perspective_ratio)
+            local vertical_ratio_2 = (1 - vertical_perspective_ratio ^ (move_y + (j + 1) / division_count))
+                / (1 - vertical_perspective_ratio)
+            local vertical_points = {}
 
-            if cmuki > 0 then
-                qy[1] = { x = ps[1].x + (ps[4].x - ps[1].x) * ly1, y = ps[1].y + (ps[4].y - ps[1].y) * ly1 }
-                qy[2] = { x = ps[1].x + (ps[4].x - ps[1].x) * ly2, y = ps[1].y + (ps[4].y - ps[1].y) * ly2 }
+            if vertical_orientation > 0 then
+                vertical_points[1] = {
+                    x = source_points[1].x + (source_points[4].x - source_points[1].x) * vertical_ratio_1,
+                    y = source_points[1].y + (source_points[4].y - source_points[1].y) * vertical_ratio_1,
+                }
+                vertical_points[2] = {
+                    x = source_points[1].x + (source_points[4].x - source_points[1].x) * vertical_ratio_2,
+                    y = source_points[1].y + (source_points[4].y - source_points[1].y) * vertical_ratio_2,
+                }
             else
-                qy[2] = { x = ps[4].x + (ps[1].x - ps[4].x) * ly1, y = ps[4].y + (ps[1].y - ps[4].y) * ly1 }
-                qy[1] = { x = ps[4].x + (ps[1].x - ps[4].x) * ly2, y = ps[4].y + (ps[1].y - ps[4].y) * ly2 }
+                vertical_points[2] = {
+                    x = source_points[4].x + (source_points[1].x - source_points[4].x) * vertical_ratio_1,
+                    y = source_points[4].y + (source_points[1].y - source_points[4].y) * vertical_ratio_1,
+                }
+                vertical_points[1] = {
+                    x = source_points[4].x + (source_points[1].x - source_points[4].x) * vertical_ratio_2,
+                    y = source_points[4].y + (source_points[1].y - source_points[4].y) * vertical_ratio_2,
+                }
             end
 
-            local x0, y0 = cal_pos(qx[1], qy[1])
-            local x1, y1 = cal_pos(qx[2], qy[1])
-            local x2, y2 = cal_pos(qx[2], qy[2])
-            local x3, y3 = cal_pos(qx[1], qy[2])
+            local x0, y0 = map_position(horizontal_points[1], vertical_points[1])
+            local x1, y1 = map_position(horizontal_points[2], vertical_points[1])
+            local x2, y2 = map_position(horizontal_points[2], vertical_points[2])
+            local x3, y3 = map_position(horizontal_points[1], vertical_points[2])
             local u0, u1, v0, v1
 
-            if bmuki < 0 then
-                u1 = w * (1 - i / division_count)
-                u0 = w * (1 - (i + 1) / division_count)
+            if horizontal_orientation < 0 then
+                u1 = width * (1 - i / division_count)
+                u0 = width * (1 - (i + 1) / division_count)
             else
-                u0 = w * i / division_count
-                u1 = w * (i + 1) / division_count
+                u0 = width * i / division_count
+                u1 = width * (i + 1) / division_count
             end
 
-            if cmuki > 0 then
-                v0 = h * j / division_count
-                v1 = h * (j + 1) / division_count
+            if vertical_orientation > 0 then
+                v0 = height * j / division_count
+                v1 = height * (j + 1) / division_count
             else
-                v1 = h * (1 - j / division_count)
-                v0 = h * (1 - (j + 1) / division_count)
+                v1 = height * (1 - j / division_count)
+                v0 = height * (1 - (j + 1) / division_count)
             end
 
-            x0, x1, x2, x3 = x0 - cx, x1 - cx, x2 - cx, x3 - cx
-            y0, y1, y2, y3 = y0 - cy, y1 - cy, y2 - cy, y3 - cy
+            x0, x1, x2, x3 = x0 - output_center_x, x1 - output_center_x, x2 - output_center_x, x3 - output_center_x
+            y0, y1, y2, y3 = y0 - output_center_y, y1 - output_center_y, y2 - output_center_y, y3 - output_center_y
 
             if AND(reverse_mode, 1) == 1 then
-                u0, u1 = w - u0, w - u1
+                u0, u1 = width - u0, width - u1
             end
 
             if AND(reverse_mode, 2) == 2 then
-                v0, v1 = h - v0, h - v1
+                v0, v1 = height - v0, height - v1
             end
 
             vertices[#vertices + 1] = { x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, u0, v0, u1, v0, u1, v1, u0, v1 }
@@ -285,5 +381,5 @@ end
 
 obj.load("tempbuffer")
 
-obj.cx = obj.cx - cx
-obj.cy = obj.cy - cy
+obj.cx = obj.cx - output_center_x
+obj.cy = obj.cy - output_center_y

@@ -24,19 +24,19 @@ local track_intensity = 50
 local track_blur = 10
 
 ---$check:ベースカラー
-local basechk = 1
+local check_use_base_color = 1
 
 ---$color:色
-local col = 0xccccff
+local color = 0xccccff
 
 ---$track:位置％
 ---min=-5000
 ---max=5000
 ---step=0.1
-local dt = 0
+local position_percent = 0
 
 ---$value:位置オフセット
-local OFSET = { 0, 0, 0 }
+local position_offset = { 0, 0, 0 }
 
 ---$track:点滅
 ---min=0
@@ -44,13 +44,13 @@ local OFSET = { 0, 0, 0 }
 ---step=0.01
 local blink = 0.2
 
---hide@col:basechk==1
+--hide@color:check_use_base_color==1
 
-obj.copybuffer("tmp", "obj")
+obj.copybuffer("tempbuffer", "object")
 obj.setoption("drawtarget", "tempbuffer")
-obj.setoption("blend", CustomFlareMode)
-if basechk == 1 then
-    col = CustomFlareColor
+obj.setoption("blend", T_CUSTOM_FLARE_BLEND_MODE)
+if check_use_base_color == 1 then
+    color = T_CUSTOM_FLARE_COLOR
 end
 local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
@@ -58,14 +58,20 @@ if alpha > 1 then
 end
 alpha = alpha * track_intensity * 0.01
 local size = track_size
-local haba = track_width
+local ring_width = track_width
 local blur = track_blur
-dt = dt * 0.01
-obj.load("figure", "円", col, size, haba)
+position_percent = position_percent * 0.01
+obj.load("figure", "円", color, size, ring_width)
 obj.effect("ぼかし", "範囲", blur)
-ox = CustomFlareCX + dt * CustomFlaredX + OFSET[1] * CustomFlaredX * 0.01
-oy = CustomFlareCY + dt * CustomFlaredY + OFSET[2] * CustomFlaredY * 0.01
-oz = CustomFlareCZ + dt * CustomFlaredZ + OFSET[3] * CustomFlaredZ * 0.01
-obj.draw(ox, oy, oz, 1, alpha)
+local draw_x = T_CUSTOM_FLARE_CENTER_X
+    + position_percent * T_CUSTOM_FLARE_DELTA_X
+    + position_offset[1] * T_CUSTOM_FLARE_DELTA_X * 0.01
+local draw_y = T_CUSTOM_FLARE_CENTER_Y
+    + position_percent * T_CUSTOM_FLARE_DELTA_Y
+    + position_offset[2] * T_CUSTOM_FLARE_DELTA_Y * 0.01
+local draw_z = T_CUSTOM_FLARE_CENTER_Z
+    + position_percent * T_CUSTOM_FLARE_DELTA_Z
+    + position_offset[3] * T_CUSTOM_FLARE_DELTA_Z * 0.01
+obj.draw(draw_x, draw_y, draw_z, 1, alpha)
 obj.load("tempbuffer")
 obj.setoption("blend", 0)

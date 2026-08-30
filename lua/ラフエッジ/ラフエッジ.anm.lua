@@ -57,12 +57,12 @@ local change_speed = track_change_speed
 local noise_shape = select_shape - 1
 local random_seed = track_random_seed
 local w, h = obj.getpixel()
-obj.copybuffer("cache:ORI", "obj")
+obj.copybuffer("cache:ORI", "object")
 
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.load("四角形", 0xffffff, math.max(w, h))
 obj.draw()
-obj.copybuffer("obj", "tmp")
+obj.copybuffer("object", "tempbuffer")
 obj.effect(
     "ノイズ",
     "周期X",
@@ -101,7 +101,7 @@ obj.setoption("blend", 1)
 obj.draw()
 
 if not is_enabled(check_keep_border) then
-    obj.copybuffer("obj", "cache:ORI")
+    obj.copybuffer("object", "cache:ORI")
     obj.effect(
         "ディスプレイスメントマップ",
         "type",
@@ -116,10 +116,10 @@ if not is_enabled(check_keep_border) then
         deform_amount
     )
     obj.effect("反転", "透明度反転", 1)
-    obj.copybuffer("cache:MAP", "obj")
+    obj.copybuffer("cache:MAP", "object")
 end
 
-obj.copybuffer("obj", "cache:ORI")
+obj.copybuffer("object", "cache:ORI")
 obj.effect(
     "ディスプレイスメントマップ",
     "type",
@@ -135,12 +135,12 @@ obj.effect(
 )
 obj.effect("反転", "透明度反転", 1)
 
-obj.copybuffer("tmp", "cache:ORI")
+obj.copybuffer("tempbuffer", "cache:ORI")
 obj.setoption("blend", "alpha_sub")
 obj.draw()
 
 if not is_enabled(check_keep_border) then
-    obj.copybuffer("obj", "cache:MAP")
+    obj.copybuffer("object", "cache:MAP")
     obj.setoption("blend", "alpha_sub")
     obj.draw()
 end

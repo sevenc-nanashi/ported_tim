@@ -5,7 +5,7 @@
 ---min=0
 ---max=500
 ---step=0.1
-local track_size = 50
+local track_frame_size = 50
 
 ---$track:変形量
 ---min=0
@@ -46,15 +46,15 @@ local track_wave_division = 20
 local track_roughness_random = 30
 
 ---$value:中心＆マスク座標
-local Cen = { 0, 0, 50, 0 }
+local center_and_mask_coordinates = { 0, 0, 50, 0 }
 
 --group:マスク,false
 
 ---$figure:形状
-local Mfg = "円"
+local mask_figure = "円"
 
 ---$color:色
-local Mcl = 0xff0000
+local mask_color = 0xff0000
 
 ---$track:サイズ
 ---min=0
@@ -111,114 +111,124 @@ local check_mask_display = false
 --hide@track_deform_amount:check_map_display==1
 --hide@track_smoothness:check_map_display==1
 --hide@check_mask_display:check_map_display==1
---hide@Mcl:check_map_display==1
---hide@Mcl:check_mask_display==0
+--hide@mask_color:check_map_display==1
+--hide@mask_color:check_mask_display==0
 
-local Ratio = function(a, b, t)
-    local s = (2 * t + 1) * (t - 1) ^ 2
-    return s * a + (1 - s) * b
+local smooth_interpolate = function(start_value, end_value, progress)
+    local start_weight = (2 * progress + 1) * (progress - 1) ^ 2
+    return start_weight * start_value + (1 - start_weight) * end_value
 end
 
-local Cor = 1 + track_size * 0.01
-local Tra = track_deform_amount
-local Rot = track_rotation % 360
-local SpC = track_deform_speed * 0.01
-local Num = math.floor(track_wave_count)
-local spN = math.floor(track_wave_division)
-local RgRnd = track_roughness_random
-local StR = track_mask_size
-local Asp = track_mask_aspect
-local MsRt = track_mask_rotation
-local Blur = track_mask_blur
-local MS = math.floor(track_map_size)
-local BL = track_smoothness
+local expansion_scale = 1 + track_frame_size * 0.01
+local deformation_amount = track_deform_amount
+local rotation_degrees = track_rotation % 360
+local animation_speed = track_deform_speed * 0.01
+local wave_count = math.floor(track_wave_count)
+local wave_segment_count = math.floor(track_wave_division)
+local roughness_randomness = track_roughness_random
+local mask_size = track_mask_size
+local mask_aspect = track_mask_aspect
+local mask_rotation = track_mask_rotation
+local mask_blur = track_mask_blur
+local map_size = math.floor(track_map_size)
+local smoothness = track_smoothness
 local seed = math.floor(track_seed)
-local MapAP = check_map_display
-local check0 = check_mask_display
+local show_map = check_map_display
+local show_mask = check_mask_display
 
-RgRnd = RgRnd * 0.01
+roughness_randomness = roughness_randomness * 0.01
 seed = math.abs(seed)
 
-obj.setanchor("Cen", 2)
+obj.setanchor("center_and_mask_coordinates", 2)
 
-local w, h = obj.getpixel()
-local maxwh = math.max(w, h)
-local wh = maxwh * Cor
+local width, height = obj.getpixel()
+local max_dimension = math.max(width, height)
+local expanded_size = max_dimension * expansion_scale
 
-local Cx, Cy = Cen[1] / maxwh, Cen[2] / maxwh
-local Dx, Dy = Cen[3], Cen[4]
+local center_x, center_y =
+    center_and_mask_coordinates[1] / max_dimension, center_and_mask_coordinates[2] / max_dimension
+local mask_x, mask_y = center_and_mask_coordinates[3], center_and_mask_coordinates[4]
 
-local dw = math.floor((wh - w) / 2)
-local dh = math.floor((wh - h) / 2)
-obj.effect("領域拡張", "上", dh, "下", dh, "右", dw, "左", dw)
-obj.copybuffer("cache:ORI", "obj")
+local expand_x = math.floor((expanded_size - width) / 2)
+local expand_y = math.floor((expanded_size - height) / 2)
+obj.effect("領域拡張", "上", expand_y, "下", expand_y, "右", expand_x, "左", expand_x)
+obj.copybuffer("cache:ORI", "object")
 
-local ALL = Num * spN
-local Sp = {}
-local dR = {}
-local OT = obj.time * SpC
-local OT1 = math.floor(OT)
-local OT2 = OT - OT1
-for i = 0, Num - 1 do
-    local s0 = 1 - RgRnd * obj.rand(0, 2000, -(i + seed + 100), 1000 + OT1) * 0.001
-    local s1 = 1 - RgRnd * obj.rand(0, 2000, -(i + seed + 100), 1001 + OT1) * 0.001
-    Sp[i] = Ratio(s0, s1, OT2)
+local sample_count = wave_count * wave_segment_count
+local wave_roughness = {}
+local interpolated_roughness = {}
+local animation_time = obj.time * animation_speed
+local animation_frame = math.floor(animation_time)
+local animation_fraction = animation_time - animation_frame
+for i = 0, wave_count - 1 do
+    local start_roughness = 1
+        - roughness_randomness * obj.rand(0, 2000, -(i + seed + 100), 1000 + animation_frame) * 0.001
+    local end_roughness = 1
+        - roughness_randomness * obj.rand(0, 2000, -(i + seed + 100), 1001 + animation_frame) * 0.001
+    wave_roughness[i] = smooth_interpolate(start_roughness, end_roughness, animation_fraction)
 end
-Sp[Num] = Sp[0]
-local k = 0
-for i = 0, Num - 1 do
-    for j = 0, spN - 1 do
-        dR[k] = ((spN - j) * Sp[i] + j * Sp[i + 1]) / spN
-        k = k + 1
+wave_roughness[wave_count] = wave_roughness[0]
+local roughness_index = 0
+for i = 0, wave_count - 1 do
+    for j = 0, wave_segment_count - 1 do
+        interpolated_roughness[roughness_index] = (
+            (wave_segment_count - j) * wave_roughness[i] + j * wave_roughness[i + 1]
+        ) / wave_segment_count
+        roughness_index = roughness_index + 1
     end
 end
-local dA = {}
-for i = 0, ALL - 1 do
-    dA[i] = (1 + dR[i] * math.sin(i / spN * 2 * math.pi)) / 2
+local displacement_strengths = {}
+for i = 0, sample_count - 1 do
+    displacement_strengths[i] = (1 + interpolated_roughness[i] * math.sin(i / wave_segment_count * 2 * math.pi)) / 2
 end
-dA[ALL] = dA[0]
+displacement_strengths[sample_count] = displacement_strengths[0]
 
-obj.load("figure", "四角形", 0xffffff, MS)
+obj.load("figure", "四角形", 0xffffff, map_size)
 obj.pixeloption("type", "rgb")
-Cx, Cy = MS * (Cx / Cor + 0.5), MS * (Cy / Cor + 0.5)
-local MS2 = MS / 2
-local Rb = math.sqrt(math.max(Cx, MS - Cx) ^ 2 + math.max(Cy, MS - Cy) ^ 2)
-for i = 0, MS - 1 do
-    for j = 0, MS - 1 do
-        local x, y = i - Cx, j - Cy
-        local fai = math.atan2(y, x)
-        local r = 127.5 * math.sqrt(x * x + y * y) / Rb
-        local th = (((fai / math.pi + 1) / 2 - Rot / 360) % 1) * ALL
-        local th1 = math.floor(th)
-        local th2 = th - th1
-        if th2 > 0 then
-            r = r * Ratio(dA[th1], dA[th1 + 1], th2)
+center_x, center_y = map_size * (center_x / expansion_scale + 0.5), map_size * (center_y / expansion_scale + 0.5)
+local maximum_radius =
+    math.sqrt(math.max(center_x, map_size - center_x) ^ 2 + math.max(center_y, map_size - center_y) ^ 2)
+for i = 0, map_size - 1 do
+    for j = 0, map_size - 1 do
+        local x, y = i - center_x, j - center_y
+        local angle = math.atan2(y, x)
+        local radius = 127.5 * math.sqrt(x * x + y * y) / maximum_radius
+        local sample_position = (((angle / math.pi + 1) / 2 - rotation_degrees / 360) % 1) * sample_count
+        local sample_index = math.floor(sample_position)
+        local sample_fraction = sample_position - sample_index
+        if sample_fraction > 0 then
+            radius = radius
+                * smooth_interpolate(
+                    displacement_strengths[sample_index],
+                    displacement_strengths[sample_index + 1],
+                    sample_fraction
+                )
         else
-            r = r * dA[th1]
+            radius = radius * displacement_strengths[sample_index]
         end
-        local rr = 127.5 - r * math.cos(fai)
-        local gg = 127.5 - r * math.sin(fai)
-        obj.putpixel(i, j, rr, gg, 0, 255)
+        local red_value = 127.5 - radius * math.cos(angle)
+        local green_value = 127.5 - radius * math.sin(angle)
+        obj.putpixel(i, j, red_value, green_value, 0, 255)
     end
 end
-obj.copybuffer("tmp", "obj")
-if StR > 0 then
-    local MSC = MS / Cor
-    local Dx, Dy = Dx * MSC / maxwh + 0.5, Dy * MSC / maxwh
-    obj.load("figure", Mfg, RGB(127, 127, 127), StR)
-    if Asp > 0 then
-        obj.effect("リサイズ", "X", 100 - Asp)
-    elseif Asp < 0 then
-        obj.effect("リサイズ", "Y", 100 + Asp)
+obj.copybuffer("tempbuffer", "object")
+if mask_size > 0 then
+    local mask_scale = map_size / expansion_scale
+    local mask_x, mask_y = mask_x * mask_scale / max_dimension + 0.5, mask_y * mask_scale / max_dimension
+    obj.load("figure", mask_figure, RGB(127, 127, 127), mask_size)
+    if mask_aspect > 0 then
+        obj.effect("リサイズ", "X", 100 - mask_aspect)
+    elseif mask_aspect < 0 then
+        obj.effect("リサイズ", "Y", 100 + mask_aspect)
     end
-    obj.effect("ぼかし", "範囲", Blur)
+    obj.effect("ぼかし", "範囲", mask_blur)
     obj.setoption("drawtarget", "tempbuffer")
-    obj.draw(Dx, Dy, 0, MSC / maxwh, 1, 0, 0, MsRt)
+    obj.draw(mask_x, mask_y, 0, mask_scale / max_dimension, 1, 0, 0, mask_rotation)
 end
 
-if not MapAP then
-    obj.copybuffer("obj", "cache:ORI")
-    local Rf = Tra * Cor
+if not show_map then
+    obj.copybuffer("object", "cache:ORI")
+    local displacement_amount = deformation_amount * expansion_scale
     obj.effect(
         "ディスプレイスメントマップ",
         "type",
@@ -228,25 +238,25 @@ if not MapAP then
         "元のサイズに合わせる",
         1,
         "param0",
-        Rf,
+        displacement_amount,
         "param1",
-        Rf,
+        displacement_amount,
         "ぼかし",
-        BL
+        smoothness
     )
-    if check0 then
-        obj.copybuffer("tmp", "obj")
-        obj.load("figure", Mfg, Mcl, StR)
-        if Asp > 0 then
-            obj.effect("リサイズ", "X", 100 - Asp)
-        elseif Asp < 0 then
-            obj.effect("リサイズ", "Y", 100 + Asp)
+    if show_mask then
+        obj.copybuffer("tempbuffer", "object")
+        obj.load("figure", mask_figure, mask_color, mask_size)
+        if mask_aspect > 0 then
+            obj.effect("リサイズ", "X", 100 - mask_aspect)
+        elseif mask_aspect < 0 then
+            obj.effect("リサイズ", "Y", 100 + mask_aspect)
         end
-        obj.effect("ぼかし", "範囲", Blur)
+        obj.effect("ぼかし", "範囲", mask_blur)
         obj.setoption("drawtarget", "tempbuffer")
-        obj.draw(Dx, Dy, 0, 1, 0.75, 0, 0, MsRt)
-        obj.copybuffer("obj", "tmp")
+        obj.draw(mask_x, mask_y, 0, 1, 0.75, 0, 0, mask_rotation)
+        obj.copybuffer("object", "tempbuffer")
     end
 else
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
 end

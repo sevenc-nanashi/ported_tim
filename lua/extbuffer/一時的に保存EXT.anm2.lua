@@ -5,13 +5,13 @@
 ---step=1
 local track_image_id = 0
 ---$check:非表示
-local clear = false
+local hide_source = false
 
 local tim2 = obj.module("tim2")
 
-local userdata, w, h = obj.getpixeldata("object")
-tim2.extbuffer_save_buffer(track_image_id, userdata, w, h)
+local pixel_data, width, height = obj.getpixeldata("object")
+tim2.extbuffer_save_buffer(track_image_id, pixel_data, width, height)
 
-if clear then
+if hide_source then
     obj.alpha = 0
 end

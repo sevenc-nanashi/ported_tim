@@ -92,142 +92,174 @@ end
 
 obj.setanchor("track_base_x,track_base_y", 1)
 
-local TK = function(Z)
-    if Z >= 1 then
+local influence_curve = function(normalized_distance)
+    if normalized_distance >= 1 then
         return 0
     else
-        return (2 * Z + 1) * (Z - 1) ^ 2
+        return (2 * normalized_distance + 1) * (normalized_distance - 1) ^ 2
     end
 end
 
-if SwarpT_N then
-    SwarpT_N = SwarpT_N + 1
+if T_SIMPLE_WARP_POINT_COUNT then
+    T_SIMPLE_WARP_POINT_COUNT = T_SIMPLE_WARP_POINT_COUNT + 1
 else
-    SwarpT_N = 1
-    SwarpT_X0 = {}
-    SwarpT_Y0 = {}
-    SwarpT_X1 = {}
-    SwarpT_Y1 = {}
-    SwarpT_AT = {}
-    SwarpT_DF = {}
+    T_SIMPLE_WARP_POINT_COUNT = 1
+    T_SIMPLE_WARP_BASE_X = {}
+    T_SIMPLE_WARP_BASE_Y = {}
+    T_SIMPLE_WARP_TARGET_X = {}
+    T_SIMPLE_WARP_TARGET_Y = {}
+    T_SIMPLE_WARP_AFFECT_RADIUS = {}
+    T_SIMPLE_WARP_FALLOFF_RADIUS = {}
 end
 
-SwarpT_X0[SwarpT_N] = track_base_x
-SwarpT_Y0[SwarpT_N] = track_base_y
-SwarpT_X1[SwarpT_N] = track_move_x
-SwarpT_Y1[SwarpT_N] = track_move_y
+T_SIMPLE_WARP_BASE_X[T_SIMPLE_WARP_POINT_COUNT] = track_base_x
+T_SIMPLE_WARP_BASE_Y[T_SIMPLE_WARP_POINT_COUNT] = track_base_y
+T_SIMPLE_WARP_TARGET_X[T_SIMPLE_WARP_POINT_COUNT] = track_move_x
+T_SIMPLE_WARP_TARGET_Y[T_SIMPLE_WARP_POINT_COUNT] = track_move_y
 if select_move_coordinates == 1 then
-    SwarpT_X1[SwarpT_N] = SwarpT_X1[SwarpT_N] + SwarpT_X0[SwarpT_N]
-    SwarpT_Y1[SwarpT_N] = SwarpT_Y1[SwarpT_N] + SwarpT_Y0[SwarpT_N]
+    T_SIMPLE_WARP_TARGET_X[T_SIMPLE_WARP_POINT_COUNT] = T_SIMPLE_WARP_TARGET_X[T_SIMPLE_WARP_POINT_COUNT]
+        + T_SIMPLE_WARP_BASE_X[T_SIMPLE_WARP_POINT_COUNT]
+    T_SIMPLE_WARP_TARGET_Y[T_SIMPLE_WARP_POINT_COUNT] = T_SIMPLE_WARP_TARGET_Y[T_SIMPLE_WARP_POINT_COUNT]
+        + T_SIMPLE_WARP_BASE_Y[T_SIMPLE_WARP_POINT_COUNT]
 end
-SwarpT_AT[SwarpT_N] = track_affect_radius
-SwarpT_DF[SwarpT_N] = track_falloff_radius
+T_SIMPLE_WARP_AFFECT_RADIUS[T_SIMPLE_WARP_POINT_COUNT] = track_affect_radius
+T_SIMPLE_WARP_FALLOFF_RADIUS[T_SIMPLE_WARP_POINT_COUNT] = track_falloff_radius
 
 if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
-    local w, h = obj.getpixel()
-    local ox = obj.ox
-    local oy = obj.oy
-    local oz = obj.oz
-    local cx = obj.cx
-    local cy = obj.cy
-    local cz = obj.cz
+    local width, height = obj.getpixel()
+    local original_origin_x = obj.ox
+    local original_origin_y = obj.oy
+    local original_origin_z = obj.oz
+    local original_center_x = obj.cx
+    local original_center_y = obj.cy
+    local original_center_z = obj.cz
 
-    local w2 = w / 2
-    local h2 = h / 2
+    local half_width = width / 2
+    local half_height = height / 2
 
     if is_enabled(check_center_xy_base) then
-        for k = 1, SwarpT_N do
-            SwarpT_X0[k] = SwarpT_X0[k] + cx
-            SwarpT_Y0[k] = SwarpT_Y0[k] + cy
-            SwarpT_X1[k] = SwarpT_X1[k] + cx
-            SwarpT_Y1[k] = SwarpT_Y1[k] + cy
+        for k = 1, T_SIMPLE_WARP_POINT_COUNT do
+            T_SIMPLE_WARP_BASE_X[k] = T_SIMPLE_WARP_BASE_X[k] + original_center_x
+            T_SIMPLE_WARP_BASE_Y[k] = T_SIMPLE_WARP_BASE_Y[k] + original_center_y
+            T_SIMPLE_WARP_TARGET_X[k] = T_SIMPLE_WARP_TARGET_X[k] + original_center_x
+            T_SIMPLE_WARP_TARGET_Y[k] = T_SIMPLE_WARP_TARGET_Y[k] + original_center_y
         end
     end
 
-    obj.setoption("drawtarget", "tempbuffer", w, h)
+    obj.setoption("drawtarget", "tempbuffer", width, height)
     obj.setoption("blend", "alpha_add")
 
-    local dw = w / track_division_count
-    local dh = h / track_division_count
+    local cell_width = width / track_division_count
+    local cell_height = height / track_division_count
 
-    local dx = {}
-    local dy = {}
+    local displacement_x = {}
+    local displacement_y = {}
     for i = 0, track_division_count do
-        dx[i] = {}
-        dy[i] = {}
+        displacement_x[i] = {}
+        displacement_y[i] = {}
         for j = 0, track_division_count do
-            dx[i][j] = 0
-            dy[i][j] = 0
+            displacement_x[i][j] = 0
+            displacement_y[i][j] = 0
         end
     end
 
     -- ズレ量を計算
     for i = 0, track_division_count do
-        local XX = i * dw - w2
+        local grid_x = i * cell_width - half_width
         for j = 0, track_division_count do
-            local rsumx = 0
-            local rsumy = 0
+            local accumulated_x = 0
+            local accumulated_y = 0
 
-            local YY = j * dh - h2
-            for s = 1, SwarpT_N do
-                local RR = ((XX - SwarpT_X0[s]) ^ 2 + (YY - SwarpT_Y0[s]) ^ 2) ^ 0.5
+            local grid_y = j * cell_height - half_height
+            for control_point_index = 1, T_SIMPLE_WARP_POINT_COUNT do
+                local distance = (
+                    (grid_x - T_SIMPLE_WARP_BASE_X[control_point_index]) ^ 2
+                    + (grid_y - T_SIMPLE_WARP_BASE_Y[control_point_index]) ^ 2
+                ) ^ 0.5
 
-                local A = TK(RR / SwarpT_AT[s])
+                local influence = influence_curve(distance / T_SIMPLE_WARP_AFFECT_RADIUS[control_point_index])
                 if is_enabled(check_fix_boundary) then -- 境界補正
-                    if XX < SwarpT_X0[s] then
-                        A = A * TK((SwarpT_X0[s] - XX) / (SwarpT_X0[s] + w2))
+                    if grid_x < T_SIMPLE_WARP_BASE_X[control_point_index] then
+                        influence = influence
+                            * influence_curve(
+                                (T_SIMPLE_WARP_BASE_X[control_point_index] - grid_x)
+                                    / (T_SIMPLE_WARP_BASE_X[control_point_index] + half_width)
+                            )
                     else
-                        A = A * TK((SwarpT_X0[s] - XX) / (SwarpT_X0[s] - w2))
+                        influence = influence
+                            * influence_curve(
+                                (T_SIMPLE_WARP_BASE_X[control_point_index] - grid_x)
+                                    / (T_SIMPLE_WARP_BASE_X[control_point_index] - half_width)
+                            )
                     end
-                    if YY < SwarpT_Y0[s] then
-                        A = A * TK((SwarpT_Y0[s] - YY) / (SwarpT_Y0[s] + h2))
+                    if grid_y < T_SIMPLE_WARP_BASE_Y[control_point_index] then
+                        influence = influence
+                            * influence_curve(
+                                (T_SIMPLE_WARP_BASE_Y[control_point_index] - grid_y)
+                                    / (T_SIMPLE_WARP_BASE_Y[control_point_index] + half_height)
+                            )
                     else
-                        A = A * TK((SwarpT_Y0[s] - YY) / (SwarpT_Y0[s] - h2))
+                        influence = influence
+                            * influence_curve(
+                                (T_SIMPLE_WARP_BASE_Y[control_point_index] - grid_y)
+                                    / (T_SIMPLE_WARP_BASE_Y[control_point_index] - half_height)
+                            )
                     end
                 end
 
-                local B = 1
-                for k = 1, SwarpT_N do
-                    if k ~= s then
-                        local RR2 = ((XX - SwarpT_X0[k]) ^ 2 + (YY - SwarpT_Y0[k]) ^ 2) ^ 0.5
-                        B = B * (1 - TK(RR2 / SwarpT_DF[k]))
+                local isolation_weight = 1
+                for k = 1, T_SIMPLE_WARP_POINT_COUNT do
+                    if k ~= control_point_index then
+                        local other_distance = (
+                            (grid_x - T_SIMPLE_WARP_BASE_X[k]) ^ 2 + (grid_y - T_SIMPLE_WARP_BASE_Y[k]) ^ 2
+                        ) ^ 0.5
+                        isolation_weight = isolation_weight
+                            * (1 - influence_curve(other_distance / T_SIMPLE_WARP_FALLOFF_RADIUS[k]))
                     end
                 end
 
-                if RR > 0 then
-                    rsumx = rsumx + A * (SwarpT_X1[s] - SwarpT_X0[s]) * B
-                    rsumy = rsumy + A * (SwarpT_Y1[s] - SwarpT_Y0[s]) * B
+                if distance > 0 then
+                    accumulated_x = accumulated_x
+                        + influence
+                            * (T_SIMPLE_WARP_TARGET_X[control_point_index] - T_SIMPLE_WARP_BASE_X[control_point_index])
+                            * isolation_weight
+                    accumulated_y = accumulated_y
+                        + influence
+                            * (T_SIMPLE_WARP_TARGET_Y[control_point_index] - T_SIMPLE_WARP_BASE_Y[control_point_index])
+                            * isolation_weight
                 else
-                    rsumx = SwarpT_X1[s] - SwarpT_X0[s]
-                    rsumy = SwarpT_Y1[s] - SwarpT_Y0[s]
+                    accumulated_x = T_SIMPLE_WARP_TARGET_X[control_point_index]
+                        - T_SIMPLE_WARP_BASE_X[control_point_index]
+                    accumulated_y = T_SIMPLE_WARP_TARGET_Y[control_point_index]
+                        - T_SIMPLE_WARP_BASE_Y[control_point_index]
                 end
-                if RR == 0 then
+                if distance == 0 then
                     break
                 end
             end --s
-            dx[i][j] = rsumx
-            dy[i][j] = rsumy
+            displacement_x[i][j] = accumulated_x
+            displacement_y[i][j] = accumulated_y
         end
     end
 
     -- 表示
     local polygons = {}
     for i = 0, track_division_count - 1 do
-        local u0 = i * dw
-        local u1 = (i + 1) * dw
+        local u0 = i * cell_width
+        local u1 = (i + 1) * cell_width
         for j = 0, track_division_count - 1 do
-            local v0 = j * dh
-            local v1 = (j + 1) * dh
+            local v0 = j * cell_height
+            local v1 = (j + 1) * cell_height
 
-            local px0 = u0 + dx[i][j] - w2
-            local px1 = u1 + dx[i + 1][j] - w2
-            local px2 = u1 + dx[i + 1][j + 1] - w2
-            local px3 = u0 + dx[i][j + 1] - w2
+            local px0 = u0 + displacement_x[i][j] - half_width
+            local px1 = u1 + displacement_x[i + 1][j] - half_width
+            local px2 = u1 + displacement_x[i + 1][j + 1] - half_width
+            local px3 = u0 + displacement_x[i][j + 1] - half_width
 
-            local py0 = v0 + dy[i][j] - h2
-            local py1 = v0 + dy[i + 1][j] - h2
-            local py2 = v1 + dy[i + 1][j + 1] - h2
-            local py3 = v1 + dy[i][j + 1] - h2
+            local py0 = v0 + displacement_y[i][j] - half_height
+            local py1 = v0 + displacement_y[i + 1][j] - half_height
+            local py2 = v1 + displacement_y[i + 1][j + 1] - half_height
+            local py3 = v1 + displacement_y[i][j + 1] - half_height
 
             table.insert(
                 polygons,
@@ -239,58 +271,65 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
 
     -- 枠表示
     if is_enabled(check_show_path) and obj.getinfo("saving") == false then
-        for i = 1, SwarpT_N do
+        for i = 1, T_SIMPLE_WARP_POINT_COUNT do
             obj.load("figure", "円", move_color, track_display_size)
-            obj.draw(SwarpT_X1[i], SwarpT_Y1[i], 0)
+            obj.draw(T_SIMPLE_WARP_TARGET_X[i], T_SIMPLE_WARP_TARGET_Y[i], 0)
 
-            local sr = ((SwarpT_X0[i] - SwarpT_X1[i]) ^ 2 + (SwarpT_Y0[i] - SwarpT_Y1[i]) ^ 2) ^ 0.5
-            local u1 = track_display_size / 2 * (SwarpT_Y0[i] - SwarpT_Y1[i]) / sr + SwarpT_X0[i]
-            local v1 = track_display_size / 2 * (SwarpT_X1[i] - SwarpT_X0[i]) / sr + SwarpT_Y0[i]
-            local u2 = -track_display_size / 2 * (SwarpT_Y0[i] - SwarpT_Y1[i]) / sr + SwarpT_X0[i]
-            local v2 = -track_display_size / 2 * (SwarpT_X1[i] - SwarpT_X0[i]) / sr + SwarpT_Y0[i]
+            local path_length = (
+                (T_SIMPLE_WARP_BASE_X[i] - T_SIMPLE_WARP_TARGET_X[i]) ^ 2
+                + (T_SIMPLE_WARP_BASE_Y[i] - T_SIMPLE_WARP_TARGET_Y[i]) ^ 2
+            ) ^ 0.5
+            local u1 = track_display_size / 2 * (T_SIMPLE_WARP_BASE_Y[i] - T_SIMPLE_WARP_TARGET_Y[i]) / path_length
+                + T_SIMPLE_WARP_BASE_X[i]
+            local v1 = track_display_size / 2 * (T_SIMPLE_WARP_TARGET_X[i] - T_SIMPLE_WARP_BASE_X[i]) / path_length
+                + T_SIMPLE_WARP_BASE_Y[i]
+            local u2 = -track_display_size / 2 * (T_SIMPLE_WARP_BASE_Y[i] - T_SIMPLE_WARP_TARGET_Y[i]) / path_length
+                + T_SIMPLE_WARP_BASE_X[i]
+            local v2 = -track_display_size / 2 * (T_SIMPLE_WARP_TARGET_X[i] - T_SIMPLE_WARP_BASE_X[i]) / path_length
+                + T_SIMPLE_WARP_BASE_Y[i]
 
             obj.load("figure", "四角形", move_color, 100)
             obj.drawpoly(
                 u1,
                 v1,
                 0,
-                SwarpT_X1[i],
-                SwarpT_Y1[i],
+                T_SIMPLE_WARP_TARGET_X[i],
+                T_SIMPLE_WARP_TARGET_Y[i],
                 0,
-                SwarpT_X1[i],
-                SwarpT_Y1[i],
+                T_SIMPLE_WARP_TARGET_X[i],
+                T_SIMPLE_WARP_TARGET_Y[i],
                 0,
                 u2,
                 v2,
                 0,
                 0,
                 0,
-                w,
+                width,
                 0,
-                w,
-                h,
+                width,
+                height,
                 0,
-                h
+                height
             )
 
             obj.setfont("", track_display_size * 2, 1, text_color, 0x0)
             obj.load("text", i)
-            obj.draw(SwarpT_X0[i], SwarpT_Y0[i], 0)
+            obj.draw(T_SIMPLE_WARP_BASE_X[i], T_SIMPLE_WARP_BASE_Y[i], 0)
 
-            obj.load("figure", "円", affect_color, 2 * SwarpT_AT[i], track_line_width)
-            obj.draw(SwarpT_X0[i], SwarpT_Y0[i], 0)
+            obj.load("figure", "円", affect_color, 2 * T_SIMPLE_WARP_AFFECT_RADIUS[i], track_line_width)
+            obj.draw(T_SIMPLE_WARP_BASE_X[i], T_SIMPLE_WARP_BASE_Y[i], 0)
 
-            obj.load("figure", "円", falloff_color, 2 * SwarpT_DF[i], track_line_width)
-            obj.draw(SwarpT_X0[i], SwarpT_Y0[i], 0)
+            obj.load("figure", "円", falloff_color, 2 * T_SIMPLE_WARP_FALLOFF_RADIUS[i], track_line_width)
+            obj.draw(T_SIMPLE_WARP_BASE_X[i], T_SIMPLE_WARP_BASE_Y[i], 0)
         end
     end
 
-    SwarpT_N = 0
+    T_SIMPLE_WARP_POINT_COUNT = 0
     obj.load("tempbuffer")
-    obj.ox = ox
-    obj.oy = oy
-    obj.oz = oz
-    obj.cx = cx
-    obj.cy = cy
-    obj.cz = cz
+    obj.ox = original_origin_x
+    obj.oy = original_origin_y
+    obj.oz = original_origin_z
+    obj.cx = original_center_x
+    obj.cy = original_center_y
+    obj.cz = original_center_z
 end

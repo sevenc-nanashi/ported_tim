@@ -1,4 +1,4 @@
---label:${ROOT_CATEGORY}\加工\@T_Filter_Module
+--label:${ROOT_CATEGORY}\加工\@t_filter_module
 --filter
 --group:前処理,true
 
@@ -27,7 +27,7 @@ local track_pen_pressure = 50
 local track_threshold = 0
 
 ---$check:しきい値を自動計算
-local auto_threshold = true
+local check_auto_threshold = true
 
 --group:仕上げ,true
 
@@ -50,7 +50,7 @@ local color_shadow = 0x0
 local color_highlight = 0xffffff
 
 ---$check:シード固定
-local fix_seed = true
+local check_fix_seed = true
 
 ---$track:シード
 ---min=0
@@ -60,9 +60,9 @@ local track_seed = 0
 
 --group:
 
---hide@track_threshold:auto_threshold==1
+--hide@track_threshold:check_auto_threshold==1
 
-local T_Filter_Module = obj.module("tim2")
+local t_filter_module = obj.module("tim2")
 local seed = track_seed
 local length = track_length
 
@@ -73,7 +73,7 @@ local length = track_length
 ---$include "./shaders/chalk_charcoal.hlsl"
 ]]
 
-if not fix_seed then
+if not check_fix_seed then
     seed = seed + obj.time * obj.framerate
 end
 if length < 1 then
@@ -84,9 +84,9 @@ end
 
 obj.effect("単色化")
 local threshold = track_threshold
-if auto_threshold then
+if check_auto_threshold then
     local userdata, w, h = obj.getpixeldata("object", "bgra")
-    threshold = T_Filter_Module.filter_preprocessing_threshold(userdata, w, h)
+    threshold = t_filter_module.filter_preprocessing_threshold(userdata, w, h)
 end
 obj.pixelshader("chalk_charcoal_preprocessing", "object", "object", {
     track_charcoal_apply * 0.01,
@@ -103,15 +103,15 @@ obj.effect("ぼかし", "範囲", 3, "サイズ固定", 1)
 obj.setoption("blend", 5)
 obj.draw(0, 0, 0, 1, track_noise_power * 0.01)
 obj.load("tempbuffer")
-local r1, g1, b1 = RGB(color_shadow)
-local r2, g2, b2 = RGB(color_highlight)
+local shadow_red, shadow_green, shadow_blue = RGB(color_shadow)
+local highlight_red, highlight_green, highlight_blue = RGB(color_highlight)
 obj.pixelshader("chalk_charcoal", "object", "object", {
     length,
-    r1 / 255,
-    g1 / 255,
-    b1 / 255,
-    r2 / 255,
-    g2 / 255,
-    b2 / 255,
+    shadow_red / 255,
+    shadow_green / 255,
+    shadow_blue / 255,
+    highlight_red / 255,
+    highlight_green / 255,
+    highlight_blue / 255,
 })
 obj.setoption("blend", 0)

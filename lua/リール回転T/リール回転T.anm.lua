@@ -30,7 +30,7 @@ local track_blur = 100
 local select_base_axis = 0
 
 ---$check:開始位置角度自動調整
-local chk_auto_adjust_start_angle = false
+local check_auto_adjust_start_angle = false
 
 ---$track:開始オーバー補正％
 ---min=0
@@ -74,78 +74,84 @@ local track_time_range_start_percent = 0
 ---step=0.1
 local track_time_range_end_percent = 100
 
-local norm_pos = function(t)
-    return t * t * (3 - 2 * t)
+local smooth_position = function(time_progress)
+    return time_progress * time_progress * (3 - 2 * time_progress)
 end
-local norm_spd = function(t)
-    return 6 * t * (1 - t)
-end
-
-local w, h = obj.getpixel()
-local t = obj.time / obj.totaltime
-
-local y0 = track_open_position_percent * 0.01
-local dy = track_over_percent * 0.01
-local deg = track_direction
-local bl = track_blur * 0.01
-
-local cos = math.cos(deg * math.pi / 180)
-local sin = math.sin(-deg * math.pi / 180)
-local bs = (select_base_axis == 1) and w or h
-
-if chk_auto_adjust_start_angle then
-    local x = bs * y0 * sin
-    local y = bs * y0 * cos
-    x = w * math.floor((x + w * 0.5) / w)
-    y = h * math.floor((y + h * 0.5) / h)
-    local r = math.sqrt(x * x + y * y)
-    y0 = r / bs
-    deg = math.atan2(x, y)
-    cos = math.cos(deg)
-    sin = math.sin(deg)
-    deg = 180 - deg * 180 / math.pi
+local smooth_speed = function(time_progress)
+    return 6 * time_progress * (1 - time_progress)
 end
 
-local dy1 = dy * track_start_over_correction_percent * 0.01
-local dy2 = dy * track_end_over_correction_percent * 0.01
+local image_width, image_height = obj.getpixel()
+local time_progress = obj.time / obj.totaltime
 
-local dt1 = track_start_over_time_percent * 0.01
-local dt2 = track_end_over_time_percent * 0.01
+local initial_position = track_open_position_percent * 0.01
+local overshoot_amount = track_over_percent * 0.01
+local direction_degrees = track_direction
+local blur_ratio = track_blur * 0.01
 
-local tm1 = math.max(0, math.min(1, track_time_range_start_percent * 0.01))
-local tm2 = math.max(0, math.min(1, track_time_range_end_percent * 0.01))
-t = tm1 * (1 - t) + t * tm2
+local direction_cosine = math.cos(direction_degrees * math.pi / 180)
+local direction_sine = math.sin(-direction_degrees * math.pi / 180)
+local base_size = (select_base_axis == 1) and image_width or image_height
 
-local ofs = track_offset_percent * 0.01
+if check_auto_adjust_start_angle then
+    local x = base_size * initial_position * direction_sine
+    local y = base_size * initial_position * direction_cosine
+    x = image_width * math.floor((x + image_width * 0.5) / image_width)
+    y = image_height * math.floor((y + image_height * 0.5) / image_height)
+    local adjusted_distance = math.sqrt(x * x + y * y)
+    initial_position = adjusted_distance / base_size
+    direction_degrees = math.atan2(x, y)
+    direction_cosine = math.cos(direction_degrees)
+    direction_sine = math.sin(direction_degrees)
+    direction_degrees = 180 - direction_degrees * 180 / math.pi
+end
 
-bl = bl * (tm2 - tm1) / (obj.totaltime * obj.framerate)
+local start_overshoot = overshoot_amount * track_start_over_correction_percent * 0.01
+local end_overshoot = overshoot_amount * track_end_over_correction_percent * 0.01
 
-local pos
-if t < dt1 and dt1 ~= 0 then
-    t = t / dt1
-    pos = y0 + dy1 * norm_pos(t) + ofs
-    bl = bl * dy1 * norm_spd(t) / dt1
-elseif t > 1 - dt2 and dt2 ~= 0 then
-    t = (t - 1 + dt2) / dt2
-    pos = -dy2 * (1 - norm_pos(t)) + ofs
-    bl = bl * dy2 * norm_spd(t) / dt2
+local start_overshoot_duration = track_start_over_time_percent * 0.01
+local end_overshoot_duration = track_end_over_time_percent * 0.01
+
+local time_range_start = math.max(0, math.min(1, track_time_range_start_percent * 0.01))
+local time_range_end = math.max(0, math.min(1, track_time_range_end_percent * 0.01))
+time_progress = time_range_start * (1 - time_progress) + time_progress * time_range_end
+
+local position_offset = track_offset_percent * 0.01
+
+blur_ratio = blur_ratio * (time_range_end - time_range_start) / (obj.totaltime * obj.framerate)
+
+local reel_position
+if time_progress < start_overshoot_duration and start_overshoot_duration ~= 0 then
+    time_progress = time_progress / start_overshoot_duration
+    reel_position = initial_position + start_overshoot * smooth_position(time_progress) + position_offset
+    blur_ratio = blur_ratio * start_overshoot * smooth_speed(time_progress) / start_overshoot_duration
+elseif time_progress > 1 - end_overshoot_duration and end_overshoot_duration ~= 0 then
+    time_progress = (time_progress - 1 + end_overshoot_duration) / end_overshoot_duration
+    reel_position = -end_overshoot * (1 - smooth_position(time_progress)) + position_offset
+    blur_ratio = blur_ratio * end_overshoot * smooth_speed(time_progress) / end_overshoot_duration
 else
-    t = (t - dt1) / (1 - dt1 - dt2)
-    pos = y0 + dy1 - (y0 + dy1 + dy2) * norm_pos(t) + ofs
-    bl = bl * (y0 + dy1 + dy2) * norm_spd(t) / (1 - dt1 - dt2)
+    time_progress = (time_progress - start_overshoot_duration) / (1 - start_overshoot_duration - end_overshoot_duration)
+    reel_position = initial_position
+        + start_overshoot
+        - (initial_position + start_overshoot + end_overshoot) * smooth_position(time_progress)
+        + position_offset
+    blur_ratio = blur_ratio
+        * (initial_position + start_overshoot + end_overshoot)
+        * smooth_speed(time_progress)
+        / (1 - start_overshoot_duration - end_overshoot_duration)
 end
-bl = math.abs(bl / 2)
+blur_ratio = math.abs(blur_ratio / 2)
 
-obj.setoption("drawtarget", "tempbuffer", w, h)
+obj.setoption("drawtarget", "tempbuffer", image_width, image_height)
 
-local posy = bs * pos * cos
-local posx = bs * pos * sin
-posx = (posx % w)
-posy = (posy % h)
+local draw_position_y = base_size * reel_position * direction_cosine
+local draw_position_x = base_size * reel_position * direction_sine
+draw_position_x = (draw_position_x % image_width)
+draw_position_y = (draw_position_y % image_height)
 
-obj.draw(posx, posy)
-obj.draw(posx, posy - h)
-obj.draw(posx - w, posy)
-obj.draw(posx - w, posy - h)
+obj.draw(draw_position_x, draw_position_y)
+obj.draw(draw_position_x, draw_position_y - image_height)
+obj.draw(draw_position_x - image_width, draw_position_y)
+obj.draw(draw_position_x - image_width, draw_position_y - image_height)
 obj.load("tempbuffer")
-obj.effect("方向ブラー", "角度", deg, "範囲", bl * bs, "サイズ固定", 1)
+obj.effect("方向ブラー", "角度", direction_degrees, "範囲", blur_ratio * base_size, "サイズ固定", 1)

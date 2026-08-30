@@ -36,29 +36,29 @@ local track_error_alpha = 50
 local track_random_seed = 0
 
 ---$value:拡大率変動[%]
-local zoomt = { 100, 100, 100 }
+local scale_values = { 100, 100, 100 }
 
 ---$value:角度変動
-local rott = { 0, 0, 0 }
+local rotation_values = { 0, 0, 0 }
 
 ---$value:透明度変動[%]
-local alpt = { 0, 0, 0 }
+local alpha_values = { 0, 0, 0 }
 
-T_strokeTM_GosaX = track_error_x
-T_strokeTM_GosaY = track_error_y
-T_strokeTM_GosaS = track_error_size
-T_strokeTM_GosaR = track_error_angle
-T_strokeTM_GosaA = track_error_alpha
-T_strokeTM_seed = track_random_seed
-T_strokeTM_zoomt = zoomt
-T_strokeTM_rott = rott
-T_strokeTM_alpt = alpt
-T_strokeTM_rnd = 1
+T_STROKE_ERROR_X = track_error_x
+T_STROKE_ERROR_Y = track_error_y
+T_STROKE_ERROR_SCALE = track_error_size
+T_STROKE_ERROR_ROTATION = track_error_angle
+T_STROKE_ERROR_ALPHA = track_error_alpha
+T_STROKE_SEED = track_random_seed
+T_STROKE_ZOOM_VALUES = scale_values
+T_STROKE_ROTATION_VALUES = rotation_values
+T_STROKE_ALPHA_VALUES = alpha_values
+T_STROKE_RANDOM_ENABLED = 1
 
 ---$embed
 local common = require("common")
 if common.is_last_chain() then
-    T_stroke_f()
-    T_strokeTM_ancB = nil
-    T_strokeTM_N = nil
+    T_STROKE_DRAW()
+    T_STROKE_ANCHORS = nil
+    T_STROKE_ANCHOR_COUNT = nil
 end

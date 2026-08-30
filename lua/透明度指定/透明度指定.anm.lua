@@ -11,16 +11,16 @@ local track_alpha_layer = 1
 ---G=2
 ---B=3
 ---グレー=4
-local track_target_method = 0
+local select_target_channel = 0
 
 ---$check:エフェクト適用
-local effect = 1
+local check_apply_effects = 1
 
 ---$check:サイズを揃える
-local cksize = 1
+local check_match_size = 1
 
 ---$check:透明度反転
-local check0 = false
+local check_invert_alpha = false
 
 --[[
 指定方法
@@ -34,24 +34,37 @@ local check0 = false
 ---$include "./shaders/set_alpha_from_channel.hlsl"
 ]]
 
-local w0, h0 = obj.getpixel()
+local original_width, original_height = obj.getpixel()
 obj.copybuffer("cache:original", "object")
-if obj.layer == track_alpha_layer and effect == 1 then
+if obj.layer == track_alpha_layer and check_apply_effects == 1 then
     error("エフェクトが有効の場合、自分自身をαレイヤーに指定することはできません。")
 end
-obj.load("layer", track_alpha_layer, (effect == 1))
+obj.load("layer", track_alpha_layer, (check_apply_effects == 1))
 obj.pixelshader("set_alpha_from_channel", "object", "object", {
-    track_target_method,
+    select_target_channel,
 })
-obj.effect("反転", "透明度反転", check0 and 0 or 1)
+obj.check_apply_effects("反転", "透明度反転", check_invert_alpha and 0 or 1)
 
 obj.copybuffer("tempbuffer", "cache:original")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", "alpha_sub")
 
-if cksize == 1 then
-    local w2, h2 = w0 * 0.5, h0 * 0.5
-    obj.drawpoly(-w2, -h2, 0, w2, -h2, 0, w2, h2, 0, -w2, h2, 0)
+if check_match_size == 1 then
+    local half_original_width, half_original_height = original_width * 0.5, original_height * 0.5
+    obj.drawpoly(
+        -half_original_width,
+        -half_original_height,
+        0,
+        half_original_width,
+        -half_original_height,
+        0,
+        half_original_width,
+        half_original_height,
+        0,
+        -half_original_width,
+        half_original_height,
+        0
+    )
 else
     obj.draw()
 end

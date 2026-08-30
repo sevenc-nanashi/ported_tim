@@ -3,13 +3,13 @@
 ---min=-90
 ---max=270
 ---step=0.1
-local track_angle = 0
+local track_lid_angle = 0
 
 ---$track:側面角度
 ---min=-90
 ---max=270
 ---step=0.1
-local track_angle_2 = 0
+local track_side_angle = 0
 
 ---$track:サイズ
 ---min=0
@@ -27,31 +27,31 @@ local track_depth_percent = 100
 ---min=0
 ---max=5000
 ---step=0.1
-local Hr = 100
+local track_height_percent = 100
 
 ---$select:配置
 ---同一画像=0
 ---展開画像(3x2)=1
-local POS = 0
+local select_layout = 0
 
 ---$check:表裏反転
-local REV = 0
+local check_flip_faces = 0
 
 ---$check:アンチエイリアス
-local ANT = 0
+local check_antialias = 0
 
-local sx0 = {}
-local sy0 = {}
-local sz0 = {}
-local sx1 = {}
-local sy1 = {}
-local sz1 = {}
-local sx2 = {}
-local sy2 = {}
-local sz2 = {}
-local sx3 = {}
-local sy3 = {}
-local sz3 = {}
+local surface_x0 = {}
+local surface_y0 = {}
+local surface_z0 = {}
+local surface_x1 = {}
+local surface_y1 = {}
+local surface_z1 = {}
+local surface_x2 = {}
+local surface_y2 = {}
+local surface_z2 = {}
+local surface_x3 = {}
+local surface_y3 = {}
+local surface_z3 = {}
 
 local u0 = {}
 local u1 = {}
@@ -62,38 +62,35 @@ local v1 = {}
 local v2 = {}
 local v3 = {}
 
-local sita1 = track_angle
-local sita2 = track_angle_2
+local lid_angle = track_lid_angle
+local side_angle = track_side_angle
 
-local POS = POS
-local REV = REV
+local antialias_enabled = check_antialias or 0
+local height_scale = (track_height_percent or 100) * 0.01
 
-local ANT = ANT or 0
-local Hr = Hr or 100
+obj.setoption("antialias", antialias_enabled)
 
-obj.setoption("antialias", ANT)
-Hr = Hr * 0.01
-
-if POS == 0 then
-    ww = track_size
-    hh = ww * obj.h / obj.w
-    ll = ww * track_depth_percent / 100
+local box_width, box_height, box_depth
+if select_layout == 0 then
+    box_width = track_size
+    box_height = box_width * obj.h / obj.w
+    box_depth = box_width * track_depth_percent / 100
 else
-    ww = track_size
-    hh = ww * (obj.h / 2) / (obj.w / 3)
-    ll = ww * track_depth_percent / 100
+    box_width = track_size
+    box_height = box_width * (obj.h / 2) / (obj.w / 3)
+    box_depth = box_width * track_depth_percent / 100
 end
 
-ww2 = ww / 2
-hh2 = hh / 2
-ll2 = ll / 2
+local half_width = box_width / 2
+local half_height = box_height / 2
+local half_depth = box_depth / 2
 
-if POS == 0 then
-    for s = 0, 5 do
-        u0[s], v0[s] = 0, 0
-        u1[s], v1[s] = obj.w, 0
-        u2[s], v2[s] = obj.w, obj.h
-        u3[s], v3[s] = 0, obj.h
+if select_layout == 0 then
+    for face_index = 0, 5 do
+        u0[face_index], v0[face_index] = 0, 0
+        u1[face_index], v1[face_index] = obj.w, 0
+        u2[face_index], v2[face_index] = obj.w, obj.h
+        u3[face_index], v3[face_index] = 0, obj.h
     end
 else
     u0[0], v0[0] = 0, 0
@@ -127,117 +124,117 @@ else
     u3[5], v3[5] = 2 * obj.w / 3, obj.h
 end
 
-sx0[0] = -ww2
-sy0[0] = hh2 * Hr - hh * math.cos(sita2 / 180 * math.pi) * Hr
-sz0[0] = -ll2 - hh * math.sin(sita2 / 180 * math.pi) * Hr
-sx1[0] = ww2
-sy1[0] = sy0[0]
-sz1[0] = sz0[0]
-sx2[0] = ww2
-sy2[0] = hh2 * Hr
-sz2[0] = -ll2
-sx3[0] = -ww2
-sy3[0] = hh2 * Hr
-sz3[0] = -ll2
+surface_x0[0] = -half_width
+surface_y0[0] = half_height * height_scale - box_height * math.cos(side_angle / 180 * math.pi) * height_scale
+surface_z0[0] = -half_depth - box_height * math.sin(side_angle / 180 * math.pi) * height_scale
+surface_x1[0] = half_width
+surface_y1[0] = surface_y0[0]
+surface_z1[0] = surface_z0[0]
+surface_x2[0] = half_width
+surface_y2[0] = half_height * height_scale
+surface_z2[0] = -half_depth
+surface_x3[0] = -half_width
+surface_y3[0] = half_height * height_scale
+surface_z3[0] = -half_depth
 
-sx0[1] = ww2 + hh * math.sin(sita2 / 180 * math.pi) * Hr
-sy0[1] = hh2 * Hr - hh * math.cos(sita2 / 180 * math.pi) * Hr
-sz0[1] = -ll2
-sx1[1] = sx0[1]
-sy1[1] = sy0[1]
-sz1[1] = ll2
-sx2[1] = ww2
-sy2[1] = hh2 * Hr
-sz2[1] = ll2
-sx3[1] = ww2
-sy3[1] = hh2 * Hr
-sz3[1] = -ll2
+surface_x0[1] = half_width + box_height * math.sin(side_angle / 180 * math.pi) * height_scale
+surface_y0[1] = half_height * height_scale - box_height * math.cos(side_angle / 180 * math.pi) * height_scale
+surface_z0[1] = -half_depth
+surface_x1[1] = surface_x0[1]
+surface_y1[1] = surface_y0[1]
+surface_z1[1] = half_depth
+surface_x2[1] = half_width
+surface_y2[1] = half_height * height_scale
+surface_z2[1] = half_depth
+surface_x3[1] = half_width
+surface_y3[1] = half_height * height_scale
+surface_z3[1] = -half_depth
 
-sx0[2] = ww2
-sy0[2] = hh2 * Hr - hh * math.cos(sita2 / 180 * math.pi) * Hr
-sz0[2] = ll2 + hh * math.sin(sita2 / 180 * math.pi) * Hr
-sx1[2] = -ww2
-sy1[2] = sy0[2]
-sz1[2] = sz0[2]
-sx2[2] = -ww2
-sy2[2] = hh2 * Hr
-sz2[2] = ll2
-sx3[2] = ww2
-sy3[2] = hh2 * Hr
-sz3[2] = ll2
+surface_x0[2] = half_width
+surface_y0[2] = half_height * height_scale - box_height * math.cos(side_angle / 180 * math.pi) * height_scale
+surface_z0[2] = half_depth + box_height * math.sin(side_angle / 180 * math.pi) * height_scale
+surface_x1[2] = -half_width
+surface_y1[2] = surface_y0[2]
+surface_z1[2] = surface_z0[2]
+surface_x2[2] = -half_width
+surface_y2[2] = half_height * height_scale
+surface_z2[2] = half_depth
+surface_x3[2] = half_width
+surface_y3[2] = half_height * height_scale
+surface_z3[2] = half_depth
 
-sx0[3] = -ww2 - hh * math.sin(sita2 / 180 * math.pi) * Hr
-sy0[3] = hh2 * Hr - hh * math.cos(sita2 / 180 * math.pi) * Hr
-sz0[3] = ll2
-sx1[3] = sx0[3]
-sy1[3] = sy0[3]
-sz1[3] = -ll2
-sx2[3] = -ww2
-sy2[3] = hh2 * Hr
-sz2[3] = -ll2
-sx3[3] = -ww2
-sy3[3] = hh2 * Hr
-sz3[3] = ll2
+surface_x0[3] = -half_width - box_height * math.sin(side_angle / 180 * math.pi) * height_scale
+surface_y0[3] = half_height * height_scale - box_height * math.cos(side_angle / 180 * math.pi) * height_scale
+surface_z0[3] = half_depth
+surface_x1[3] = surface_x0[3]
+surface_y1[3] = surface_y0[3]
+surface_z1[3] = -half_depth
+surface_x2[3] = -half_width
+surface_y2[3] = half_height * height_scale
+surface_z2[3] = -half_depth
+surface_x3[3] = -half_width
+surface_y3[3] = half_height * height_scale
+surface_z3[3] = half_depth
 
-sx0[4] = sx1[2]
-sy0[4] = sy1[2]
-sz0[4] = sz1[2]
-sx1[4] = sx0[2]
-sy1[4] = sy0[2]
-sz1[4] = sz0[2]
-sx2[4] = sx1[4]
-sy2[4] = sy1[4] - ll * math.sin((sita1 + sita2) / 180 * math.pi)
-sz2[4] = sz1[4] - ll * math.cos((sita1 + sita2) / 180 * math.pi)
-sx3[4] = sx0[4]
-sy3[4] = sy0[4] - ll * math.sin((sita1 + sita2) / 180 * math.pi)
-sz3[4] = sz0[4] - ll * math.cos((sita1 + sita2) / 180 * math.pi)
+surface_x0[4] = surface_x1[2]
+surface_y0[4] = surface_y1[2]
+surface_z0[4] = surface_z1[2]
+surface_x1[4] = surface_x0[2]
+surface_y1[4] = surface_y0[2]
+surface_z1[4] = surface_z0[2]
+surface_x2[4] = surface_x1[4]
+surface_y2[4] = surface_y1[4] - box_depth * math.sin((lid_angle + side_angle) / 180 * math.pi)
+surface_z2[4] = surface_z1[4] - box_depth * math.cos((lid_angle + side_angle) / 180 * math.pi)
+surface_x3[4] = surface_x0[4]
+surface_y3[4] = surface_y0[4] - box_depth * math.sin((lid_angle + side_angle) / 180 * math.pi)
+surface_z3[4] = surface_z0[4] - box_depth * math.cos((lid_angle + side_angle) / 180 * math.pi)
 
-sx0[5] = -ww2
-sy0[5] = hh2 * Hr
-sz0[5] = -ll2
-sx1[5] = ww2
-sy1[5] = hh2 * Hr
-sz1[5] = -ll2
-sx2[5] = ww2
-sy2[5] = hh2 * Hr
-sz2[5] = ll2
-sx3[5] = -ww2
-sy3[5] = hh2 * Hr
-sz3[5] = ll2
+surface_x0[5] = -half_width
+surface_y0[5] = half_height * height_scale
+surface_z0[5] = -half_depth
+surface_x1[5] = half_width
+surface_y1[5] = half_height * height_scale
+surface_z1[5] = -half_depth
+surface_x2[5] = half_width
+surface_y2[5] = half_height * height_scale
+surface_z2[5] = half_depth
+surface_x3[5] = -half_width
+surface_y3[5] = half_height * height_scale
+surface_z3[5] = half_depth
 
-if REV == 1 then
-    for s = 0, 5 do
-        sx0[s], sx1[s] = sx1[s], sx0[s]
-        sy0[s], sy1[s] = sy1[s], sy0[s]
-        sz0[s], sz1[s] = sz1[s], sz0[s]
+if check_flip_faces == 1 then
+    for face_index = 0, 5 do
+        surface_x0[face_index], surface_x1[face_index] = surface_x1[face_index], surface_x0[face_index]
+        surface_y0[face_index], surface_y1[face_index] = surface_y1[face_index], surface_y0[face_index]
+        surface_z0[face_index], surface_z1[face_index] = surface_z1[face_index], surface_z0[face_index]
 
-        sx2[s], sx3[s] = sx3[s], sx2[s]
-        sy2[s], sy3[s] = sy3[s], sy2[s]
-        sz2[s], sz3[s] = sz3[s], sz2[s]
+        surface_x2[face_index], surface_x3[face_index] = surface_x3[face_index], surface_x2[face_index]
+        surface_y2[face_index], surface_y3[face_index] = surface_y3[face_index], surface_y2[face_index]
+        surface_z2[face_index], surface_z3[face_index] = surface_z3[face_index], surface_z2[face_index]
     end
 end
 
-for s = 0, 5 do
+for face_index = 0, 5 do
     obj.drawpoly(
-        sx0[s],
-        sy0[s],
-        sz0[s],
-        sx1[s],
-        sy1[s],
-        sz1[s],
-        sx2[s],
-        sy2[s],
-        sz2[s],
-        sx3[s],
-        sy3[s],
-        sz3[s],
-        u0[s],
-        v0[s],
-        u1[s],
-        v1[s],
-        u2[s],
-        v2[s],
-        u3[s],
-        v3[s]
+        surface_x0[face_index],
+        surface_y0[face_index],
+        surface_z0[face_index],
+        surface_x1[face_index],
+        surface_y1[face_index],
+        surface_z1[face_index],
+        surface_x2[face_index],
+        surface_y2[face_index],
+        surface_z2[face_index],
+        surface_x3[face_index],
+        surface_y3[face_index],
+        surface_z3[face_index],
+        u0[face_index],
+        v0[face_index],
+        u1[face_index],
+        v1[face_index],
+        u2[face_index],
+        v2[face_index],
+        u3[face_index],
+        v3[face_index]
     )
 end -- s

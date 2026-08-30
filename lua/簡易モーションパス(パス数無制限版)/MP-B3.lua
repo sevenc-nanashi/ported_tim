@@ -1,4 +1,5 @@
 --label:${ROOT_CATEGORY}\配置\@モーションパスB
+local sample_path, scaled_path_position, curve_index, curve_position, sampled_x, sampled_y, sampled_z, sampled_twist, previous_curve_position, next_curve_position, interpolation_ratio, calculate_cross_section_offset, vector_length, cross_axis_y, cross_axis_x, normal_axis_z, normal_axis_y, normal_axis_x, twist_cosine, twist_sine, theta_radians, phi_radians, animation_progress, x_quadratic_coefficients, x_linear_coefficients, x_constant_coefficients, y_quadratic_coefficients, y_linear_coefficients, y_constant_coefficients, z_quadratic_coefficients, z_linear_coefficients, z_constant_coefficients, twist_quadratic_coefficients, twist_linear_coefficients, twist_constant_coefficients, draw_segment_count, texture_segment_count, partial_segment_fraction, previous_path_twist, previous_path_z, previous_path_y, previous_path_x, current_path_twist, current_path_z, current_path_y, current_path_x, cross_section_offset_z, cross_section_offset_y, cross_section_offset_x, previous_positive_z, previous_positive_y, previous_positive_x, previous_negative_z, previous_negative_y, previous_negative_x, current_positive_z, current_positive_y, current_positive_x, current_negative_z, current_negative_y, current_negative_x, current_texture_v, previous_texture_v, leading_sample_index, half_height_scale, unused_sampled_twist, guide_half_width, path_start_z, path_start_y, path_start_x, path_end_z, path_end_y, path_end_x
 ---$track:R座標
 ---min=0
 ---max=10000
@@ -27,7 +28,7 @@ local track_twist = 0
 ---min=1
 ---max=200
 ---step=1
-local BN = 20
+local track_division_count = 20
 
 ---$select:描画方法
 ---タイプ0=0
@@ -35,115 +36,165 @@ local BN = 20
 ---タイプ2=2
 ---タイプ3=3
 ---タイプ4=4
-local CHA = 0
+local select_draw_method = 0
 
 ---$select:相対/絶対
 ---相対=0
 ---絶対=1
-local TY = 0
+local select_coordinate_mode = 0
 
 ---$check:パス描画
-local APP = 0
+local check_draw_path = 0
 
 ---$color:パス描画色1
-local PCOL = 0xff0000
+local path_start_color = 0xff0000
 
 ---$color:パス描画色2
-local QCOL = 0x0000ff
+local path_end_color = 0x0000ff
 
 ---$track:フォーカス
 ---min=0
 ---max=999
 ---step=1
-local foc = 0
+local track_focus = 0
 
 ---$check:先頭表示
-local TOPA = 0
+local check_show_leading_edge = 0
 
 ---$select:内部
 ---タイプ0=0
 ---タイプ1=1
 ---タイプ2=2
-local SEC = 0
+local select_internal_axis_mode = 0
 
---hide@PCOL:APP==0
---hide@QCOL:APP==0
---hide@foc:APP==0
---hide@TOPA:CHA>2
+--hide@path_start_color:check_draw_path==0
+--hide@path_end_color:check_draw_path==0
+--hide@track_focus:check_draw_path==0
+--hide@check_show_leading_edge:select_draw_method>2
 
 -- 関数共通
-function PassXYZ(s) -- s<=1
-    Ns = NN * s
-    Ns1 = math.floor(Ns)
-    Ns2 = (Ns - Ns1) / 2
+function sample_path(path_ratio) -- s<=1
+    scaled_path_position = T_MP_SECTION_COUNT * path_ratio
+    curve_index = math.floor(scaled_path_position)
+    curve_position = (scaled_path_position - curve_index) / 2
 
-    if Ns1 <= 0 then
-        nx = Ax[1] * Ns2 * Ns2 + Bx[1] * Ns2 + Cx[1]
-        ny = Ay[1] * Ns2 * Ns2 + By[1] * Ns2 + Cy[1]
-        nz = Az[1] * Ns2 * Ns2 + Bz[1] * Ns2 + Cz[1]
-        nt = At[1] * Ns2 * Ns2 + Bt[1] * Ns2 + Ct[1]
-    elseif Ns1 == NN - 1 then
-        SS1 = Ns2 + 0.5
-        nx = Ax[Ns1] * SS1 * SS1 + Bx[Ns1] * SS1 + Cx[Ns1]
-        ny = Ay[Ns1] * SS1 * SS1 + By[Ns1] * SS1 + Cy[Ns1]
-        nz = Az[Ns1] * SS1 * SS1 + Bz[Ns1] * SS1 + Cz[Ns1]
-        nt = At[Ns1] * SS1 * SS1 + Bt[Ns1] * SS1 + Ct[Ns1]
-    elseif s == 1 then
-        nx = XX[NN]
-        ny = YY[NN]
-        nz = ZZ[NN]
-        nt = TW[NN]
+    if curve_index <= 0 then
+        sampled_x = x_quadratic_coefficients[1] * curve_position * curve_position
+            + x_linear_coefficients[1] * curve_position
+            + x_constant_coefficients[1]
+        sampled_y = y_quadratic_coefficients[1] * curve_position * curve_position
+            + y_linear_coefficients[1] * curve_position
+            + y_constant_coefficients[1]
+        sampled_z = z_quadratic_coefficients[1] * curve_position * curve_position
+            + z_linear_coefficients[1] * curve_position
+            + z_constant_coefficients[1]
+        sampled_twist = twist_quadratic_coefficients[1] * curve_position * curve_position
+            + twist_linear_coefficients[1] * curve_position
+            + twist_constant_coefficients[1]
+    elseif curve_index == T_MP_SECTION_COUNT - 1 then
+        previous_curve_position = curve_position + 0.5
+        sampled_x = x_quadratic_coefficients[curve_index] * previous_curve_position * previous_curve_position
+            + x_linear_coefficients[curve_index] * previous_curve_position
+            + x_constant_coefficients[curve_index]
+        sampled_y = y_quadratic_coefficients[curve_index] * previous_curve_position * previous_curve_position
+            + y_linear_coefficients[curve_index] * previous_curve_position
+            + y_constant_coefficients[curve_index]
+        sampled_z = z_quadratic_coefficients[curve_index] * previous_curve_position * previous_curve_position
+            + z_linear_coefficients[curve_index] * previous_curve_position
+            + z_constant_coefficients[curve_index]
+        sampled_twist = twist_quadratic_coefficients[curve_index] * previous_curve_position * previous_curve_position
+            + twist_linear_coefficients[curve_index] * previous_curve_position
+            + twist_constant_coefficients[curve_index]
+    elseif path_ratio == 1 then
+        sampled_x = T_MP_X_POSITIONS[T_MP_SECTION_COUNT]
+        sampled_y = T_MP_Y_POSITIONS[T_MP_SECTION_COUNT]
+        sampled_z = T_MP_Z_POSITIONS[T_MP_SECTION_COUNT]
+        sampled_twist = T_MP_TWISTS[T_MP_SECTION_COUNT]
     else
-        SS1 = Ns2 + 0.5
-        SS2 = Ns2
-        RS = 2 * Ns2
-        nx = (Ax[Ns1] * SS1 * SS1 + Bx[Ns1] * SS1 + Cx[Ns1]) * (1 - RS)
-            + RS * (Ax[Ns1 + 1] * SS2 * SS2 + Bx[Ns1 + 1] * SS2 + Cx[Ns1 + 1])
-        ny = (Ay[Ns1] * SS1 * SS1 + By[Ns1] * SS1 + Cy[Ns1]) * (1 - RS)
-            + RS * (Ay[Ns1 + 1] * SS2 * SS2 + By[Ns1 + 1] * SS2 + Cy[Ns1 + 1])
-        nz = (Az[Ns1] * SS1 * SS1 + Bz[Ns1] * SS1 + Cz[Ns1]) * (1 - RS)
-            + RS * (Az[Ns1 + 1] * SS2 * SS2 + Bz[Ns1 + 1] * SS2 + Cz[Ns1 + 1])
-        nt = (At[Ns1] * SS1 * SS1 + Bt[Ns1] * SS1 + Ct[Ns1]) * (1 - RS)
-            + RS * (At[Ns1 + 1] * SS2 * SS2 + Bt[Ns1 + 1] * SS2 + Ct[Ns1 + 1])
+        previous_curve_position = curve_position + 0.5
+        next_curve_position = curve_position
+        interpolation_ratio = 2 * curve_position
+        sampled_x = (
+            x_quadratic_coefficients[curve_index] * previous_curve_position * previous_curve_position
+            + x_linear_coefficients[curve_index] * previous_curve_position
+            + x_constant_coefficients[curve_index]
+        )
+                * (1 - interpolation_ratio)
+            + interpolation_ratio
+                * (x_quadratic_coefficients[curve_index + 1] * next_curve_position * next_curve_position + x_linear_coefficients[curve_index + 1] * next_curve_position + x_constant_coefficients[curve_index + 1])
+        sampled_y = (
+            y_quadratic_coefficients[curve_index] * previous_curve_position * previous_curve_position
+            + y_linear_coefficients[curve_index] * previous_curve_position
+            + y_constant_coefficients[curve_index]
+        )
+                * (1 - interpolation_ratio)
+            + interpolation_ratio
+                * (y_quadratic_coefficients[curve_index + 1] * next_curve_position * next_curve_position + y_linear_coefficients[curve_index + 1] * next_curve_position + y_constant_coefficients[curve_index + 1])
+        sampled_z = (
+            z_quadratic_coefficients[curve_index] * previous_curve_position * previous_curve_position
+            + z_linear_coefficients[curve_index] * previous_curve_position
+            + z_constant_coefficients[curve_index]
+        )
+                * (1 - interpolation_ratio)
+            + interpolation_ratio
+                * (z_quadratic_coefficients[curve_index + 1] * next_curve_position * next_curve_position + z_linear_coefficients[curve_index + 1] * next_curve_position + z_constant_coefficients[curve_index + 1])
+        sampled_twist = (
+            twist_quadratic_coefficients[curve_index] * previous_curve_position * previous_curve_position
+            + twist_linear_coefficients[curve_index] * previous_curve_position
+            + twist_constant_coefficients[curve_index]
+        )
+                * (1 - interpolation_ratio)
+            + interpolation_ratio
+                * (twist_quadratic_coefficients[curve_index + 1] * next_curve_position * next_curve_position + twist_linear_coefficients[curve_index + 1] * next_curve_position + twist_constant_coefficients[curve_index + 1])
     end
-    return nx, ny, nz, nt
+    return sampled_x, sampled_y, sampled_z, sampled_twist
 end
 
-function ShiftR(iax, iay, iaz, ir)
-    abs = (iax * iax + iay * iay) ^ 0.5
-    ibx, iby = iay / abs, -iax / abs
-    icx, icy, icz = iax * iaz, iay * iaz, -iax * iax - iay * iay
-    abs = (icx * icx + icy * icy + icz * icz) ^ 0.5
-    icx, icy, icz = icx / abs, icy / abs, icz / abs
-    mc = math.cos(ir / 180 * math.pi)
-    ms = math.sin(ir / 180 * math.pi)
-    return obj.w * (ibx * mc + icx * ms) / 2, obj.w * (iby * mc + icy * ms) / 2, obj.w * (icz * ms) / 2
+function calculate_cross_section_offset(path_direction_x, path_direction_y, path_direction_z, twist_degrees)
+    vector_length = (path_direction_x * path_direction_x + path_direction_y * path_direction_y) ^ 0.5
+    cross_axis_x, cross_axis_y = path_direction_y / vector_length, -path_direction_x / vector_length
+    normal_axis_x, normal_axis_y, normal_axis_z =
+        path_direction_x * path_direction_z,
+        path_direction_y * path_direction_z,
+        -path_direction_x * path_direction_x - path_direction_y * path_direction_y
+    vector_length = (normal_axis_x * normal_axis_x + normal_axis_y * normal_axis_y + normal_axis_z * normal_axis_z)
+        ^ 0.5
+    normal_axis_x, normal_axis_y, normal_axis_z =
+        normal_axis_x / vector_length, normal_axis_y / vector_length, normal_axis_z / vector_length
+    twist_cosine = math.cos(twist_degrees / 180 * math.pi)
+    twist_sine = math.sin(twist_degrees / 180 * math.pi)
+    return obj.w * (cross_axis_x * twist_cosine + normal_axis_x * twist_sine) / 2,
+        obj.w * (cross_axis_y * twist_cosine + normal_axis_y * twist_sine) / 2,
+        obj.w * (normal_axis_z * twist_sine) / 2
 end
 
 obj.setoption("antialias", 1)
 
-NN = NN + 1
-XX[NN] = track_r_coord
-YY[NN] = track_theta_coord
-ZZ[NN] = track_phi_coord
-TW[NN] = track_twist
+T_MP_SECTION_COUNT = T_MP_SECTION_COUNT + 1
+T_MP_X_POSITIONS[T_MP_SECTION_COUNT] = track_r_coord
+T_MP_Y_POSITIONS[T_MP_SECTION_COUNT] = track_theta_coord
+T_MP_Z_POSITIONS[T_MP_SECTION_COUNT] = track_phi_coord
+T_MP_TWISTS[T_MP_SECTION_COUNT] = track_twist
 
-for i = 1, NN do
-    s1 = YY[i] * math.pi / 180
-    s2 = (ZZ[i] + 90) * math.pi / 180
-    XX[i], YY[i], ZZ[i] =
-        XX[i] * math.sin(s1) * math.sin(s2), -XX[i] * math.cos(s1), -XX[i] * math.sin(s1) * math.cos(s2)
+for i = 1, T_MP_SECTION_COUNT do
+    theta_radians = T_MP_Y_POSITIONS[i] * math.pi / 180
+    phi_radians = (T_MP_Z_POSITIONS[i] + 90) * math.pi / 180
+    T_MP_X_POSITIONS[i], T_MP_Y_POSITIONS[i], T_MP_Z_POSITIONS[i] =
+        T_MP_X_POSITIONS[i] * math.sin(theta_radians) * math.sin(phi_radians),
+        -T_MP_X_POSITIONS[i] * math.cos(theta_radians),
+        -T_MP_X_POSITIONS[i] * math.sin(theta_radians) * math.cos(phi_radians)
 end
 
-if SEC == 1 and CHA < 3 then
-    for i = 0, NN do
-        XX[i], YY[i], ZZ[i] = ZZ[i], XX[i], YY[i]
-        TW[i] = TW[i] + 90
+if select_internal_axis_mode == 1 and select_draw_method < 3 then
+    for i = 0, T_MP_SECTION_COUNT do
+        T_MP_X_POSITIONS[i], T_MP_Y_POSITIONS[i], T_MP_Z_POSITIONS[i] =
+            T_MP_Z_POSITIONS[i], T_MP_X_POSITIONS[i], T_MP_Y_POSITIONS[i]
+        T_MP_TWISTS[i] = T_MP_TWISTS[i] + 90
     end
-elseif SEC == 2 and CHA < 3 then
-    for i = 0, NN do
-        XX[i], ZZ[i] = ZZ[i], XX[i]
-        TW[i] = TW[i] + 90
+elseif select_internal_axis_mode == 2 and select_draw_method < 3 then
+    for i = 0, T_MP_SECTION_COUNT do
+        T_MP_X_POSITIONS[i], T_MP_Z_POSITIONS[i] = T_MP_Z_POSITIONS[i], T_MP_X_POSITIONS[i]
+        T_MP_TWISTS[i] = T_MP_TWISTS[i] + 90
     end
 end
 
@@ -151,171 +202,451 @@ end
 
 obj.effect()
 
-if TY == 0 then
-    for i = 1, NN do
-        XX[i] = XX[i - 1] + XX[i]
-        YY[i] = YY[i - 1] + YY[i]
-        ZZ[i] = ZZ[i - 1] + ZZ[i]
+if select_coordinate_mode == 0 then
+    for i = 1, T_MP_SECTION_COUNT do
+        T_MP_X_POSITIONS[i] = T_MP_X_POSITIONS[i - 1] + T_MP_X_POSITIONS[i]
+        T_MP_Y_POSITIONS[i] = T_MP_Y_POSITIONS[i - 1] + T_MP_Y_POSITIONS[i]
+        T_MP_Z_POSITIONS[i] = T_MP_Z_POSITIONS[i - 1] + T_MP_Z_POSITIONS[i]
     end
 end
 
-OFH = (1 + obj.frame) / (1 + obj.totalframe)
+animation_progress = (1 + obj.frame) / (1 + obj.totalframe)
 
-Ax = {}
-Bx = {}
-Cx = {}
-Ay = {}
-By = {}
-Cy = {}
-Az = {}
-Bz = {}
-Cz = {}
-At = {}
-Bt = {}
-Ct = {}
+x_quadratic_coefficients = {}
+x_linear_coefficients = {}
+x_constant_coefficients = {}
+y_quadratic_coefficients = {}
+y_linear_coefficients = {}
+y_constant_coefficients = {}
+z_quadratic_coefficients = {}
+z_linear_coefficients = {}
+z_constant_coefficients = {}
+twist_quadratic_coefficients = {}
+twist_linear_coefficients = {}
+twist_constant_coefficients = {}
 
-for M = 1, NN - 1 do
-    Ax[M] = 2 * XX[M - 1] - 4 * XX[M] + 2 * XX[M + 1]
-    Bx[M] = -3 * XX[M - 1] + 4 * XX[M] - XX[M + 1]
-    Cx[M] = XX[M - 1]
-    Ay[M] = 2 * YY[M - 1] - 4 * YY[M] + 2 * YY[M + 1]
-    By[M] = -3 * YY[M - 1] + 4 * YY[M] - YY[M + 1]
-    Cy[M] = YY[M - 1]
-    Az[M] = 2 * ZZ[M - 1] - 4 * ZZ[M] + 2 * ZZ[M + 1]
-    Bz[M] = -3 * ZZ[M - 1] + 4 * ZZ[M] - ZZ[M + 1]
-    Cz[M] = ZZ[M - 1]
-    At[M] = 2 * TW[M - 1] - 4 * TW[M] + 2 * TW[M + 1]
-    Bt[M] = -3 * TW[M - 1] + 4 * TW[M] - TW[M + 1]
-    Ct[M] = TW[M - 1]
+for coefficient_index = 1, T_MP_SECTION_COUNT - 1 do
+    x_quadratic_coefficients[coefficient_index] = 2 * T_MP_X_POSITIONS[coefficient_index - 1]
+        - 4 * T_MP_X_POSITIONS[coefficient_index]
+        + 2 * T_MP_X_POSITIONS[coefficient_index + 1]
+    x_linear_coefficients[coefficient_index] = -3 * T_MP_X_POSITIONS[coefficient_index - 1]
+        + 4 * T_MP_X_POSITIONS[coefficient_index]
+        - T_MP_X_POSITIONS[coefficient_index + 1]
+    x_constant_coefficients[coefficient_index] = T_MP_X_POSITIONS[coefficient_index - 1]
+    y_quadratic_coefficients[coefficient_index] = 2 * T_MP_Y_POSITIONS[coefficient_index - 1]
+        - 4 * T_MP_Y_POSITIONS[coefficient_index]
+        + 2 * T_MP_Y_POSITIONS[coefficient_index + 1]
+    y_linear_coefficients[coefficient_index] = -3 * T_MP_Y_POSITIONS[coefficient_index - 1]
+        + 4 * T_MP_Y_POSITIONS[coefficient_index]
+        - T_MP_Y_POSITIONS[coefficient_index + 1]
+    y_constant_coefficients[coefficient_index] = T_MP_Y_POSITIONS[coefficient_index - 1]
+    z_quadratic_coefficients[coefficient_index] = 2 * T_MP_Z_POSITIONS[coefficient_index - 1]
+        - 4 * T_MP_Z_POSITIONS[coefficient_index]
+        + 2 * T_MP_Z_POSITIONS[coefficient_index + 1]
+    z_linear_coefficients[coefficient_index] = -3 * T_MP_Z_POSITIONS[coefficient_index - 1]
+        + 4 * T_MP_Z_POSITIONS[coefficient_index]
+        - T_MP_Z_POSITIONS[coefficient_index + 1]
+    z_constant_coefficients[coefficient_index] = T_MP_Z_POSITIONS[coefficient_index - 1]
+    twist_quadratic_coefficients[coefficient_index] = 2 * T_MP_TWISTS[coefficient_index - 1]
+        - 4 * T_MP_TWISTS[coefficient_index]
+        + 2 * T_MP_TWISTS[coefficient_index + 1]
+    twist_linear_coefficients[coefficient_index] = -3 * T_MP_TWISTS[coefficient_index - 1]
+        + 4 * T_MP_TWISTS[coefficient_index]
+        - T_MP_TWISTS[coefficient_index + 1]
+    twist_constant_coefficients[coefficient_index] = T_MP_TWISTS[coefficient_index - 1]
 end
 
-if CHA == 0 then
-    Nmax = NN * BN
-    Nv = Nmax
-    Ama = 0
-elseif CHA == 1 then
-    Nmax = math.floor(NN * BN * OFH)
-    Nv = NN * BN
-    Ama = NN * BN * OFH - Nmax
-elseif CHA == 2 then
-    Nmax = math.floor(NN * BN * OFH)
-    Nv = Nmax
-    Ama = NN * BN * OFH - Nmax
-elseif CHA == 3 then
-    Nmax = math.floor(NN * BN * OFH)
+if select_draw_method == 0 then
+    draw_segment_count = T_MP_SECTION_COUNT * track_division_count
+    texture_segment_count = draw_segment_count
+    partial_segment_fraction = 0
+elseif select_draw_method == 1 then
+    draw_segment_count = math.floor(T_MP_SECTION_COUNT * track_division_count * animation_progress)
+    texture_segment_count = T_MP_SECTION_COUNT * track_division_count
+    partial_segment_fraction = T_MP_SECTION_COUNT * track_division_count * animation_progress - draw_segment_count
+elseif select_draw_method == 2 then
+    draw_segment_count = math.floor(T_MP_SECTION_COUNT * track_division_count * animation_progress)
+    texture_segment_count = draw_segment_count
+    partial_segment_fraction = T_MP_SECTION_COUNT * track_division_count * animation_progress - draw_segment_count
+elseif select_draw_method == 3 then
+    draw_segment_count = math.floor(T_MP_SECTION_COUNT * track_division_count * animation_progress)
 else
-    Nmax = NN * BN
+    draw_segment_count = T_MP_SECTION_COUNT * track_division_count
 end
 
-if CHA < 3 then
-    if TOPA == 0 then
-        xf, yf, zf, tf = PassXYZ(0)
-        ix, iy, iz, it = PassXYZ(0.5 / (NN * BN))
-        dx, dy, dz = ShiftR(ix - xf, iy - yf, iz - zf, TW[0])
-        x1, y1, z1 = xf + dx, yf + dy, zf + dz
-        x0, y0, z0 = xf - dx, yf - dy, zf - dz
+if select_draw_method < 3 then
+    if check_show_leading_edge == 0 then
+        previous_path_x, previous_path_y, previous_path_z, previous_path_twist = sample_path(0)
+        current_path_x, current_path_y, current_path_z, current_path_twist =
+            sample_path(0.5 / (T_MP_SECTION_COUNT * track_division_count))
+        cross_section_offset_x, cross_section_offset_y, cross_section_offset_z = calculate_cross_section_offset(
+            current_path_x - previous_path_x,
+            current_path_y - previous_path_y,
+            current_path_z - previous_path_z,
+            T_MP_TWISTS[0]
+        )
+        previous_positive_x, previous_positive_y, previous_positive_z =
+            previous_path_x + cross_section_offset_x,
+            previous_path_y + cross_section_offset_y,
+            previous_path_z + cross_section_offset_z
+        previous_negative_x, previous_negative_y, previous_negative_z =
+            previous_path_x - cross_section_offset_x,
+            previous_path_y - cross_section_offset_y,
+            previous_path_z - cross_section_offset_z
 
-        for i = 1, Nmax do
-            ix, iy, iz, it = PassXYZ(i / (NN * BN))
-            dx, dy, dz = ShiftR(ix - xf, iy - yf, iz - zf, it)
-            x2, y2, z2 = ix + dx, iy + dy, iz + dz
-            x3, y3, z3 = ix - dx, iy - dy, iz - dz
-            v1 = obj.h * (1 - i / (Nv + Ama))
-            v2 = obj.h * (1 - (i - 1) / (Nv + Ama))
+        for i = 1, draw_segment_count do
+            current_path_x, current_path_y, current_path_z, current_path_twist =
+                sample_path(i / (T_MP_SECTION_COUNT * track_division_count))
+            cross_section_offset_x, cross_section_offset_y, cross_section_offset_z = calculate_cross_section_offset(
+                current_path_x - previous_path_x,
+                current_path_y - previous_path_y,
+                current_path_z - previous_path_z,
+                current_path_twist
+            )
+            current_positive_x, current_positive_y, current_positive_z =
+                current_path_x + cross_section_offset_x,
+                current_path_y + cross_section_offset_y,
+                current_path_z + cross_section_offset_z
+            current_negative_x, current_negative_y, current_negative_z =
+                current_path_x - cross_section_offset_x,
+                current_path_y - cross_section_offset_y,
+                current_path_z - cross_section_offset_z
+            current_texture_v = obj.h * (1 - i / (texture_segment_count + partial_segment_fraction))
+            previous_texture_v = obj.h * (1 - (i - 1) / (texture_segment_count + partial_segment_fraction))
 
-            if SEC == 1 then
-                obj.drawpoly(y0, z0, x0, y1, z1, x1, y2, z2, x2, y3, z3, x3, 0, v2, obj.w, v2, obj.w, v1, 0, v1)
-            elseif SEC == 2 then
-                obj.drawpoly(z0, y0, x0, z1, y1, x1, z2, y2, x2, z3, y3, x3, 0, v2, obj.w, v2, obj.w, v1, 0, v1)
+            if select_internal_axis_mode == 1 then
+                obj.drawpoly(
+                    previous_negative_y,
+                    previous_negative_z,
+                    previous_negative_x,
+                    previous_positive_y,
+                    previous_positive_z,
+                    previous_positive_x,
+                    current_positive_y,
+                    current_positive_z,
+                    current_positive_x,
+                    current_negative_y,
+                    current_negative_z,
+                    current_negative_x,
+                    0,
+                    previous_texture_v,
+                    obj.w,
+                    previous_texture_v,
+                    obj.w,
+                    current_texture_v,
+                    0,
+                    current_texture_v
+                )
+            elseif select_internal_axis_mode == 2 then
+                obj.drawpoly(
+                    previous_negative_z,
+                    previous_negative_y,
+                    previous_negative_x,
+                    previous_positive_z,
+                    previous_positive_y,
+                    previous_positive_x,
+                    current_positive_z,
+                    current_positive_y,
+                    current_positive_x,
+                    current_negative_z,
+                    current_negative_y,
+                    current_negative_x,
+                    0,
+                    previous_texture_v,
+                    obj.w,
+                    previous_texture_v,
+                    obj.w,
+                    current_texture_v,
+                    0,
+                    current_texture_v
+                )
             else
-                obj.drawpoly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0, v2, obj.w, v2, obj.w, v1, 0, v1)
+                obj.drawpoly(
+                    previous_negative_x,
+                    previous_negative_y,
+                    previous_negative_z,
+                    previous_positive_x,
+                    previous_positive_y,
+                    previous_positive_z,
+                    current_positive_x,
+                    current_positive_y,
+                    current_positive_z,
+                    current_negative_x,
+                    current_negative_y,
+                    current_negative_z,
+                    0,
+                    previous_texture_v,
+                    obj.w,
+                    previous_texture_v,
+                    obj.w,
+                    current_texture_v,
+                    0,
+                    current_texture_v
+                )
             end
-            x0, y0, z0 = x3, y3, z3
-            x1, y1, z1 = x2, y2, z2
-            xf, yf, zf = ix, iy, iz
+            previous_negative_x, previous_negative_y, previous_negative_z =
+                current_negative_x, current_negative_y, current_negative_z
+            previous_positive_x, previous_positive_y, previous_positive_z =
+                current_positive_x, current_positive_y, current_positive_z
+            previous_path_x, previous_path_y, previous_path_z = current_path_x, current_path_y, current_path_z
         end -- i
 
-        if Ama > 0 then
-            ix, iy, iz, it = PassXYZ((Nmax + Ama) / (NN * BN))
-            dx, dy, dz = ShiftR(ix - xf, iy - yf, iz - zf, it)
-            x2, y2, z2 = ix + dx, iy + dy, iz + dz
-            x3, y3, z3 = ix - dx, iy - dy, iz - dz
-            v1 = obj.h * (1 - (Nmax + Ama) / (Nv + Ama))
-            v2 = obj.h * (1 - Nmax / (Nv + Ama))
-            if SEC == 1 then
-                obj.drawpoly(y0, z0, x0, y1, z1, x1, y2, z2, x2, y3, z3, x3, 0, v2, obj.w, v2, obj.w, v1, 0, v1)
-            elseif SEC == 2 then
-                obj.drawpoly(z0, y0, x0, z1, y1, x1, z2, y2, x2, z3, y3, x3, 0, v2, obj.w, v2, obj.w, v1, 0, v1)
+        if partial_segment_fraction > 0 then
+            current_path_x, current_path_y, current_path_z, current_path_twist = sample_path(
+                (draw_segment_count + partial_segment_fraction) / (T_MP_SECTION_COUNT * track_division_count)
+            )
+            cross_section_offset_x, cross_section_offset_y, cross_section_offset_z = calculate_cross_section_offset(
+                current_path_x - previous_path_x,
+                current_path_y - previous_path_y,
+                current_path_z - previous_path_z,
+                current_path_twist
+            )
+            current_positive_x, current_positive_y, current_positive_z =
+                current_path_x + cross_section_offset_x,
+                current_path_y + cross_section_offset_y,
+                current_path_z + cross_section_offset_z
+            current_negative_x, current_negative_y, current_negative_z =
+                current_path_x - cross_section_offset_x,
+                current_path_y - cross_section_offset_y,
+                current_path_z - cross_section_offset_z
+            current_texture_v = obj.h
+                * (
+                    1
+                    - (draw_segment_count + partial_segment_fraction)
+                        / (texture_segment_count + partial_segment_fraction)
+                )
+            previous_texture_v = obj.h * (1 - draw_segment_count / (texture_segment_count + partial_segment_fraction))
+            if select_internal_axis_mode == 1 then
+                obj.drawpoly(
+                    previous_negative_y,
+                    previous_negative_z,
+                    previous_negative_x,
+                    previous_positive_y,
+                    previous_positive_z,
+                    previous_positive_x,
+                    current_positive_y,
+                    current_positive_z,
+                    current_positive_x,
+                    current_negative_y,
+                    current_negative_z,
+                    current_negative_x,
+                    0,
+                    previous_texture_v,
+                    obj.w,
+                    previous_texture_v,
+                    obj.w,
+                    current_texture_v,
+                    0,
+                    current_texture_v
+                )
+            elseif select_internal_axis_mode == 2 then
+                obj.drawpoly(
+                    previous_negative_z,
+                    previous_negative_y,
+                    previous_negative_x,
+                    previous_positive_z,
+                    previous_positive_y,
+                    previous_positive_x,
+                    current_positive_z,
+                    current_positive_y,
+                    current_positive_x,
+                    current_negative_z,
+                    current_negative_y,
+                    current_negative_x,
+                    0,
+                    previous_texture_v,
+                    obj.w,
+                    previous_texture_v,
+                    obj.w,
+                    current_texture_v,
+                    0,
+                    current_texture_v
+                )
             else
-                obj.drawpoly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0, v2, obj.w, v2, obj.w, v1, 0, v1)
+                obj.drawpoly(
+                    previous_negative_x,
+                    previous_negative_y,
+                    previous_negative_z,
+                    previous_positive_x,
+                    previous_positive_y,
+                    previous_positive_z,
+                    current_positive_x,
+                    current_positive_y,
+                    current_positive_z,
+                    current_negative_x,
+                    current_negative_y,
+                    current_negative_z,
+                    0,
+                    previous_texture_v,
+                    obj.w,
+                    previous_texture_v,
+                    obj.w,
+                    current_texture_v,
+                    0,
+                    current_texture_v
+                )
             end
         end
     else
-        if NN * BN * OFH <= 1 / 2 then
-            inm = 1 / 2
+        if T_MP_SECTION_COUNT * track_division_count * animation_progress <= 1 / 2 then
+            leading_sample_index = 1 / 2
         else
-            inm = NN * BN * OFH
+            leading_sample_index = T_MP_SECTION_COUNT * track_division_count * animation_progress
         end
 
-        if CHA == 0 then
-            inm = NN * BN
+        if select_draw_method == 0 then
+            leading_sample_index = T_MP_SECTION_COUNT * track_division_count
         end
 
-        xf, yf, zf, tf = PassXYZ((inm - 1 / 2) / (NN * BN))
-        ix, iy, iz, it = PassXYZ(inm / (NN * BN))
+        previous_path_x, previous_path_y, previous_path_z, previous_path_twist =
+            sample_path((leading_sample_index - 1 / 2) / (T_MP_SECTION_COUNT * track_division_count))
+        current_path_x, current_path_y, current_path_z, current_path_twist =
+            sample_path(leading_sample_index / (T_MP_SECTION_COUNT * track_division_count))
 
-        dx, dy, dz = ix - xf, iy - yf, iz - zf
-        kika = obj.h / (dx * dx + dy * dy + dz * dz) ^ 0.5 / 2
-        dx, dy, dz = dx * kika, dy * kika, dz * kika
+        cross_section_offset_x, cross_section_offset_y, cross_section_offset_z =
+            current_path_x - previous_path_x, current_path_y - previous_path_y, current_path_z - previous_path_z
+        half_height_scale = obj.h
+            / (cross_section_offset_x * cross_section_offset_x + cross_section_offset_y * cross_section_offset_y + cross_section_offset_z * cross_section_offset_z) ^ 0.5
+            / 2
+        cross_section_offset_x, cross_section_offset_y, cross_section_offset_z =
+            cross_section_offset_x * half_height_scale,
+            cross_section_offset_y * half_height_scale,
+            cross_section_offset_z * half_height_scale
 
-        xf, yf, zf = ix - dx, iy - dy, iz - dz
-        ix, iy, iz = ix + dx, iy + dy, iz + dz
-        dx, dy, dz = ShiftR(dx, dy, dz, it)
+        previous_path_x, previous_path_y, previous_path_z =
+            current_path_x - cross_section_offset_x,
+            current_path_y - cross_section_offset_y,
+            current_path_z - cross_section_offset_z
+        current_path_x, current_path_y, current_path_z =
+            current_path_x + cross_section_offset_x,
+            current_path_y + cross_section_offset_y,
+            current_path_z + cross_section_offset_z
+        cross_section_offset_x, cross_section_offset_y, cross_section_offset_z = calculate_cross_section_offset(
+            cross_section_offset_x,
+            cross_section_offset_y,
+            cross_section_offset_z,
+            current_path_twist
+        )
 
-        x3, y3, z3 = xf - dx, yf - dy, zf - dz
-        x2, y2, z2 = xf + dx, yf + dy, zf + dz
-        x1, y1, z1 = ix + dx, iy + dy, iz + dz
-        x0, y0, z0 = ix - dx, iy - dy, iz - dz
-        if SEC == 1 then
-            obj.drawpoly(y0, z0, x0, y1, z1, x1, y2, z2, x2, y3, z3, x3, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h)
-        elseif SEC == 2 then
-            obj.drawpoly(z0, y0, x0, z1, y1, x1, z2, y2, x2, z3, y3, x3, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h)
+        current_negative_x, current_negative_y, current_negative_z =
+            previous_path_x - cross_section_offset_x,
+            previous_path_y - cross_section_offset_y,
+            previous_path_z - cross_section_offset_z
+        current_positive_x, current_positive_y, current_positive_z =
+            previous_path_x + cross_section_offset_x,
+            previous_path_y + cross_section_offset_y,
+            previous_path_z + cross_section_offset_z
+        previous_positive_x, previous_positive_y, previous_positive_z =
+            current_path_x + cross_section_offset_x,
+            current_path_y + cross_section_offset_y,
+            current_path_z + cross_section_offset_z
+        previous_negative_x, previous_negative_y, previous_negative_z =
+            current_path_x - cross_section_offset_x,
+            current_path_y - cross_section_offset_y,
+            current_path_z - cross_section_offset_z
+        if select_internal_axis_mode == 1 then
+            obj.drawpoly(
+                previous_negative_y,
+                previous_negative_z,
+                previous_negative_x,
+                previous_positive_y,
+                previous_positive_z,
+                previous_positive_x,
+                current_positive_y,
+                current_positive_z,
+                current_positive_x,
+                current_negative_y,
+                current_negative_z,
+                current_negative_x,
+                0,
+                0,
+                obj.w,
+                0,
+                obj.w,
+                obj.h,
+                0,
+                obj.h
+            )
+        elseif select_internal_axis_mode == 2 then
+            obj.drawpoly(
+                previous_negative_z,
+                previous_negative_y,
+                previous_negative_x,
+                previous_positive_z,
+                previous_positive_y,
+                previous_positive_x,
+                current_positive_z,
+                current_positive_y,
+                current_positive_x,
+                current_negative_z,
+                current_negative_y,
+                current_negative_x,
+                0,
+                0,
+                obj.w,
+                0,
+                obj.w,
+                obj.h,
+                0,
+                obj.h
+            )
         else
-            obj.drawpoly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h)
+            obj.drawpoly(
+                previous_negative_x,
+                previous_negative_y,
+                previous_negative_z,
+                previous_positive_x,
+                previous_positive_y,
+                previous_positive_z,
+                current_positive_x,
+                current_positive_y,
+                current_positive_z,
+                current_negative_x,
+                current_negative_y,
+                current_negative_z,
+                0,
+                0,
+                obj.w,
+                0,
+                obj.w,
+                obj.h,
+                0,
+                obj.h
+            )
         end
     end
 else
-    for i = 0, Nmax do
-        obj.ox, obj.oy, obj.oz, NL = PassXYZ(i / (NN * BN))
+    for i = 0, draw_segment_count do
+        obj.ox, obj.oy, obj.oz, unused_sampled_twist = sample_path(i / (T_MP_SECTION_COUNT * track_division_count))
         obj.draw()
     end
 end
 
 -- ---------ここから違う
 
-if APP == 1 then
-    cw = obj.screen_w / 80
-    for i = 0, NN do
-        if i == foc then
-            obj.load("figure", "円", QCOL, 100)
+if check_draw_path == 1 then
+    guide_half_width = obj.screen_w / 80
+    for i = 0, T_MP_SECTION_COUNT do
+        if i == track_focus then
+            obj.load("figure", "円", path_end_color, 100)
         else
-            obj.load("figure", "円", PCOL, 100)
+            obj.load("figure", "円", path_start_color, 100)
         end
-        ix, iy, iz, it = PassXYZ(i / NN)
-        if SEC == 1 then
+        current_path_x, current_path_y, current_path_z, current_path_twist = sample_path(i / T_MP_SECTION_COUNT)
+        if select_internal_axis_mode == 1 then
             obj.drawpoly(
-                iy + cw,
-                iz,
-                ix + cw,
-                iy + cw,
-                iz,
-                ix - cw,
-                iy - cw,
-                iz,
-                ix - cw,
-                iy - cw,
-                iz,
-                ix + cw,
+                current_path_y + guide_half_width,
+                current_path_z,
+                current_path_x + guide_half_width,
+                current_path_y + guide_half_width,
+                current_path_z,
+                current_path_x - guide_half_width,
+                current_path_y - guide_half_width,
+                current_path_z,
+                current_path_x - guide_half_width,
+                current_path_y - guide_half_width,
+                current_path_z,
+                current_path_x + guide_half_width,
                 0,
                 0,
                 obj.w,
@@ -326,18 +657,18 @@ if APP == 1 then
                 obj.h
             )
             obj.drawpoly(
-                iy,
-                iz + cw,
-                ix + cw,
-                iy,
-                iz + cw,
-                ix - cw,
-                iy,
-                iz - cw,
-                ix - cw,
-                iy,
-                iz - cw,
-                ix + cw,
+                current_path_y,
+                current_path_z + guide_half_width,
+                current_path_x + guide_half_width,
+                current_path_y,
+                current_path_z + guide_half_width,
+                current_path_x - guide_half_width,
+                current_path_y,
+                current_path_z - guide_half_width,
+                current_path_x - guide_half_width,
+                current_path_y,
+                current_path_z - guide_half_width,
+                current_path_x + guide_half_width,
                 0,
                 0,
                 obj.w,
@@ -348,18 +679,18 @@ if APP == 1 then
                 obj.h
             )
             obj.drawpoly(
-                iy + cw,
-                iz + cw,
-                ix,
-                iy - cw,
-                iz + cw,
-                ix,
-                iy - cw,
-                iz - cw,
-                ix,
-                iy + cw,
-                iz - cw,
-                ix,
+                current_path_y + guide_half_width,
+                current_path_z + guide_half_width,
+                current_path_x,
+                current_path_y - guide_half_width,
+                current_path_z + guide_half_width,
+                current_path_x,
+                current_path_y - guide_half_width,
+                current_path_z - guide_half_width,
+                current_path_x,
+                current_path_y + guide_half_width,
+                current_path_z - guide_half_width,
+                current_path_x,
                 0,
                 0,
                 obj.w,
@@ -369,42 +700,20 @@ if APP == 1 then
                 0,
                 obj.h
             )
-        elseif SEC == 2 then
+        elseif select_internal_axis_mode == 2 then
             obj.drawpoly(
-                iz,
-                iy + cw,
-                ix + cw,
-                iz,
-                iy + cw,
-                ix - cw,
-                iz,
-                iy - cw,
-                ix - cw,
-                iz,
-                iy - cw,
-                ix + cw,
-                0,
-                0,
-                obj.w,
-                0,
-                obj.w,
-                obj.h,
-                0,
-                obj.h
-            )
-            obj.drawpoly(
-                iz + cw,
-                iy,
-                ix + cw,
-                iz + cw,
-                iy,
-                ix - cw,
-                iz - cw,
-                iy,
-                ix - cw,
-                iz - cw,
-                iy,
-                ix + cw,
+                current_path_z,
+                current_path_y + guide_half_width,
+                current_path_x + guide_half_width,
+                current_path_z,
+                current_path_y + guide_half_width,
+                current_path_x - guide_half_width,
+                current_path_z,
+                current_path_y - guide_half_width,
+                current_path_x - guide_half_width,
+                current_path_z,
+                current_path_y - guide_half_width,
+                current_path_x + guide_half_width,
                 0,
                 0,
                 obj.w,
@@ -415,18 +724,40 @@ if APP == 1 then
                 obj.h
             )
             obj.drawpoly(
-                iz + cw,
-                iy + cw,
-                ix,
-                iz + cw,
-                iy - cw,
-                ix,
-                iz - cw,
-                iy - cw,
-                ix,
-                iz - cw,
-                iy + cw,
-                ix,
+                current_path_z + guide_half_width,
+                current_path_y,
+                current_path_x + guide_half_width,
+                current_path_z + guide_half_width,
+                current_path_y,
+                current_path_x - guide_half_width,
+                current_path_z - guide_half_width,
+                current_path_y,
+                current_path_x - guide_half_width,
+                current_path_z - guide_half_width,
+                current_path_y,
+                current_path_x + guide_half_width,
+                0,
+                0,
+                obj.w,
+                0,
+                obj.w,
+                obj.h,
+                0,
+                obj.h
+            )
+            obj.drawpoly(
+                current_path_z + guide_half_width,
+                current_path_y + guide_half_width,
+                current_path_x,
+                current_path_z + guide_half_width,
+                current_path_y - guide_half_width,
+                current_path_x,
+                current_path_z - guide_half_width,
+                current_path_y - guide_half_width,
+                current_path_x,
+                current_path_z - guide_half_width,
+                current_path_y + guide_half_width,
+                current_path_x,
                 0,
                 0,
                 obj.w,
@@ -438,18 +769,18 @@ if APP == 1 then
             )
         else
             obj.drawpoly(
-                ix + cw,
-                iy + cw,
-                iz,
-                ix - cw,
-                iy + cw,
-                iz,
-                ix - cw,
-                iy - cw,
-                iz,
-                ix + cw,
-                iy - cw,
-                iz,
+                current_path_x + guide_half_width,
+                current_path_y + guide_half_width,
+                current_path_z,
+                current_path_x - guide_half_width,
+                current_path_y + guide_half_width,
+                current_path_z,
+                current_path_x - guide_half_width,
+                current_path_y - guide_half_width,
+                current_path_z,
+                current_path_x + guide_half_width,
+                current_path_y - guide_half_width,
+                current_path_z,
                 0,
                 0,
                 obj.w,
@@ -460,18 +791,18 @@ if APP == 1 then
                 obj.h
             )
             obj.drawpoly(
-                ix + cw,
-                iy,
-                iz + cw,
-                ix - cw,
-                iy,
-                iz + cw,
-                ix - cw,
-                iy,
-                iz - cw,
-                ix + cw,
-                iy,
-                iz - cw,
+                current_path_x + guide_half_width,
+                current_path_y,
+                current_path_z + guide_half_width,
+                current_path_x - guide_half_width,
+                current_path_y,
+                current_path_z + guide_half_width,
+                current_path_x - guide_half_width,
+                current_path_y,
+                current_path_z - guide_half_width,
+                current_path_x + guide_half_width,
+                current_path_y,
+                current_path_z - guide_half_width,
                 0,
                 0,
                 obj.w,
@@ -482,18 +813,18 @@ if APP == 1 then
                 obj.h
             )
             obj.drawpoly(
-                ix,
-                iy + cw,
-                iz + cw,
-                ix,
-                iy - cw,
-                iz + cw,
-                ix,
-                iy - cw,
-                iz - cw,
-                ix,
-                iy + cw,
-                iz - cw,
+                current_path_x,
+                current_path_y + guide_half_width,
+                current_path_z + guide_half_width,
+                current_path_x,
+                current_path_y - guide_half_width,
+                current_path_z + guide_half_width,
+                current_path_x,
+                current_path_y - guide_half_width,
+                current_path_z - guide_half_width,
+                current_path_x,
+                current_path_y + guide_half_width,
+                current_path_z - guide_half_width,
                 0,
                 0,
                 obj.w,
@@ -506,24 +837,24 @@ if APP == 1 then
         end
     end -- i
 
-    for i = 1, NN do
-        obj.load("figure", "四角形", PCOL, 100)
-        ix0, iy0, iz0, it = PassXYZ((i - 1) / NN)
-        ix1, iy1, iz1, it = PassXYZ(i / NN)
-        if SEC == 1 then
+    for i = 1, T_MP_SECTION_COUNT do
+        obj.load("figure", "四角形", path_start_color, 100)
+        path_start_x, path_start_y, path_start_z, current_path_twist = sample_path((i - 1) / T_MP_SECTION_COUNT)
+        path_end_x, path_end_y, path_end_z, current_path_twist = sample_path(i / T_MP_SECTION_COUNT)
+        if select_internal_axis_mode == 1 then
             obj.drawpoly(
-                iy0,
-                iz0,
-                ix0 + 1,
-                iy0,
-                iz0,
-                ix0 - 1,
-                iy1,
-                iz1,
-                ix1 - 1,
-                iy1,
-                iz1,
-                ix1 + 1,
+                path_start_y,
+                path_start_z,
+                path_start_x + 1,
+                path_start_y,
+                path_start_z,
+                path_start_x - 1,
+                path_end_y,
+                path_end_z,
+                path_end_x - 1,
+                path_end_y,
+                path_end_z,
+                path_end_x + 1,
                 0,
                 0,
                 obj.w,
@@ -534,18 +865,18 @@ if APP == 1 then
                 obj.h
             )
             obj.drawpoly(
-                iy0 + 1,
-                iz0,
-                ix0,
-                iy0 - 1,
-                iz0,
-                ix0,
-                iy1 - 1,
-                iz1,
-                ix1,
-                iy1 + 1,
-                iz1,
-                ix1,
+                path_start_y + 1,
+                path_start_z,
+                path_start_x,
+                path_start_y - 1,
+                path_start_z,
+                path_start_x,
+                path_end_y - 1,
+                path_end_z,
+                path_end_x,
+                path_end_y + 1,
+                path_end_z,
+                path_end_x,
                 0,
                 0,
                 obj.w,
@@ -556,18 +887,18 @@ if APP == 1 then
                 obj.h
             )
             obj.drawpoly(
-                iy0,
-                iz0 + 1,
-                ix0,
-                iy0,
-                iz0 - 1,
-                ix0,
-                iy1,
-                iz1 - 1,
-                ix1,
-                iy1,
-                iz1 + 1,
-                ix1,
+                path_start_y,
+                path_start_z + 1,
+                path_start_x,
+                path_start_y,
+                path_start_z - 1,
+                path_start_x,
+                path_end_y,
+                path_end_z - 1,
+                path_end_x,
+                path_end_y,
+                path_end_z + 1,
+                path_end_x,
                 0,
                 0,
                 obj.w,
@@ -577,42 +908,20 @@ if APP == 1 then
                 0,
                 obj.h
             )
-        elseif SEC == 2 then
+        elseif select_internal_axis_mode == 2 then
             obj.drawpoly(
-                iz0,
-                iy0,
-                ix0 + 1,
-                iz0,
-                iy0,
-                ix0 - 1,
-                iz1,
-                iy1,
-                ix1 - 1,
-                iz1,
-                iy1,
-                ix1 + 1,
-                0,
-                0,
-                obj.w,
-                0,
-                obj.w,
-                obj.h,
-                0,
-                obj.h
-            )
-            obj.drawpoly(
-                iz0,
-                iy0 + 1,
-                ix0,
-                iz0,
-                iy0 - 1,
-                ix0,
-                iz1,
-                iy1 - 1,
-                ix1,
-                iz1,
-                iy1 + 1,
-                ix1,
+                path_start_z,
+                path_start_y,
+                path_start_x + 1,
+                path_start_z,
+                path_start_y,
+                path_start_x - 1,
+                path_end_z,
+                path_end_y,
+                path_end_x - 1,
+                path_end_z,
+                path_end_y,
+                path_end_x + 1,
                 0,
                 0,
                 obj.w,
@@ -623,18 +932,40 @@ if APP == 1 then
                 obj.h
             )
             obj.drawpoly(
-                iz0 + 1,
-                iy0,
-                ix0,
-                iz0 - 1,
-                iy0,
-                ix0,
-                iz1 - 1,
-                iy1,
-                ix1,
-                iz1 + 1,
-                iy1,
-                ix1,
+                path_start_z,
+                path_start_y + 1,
+                path_start_x,
+                path_start_z,
+                path_start_y - 1,
+                path_start_x,
+                path_end_z,
+                path_end_y - 1,
+                path_end_x,
+                path_end_z,
+                path_end_y + 1,
+                path_end_x,
+                0,
+                0,
+                obj.w,
+                0,
+                obj.w,
+                obj.h,
+                0,
+                obj.h
+            )
+            obj.drawpoly(
+                path_start_z + 1,
+                path_start_y,
+                path_start_x,
+                path_start_z - 1,
+                path_start_y,
+                path_start_x,
+                path_end_z - 1,
+                path_end_y,
+                path_end_x,
+                path_end_z + 1,
+                path_end_y,
+                path_end_x,
                 0,
                 0,
                 obj.w,
@@ -646,18 +977,18 @@ if APP == 1 then
             )
         else
             obj.drawpoly(
-                ix0 + 1,
-                iy0,
-                iz0,
-                ix0 - 1,
-                iy0,
-                iz0,
-                ix1 - 1,
-                iy1,
-                iz1,
-                ix1 + 1,
-                iy1,
-                iz1,
+                path_start_x + 1,
+                path_start_y,
+                path_start_z,
+                path_start_x - 1,
+                path_start_y,
+                path_start_z,
+                path_end_x - 1,
+                path_end_y,
+                path_end_z,
+                path_end_x + 1,
+                path_end_y,
+                path_end_z,
                 0,
                 0,
                 obj.w,
@@ -668,18 +999,18 @@ if APP == 1 then
                 obj.h
             )
             obj.drawpoly(
-                ix0,
-                iy0 + 1,
-                iz0,
-                ix0,
-                iy0 - 1,
-                iz0,
-                ix1,
-                iy1 - 1,
-                iz1,
-                ix1,
-                iy1 + 1,
-                iz1,
+                path_start_x,
+                path_start_y + 1,
+                path_start_z,
+                path_start_x,
+                path_start_y - 1,
+                path_start_z,
+                path_end_x,
+                path_end_y - 1,
+                path_end_z,
+                path_end_x,
+                path_end_y + 1,
+                path_end_z,
                 0,
                 0,
                 obj.w,
@@ -690,18 +1021,18 @@ if APP == 1 then
                 obj.h
             )
             obj.drawpoly(
-                ix0,
-                iy0,
-                iz0 + 1,
-                ix0,
-                iy0,
-                iz0 - 1,
-                ix1,
-                iy1,
-                iz1 - 1,
-                ix1,
-                iy1,
-                iz1 + 1,
+                path_start_x,
+                path_start_y,
+                path_start_z + 1,
+                path_start_x,
+                path_start_y,
+                path_start_z - 1,
+                path_end_x,
+                path_end_y,
+                path_end_z - 1,
+                path_end_x,
+                path_end_y,
+                path_end_z + 1,
                 0,
                 0,
                 obj.w,

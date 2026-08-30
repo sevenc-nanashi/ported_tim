@@ -2,29 +2,29 @@
 --filter
 
 ---$color:色
-local track_color = nil
+local monochrome_color = nil
 
 --group:RGB
 ---$track:R
 ---min=0
 ---max=255
 ---step=0.1
-local track_r = 150
+local track_red = 150
 
 ---$track:G
 ---min=0
 ---max=255
 ---step=0.1
-local track_g = 0
+local track_green = 0
 
 ---$track:B
 ---min=0
 ---max=255
 ---step=0.1
-local track_b = 0
+local track_blue = 0
 
-if track_color ~= nil then
-    track_r, track_g, track_b = RGB(track_color)
+if monochrome_color ~= nil then
+    track_red, track_green, track_blue = RGB(monochrome_color)
 end
 
 --[[pixelshader@monochromatic
@@ -32,7 +32,7 @@ end
 ]]
 
 obj.pixelshader("monochromatic", "object", "object", {
-    track_r,
-    track_g,
-    track_b,
+    track_red,
+    track_green,
+    track_blue,
 })

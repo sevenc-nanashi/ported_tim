@@ -109,8 +109,8 @@ local param_override = {}
 --hide@track_background_alpha:check_line_only==1
 --hide@color_boundary_adjust:check_boundary_adjust==0
 
-local is_enabled = function(v)
-    return v == true or v == 1
+local is_enabled = function(value)
+    return value == true or value == 1
 end
 
 param_override = param_override or {}
@@ -136,38 +136,38 @@ local extract_threshold = track_extract_threshold or 0
 if is_enabled(boundary_adjust) then
     obj.effect("縁取り", "サイズ", length, "color", boundary_color, "ぼかし", 1)
 end
-local tim2 = obj.module("tim2")
-local SeD = 0
-local t = 1
+local tim_module = obj.module("tim2")
+local direction_mask = 0
+local bit_value = 1
 for i in string.gmatch(direction_mask_bits, "[0-1]") do
-    SeD = SeD + i * t
-    t = t * 2
+    direction_mask = direction_mask + i * bit_value
+    bit_value = bit_value * 2
 end
 map_layer = map_layer or 0
 if map_layer > 0 and map_layer <= 100 then
-    local Lck = obj.getvalue("layer" .. map_layer .. ".x") and 1 or 0
-    if Lck == 1 then
-        local Pr =
+    local has_map_layer = obj.getvalue("layer" .. map_layer .. ".x") and 1 or 0
+    if has_map_layer == 1 then
+        local object_transform =
             { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
-        local w0, h0 = obj.getpixel()
-        obj.copybuffer("tmp", "obj")
+        local original_width, original_height = obj.getpixel()
+        obj.copybuffer("tempbuffer", "object")
         obj.load("layer", map_layer, true)
         if is_enabled(boundary_adjust) then
             obj.effect("領域拡張", "上", length, "下", length, "左", length, "右", length, "塗りつぶし", 0)
         end
-        obj.effect("リサイズ", "X", w0, "Y", h0, "ドット数でサイズ指定", 1)
+        obj.effect("リサイズ", "X", original_width, "Y", original_height, "ドット数でサイズ指定", 1)
         local userdata, w, h = obj.getpixeldata("object", "bgra")
-        tim2.rgline_set_map_image(userdata, w, h)
-        obj.copybuffer("obj", "tmp")
+        tim_module.rgline_set_map_image(userdata, w, h)
+        obj.copybuffer("object", "tempbuffer")
         obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect =
-            unpack(Pr)
+            unpack(object_transform)
     end
 end
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-tim2.rgline_set_public_image(userdata, w, h)
+tim_module.rgline_set_public_image(userdata, w, h)
 obj.effect("ぼかし", "範囲", extract_size, "サイズ固定", 1)
 userdata, w, h = obj.getpixeldata("object", "bgra")
-tim2.rgline_line_ext(
+tim_module.rgline_line_ext(
     userdata,
     w,
     h,
@@ -184,6 +184,6 @@ tim2.rgline_line_ext(
     background_color,
     is_enabled(screen_blend),
     line_gamma,
-    SeD
+    direction_mask
 )
 obj.putpixeldata("object", userdata, w, h, "bgra")

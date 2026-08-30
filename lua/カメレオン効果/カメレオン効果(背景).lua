@@ -15,31 +15,42 @@ local track_center_y = 0
 ---min=0
 ---max=10000
 ---step=1
-local track_width = 5000
+local track_range_width = 5000
 
 ---$track:高さ
 ---min=0
 ---max=10000
 ---step=1
-local track_height = 5000
+local track_range_height = 5000
 
 ---$check:範囲を表示
-local check0 = false
+local check_show_range = false
 
 ---$color:枠色
-local col = 0xffffff
+local color_border = 0xffffff
 
 ---$track:枠幅
 ---min=0
 ---max=100
 ---step=1
-local Lw = 2
+local track_border_width = 2
 
---hide@col:check0==0
---hide@Lw:check0==0
+--hide@color_border:check_show_range==0
+--hide@track_border_width:check_show_range==0
 
 obj.setanchor("track_center_x,track_center_y", 2)
-local tim2 = obj.module("tim2")
+local tim_module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-tim2.famili_set_color(userdata, w, h, track_center_x, track_center_y, track_width, track_height, check0, col, Lw)
+tim_module.famili_set_color(
+    userdata,
+    w,
+    h,
+    track_center_x,
+    track_center_y,
+    track_range_width,
+    track_range_height,
+    check_show_range,
+    color_border,
+    track_border_width
+)
 obj.putpixeldata("object", userdata, w, h, "bgra")

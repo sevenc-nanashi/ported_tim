@@ -10,7 +10,7 @@ local track_change = 0
 ---min=-1000
 ---max=1000
 ---step=0.1
-local track_count = 0
+local track_constant = 0
 
 ---$track:スケール
 ---min=-1000
@@ -19,32 +19,32 @@ local track_count = 0
 local track_scale = 100
 
 ---$color:指定色1
-local col1 = 0x0
+local reference_color = 0x0
 
 ---$color:指定色2
-local col2 = 0xffffff
+local replacement_color = 0xffffff
 
 ---$check:指定色からの距離
-local use_distance_from_standard_color = false
+local check_use_reference_color_distance = false
 
 --require("T_Color_Module")
-local col1_r, col1_g, col1_b = RGB(col1)
-local col2_r, col2_g, col2_b = RGB(col2)
-local use_distance = use_distance_from_standard_color and 1 or 0
+local reference_red, reference_green, reference_blue = RGB(reference_color)
+local replacement_red, replacement_green, replacement_blue = RGB(replacement_color)
+local use_reference_color_distance = check_use_reference_color_distance and 1 or 0
 
 --[[pixelshader@standard_color
 ---$include "./shaders/standard_color.hlsl"
 ]]
 
 obj.pixelshader("standard_color", "object", "object", {
-    col1_r,
-    col1_g,
-    col1_b,
-    col2_r,
-    col2_g,
-    col2_b,
+    reference_red,
+    reference_green,
+    reference_blue,
+    replacement_red,
+    replacement_green,
+    replacement_blue,
     track_change * 0.01,
-    track_count,
+    track_constant,
     track_scale,
-    use_distance,
+    use_reference_color_distance,
 })

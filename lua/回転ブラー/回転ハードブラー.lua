@@ -72,7 +72,7 @@ local track_change_seed = 1
 ---$include "./shaders/rot_hard_blur.hlsl"
 ]]
 
-local log2 = math.log(2)
+local log_two = math.log(2)
 
 local rotation_blur_iterations = function(width, height, center_x, center_y, blur_rad, resolution_down)
     local max_dx = math.max(math.abs(center_x), math.abs(width - center_x))
@@ -82,7 +82,7 @@ local rotation_blur_iterations = function(width, height, center_x, center_y, blu
         return 2
     end
 
-    local exponent = math.ceil(math.log(arc_length) / log2 - math.abs(resolution_down))
+    local exponent = math.ceil(math.log(arc_length) / log_two - math.abs(resolution_down))
     local iterations = 2 ^ exponent
     if iterations ~= iterations or iterations == math.huge or iterations < 2 then
         return 2
@@ -105,28 +105,35 @@ if blur_amount ~= 0 then
     local blur_correction_scale = track_blur_correction_scale
     local change_seed = math.abs(math.floor(track_change_seed))
 
-    local w, h = obj.getpixel()
-    local r = math.sqrt(w * w + h * h)
+    local image_width, image_height = obj.getpixel()
+    local image_diagonal = math.sqrt(image_width * image_width + image_height * image_height)
     if not check_keep_size then
-        local addX, addY = math.ceil((r - w) / 2 + 1), math.ceil((r - h) / 2 + 1)
-        obj.effect("領域拡張", "上", addY, "下", addY, "右", addX, "左", addX)
+        local add_x, add_y =
+            math.ceil((image_diagonal - image_width) / 2 + 1), math.ceil((image_diagonal - image_height) / 2 + 1)
+        obj.effect("領域拡張", "上", add_y, "下", add_y, "右", add_x, "左", add_x)
     end
 
-    w, h = obj.getpixel()
+    image_width, image_height = obj.getpixel()
     if change_seed == 0 then
         change_seed = math.floor(obj.time * obj.framerate)
     end
-    if check_blur_correction and w > 0 and h > 0 then
-        local correction_blur_amount = blur_amount * bump_amount / r * blur_correction_scale * 0.015
+    if check_blur_correction and image_width > 0 and image_height > 0 then
+        local correction_blur_amount = blur_amount * bump_amount / image_diagonal * blur_correction_scale * 0.015
         local correction_blur_rad = correction_blur_amount * math.pi / 180
-        local iterations =
-            rotation_blur_iterations(w, h, w * 0.5 + center_x, h * 0.5 + center_y, correction_blur_rad, 1)
-        local step = correction_blur_rad / iterations
+        local iterations = rotation_blur_iterations(
+            image_width,
+            image_height,
+            image_width * 0.5 + center_x,
+            image_height * 0.5 + center_y,
+            correction_blur_rad,
+            1
+        )
+        local angle_step = correction_blur_rad / iterations
         local current = math.floor(iterations / 2)
 
         while true do
-            local half = math.floor(current / 2)
-            local delta = half * step
+            local half_iterations = math.floor(current / 2)
+            local delta = half_iterations * angle_step
             obj.pixelshader("rot_blur", "object", "object", {
                 center_x,
                 center_y,
@@ -140,14 +147,14 @@ if blur_amount ~= 0 then
             if current < 2 then
                 break
             end
-            current = half
+            current = half_iterations
         end
     end
 
-    if w > 0 and h > 0 then
+    if image_width > 0 and image_height > 0 then
         obj.pixelshader("rot_hard_blur", "object", "object", {
             blur_amount,
-            r / 2,
+            image_diagonal / 2,
             center_x,
             center_y,
             bump_amount,

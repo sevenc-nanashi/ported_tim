@@ -4,7 +4,7 @@
 ---min=0
 ---max=255
 ---step=1
-local track_n_1 = 0
+local track_lower_saturation_point = 0
 
 ---$track:中心点
 ---min=0
@@ -16,54 +16,54 @@ local track_center = 128
 ---min=0
 ---max=255
 ---step=1
-local track_n_2 = 255
+local track_upper_saturation_point = 255
 
 ---$check:ミッドトーン色無視
-local ignore_midtone = false
+local check_ignore_midtone = false
 
 ---$color:シャドウ
-local col3 = 0x000000
+local shadow_color = 0x000000
 
 ---$color: ミッドトーン
-local col2 = 0xb5982c
+local midtone_color = 0xb5982c
 
 ---$color: ハイライト
-local col1 = 0xffffff
+local highlight_color = 0xffffff
 
---hide@col2:ignore_midtone==1
+--hide@midtone_color:check_ignore_midtone==1
 
 --[[pixelshader@tritone
 ---$include "./shaders/tritone.hlsl"
 ]]
 
-local points = {
-    track_n_1,
+local tone_points = {
+    track_lower_saturation_point,
     track_center,
-    track_n_2,
+    track_upper_saturation_point,
 }
-table.sort(points)
+table.sort(tone_points)
 
-local col1_r, col1_g, col1_b = RGB(col1)
-local col2_r, col2_g, col2_b = RGB(col2)
-local col3_r, col3_g, col3_b = RGB(col3)
-if ignore_midtone then
-    col2_r = col1_r / 2 + col3_r / 2
-    col2_g = col1_g / 2 + col3_g / 2
-    col2_b = col1_b / 2 + col3_b / 2
+local highlight_red, highlight_green, highlight_blue = RGB(highlight_color)
+local midtone_red, midtone_green, midtone_blue = RGB(midtone_color)
+local shadow_red, shadow_green, shadow_blue = RGB(shadow_color)
+if check_ignore_midtone then
+    midtone_red = highlight_red / 2 + shadow_red / 2
+    midtone_green = highlight_green / 2 + shadow_green / 2
+    midtone_blue = highlight_blue / 2 + shadow_blue / 2
 end
 obj.pixelshader("tritone", "object", "object", {
-    col1_r / 255,
-    col1_g / 255,
-    col1_b / 255,
-    col2_r / 255,
-    col2_g / 255,
-    col2_b / 255,
-    col3_r / 255,
-    col3_g / 255,
-    col3_b / 255,
-    points[3] / 255,
-    points[2] / 255,
-    points[1] / 255,
+    highlight_red / 255,
+    highlight_green / 255,
+    highlight_blue / 255,
+    midtone_red / 255,
+    midtone_green / 255,
+    midtone_blue / 255,
+    shadow_red / 255,
+    shadow_green / 255,
+    shadow_blue / 255,
+    tone_points[3] / 255,
+    tone_points[2] / 255,
+    tone_points[1] / 255,
 })
 -- local T_Color_Module = obj.module("tim2")
 -- local userdata, w, h = obj.getpixeldata("object", "bgra")

@@ -13,136 +13,136 @@ local track_size = 200
 ---正八面体=3
 ---正二十面体=4
 ---正十二面体=5
-local track_type = 1
+local select_polyhedron_type = 1
 
 ---$track:枠％
 ---min=0
 ---max=100
 ---step=0.1
-local track_percent = 0
+local track_frame_percent = 0
 
 ---$color:枠色
-local col = 0xffffff
+local color_frame = 0xffffff
 
 ---$check:縮尺補正
-local aspchk = false
+local check_aspect_ratio_correction = false
 
 ---$check:90度回転
-local rotchk = false
+local check_rotate_90_degrees = false
 
 obj.setoption("blend", 0) --念のため
 
-local create_DP = function(c72, c36, s72, s36, Stype)
-    local sc1 = (1 - c72) / (1 + c36)
-    local sc2 = 1 / 2 + 1 / (2 + 4 * c72)
-    local sc3 = 1 / 2 - 1 / (2 + 4 * c72)
-    local ww, hh = obj.w, obj.h
+local create_face_drawer = function(cos_72, cos_36, sin_72, sin_36, polyhedron_type)
+    local texture_side_y_ratio = (1 - cos_72) / (1 + cos_36)
+    local texture_right_x_ratio = 1 / 2 + 1 / (2 + 4 * cos_72)
+    local texture_left_x_ratio = 1 / 2 - 1 / (2 + 4 * cos_72)
+    local texture_width, texture_height = obj.w, obj.h
 
-    if Stype == 2 then
-        return function(PT, p1, p2, p3, p4)
+    if polyhedron_type == 2 then
+        return function(vertices, p1, p2, p3, p4)
             obj.drawpoly(
-                PT[p1][1],
-                PT[p1][2],
-                PT[p1][3],
-                PT[p2][1],
-                PT[p2][2],
-                PT[p2][3],
-                PT[p3][1],
-                PT[p3][2],
-                PT[p3][3],
-                PT[p4][1],
-                PT[p4][2],
-                PT[p4][3]
+                vertices[p1][1],
+                vertices[p1][2],
+                vertices[p1][3],
+                vertices[p2][1],
+                vertices[p2][2],
+                vertices[p2][3],
+                vertices[p3][1],
+                vertices[p3][2],
+                vertices[p3][3],
+                vertices[p4][1],
+                vertices[p4][2],
+                vertices[p4][3]
             )
         end
-    elseif Stype == 4 then
-        return function(PT, p1, p2, p3, p4, p5)
+    elseif polyhedron_type == 4 then
+        return function(vertices, p1, p2, p3, p4, p5)
             obj.drawpoly(
-                PT[p1][1],
-                PT[p1][2],
-                PT[p1][3],
-                PT[p1][1],
-                PT[p1][2],
-                PT[p1][3],
-                PT[p2][1],
-                PT[p2][2],
-                PT[p2][3],
-                PT[p5][1],
-                PT[p5][2],
-                PT[p5][3],
-                ww / 2,
+                vertices[p1][1],
+                vertices[p1][2],
+                vertices[p1][3],
+                vertices[p1][1],
+                vertices[p1][2],
+                vertices[p1][3],
+                vertices[p2][1],
+                vertices[p2][2],
+                vertices[p2][3],
+                vertices[p5][1],
+                vertices[p5][2],
+                vertices[p5][3],
+                texture_width / 2,
                 0,
-                ww / 2,
+                texture_width / 2,
                 0,
-                ww,
-                sc1 * hh,
+                texture_width,
+                texture_side_y_ratio * texture_height,
                 0,
-                sc1 * hh
+                texture_side_y_ratio * texture_height
             )
 
             obj.drawpoly(
-                PT[p2][1],
-                PT[p2][2],
-                PT[p2][3],
-                PT[p3][1],
-                PT[p3][2],
-                PT[p3][3],
-                PT[p4][1],
-                PT[p4][2],
-                PT[p4][3],
-                PT[p5][1],
-                PT[p5][2],
-                PT[p5][3],
-                ww,
-                sc1 * hh,
-                ww * sc2,
-                hh,
-                ww * sc3,
-                hh,
+                vertices[p2][1],
+                vertices[p2][2],
+                vertices[p2][3],
+                vertices[p3][1],
+                vertices[p3][2],
+                vertices[p3][3],
+                vertices[p4][1],
+                vertices[p4][2],
+                vertices[p4][3],
+                vertices[p5][1],
+                vertices[p5][2],
+                vertices[p5][3],
+                texture_width,
+                texture_side_y_ratio * texture_height,
+                texture_width * texture_right_x_ratio,
+                texture_height,
+                texture_width * texture_left_x_ratio,
+                texture_height,
                 0,
-                sc1 * hh
+                texture_side_y_ratio * texture_height
             )
         end
     else
-        return function(PT, p1, p2, p3)
+        return function(vertices, p1, p2, p3)
             obj.drawpoly(
-                PT[p1][1],
-                PT[p1][2],
-                PT[p1][3],
-                PT[p1][1],
-                PT[p1][2],
-                PT[p1][3],
-                PT[p2][1],
-                PT[p2][2],
-                PT[p2][3],
-                PT[p3][1],
-                PT[p3][2],
-                PT[p3][3],
-                ww / 2,
+                vertices[p1][1],
+                vertices[p1][2],
+                vertices[p1][3],
+                vertices[p1][1],
+                vertices[p1][2],
+                vertices[p1][3],
+                vertices[p2][1],
+                vertices[p2][2],
+                vertices[p2][3],
+                vertices[p3][1],
+                vertices[p3][2],
+                vertices[p3][3],
+                texture_width / 2,
                 0,
-                ww / 2,
+                texture_width / 2,
                 0,
-                ww,
-                hh,
+                texture_width,
+                texture_height,
                 0,
-                hh
+                texture_height
             )
         end
     end
 end
 
 local size = track_size --内接球の半径
-local Stype = track_type
-local N = { 4, 8, 6, 20, 12 }
-local c72, c36, s72, s36 = 0, 0, 0, 0
-local PT = {}
-local waku = track_percent * 0.01
+local polyhedron_type = select_polyhedron_type
+local vertex_counts = { 4, 8, 6, 20, 12 }
+local cos_72, cos_36, sin_72, sin_36 = 0, 0, 0, 0
+local vertices = {}
+local frame_ratio = track_frame_percent * 0.01
 
 --最初から規格化すれば良いのだけれど・・めんどくさいので＞＜
-if Stype == 1 then
-    PT = { { 0, -math.sqrt(8 / 3), -1 / math.sqrt(3) }, { 0, 0, -math.sqrt(3) }, { -1, 0, 0 }, { 1, 0, 0 } }
-elseif Stype == 2 then
-    PT = {
+if polyhedron_type == 1 then
+    vertices = { { 0, -math.sqrt(8 / 3), -1 / math.sqrt(3) }, { 0, 0, -math.sqrt(3) }, { -1, 0, 0 }, { 1, 0, 0 } }
+elseif polyhedron_type == 2 then
+    vertices = {
         { 1, -1, -1 },
         { -1, -1, -1 },
         { -1, -1, 1 },
@@ -156,43 +156,44 @@ elseif Stype == 2 then
             1,
         },
     }
-elseif Stype == 3 then
-    PT = { { 0, -math.sqrt(2), 0 }, { 1, 0, -1 }, { -1, 0, -1 }, { -1, 0, 1 }, { 1, 0, 1 }, { 0, math.sqrt(2), 0 } }
-elseif Stype == 4 then
-    c72 = math.cos(2 * math.pi / 5)
-    c36 = math.cos(math.pi / 5)
-    s72 = math.sin(2 * math.pi / 5)
-    s36 = math.sin(math.pi / 5)
-    a = (1 + math.sqrt(5)) / 2
-    PT = {
+elseif polyhedron_type == 3 then
+    vertices =
+        { { 0, -math.sqrt(2), 0 }, { 1, 0, -1 }, { -1, 0, -1 }, { -1, 0, 1 }, { 1, 0, 1 }, { 0, math.sqrt(2), 0 } }
+elseif polyhedron_type == 4 then
+    cos_72 = math.cos(2 * math.pi / 5)
+    cos_36 = math.cos(math.pi / 5)
+    sin_72 = math.sin(2 * math.pi / 5)
+    sin_36 = math.sin(math.pi / 5)
+    local a = (1 + math.sqrt(5)) / 2
+    vertices = {
         { 0, 1, 1 },
-        { s72, c72, 1 },
-        { s36, -c36, 1 },
-        { -s36, -c36, 1 },
-        { -s72, c72, 1 },
+        { sin_72, cos_72, 1 },
+        { sin_36, -cos_36, 1 },
+        { -sin_36, -cos_36, 1 },
+        { -sin_72, cos_72, 1 },
         { 0, a, 0 },
-        { a * s72, a * c72, 0 },
-        { a * s36, -a * c36, 0 },
-        { -a * s36, -a * c36, 0 },
-        { -a * s72, a * c72, 0 },
-        { a * s36, a * c36, 1 - a },
-        { a * s72, -a * c72, 1 - a },
+        { a * sin_72, a * cos_72, 0 },
+        { a * sin_36, -a * cos_36, 0 },
+        { -a * sin_36, -a * cos_36, 0 },
+        { -a * sin_72, a * cos_72, 0 },
+        { a * sin_36, a * cos_36, 1 - a },
+        { a * sin_72, -a * cos_72, 1 - a },
         { 0, -a, 1 - a },
-        { -a * s72, -a * c72, 1 - a },
-        { -a * s36, a * c36, 1 - a },
+        { -a * sin_72, -a * cos_72, 1 - a },
+        { -a * sin_36, a * cos_36, 1 - a },
         { 0, -1, -a },
-        { -s72, -c72, -a },
-        { -s36, c36, -a },
-        { s36, c36, -a },
-        { s72, -c72, -a },
+        { -sin_72, -cos_72, -a },
+        { -sin_36, cos_36, -a },
+        { sin_36, cos_36, -a },
+        { sin_72, -cos_72, -a },
     }
-else --(Stype==5)
+else --(polyhedron_type==5)
     local a = 1 / math.sqrt(5)
     local b = (1 - a) / 2
     local c = (1 + a) / 2
     local d = math.sqrt(b)
     local e = math.sqrt(c)
-    PT = {
+    vertices = {
         { 0, -1, 0 },
         { 0, -a, 2 * a },
         { e, -a, b },
@@ -209,13 +210,13 @@ else --(Stype==5)
 end
 
 --縦横比補正
-if aspchk then
+if check_aspect_ratio_correction then
     local a, b
     local w, h = obj.getpixel()
-    if Stype == 2 then
+    if polyhedron_type == 2 then
         a = 1
-    elseif Stype == 4 then
-        a = 2 * s72 / (1 + c36)
+    elseif polyhedron_type == 4 then
+        a = 2 * sin_72 / (1 + cos_36)
     else
         a = 2 / math.sqrt(3)
     end
@@ -231,44 +232,44 @@ if aspchk then
 end
 
 --枠
-if waku > 0 then
+if frame_ratio > 0 then
     local w, h = obj.getpixel()
     obj.setoption("drawtarget", "tempbuffer", w, h)
     obj.draw()
-    obj.load("figure", "四角形", col, math.max(w, h))
+    obj.load("figure", "四角形", color_frame, math.max(w, h))
 
     local w2 = w / 2
     local h2 = h / 2
 
-    if Stype == 2 then
-        local wf = w2 - w2 * waku
-        local hf = h2 - h2 * waku
+    if polyhedron_type == 2 then
+        local wf = w2 - w2 * frame_ratio
+        local hf = h2 - h2 * frame_ratio
         obj.drawpoly(-w2, -h2, 0, w2, -h2, 0, w2, -hf, 0, -w2, -hf, 0)
         obj.drawpoly(-w2, hf, 0, w2, hf, 0, w2, h2, 0, -w2, h2, 0)
         obj.drawpoly(-w2, -h2, 0, -wf, -h2, 0, -wf, h2, 0, -w2, h2, 0)
         obj.drawpoly(wf, -h2, 0, w2, -h2, 0, w2, h2, 0, wf, h2, 0)
-    elseif Stype == 4 then
-        local hg = h / (1 + c36)
-        local a = hg * c36 * waku
+    elseif polyhedron_type == 4 then
+        local hg = h / (1 + cos_36)
+        local a = hg * cos_36 * frame_ratio
         local hf = h2 - a
         obj.drawpoly(-w2, hf, 0, w2, hf, 0, w2, h2, 0, -w2, h2, 0)
-        local b = hg * (1 - c72)
+        local b = hg * (1 - cos_72)
         local hm = -h2 + b
-        local c = w * (1 + c36) / (2 * s72 * h)
+        local c = w * (1 + cos_36) / (2 * sin_72 * h)
         local dw = c * a * b / math.sqrt(w2 * w2 + b * b)
         local dh = a * w2 / math.sqrt(w2 * w2 + b * b)
         obj.drawpoly(-dw, -h2 + dh, 0, dw, -h2 - dh, 0, w2 + dw, hm - dh, 0, w2 - dw, hm + dh, 0)
         obj.drawpoly(-dw, -h2 - dh, 0, dw, -h2 + dh, 0, -w2 + dw, hm + dh, 0, -w2 - dw, hm - dh, 0)
-        local wm = c * s36 * hg
-        local d = hg * (s72 - s36)
+        local wm = c * sin_36 * hg
+        local d = hg * (sin_72 - sin_36)
         local e = h - b
         local dw = c * a * e / math.sqrt(d * d + e * e)
         local dh = a * d / math.sqrt(d * d + e * e)
         obj.drawpoly(w2 - dw, hm - dh, 0, w2 + dw, hm + dh, 0, wm + dw, h2 + dh, 0, wm - dw, h2 - dh, 0)
         obj.drawpoly(-w2 - dw, hm + dh, 0, -w2 + dw, hm - dh, 0, -wm + dw, h2 - dh, 0, -wm - dw, h2 + dh, 0)
     else
-        local hf = h2 - h / 3 * waku
-        local a = w * h / (3 * h * h + 0.75 * w * w) * waku
+        local hf = h2 - h / 3 * frame_ratio
+        local a = w * h / (3 * h * h + 0.75 * w * w) * frame_ratio
         local ah = a * h
         local aw = a * w2
         local hp = h2 + aw
@@ -282,99 +283,99 @@ if waku > 0 then
 end
 
 --重心移動
-if Stype == 1 or Stype == 4 then
+if polyhedron_type == 1 or polyhedron_type == 4 then
     local s = { 0, 0, 0 }
     for j = 1, 3 do
-        for i = 1, N[Stype] do
-            s[j] = s[j] + PT[i][j]
+        for i = 1, vertex_counts[polyhedron_type] do
+            s[j] = s[j] + vertices[i][j]
         end
-        s[j] = s[j] / N[Stype]
+        s[j] = s[j] / vertex_counts[polyhedron_type]
     end
-    for i = 1, N[Stype] do
+    for i = 1, vertex_counts[polyhedron_type] do
         for j = 1, 3 do
-            PT[i][j] = PT[i][j] - s[j]
+            vertices[i][j] = vertices[i][j] - s[j]
         end
     end
 end
 
 --サイズ変更
-for i = 1, N[Stype] do
-    local R = 0
+for i = 1, vertex_counts[polyhedron_type] do
+    local r = 0
     for j = 1, 3 do
-        R = R + PT[i][j] * PT[i][j]
+        r = r + vertices[i][j] * vertices[i][j]
     end
-    R = math.sqrt(R)
+    r = math.sqrt(r)
     for j = 1, 3 do
-        PT[i][j] = size * PT[i][j] / R
+        vertices[i][j] = size * vertices[i][j] / r
     end
 end
 
 --回転
-if Stype == 4 then
-    rotchk = not rotchk
+if polyhedron_type == 4 then
+    check_rotate_90_degrees = not check_rotate_90_degrees
 end
-if rotchk then
-    for i = 1, N[Stype] do
-        PT[i][2], PT[i][3] = -PT[i][3], PT[i][2]
+if check_rotate_90_degrees then
+    for i = 1, vertex_counts[polyhedron_type] do
+        vertices[i][2], vertices[i][3] = -vertices[i][3], vertices[i][2]
     end
 end
 
-local drpoly = create_DP(c72, c36, s72, s36, Stype)
+local draw_face = create_face_drawer(cos_72, cos_36, sin_72, sin_36, polyhedron_type)
 
 --描画
-if Stype == 1 then
-    drpoly(PT, 1, 2, 3)
-    drpoly(PT, 1, 3, 4)
-    drpoly(PT, 1, 4, 2)
-    drpoly(PT, 2, 4, 3)
-elseif Stype == 2 then
-    drpoly(PT, 3, 4, 1, 2)
-    drpoly(PT, 2, 1, 5, 6)
-    drpoly(PT, 3, 2, 6, 7)
-    drpoly(PT, 4, 3, 7, 8)
-    drpoly(PT, 1, 4, 8, 5)
-    drpoly(PT, 6, 5, 8, 7)
-elseif Stype == 3 then
-    drpoly(PT, 1, 2, 3)
-    drpoly(PT, 1, 3, 4)
-    drpoly(PT, 1, 4, 5)
-    drpoly(PT, 1, 5, 2)
-    drpoly(PT, 6, 3, 2)
-    drpoly(PT, 6, 4, 3)
-    drpoly(PT, 6, 5, 4)
-    drpoly(PT, 6, 2, 5)
-elseif Stype == 4 then
-    drpoly(PT, 1, 2, 3, 4, 5)
-    drpoly(PT, 11, 7, 2, 1, 6)
-    drpoly(PT, 12, 8, 3, 2, 7)
-    drpoly(PT, 13, 9, 4, 3, 8)
-    drpoly(PT, 14, 10, 5, 4, 9)
-    drpoly(PT, 15, 6, 1, 5, 10)
-    drpoly(PT, 6, 15, 18, 19, 11)
-    drpoly(PT, 10, 14, 17, 18, 15)
-    drpoly(PT, 9, 13, 16, 17, 14)
-    drpoly(PT, 8, 12, 20, 16, 13)
-    drpoly(PT, 7, 11, 19, 20, 12)
-    drpoly(PT, 16, 20, 19, 18, 17)
-else --(Stype==5)
-    drpoly(PT, 1, 2, 3)
-    drpoly(PT, 1, 3, 4)
-    drpoly(PT, 1, 4, 5)
-    drpoly(PT, 1, 5, 6)
-    drpoly(PT, 1, 6, 2)
-    drpoly(PT, 2, 11, 7)
-    drpoly(PT, 3, 7, 8)
-    drpoly(PT, 4, 8, 9)
-    drpoly(PT, 5, 9, 10)
-    drpoly(PT, 6, 10, 11)
-    drpoly(PT, 7, 3, 2)
-    drpoly(PT, 8, 4, 3)
-    drpoly(PT, 9, 5, 4)
-    drpoly(PT, 10, 6, 5)
-    drpoly(PT, 11, 2, 6)
-    drpoly(PT, 12, 7, 11)
-    drpoly(PT, 12, 8, 7)
-    drpoly(PT, 12, 9, 8)
-    drpoly(PT, 12, 10, 9)
-    drpoly(PT, 12, 11, 10)
+if polyhedron_type == 1 then
+    draw_face(vertices, 1, 2, 3)
+    draw_face(vertices, 1, 3, 4)
+    draw_face(vertices, 1, 4, 2)
+    draw_face(vertices, 2, 4, 3)
+elseif polyhedron_type == 2 then
+    draw_face(vertices, 3, 4, 1, 2)
+    draw_face(vertices, 2, 1, 5, 6)
+    draw_face(vertices, 3, 2, 6, 7)
+    draw_face(vertices, 4, 3, 7, 8)
+    draw_face(vertices, 1, 4, 8, 5)
+    draw_face(vertices, 6, 5, 8, 7)
+elseif polyhedron_type == 3 then
+    draw_face(vertices, 1, 2, 3)
+    draw_face(vertices, 1, 3, 4)
+    draw_face(vertices, 1, 4, 5)
+    draw_face(vertices, 1, 5, 2)
+    draw_face(vertices, 6, 3, 2)
+    draw_face(vertices, 6, 4, 3)
+    draw_face(vertices, 6, 5, 4)
+    draw_face(vertices, 6, 2, 5)
+elseif polyhedron_type == 4 then
+    draw_face(vertices, 1, 2, 3, 4, 5)
+    draw_face(vertices, 11, 7, 2, 1, 6)
+    draw_face(vertices, 12, 8, 3, 2, 7)
+    draw_face(vertices, 13, 9, 4, 3, 8)
+    draw_face(vertices, 14, 10, 5, 4, 9)
+    draw_face(vertices, 15, 6, 1, 5, 10)
+    draw_face(vertices, 6, 15, 18, 19, 11)
+    draw_face(vertices, 10, 14, 17, 18, 15)
+    draw_face(vertices, 9, 13, 16, 17, 14)
+    draw_face(vertices, 8, 12, 20, 16, 13)
+    draw_face(vertices, 7, 11, 19, 20, 12)
+    draw_face(vertices, 16, 20, 19, 18, 17)
+else --(polyhedron_type==5)
+    draw_face(vertices, 1, 2, 3)
+    draw_face(vertices, 1, 3, 4)
+    draw_face(vertices, 1, 4, 5)
+    draw_face(vertices, 1, 5, 6)
+    draw_face(vertices, 1, 6, 2)
+    draw_face(vertices, 2, 11, 7)
+    draw_face(vertices, 3, 7, 8)
+    draw_face(vertices, 4, 8, 9)
+    draw_face(vertices, 5, 9, 10)
+    draw_face(vertices, 6, 10, 11)
+    draw_face(vertices, 7, 3, 2)
+    draw_face(vertices, 8, 4, 3)
+    draw_face(vertices, 9, 5, 4)
+    draw_face(vertices, 10, 6, 5)
+    draw_face(vertices, 11, 2, 6)
+    draw_face(vertices, 12, 7, 11)
+    draw_face(vertices, 12, 8, 7)
+    draw_face(vertices, 12, 9, 8)
+    draw_face(vertices, 12, 10, 9)
+    draw_face(vertices, 12, 11, 10)
 end

@@ -28,15 +28,16 @@ local track_blur = 5
 ---$include "./shaders/neon.hlsl"
 ]]
 
-local C = track_luminance_center / 100 + 0.5
-local B = track_luminance_range * 0.01
-local S = track_intensity * 0.01
-local ar = -S / (B * B)
-local br = ar * (-2 * C)
-local cr = ar * (C * C - B * B)
+local luminance_center = track_luminance_center / 100 + 0.5
+local luminance_range = track_luminance_range * 0.01
+local intensity = track_intensity * 0.01
+local quadratic_coefficient = -intensity / (luminance_range * luminance_range)
+local linear_coefficient = quadratic_coefficient * (-2 * luminance_center)
+local constant_coefficient = quadratic_coefficient
+    * (luminance_center * luminance_center - luminance_range * luminance_range)
 obj.effect("ぼかし", "範囲", track_blur, "サイズ固定", 1)
 obj.pixelshader("neon", "object", "object", {
-    ar,
-    br,
-    cr,
+    quadratic_coefficient,
+    linear_coefficient,
+    constant_coefficient,
 })

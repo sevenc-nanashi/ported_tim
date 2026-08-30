@@ -27,37 +27,37 @@ local track_rotation = 0
 ---min=-5000
 ---max=5000
 ---step=0.1
-local t = 50
+local position_percent = 50
 
 ---$track:虹輪開％
 ---min=0
 ---max=100
 ---step=0.1
-local ds = 20
+local radial_blur_percent = 20
 
 ---$track:裁ち落とし％
 ---min=0
 ---max=100
 ---step=0.1
-local spt = 0
+local radial_shift_percent = 0
 
 ---$value:位置オフセット％
-local OFSET = { 0, 0, 0 }
+local position_offset = { 0, 0, 0 }
 
 ---$check:自動拡大
-local aubg = 0
+local check_auto_hide = 0
 
 ---$track:基準距離
 ---min=0
 ---max=5000
 ---step=0.1
-local Rmax = 400
+local reference_distance = 400
 
 ---$track:偏平率％
 ---min=0
 ---max=200
 ---step=0.1
-local asp = 100
+local aspect_ratio = 100
 
 ---$track:ぼかし
 ---min=0
@@ -70,13 +70,13 @@ local blur = 1
 ---2=2
 ---3=3
 ---4=4
-local fig = 1
+local shape_index = 1
 
 ---$check:色上書き
-local ovchk = 0
+local check_override_color = 0
 
 ---$color:上書き色
-local ovcol = 0xccccff
+local override_color = 0xccccff
 
 ---$track:点滅
 ---min=0
@@ -85,59 +85,66 @@ local ovcol = 0xccccff
 local blink = 0.2
 
 ---$value:発光
-local lt = { 0, 250, 80, 0 }
+local color_stops = { 0, 250, 80, 0 }
 
---hide@Rmax:aubg==0
---hide@ovcol:ovchk==0
+--hide@reference_distance:check_auto_hide==0
+--hide@override_color:check_override_color==0
 
 local figmax = 4
-obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存
-local n = 10
-local r = track_size * 0.5
-if aubg == 1 then
-    r = r
-        * math.sqrt(CustomFlaredX * CustomFlaredX + CustomFlaredY * CustomFlaredY + CustomFlaredZ * CustomFlaredZ)
-        / Rmax
+obj.copybuffer("cache:BKIMG", "object") --背景をBKIMGに保存
+local layer_count = 10
+local base_radius = track_size * 0.5
+if check_auto_hide == 1 then
+    base_radius = base_radius
+        * math.sqrt(
+            T_CUSTOM_FLARE_DELTA_X * T_CUSTOM_FLARE_DELTA_X
+                + T_CUSTOM_FLARE_DELTA_Y * T_CUSTOM_FLARE_DELTA_Y
+                + T_CUSTOM_FLARE_DELTA_Z * T_CUSTOM_FLARE_DELTA_Z
+        )
+        / reference_distance
 end
-local dr = r * track_length_percent * 0.01
-local wh = 2 * (r + dr)
+local radius_extension = base_radius * track_length_percent * 0.01
+local wh = 2 * (base_radius + radius_extension)
 obj.setoption("drawtarget", "tempbuffer", wh, wh)
 obj.setoption("blend", 0)
 local pi = math.pi
 local cos = math.cos
 local sin = math.sin
 local alpha = track_intensity_percent * 0.01
-local rot = track_rotation / 180 * pi
-ds = ds * 0.01
-spt = spt * 0.01
-asp = asp * 0.01
-fig = math.floor(fig)
-if fig > figmax then
-    fig = figmax
+local rotation_radians = track_rotation / 180 * pi
+radial_blur_percent = radial_blur_percent * 0.01
+radial_shift_percent = radial_shift_percent * 0.01
+aspect_ratio = aspect_ratio * 0.01
+shape_index = math.floor(shape_index)
+if shape_index > figmax then
+    shape_index = figmax
 end
-if fig < 1 then
-    fig = 1
+if shape_index < 1 then
+    shape_index = 1
 end
 
--- obj.load("image", obj.getinfo("script_path") .. "CF-image\\hoop" .. fig .. ".webp")
+-- obj.load("image", obj.getinfo("script_path") .. "CF-image\\hoop" .. shape_index .. ".webp")
 local tim2_images = obj.module("tim2")
-local data, w, h = tim2_images.custom_flare_load_image("hoop" .. fig)
+local data, w, h = tim2_images.custom_flare_load_image("hoop" .. shape_index)
 obj.putpixeldata("object", data, w, h)
 obj.setoption("antialias", 1)
 
-local ox = CustomFlaredX * (t + OFSET[1]) * 0.01 + CustomFlareCX
-local oy = CustomFlaredY * (t + OFSET[2]) * 0.01 + CustomFlareCY
-local oz = CustomFlaredZ * (t + OFSET[3]) * 0.01 + CustomFlareCZ
-rot = rot + math.atan2(CustomFlaredY, CustomFlaredX)
-local kmax = 20 * n
-local k0 = -1
-for i = 0, n - 1 do
+local draw_x = T_CUSTOM_FLARE_DELTA_X * (position_percent + position_offset[1]) * 0.01 + T_CUSTOM_FLARE_CENTER_X
+local draw_y = T_CUSTOM_FLARE_DELTA_Y * (position_percent + position_offset[2]) * 0.01 + T_CUSTOM_FLARE_CENTER_Y
+local draw_z = T_CUSTOM_FLARE_DELTA_Z * (position_percent + position_offset[3]) * 0.01 + T_CUSTOM_FLARE_CENTER_Z
+rotation_radians = rotation_radians + math.atan2(T_CUSTOM_FLARE_DELTA_Y, T_CUSTOM_FLARE_DELTA_X)
+local sample_count = 20 * layer_count
+local previous_sample = -1
+for i = 0, layer_count - 1 do
     for j = 0, 19 do
-        k0 = k0 + 1
-        local k1 = k0 + 1
-        if spt * 0.5 * kmax < k0 and k1 < (1 - spt * 0.5) * kmax then
-            local t0 = (2 * k0 / kmax - 1) * pi
-            local t1 = (2 * k1 / kmax - 1) * pi
+        previous_sample = previous_sample + 1
+        local k1 = previous_sample + 1
+        if
+            radial_shift_percent * 0.5 * sample_count < previous_sample
+            and k1 < (1 - radial_shift_percent * 0.5) * sample_count
+        then
+            local t0 = (2 * previous_sample / sample_count - 1) * pi
+            local t1 = (2 * k1 / sample_count - 1) * pi
             if t0 > 0 then
                 t0 = t0 * 0.99
             else
@@ -150,8 +157,8 @@ for i = 0, n - 1 do
             end
             local s0 = t0
             local s1 = t1
-            local t0 = t0 / (1 - ds)
-            local t1 = t1 / (1 - ds)
+            local t0 = t0 / (1 - radial_blur_percent)
+            local t1 = t1 / (1 - radial_blur_percent)
             if t0 < -pi then
                 t0 = -pi
             end
@@ -164,10 +171,10 @@ for i = 0, n - 1 do
             if t1 > pi then
                 t1 = pi
             end
-            local r01 = r + dr * (cos(t0) + 1) / 2
-            local r02 = r - dr * (cos(t0) + 1) / 2
-            local r11 = r + dr * (cos(t1) + 1) / 2
-            local r12 = r - dr * (cos(t1) + 1) / 2
+            local r01 = base_radius + radius_extension * (cos(t0) + 1) / 2
+            local r02 = base_radius - radius_extension * (cos(t0) + 1) / 2
+            local r11 = base_radius + radius_extension * (cos(t1) + 1) / 2
+            local r12 = base_radius - radius_extension * (cos(t1) + 1) / 2
             local x0 = r01 * cos(s0)
             local y0 = r01 * sin(s0)
             local x1 = r11 * cos(s1)
@@ -184,45 +191,67 @@ for i = 0, n - 1 do
     end
 end
 obj.load("tempbuffer")
-obj.copybuffer("tmp", "cache:BKIMG")
-obj.setoption("blend", CustomFlareMode)
-local alpi = obj.rand(0, 100) / 100 + (1 - blink)
-if alpi > 1 then
-    alpi = 1
+obj.copybuffer("tempbuffer", "cache:BKIMG")
+obj.setoption("blend", T_CUSTOM_FLARE_BLEND_MODE)
+local flicker_alpha = obj.rand(0, 100) / 100 + (1 - blink)
+if flicker_alpha > 1 then
+    flicker_alpha = 1
 end
-alpha = alpi * alpha
-if ovchk == 1 then
-    obj.effect("グラデーション", "color", ovcol, "color2", ovcol, "blend", 3)
+alpha = flicker_alpha * alpha
+if check_override_color == 1 then
+    obj.effect("グラデーション", "color", override_color, "color2", override_color, "blend", 3)
 end
 obj.effect("ぼかし", "範囲", blur)
 obj.effect(
     "発光",
     "強さ",
-    lt[1],
+    color_stops[1],
     "拡散",
-    lt[2],
+    color_stops[2],
     "しきい値",
-    lt[3],
+    color_stops[3],
     "拡散速度",
-    lt[4],
+    color_stops[4],
     "サイズ固定",
     1
 )
 local w, h = obj.getpixel()
 w = w * 0.5
 h = h * 0.5
-local wc = w * cos(rot)
-local ws = -w * sin(rot)
-local hc = h * cos(rot)
-local hs = -h * sin(rot)
-local x0 = -wc - hs + ox
-local y0 = (ws - hc) * asp + oy
-local x1 = wc - hs + ox
-local y1 = (-ws - hc) * asp + oy
-local x2 = wc + hs + ox
-local y2 = (-ws + hc) * asp + oy
-local x3 = -wc + hs + ox
-local y3 = (ws + hc) * asp + oy
-obj.drawpoly(x0, y0, oz, x1, y1, oz, x2, y2, oz, x3, y3, oz, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h, alpha)
+local wc = w * cos(rotation_radians)
+local ws = -w * sin(rotation_radians)
+local hc = h * cos(rotation_radians)
+local hs = -h * sin(rotation_radians)
+local x0 = -wc - hs + draw_x
+local y0 = (ws - hc) * aspect_ratio + draw_y
+local x1 = wc - hs + draw_x
+local y1 = (-ws - hc) * aspect_ratio + draw_y
+local x2 = wc + hs + draw_x
+local y2 = (-ws + hc) * aspect_ratio + draw_y
+local x3 = -wc + hs + draw_x
+local y3 = (ws + hc) * aspect_ratio + draw_y
+obj.drawpoly(
+    x0,
+    y0,
+    draw_z,
+    x1,
+    y1,
+    draw_z,
+    x2,
+    y2,
+    draw_z,
+    x3,
+    y3,
+    draw_z,
+    0,
+    0,
+    obj.w,
+    0,
+    obj.w,
+    obj.h,
+    0,
+    obj.h,
+    alpha
+)
 obj.load("tempbuffer")
 obj.setoption("blend", 0)

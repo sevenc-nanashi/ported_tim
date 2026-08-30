@@ -27,7 +27,7 @@ local track_rotation = 0
 ---min=1
 ---max=5000
 ---step=1
-local n = 100
+local ray_count = 100
 
 ---$select:カラーパターン
 ---1=1
@@ -35,13 +35,13 @@ local n = 100
 ---3=3
 ---4=4
 ---5=5
-local fig = 1
+local color_pattern = 1
 
 ---$track:幅比率％
 ---min=0
 ---max=100
 ---step=0.1
-local dH = 5
+local width_ratio = 5
 
 ---$track:ぼかし
 ---min=0
@@ -53,22 +53,22 @@ local blur = 5
 ---min=0
 ---max=1000
 ---step=0.1
-local rblur = 5
+local radial_blur = 5
 
 ---$track:位置％
 ---min=-5000
 ---max=5000
 ---step=0.1
-local t = -100
+local position_percent = -100
 
 ---$value:位置オフセット％
-local OFSET = { 0, 0, 0 }
+local position_offset = { 0, 0, 0 }
 
 ---$track:動径方向バラツキ％
 ---min=0
 ---max=200
 ---step=0.1
-local drh = 100
+local radial_randomness = 100
 
 ---$track:点滅
 ---min=0
@@ -83,53 +83,53 @@ local blink = 0.2
 local seed = 1
 
 local figmax = 5
-obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存
+obj.copybuffer("cache:BKIMG", "object") --背景をBKIMGに保存
 local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
 local size = track_size * 0.5
-local dL = track_length * 0.5
+local half_length = track_length * 0.5
 alpha = alpha * track_intensity * 0.01
-local rot = track_rotation
-drh = drh * 0.01
-fig = math.floor(fig)
-if fig > figmax then
-    fig = figmax
+local rotation = track_rotation
+radial_randomness = radial_randomness * 0.01
+color_pattern = math.floor(color_pattern)
+if color_pattern > figmax then
+    color_pattern = figmax
 end
-if fig < 1 then
-    fig = 1
+if color_pattern < 1 then
+    color_pattern = 1
 end
-dH = dL * dH * 0.01
-local dx = (t + OFSET[1]) * 0.01 * CustomFlaredX + CustomFlareCX
-local dy = (t + OFSET[2]) * 0.01 * CustomFlaredY + CustomFlareCY
-local dz = (t + OFSET[3]) * 0.01 * CustomFlaredZ + CustomFlareCZ
+width_ratio = half_length * width_ratio * 0.01
+local draw_x = (position_percent + position_offset[1]) * 0.01 * T_CUSTOM_FLARE_DELTA_X + T_CUSTOM_FLARE_CENTER_X
+local draw_y = (position_percent + position_offset[2]) * 0.01 * T_CUSTOM_FLARE_DELTA_Y + T_CUSTOM_FLARE_CENTER_Y
+local draw_z = (position_percent + position_offset[3]) * 0.01 * T_CUSTOM_FLARE_DELTA_Z + T_CUSTOM_FLARE_CENTER_Z
 local tim2_images = obj.module("tim2")
-local data, w, h = tim2_images.custom_flare_load_image("leafc" .. fig)
+local data, w, h = tim2_images.custom_flare_load_image("leafc" .. color_pattern)
 obj.putpixeldata("object", data, w, h)
 obj.effect("ぼかし", "範囲", blur)
 local w0, h0 = obj.getpixel()
-local LS = dL
-local LL = math.max(size * 0.5, dL)
-dH = w0 * dH / 30
-dL = h0 * dL / 100
-local wh = 2 * (dL + LL)
-obj.setoption("drawtarget", "tempbuffer", wh, wh)
+local minimum_radius = half_length
+local maximum_radius = math.max(size * 0.5, half_length)
+width_ratio = w0 * width_ratio / 30
+half_length = h0 * half_length / 100
+local buffer_size = 2 * (half_length + maximum_radius)
+obj.setoption("drawtarget", "tempbuffer", buffer_size, buffer_size)
 obj.setoption("blend", 6)
-LS = drh * LS + (1 - drh) * LL
-for i = 1, n do
-    local rz = (obj.rand(-3600, 3600, i, seed) * 0.1 - rot) * math.pi / 180
-    local r = obj.rand(LS, LL, i, 1000 + seed)
-    local s = math.sin(rz)
-    local c = math.cos(rz)
-    local x0 = -dH
-    local y0 = -dL + r
-    local x1 = dH
-    local y1 = -dL + r
-    local x2 = dH
-    local y2 = dL + r
-    local x3 = -dH
-    local y3 = dL + r
+minimum_radius = radial_randomness * minimum_radius + (1 - radial_randomness) * maximum_radius
+for i = 1, ray_count do
+    local angle_radians = (obj.rand(-3600, 3600, i, seed) * 0.1 - rotation) * math.pi / 180
+    local r = obj.rand(minimum_radius, maximum_radius, i, 1000 + seed)
+    local s = math.sin(angle_radians)
+    local c = math.cos(angle_radians)
+    local x0 = -width_ratio
+    local y0 = -half_length + r
+    local x1 = width_ratio
+    local y1 = -half_length + r
+    local x2 = width_ratio
+    local y2 = half_length + r
+    local x3 = -width_ratio
+    local y3 = half_length + r
     x0, y0 = x0 * c + y0 * s, -x0 * s + y0 * c
     x1, y1 = x1 * c + y1 * s, -x1 * s + y1 * c
     x2, y2 = x2 * c + y2 * s, -x2 * s + y2 * c
@@ -137,9 +137,9 @@ for i = 1, n do
     obj.drawpoly(x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h, alpha)
 end
 obj.load("tempbuffer")
-obj.effect("放射ブラー", "範囲", rblur)
-obj.copybuffer("tmp", "cache:BKIMG")
-obj.setoption("blend", CustomFlareMode)
-obj.draw(dx, dy, dz)
+obj.effect("放射ブラー", "範囲", radial_blur)
+obj.copybuffer("tempbuffer", "cache:BKIMG")
+obj.setoption("blend", T_CUSTOM_FLARE_BLEND_MODE)
+obj.draw(draw_x, draw_y, draw_z)
 obj.load("tempbuffer")
 obj.setoption("blend", 0)

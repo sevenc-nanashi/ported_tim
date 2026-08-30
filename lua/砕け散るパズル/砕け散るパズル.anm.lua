@@ -21,19 +21,19 @@ local track_direction = 30
 ---min=4
 ---max=1000
 ---step=1
-local track_size = 120
+local track_piece_size = 120
 
 ---$track:P形状
 ---min=-1000
 ---max=22
 ---step=1
-local Pfig = 1
+local track_piece_shape = 1
 
 ---$check:読込画像表示
-local LayAp = 0
+local check_show_loaded_image = 0
 
 ---$check:配置ズレ
-local Csht = 0
+local check_shift_placement = 0
 
 --group:飛散中心
 ---$track:飛散中心X
@@ -55,7 +55,7 @@ local track_scatter_center_y = 0
 ---min=-1000
 ---max=1000
 ---step=0.1
-local rv = 100
+local track_rotation_speed = 100
 
 --group:重力
 ---$track:重力X
@@ -80,22 +80,22 @@ local track_gravity_z = 0
 --group
 
 ---$check:マップ画像読込
-local loadmap = 0
+local check_load_map_image = 0
 
 ---$track:MAP番号
 ---min=1
 ---max=6
 ---step=1
-local mapnum = 1
+local track_map_number = 1
 
 ---$track:マップ角度
 ---min=-360
 ---max=360
 ---step=0.1
-local mapdeg = 0
+local track_map_angle = 0
 
 ---$value:マップ中心
-local Cmap = { 0, 0 }
+local value_map_center = { 0, 0 }
 
 --group
 
@@ -103,154 +103,251 @@ local Cmap = { 0, 0 }
 ---min=0
 ---max=1000
 ---step=0.1
-local limap = 500
+local track_map_limit_percent = 500
 
 ---$track:隙間
 ---min=0
 ---max=200
 ---step=0.1
-local spt = 0
+local track_gap = 0
 
 ---$track:乱数シード
 ---min=0
 ---max=1000000
 ---step=1
-local seed = 0
+local track_random_seed = 0
 
 ---$check:表裏反転
-local FBR = 0
+local check_reverse_faces = 0
 
 ---$check:マップ反転
-local check0 = false
+local check_invert_map = false
 
---hide@mapdeg:loadmap==1
---hide@Cmap:loadmap==1
+--hide@track_map_angle:check_load_map_image==1
+--hide@value_map_center:check_load_map_image==1
 
-local Ct = { track_scatter_center_x, track_scatter_center_y }
-local Gr = { track_gravity_x, track_gravity_y, track_gravity_z }
+local scatter_center = { track_scatter_center_x, track_scatter_center_y }
+local gravity = { track_gravity_x, track_gravity_y, track_gravity_z }
 
-Pfig = Pfig or 0
-if Pfig == 0 then
-    local Roty = function(y0, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
+track_piece_shape = track_piece_shape or 0
+if track_piece_shape == 0 then
+    local rotate_y_axis_vector = function(y0, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
         local m01 = -cos_y * sin_z
         local m11 = cos_x * cos_z - sin_x * sin_z * sin_y
         local m21 = sin_x * cos_z + cos_x * sin_z * sin_y
         return m01 * y0, m11 * y0, m21 * y0
     end
 
-    local Rotx = function(x0, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
+    local rotate_x_axis_vector = function(x0, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
         local m00 = cos_y * cos_z
         local m10 = cos_x * sin_z + sin_x * cos_z * sin_y
         local m20 = sin_x * sin_z - cos_x * cos_z * sin_y
         return m00 * x0, m10 * x0, m20 * x0
     end
 
-    local makeSpl = function(SI, spt)
-        local drawSpl = function(paz_x, paz_y, HB2, HB4)
-            obj.setoption("drawtarget", "tempbuffer", HB4, HB4)
+    local create_diamond_piece = function(piece_size, track_gap)
+        local draw_diamond_piece = function(edge_x_positions, edge_y_positions, base_size, base_canvas_size)
+            obj.setoption("drawtarget", "tempbuffer", base_canvas_size, base_canvas_size)
             local vertices = {}
             for i = 1, 6 do
                 vertices[#vertices + 1] = {
-                    -paz_x[i],
-                    paz_y[i],
+                    -edge_x_positions[i],
+                    edge_y_positions[i],
                     0,
-                    paz_x[i],
-                    paz_y[i],
+                    edge_x_positions[i],
+                    edge_y_positions[i],
                     0,
-                    paz_x[i + 1],
-                    paz_y[i + 1],
+                    edge_x_positions[i + 1],
+                    edge_y_positions[i + 1],
                     0,
-                    -paz_x[i + 1],
-                    paz_y[i + 1],
+                    -edge_x_positions[i + 1],
+                    edge_y_positions[i + 1],
                     0,
                 }
                 vertices[#vertices + 1] = {
-                    -paz_x[i],
-                    -paz_y[i],
+                    -edge_x_positions[i],
+                    -edge_y_positions[i],
                     0,
-                    paz_x[i],
-                    -paz_y[i],
+                    edge_x_positions[i],
+                    -edge_y_positions[i],
                     0,
-                    paz_x[i + 1],
-                    -paz_y[i + 1],
+                    edge_x_positions[i + 1],
+                    -edge_y_positions[i + 1],
                     0,
-                    -paz_x[i + 1],
-                    -paz_y[i + 1],
+                    -edge_x_positions[i + 1],
+                    -edge_y_positions[i + 1],
                     0,
                 }
             end
-            vertices[#vertices + 1] =
-                { -paz_x[7], paz_y[7], 0, paz_x[7], paz_y[7], 0, paz_x[7], -paz_y[7], 0, -paz_x[7], -paz_y[7], 0 }
-            vertices[#vertices + 1] =
-                { paz_x[7], paz_y[7], 0, paz_x[8], paz_y[8], 0, paz_x[8], -paz_y[8], 0, paz_x[7], -paz_y[7], 0 }
             vertices[#vertices + 1] = {
-                -paz_x[7],
-                paz_y[7],
+                -edge_x_positions[7],
+                edge_y_positions[7],
                 0,
-                -paz_x[8],
-                paz_y[8],
+                edge_x_positions[7],
+                edge_y_positions[7],
                 0,
-                -paz_x[8],
-                -paz_y[8],
+                edge_x_positions[7],
+                -edge_y_positions[7],
                 0,
-                -paz_x[7],
-                -paz_y[7],
+                -edge_x_positions[7],
+                -edge_y_positions[7],
                 0,
             }
-            vertices[#vertices + 1] =
-                { paz_x[8], paz_y[8], 0, HB2, paz_y[8], 0, HB2, -paz_y[8], 0, paz_x[8], -paz_y[8], 0 }
-            vertices[#vertices + 1] =
-                { -paz_x[8], paz_y[8], 0, -HB2, paz_y[8], 0, -HB2, -paz_y[8], 0, -paz_x[8], -paz_y[8], 0 }
+            vertices[#vertices + 1] = {
+                edge_x_positions[7],
+                edge_y_positions[7],
+                0,
+                edge_x_positions[8],
+                edge_y_positions[8],
+                0,
+                edge_x_positions[8],
+                -edge_y_positions[8],
+                0,
+                edge_x_positions[7],
+                -edge_y_positions[7],
+                0,
+            }
+            vertices[#vertices + 1] = {
+                -edge_x_positions[7],
+                edge_y_positions[7],
+                0,
+                -edge_x_positions[8],
+                edge_y_positions[8],
+                0,
+                -edge_x_positions[8],
+                -edge_y_positions[8],
+                0,
+                -edge_x_positions[7],
+                -edge_y_positions[7],
+                0,
+            }
+            vertices[#vertices + 1] = {
+                edge_x_positions[8],
+                edge_y_positions[8],
+                0,
+                base_size,
+                edge_y_positions[8],
+                0,
+                base_size,
+                -edge_y_positions[8],
+                0,
+                edge_x_positions[8],
+                -edge_y_positions[8],
+                0,
+            }
+            vertices[#vertices + 1] = {
+                -edge_x_positions[8],
+                edge_y_positions[8],
+                0,
+                -base_size,
+                edge_y_positions[8],
+                0,
+                -base_size,
+                -edge_y_positions[8],
+                0,
+                -edge_x_positions[8],
+                -edge_y_positions[8],
+                0,
+            }
             obj.drawpoly(vertices)
         end
 
-        local paz_x, paz_y
-        local se = 2
-        local d = 1
-        local bai = SI / 240 * se
-        local HB = 100 * bai
-        local HB2 = HB * 2
-        local HB4 = HB * 4
+        local edge_x_positions, edge_y_positions
+        local antialias_scale = 2
+        local pixel_adjustment = 1
+        local scale_ratio = piece_size / 240 * antialias_scale
+        local base_half_size = 100 * scale_ratio
+        local base_size = base_half_size * 2
+        local base_canvas_size = base_half_size * 4
 
-        obj.load("figure", "四角形", 0xffffff, HB2)
+        obj.load("figure", "四角形", 0xffffff, base_size)
         obj.setoption("blend", "alpha_add")
 
         --一回り小さい
-        paz_x = { 9 * bai, 35 * bai, 43 * bai, 43 * bai, 27 * bai, 27 * bai, 35 * bai, 120 * bai }
-        paz_y = { 200 * bai, 191 * bai, 176 * bai, 155 * bai, 128 * bai, 120 * bai, 113 * bai, 120 * bai }
-        drawSpl(paz_x, paz_y, HB2, HB4)
+        edge_x_positions = {
+            9 * scale_ratio,
+            35 * scale_ratio,
+            43 * scale_ratio,
+            43 * scale_ratio,
+            27 * scale_ratio,
+            27 * scale_ratio,
+            35 * scale_ratio,
+            120 * scale_ratio,
+        }
+        edge_y_positions = {
+            200 * scale_ratio,
+            191 * scale_ratio,
+            176 * scale_ratio,
+            155 * scale_ratio,
+            128 * scale_ratio,
+            120 * scale_ratio,
+            113 * scale_ratio,
+            120 * scale_ratio,
+        }
+        draw_diamond_piece(edge_x_positions, edge_y_positions, base_size, base_canvas_size)
         obj.copybuffer("cache:SPC", "tempbuffer")
 
         --普通サイズ
-        paz_x = { 9 * bai, 35 * bai, 43 * bai - d, 43 * bai - d, 27 * bai - d, 27 * bai - d, 35 * bai, 120 * bai }
-        paz_y = { 200 * bai - d, 191 * bai - d, 176 * bai, 155 * bai, 128 * bai, 120 * bai, 113 * bai - d, 120 * bai }
-        drawSpl(paz_x, paz_y, HB2, HB4)
+        edge_x_positions = {
+            9 * scale_ratio,
+            35 * scale_ratio,
+            43 * scale_ratio - pixel_adjustment,
+            43 * scale_ratio - pixel_adjustment,
+            27 * scale_ratio - pixel_adjustment,
+            27 * scale_ratio - pixel_adjustment,
+            35 * scale_ratio,
+            120 * scale_ratio,
+        }
+        edge_y_positions = {
+            200 * scale_ratio - pixel_adjustment,
+            191 * scale_ratio - pixel_adjustment,
+            176 * scale_ratio,
+            155 * scale_ratio,
+            128 * scale_ratio,
+            120 * scale_ratio,
+            113 * scale_ratio - pixel_adjustment,
+            120 * scale_ratio,
+        }
+        draw_diamond_piece(edge_x_positions, edge_y_positions, base_size, base_canvas_size)
         obj.copybuffer("object", "cache:SPC")
 
         obj.setoption("blend", "alpha_sub")
-        obj.draw(SI * se, 0, 0, 1, 1, 0, 0, 90)
-        obj.draw(-SI * se, 0, 0, 1, 1, 0, 0, 90)
+        obj.draw(piece_size * antialias_scale, 0, 0, 1, 1, 0, 0, 90)
+        obj.draw(-piece_size * antialias_scale, 0, 0, 1, 1, 0, 0, 90)
 
         obj.copybuffer("object", "tempbuffer")
-        obj.effect("縁取り", "サイズ", spt, "ぼかし", 0)
+        obj.effect("縁取り", "サイズ", track_gap, "ぼかし", 0)
         local w2, h2 = obj.getpixel()
         obj.setoption("drawtarget", "tempbuffer", w2 * 0.5, h2 * 0.5)
         obj.setoption("blend", "none")
-        obj.draw(0, 0, 0, 1 / se)
+        obj.draw(0, 0, 0, 1 / antialias_scale)
         obj.copybuffer("cache:PC", "tempbuffer")
     end
 
-    local makepzz = function(nx, ny, SI, Bw2, Bh2, rv, T, Ps, j1, rot, zoom, seed)
-        if (nx % 2) == 1 then
-            j1 = 1 - j1
+    local draw_diamond_pieces = function(
+        horizontal_radius,
+        vertical_radius,
+        piece_size,
+        half_buffer_width,
+        half_buffer_height,
+        track_rotation_speed,
+        piece_times,
+        piece_offsets,
+        primary_parity,
+        rotation_degrees,
+        zoom,
+        track_random_seed
+    )
+        if (horizontal_radius % 2) == 1 then
+            primary_parity = 1 - primary_parity
         end
-        local j2 = 1 - j1
+        local secondary_parity = 1 - primary_parity
         obj.copybuffer("tempbuffer", "cache:ORI")
         obj.copybuffer("object", "cache:PC")
         obj.setoption("blend", "alpha_sub")
-        for j = -ny, ny do
-            for i = -nx + ((j + j1) % 2), nx, 2 do
-                obj.draw(i * SI, j * SI, 0, 1, 1, 0, 0, rot)
+        for j = -vertical_radius, vertical_radius do
+            for i = -horizontal_radius + ((j + primary_parity) % 2), horizontal_radius, 2 do
+                obj.draw(i * piece_size, j * piece_size, 0, 1, 1, 0, 0, rotation_degrees)
             end
         end
 
@@ -259,53 +356,88 @@ if Pfig == 0 then
         obj.setoption("drawtarget", "framebuffer")
         obj.setoption("blend", "none")
 
-        local SI = SI * zoom
-        local Bw2 = Bw2 * zoom
-        local Bh2 = Bh2 * zoom
+        local piece_size = piece_size * zoom
+        local half_buffer_width = half_buffer_width * zoom
+        local half_buffer_height = half_buffer_height * zoom
         local vertices = {}
 
-        for j = -ny, ny do
-            local yy = SI * j
-            for i = -nx + ((j + j2) % 2), nx, 2 do
+        for j = -vertical_radius, vertical_radius do
+            local piece_center_y = piece_size * j
+            for i = -horizontal_radius + ((j + secondary_parity) % 2), horizontal_radius, 2 do
                 local x0, x1, x2, x3
                 local y0, y1, y2, y3
                 local z0, z1, z2, z3
 
-                local xx = SI * i
+                local piece_center_x = piece_size * i
 
-                local itix = xx + Bw2
-                local itiy = yy + Bh2
+                local translation_x = piece_center_x + half_buffer_width
+                local translation_y = piece_center_y + half_buffer_height
 
-                local u0, v0 = itix, itiy - SI
-                local u1, v1 = itix + SI, itiy
-                local u2, v2 = itix, itiy + SI
-                local u3, v3 = itix - SI, itiy
+                local u0, v0 = translation_x, translation_y - piece_size
+                local u1, radial_speed = translation_x + piece_size, translation_y
+                local u2, forward_speed = translation_x, translation_y + piece_size
+                local u3, v3 = translation_x - piece_size, translation_y
 
-                local r1 = obj.rand(-100, 100, i + nx, j + ny + 1000 + seed) * 0.01 * T[i][j] * rv
-                local r2 = obj.rand(-100, 100, i + nx, j + ny + 2000 + seed) * 0.01 * T[i][j] * rv
-                local r3 = obj.rand(-100, 100, i + nx, j + ny + 3000 + seed) * 0.01 * T[i][j] * rv
-                local sin_x = math.sin(r1)
-                local cos_x = math.cos(r1)
-                local sin_y = math.sin(r2)
-                local cos_y = math.cos(r2)
-                local sin_z = math.sin(r3)
-                local cos_z = math.cos(r3)
+                local rotation_x = obj.rand(
+                    -100,
+                    100,
+                    i + horizontal_radius,
+                    j + vertical_radius + 1000 + track_random_seed
+                ) * 0.01 * piece_times[i][j] * track_rotation_speed
+                local rotation_y = obj.rand(
+                    -100,
+                    100,
+                    i + horizontal_radius,
+                    j + vertical_radius + 2000 + track_random_seed
+                ) * 0.01 * piece_times[i][j] * track_rotation_speed
+                local rotation_z = obj.rand(
+                    -100,
+                    100,
+                    i + horizontal_radius,
+                    j + vertical_radius + 3000 + track_random_seed
+                ) * 0.01 * piece_times[i][j] * track_rotation_speed
+                local sin_x = math.sin(rotation_x)
+                local cos_x = math.cos(rotation_x)
+                local sin_y = math.sin(rotation_y)
+                local cos_y = math.cos(rotation_y)
+                local sin_z = math.sin(rotation_z)
+                local cos_z = math.cos(rotation_z)
 
-                x0, y0, z0 = Roty(-SI, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
-                x1, y1, z1 = Rotx(SI, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
+                x0, y0, z0 = rotate_y_axis_vector(-piece_size, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
+                x1, y1, z1 = rotate_x_axis_vector(piece_size, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
                 x2, y2, z2 = -x0, -y0, -z0
                 x3, y3, z3 = -x1, -y1, -z1
 
-                itix = xx + Ps[i][j].x
-                itiy = yy + Ps[i][j].y
-                itiz = Ps[i][j].z
+                translation_x = piece_center_x + piece_offsets[i][j].x
+                translation_y = piece_center_y + piece_offsets[i][j].y
+                local translation_z = piece_offsets[i][j].z
 
-                x0, x1, x2, x3 = x0 + itix, x1 + itix, x2 + itix, x3 + itix
-                y0, y1, y2, y3 = y0 + itiy, y1 + itiy, y2 + itiy, y3 + itiy
-                z0, z1, z2, z3 = z0 + itiz, z1 + itiz, z2 + itiz, z3 + itiz
+                x0, x1, x2, x3 = x0 + translation_x, x1 + translation_x, x2 + translation_x, x3 + translation_x
+                y0, y1, y2, y3 = y0 + translation_y, y1 + translation_y, y2 + translation_y, y3 + translation_y
+                z0, z1, z2, z3 = z0 + translation_z, z1 + translation_z, z2 + translation_z, z3 + translation_z
 
-                vertices[#vertices + 1] =
-                    { x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3 }
+                vertices[#vertices + 1] = {
+                    x0,
+                    y0,
+                    z0,
+                    x1,
+                    y1,
+                    z1,
+                    x2,
+                    y2,
+                    z2,
+                    x3,
+                    y3,
+                    z3,
+                    u0,
+                    v0,
+                    u1,
+                    radial_speed,
+                    u2,
+                    forward_speed,
+                    u3,
+                    v3,
+                }
             end
         end
         if #vertices > 0 then
@@ -313,69 +445,88 @@ if Pfig == 0 then
         end
     end
 
-    local GmakeMapData = function(mapnum, nx, ny, T)
-        if mapnum >= 1 and mapnum <= 5 then
-            local Tcal = ({
-                function(i, j, RR)
-                    return math.sqrt(i * i + j * j) / RR
+    local create_generated_map = function(track_map_number, horizontal_radius, vertical_radius, piece_times)
+        if track_map_number >= 1 and track_map_number <= 5 then
+            local calculate_map_value = ({
+                function(i, j, map_normalizer)
+                    return math.sqrt(i * i + j * j) / map_normalizer
                 end, --円
-                function(i, j, RR)
-                    return math.max(math.abs(i), math.abs(j)) / RR
+                function(i, j, map_normalizer)
+                    return math.max(math.abs(i), math.abs(j)) / map_normalizer
                 end, --四角
-                function(i, j, RR)
-                    return math.max(math.abs(i - j), math.abs(i + j)) / RR
+                function(i, j, map_normalizer)
+                    return math.max(math.abs(i - j), math.abs(i + j)) / map_normalizer
                 end, --斜め四角
-                function(i, j, RR)
-                    return math.min(math.abs(i), math.abs(j)) / RR
+                function(i, j, map_normalizer)
+                    return math.min(math.abs(i), math.abs(j)) / map_normalizer
                 end, --十字
-                function(i, j, RR)
-                    return math.min(math.abs(i - j), math.abs(i + j)) / RR
+                function(i, j, map_normalizer)
+                    return math.min(math.abs(i - j), math.abs(i + j)) / map_normalizer
                 end, --斜め十字
-            })[mapnum]
+            })[track_map_number]
 
-            local RR = ({ math.sqrt(nx * nx + ny * ny), math.max(nx, ny), nx + ny, math.min(nx, ny), math.max(nx, ny) })[mapnum]
+            local map_normalizer = ({
+                math.sqrt(horizontal_radius * horizontal_radius + vertical_radius * vertical_radius),
+                math.max(horizontal_radius, vertical_radius),
+                horizontal_radius + vertical_radius,
+                math.min(horizontal_radius, vertical_radius),
+                math.max(horizontal_radius, vertical_radius),
+            })[track_map_number]
 
-            for i = -nx, nx do
-                T[i] = {}
-                for j = -ny, ny do
-                    T[i][j] = Tcal(i, j, RR)
+            for i = -horizontal_radius, horizontal_radius do
+                piece_times[i] = {}
+                for j = -vertical_radius, vertical_radius do
+                    piece_times[i][j] = calculate_map_value(i, j, map_normalizer)
                 end
             end
         else
-            local RR = (2 * nx + 1) * (2 * ny + 1)
-            local k = 0
-            for i = -nx, nx do
-                T[i] = {}
-                for j = -ny, ny do
-                    T[i][j] = k / RR
-                    k = k + 1
+            local map_normalizer = (2 * horizontal_radius + 1) * (2 * vertical_radius + 1)
+            local sequence_index = 0
+            for i = -horizontal_radius, horizontal_radius do
+                piece_times[i] = {}
+                for j = -vertical_radius, vertical_radius do
+                    piece_times[i][j] = sequence_index / map_normalizer
+                    sequence_index = sequence_index + 1
                 end
             end
-            for i = -nx, nx do
-                for j = -ny, ny do
-                    local ii = obj.rand(-nx, nx, i + nx, j + ny + seed)
-                    local jj = obj.rand(-ny, ny, i + nx, j + ny + seed + 100000)
-                    T[i][j], T[ii][jj] = T[ii][jj], T[i][j]
+            for i = -horizontal_radius, horizontal_radius do
+                for j = -vertical_radius, vertical_radius do
+                    local grid_x = obj.rand(
+                        -horizontal_radius,
+                        horizontal_radius,
+                        i + horizontal_radius,
+                        j + vertical_radius + track_random_seed
+                    )
+                    local grid_y = obj.rand(
+                        -vertical_radius,
+                        vertical_radius,
+                        i + horizontal_radius,
+                        j + vertical_radius + track_random_seed + 100000
+                    )
+                    piece_times[i][j], piece_times[grid_x][grid_y] = piece_times[grid_x][grid_y], piece_times[i][j]
                 end
             end
         end
     end
 
-    local GmakeMapDataF = function(mapnum, nx, ny, T)
+    local load_external_map = function(track_map_number, horizontal_radius, vertical_radius, piece_times)
         ---$embed
         local extbuffer = require("extbuffer")
-        extbuffer.read(mapnum)
+        extbuffer.read(track_map_number)
         local w, h = obj.getpixel()
 
         obj.pixeloption("type", "yc")
         obj.pixeloption("get", "object")
 
-        for i = -nx, nx do
-            T[i] = {}
-            for j = -ny, ny do
-                local yi, cbi, cri, ai =
-                    obj.getpixel((w - 1) * (i + nx) / (2 * nx), (h - 1) * (j + ny) / (2 * ny), "yc")
-                T[i][j] = yi / 4096
+        for i = -horizontal_radius, horizontal_radius do
+            piece_times[i] = {}
+            for j = -vertical_radius, vertical_radius do
+                local luminance, blue_difference, red_difference, alpha = obj.getpixel(
+                    (w - 1) * (i + horizontal_radius) / (2 * horizontal_radius),
+                    (h - 1) * (j + vertical_radius) / (2 * vertical_radius),
+                    "yc"
+                )
+                piece_times[i][j] = luminance / 4096
             end
         end
     end
@@ -383,91 +534,117 @@ if Pfig == 0 then
     local zoom = obj.getvalue("zoom") * 0.01
 
     obj.setanchor("track_scatter_center_x,track_scatter_center_y", 0)
-    local apt = track_unfold * 0.01
-    local Vs = track_speed * 7.5
-    local dir = -math.rad(track_direction)
+    local unfold_progress = track_unfold * 0.01
+    local scatter_speed = track_speed * 7.5
+    local scatter_direction = -math.direction_radians(track_direction)
 
-    rv = rv * 0.03
-    Gr[1] = Gr[1] * 30
-    Gr[2] = Gr[2] * 30
-    Gr[3] = Gr[3] * 30
+    track_rotation_speed = track_rotation_speed * 0.03
+    gravity[1] = gravity[1] * 30
+    gravity[2] = gravity[2] * 30
+    gravity[3] = gravity[3] * 30
 
-    limap = limap * 0.01
+    track_map_limit_percent = track_map_limit_percent * 0.01
 
-    local SI = math.floor(track_size)
+    local piece_size = math.floor(track_piece_size)
     local w, h = obj.getpixel()
-    local nx = math.floor((w / SI + 1) * 0.5)
-    local ny = math.floor((h / SI + 1) * 0.5)
-    local Bw, Bh = (2 * nx + 2) * SI, (2 * ny + 2) * SI
-    local Bw2, Bh2 = Bw * 0.5, Bh * 0.5
+    local horizontal_radius = math.floor((w / piece_size + 1) * 0.5)
+    local vertical_radius = math.floor((h / piece_size + 1) * 0.5)
+    local buffer_width, buffer_height = (2 * horizontal_radius + 2) * piece_size, (2 * vertical_radius + 2) * piece_size
+    local half_buffer_width, half_buffer_height = buffer_width * 0.5, buffer_height * 0.5
 
-    obj.setoption("drawtarget", "tempbuffer", Bw, Bh)
+    obj.setoption("drawtarget", "tempbuffer", buffer_width, buffer_height)
     obj.draw()
-    obj.copybuffer("cache:ORI", "tmp")
+    obj.copybuffer("cache:ORI", "tempbuffer")
 
     --ピース作成
-    makeSpl(SI, spt)
+    create_diamond_piece(piece_size, track_gap)
 
     --マップ作成
-    local T = {}
-    if loadmap == 0 then
-        GmakeMapData(mapnum, nx, ny, T)
+    local piece_times = {}
+    if check_load_map_image == 0 then
+        create_generated_map(track_map_number, horizontal_radius, vertical_radius, piece_times)
     else
-        GmakeMapDataF(mapnum, nx, ny, T)
+        load_external_map(track_map_number, horizontal_radius, vertical_radius, piece_times)
     end
 
-    if check0 then
-        for i = -nx, nx do
-            for j = -ny, ny do
-                T[i][j] = 1 - T[i][j]
+    if check_invert_map then
+        for i = -horizontal_radius, horizontal_radius do
+            for j = -vertical_radius, vertical_radius do
+                piece_times[i][j] = 1 - piece_times[i][j]
             end
         end
     end
 
-    for i = -nx, nx do
-        for j = -ny, ny do
-            local t
-            if T[i][j] <= limap then
-                t = -T[i][j] + apt
-                T[i][j] = math.max(t, 0)
+    for i = -horizontal_radius, horizontal_radius do
+        for j = -vertical_radius, vertical_radius do
+            local piece_time
+            if piece_times[i][j] <= track_map_limit_percent then
+                piece_time = -piece_times[i][j] + unfold_progress
+                piece_times[i][j] = math.max(piece_time, 0)
             else
-                T[i][j] = 0
+                piece_times[i][j] = 0
             end
         end
     end
 
     --軌道作成
-    Ps = {}
-    for i = -nx, nx do
-        Ps[i] = {}
-        local ii = i - Ct[1] / SI
-        for j = -ny, ny do
-            local t = T[i][j]
+    local piece_offsets = {}
+    for i = -horizontal_radius, horizontal_radius do
+        piece_offsets[i] = {}
+        local grid_x = i - scatter_center[1] / piece_size
+        for j = -vertical_radius, vertical_radius do
+            local piece_time = piece_times[i][j]
 
-            local jj = j - Ct[2] / SI
-            local rad = dir * math.sqrt(ii * ii + jj * jj) / ny
-            local v1 = -Vs * math.sin(rad)
-            local v2 = Vs * math.cos(rad)
-            rad = math.atan2(ii, jj)
+            local grid_y = j - scatter_center[2] / piece_size
+            local direction_radians = scatter_direction * math.sqrt(grid_x * grid_x + grid_y * grid_y) / vertical_radius
+            local radial_speed = -scatter_speed * math.sin(direction_radians)
+            local forward_speed = scatter_speed * math.cos(direction_radians)
+            direction_radians = math.atan2(grid_x, grid_y)
 
-            local Vx = v1 * math.sin(rad)
-            local Vy = v1 * math.cos(rad)
-            local Vz = -v2
+            local velocity_x = radial_speed * math.sin(direction_radians)
+            local velocity_y = radial_speed * math.cos(direction_radians)
+            local velocity_z = -forward_speed
 
-            Ps[i][j] = {}
-            Ps[i][j].x = (Gr[1] * t * t * 0.5 + Vx * t) * zoom
-            Ps[i][j].y = (Gr[2] * t * t * 0.5 + Vy * t) * zoom
-            Ps[i][j].z = (Gr[3] * t * t * 0.5 + Vz * t) * zoom
+            piece_offsets[i][j] = {}
+            piece_offsets[i][j].x = (gravity[1] * piece_time * piece_time * 0.5 + velocity_x * piece_time) * zoom
+            piece_offsets[i][j].y = (gravity[2] * piece_time * piece_time * 0.5 + velocity_y * piece_time) * zoom
+            piece_offsets[i][j].z = (gravity[3] * piece_time * piece_time * 0.5 + velocity_z * piece_time) * zoom
         end
     end
 
     --表示
-    makepzz(nx, ny, SI, Bw2, Bh2, rv, T, Ps, 1, 0, zoom, seed)
+    draw_diamond_pieces(
+        horizontal_radius,
+        vertical_radius,
+        piece_size,
+        half_buffer_width,
+        half_buffer_height,
+        track_rotation_speed,
+        piece_times,
+        piece_offsets,
+        1,
+        0,
+        zoom,
+        track_random_seed
+    )
     obj.setoption("drawtarget", "tempbuffer")
-    makepzz(nx, ny, SI, Bw2, Bh2, rv, T, Ps, 0, -90, zoom, seed)
+    draw_diamond_pieces(
+        horizontal_radius,
+        vertical_radius,
+        piece_size,
+        half_buffer_width,
+        half_buffer_height,
+        track_rotation_speed,
+        piece_times,
+        piece_offsets,
+        0,
+        -90,
+        zoom,
+        track_random_seed
+    )
 else
     --ピース作成----------
-    local Rotxy = function(x0, y0, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
+    local rotate_xy_vector = function(x0, y0, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
         local m00 = cos_y * cos_z
         local m01 = -cos_y * sin_z
         local m10 = cos_x * sin_z + sin_x * sin_y * cos_z
@@ -476,433 +653,698 @@ else
         local m21 = sin_x * cos_z + cos_x * sin_y * sin_z
         return m00 * x0 + m01 * y0, m10 * x0 + m11 * y0, m20 * x0 + m21 * y0
     end
-    local DrawUnitBase = function(SI2, ROT, ...)
-        local arg = { ... }
-        if arg[1] == 1 then
-            obj.draw(0, -SI2, 0, 1, 1, 0, 0, ROT)
+    local draw_edge_shapes = function(half_piece_size, rot_value, ...)
+        local edge_flags = { ... }
+        if edge_flags[1] == 1 then
+            obj.draw(0, -half_piece_size, 0, 1, 1, 0, 0, rot_value)
         end
-        if arg[2] == 1 then
-            obj.draw(SI2, 0, 0, 1, 1, 0, 0, 90 + ROT)
+        if edge_flags[2] == 1 then
+            obj.draw(half_piece_size, 0, 0, 1, 1, 0, 0, 90 + rot_value)
         end
-        if arg[3] == 1 then
-            obj.draw(0, SI2, 0, 1, 1, 0, 0, 180 + ROT)
+        if edge_flags[3] == 1 then
+            obj.draw(0, half_piece_size, 0, 1, 1, 0, 0, 180 + rot_value)
         end
-        if arg[4] == 1 then
-            obj.draw(-SI2, 0, 0, 1, 1, 0, 0, 270 + ROT)
+        if edge_flags[4] == 1 then
+            obj.draw(-half_piece_size, 0, 0, 1, 1, 0, 0, 270 + rot_value)
         end
     end
-    local MakeUnitBase1 = function(SI, SI2, ...)
-        local arg = { ... }
-        obj.setoption("drawtarget", "tempbuffer", 2 * SI, 2 * SI)
+    local create_base_edge_set = function(piece_size, half_piece_size, ...)
+        local edge_flags = { ... }
+        obj.setoption("drawtarget", "tempbuffer", 2 * piece_size, 2 * piece_size)
         obj.load("figure", "四角形", 0xffffff, 1)
         obj.setoption("blend", "alpha_add")
-        obj.drawpoly(-SI2, -SI2, 0, SI2, -SI2, 0, SI2, SI2, 0, -SI2, SI2, 0)
-        obj.copybuffer("obj", "cache:Img1")
+        obj.drawpoly(
+            -half_piece_size,
+            -half_piece_size,
+            0,
+            half_piece_size,
+            -half_piece_size,
+            0,
+            half_piece_size,
+            half_piece_size,
+            0,
+            -half_piece_size,
+            half_piece_size,
+            0
+        )
+        obj.copybuffer("object", "cache:Img1")
         obj.setoption("blend", "alpha_add")
-        DrawUnitBase(SI2, 0, arg[1], arg[2], arg[3], arg[4])
+        draw_edge_shapes(half_piece_size, 0, edge_flags[1], edge_flags[2], edge_flags[3], edge_flags[4])
         obj.setoption("blend", "alpha_sub")
-        DrawUnitBase(SI2, 180, arg[5], arg[6], arg[7], arg[8])
+        draw_edge_shapes(half_piece_size, 180, edge_flags[5], edge_flags[6], edge_flags[7], edge_flags[8])
     end
-    local MakeUnitBase2 = function(SI, SI2, ...)
-        local arg = { ... }
-        MakeUnitBase1(SI, SI2, unpack(arg, 1, 8))
-        obj.copybuffer("obj", "cache:Img2")
+    local create_combined_edge_set = function(piece_size, half_piece_size, ...)
+        local edge_flags = { ... }
+        create_base_edge_set(piece_size, half_piece_size, unpack(edge_flags, 1, 8))
+        obj.copybuffer("object", "cache:Img2")
         obj.setoption("blend", "alpha_add")
-        DrawUnitBase(SI2, 0, arg[9], arg[10], arg[11], arg[12])
+        draw_edge_shapes(half_piece_size, 0, edge_flags[9], edge_flags[10], edge_flags[11], edge_flags[12])
         obj.setoption("blend", "alpha_sub")
-        DrawUnitBase(SI2, 180, arg[13], arg[14], arg[15], arg[16])
+        draw_edge_shapes(half_piece_size, 180, edge_flags[13], edge_flags[14], edge_flags[15], edge_flags[16])
     end
-    local MakeUnit = function(SI, SI2, Pfig)
-        if Pfig == 1 then
-            MakeUnitBase2(SI, SI2, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0)
-        elseif Pfig == 2 then
-            MakeUnitBase2(SI, SI2, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0)
-        elseif Pfig == 3 then
-            MakeUnitBase2(SI, SI2, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1)
-        elseif Pfig == 4 then
-            MakeUnitBase2(SI, SI2, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0)
-        elseif Pfig == 9 or Pfig == 13 or Pfig == 18 then
-            MakeUnitBase1(SI, SI2, 1, 0, 1, 0, 0, 1, 0, 1)
-        elseif Pfig == 10 or Pfig == 14 or Pfig == 19 then
-            MakeUnitBase1(SI, SI2, 1, 1, 0, 0, 0, 0, 1, 1)
-        elseif Pfig == 11 or Pfig == 15 or Pfig == 20 then
-            MakeUnitBase1(SI, SI2, 1, 1, 1, 1, 0, 0, 0, 0)
-        elseif Pfig == 12 or Pfig == 16 or Pfig == 21 then
-            MakeUnitBase1(SI, SI2, 1, 0, 0, 0, 0, 1, 1, 1)
-        elseif Pfig == 17 or Pfig == 22 then
-            MakeUnitBase1(SI, SI2, 1, 1, 1, 1, 1, 1, 1, 1)
+    local create_piece_shape = function(piece_size, half_piece_size, track_piece_shape)
+        if track_piece_shape == 1 then
+            create_combined_edge_set(piece_size, half_piece_size, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0)
+        elseif track_piece_shape == 2 then
+            create_combined_edge_set(piece_size, half_piece_size, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0)
+        elseif track_piece_shape == 3 then
+            create_combined_edge_set(piece_size, half_piece_size, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1)
+        elseif track_piece_shape == 4 then
+            create_combined_edge_set(piece_size, half_piece_size, 1, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0)
+        elseif track_piece_shape == 9 or track_piece_shape == 13 or track_piece_shape == 18 then
+            create_base_edge_set(piece_size, half_piece_size, 1, 0, 1, 0, 0, 1, 0, 1)
+        elseif track_piece_shape == 10 or track_piece_shape == 14 or track_piece_shape == 19 then
+            create_base_edge_set(piece_size, half_piece_size, 1, 1, 0, 0, 0, 0, 1, 1)
+        elseif track_piece_shape == 11 or track_piece_shape == 15 or track_piece_shape == 20 then
+            create_base_edge_set(piece_size, half_piece_size, 1, 1, 1, 1, 0, 0, 0, 0)
+        elseif track_piece_shape == 12 or track_piece_shape == 16 or track_piece_shape == 21 then
+            create_base_edge_set(piece_size, half_piece_size, 1, 0, 0, 0, 0, 1, 1, 1)
+        elseif track_piece_shape == 17 or track_piece_shape == 22 then
+            create_base_edge_set(piece_size, half_piece_size, 1, 1, 1, 1, 1, 1, 1, 1)
         end
     end
-    local MakeCachePC = function(SI, SI2, SID)
-        obj.copybuffer("cache:PC1", "tmp")
-        obj.copybuffer("cache:PC2", "tmp")
-        obj.load("figure", "四角形", 0xffffff, SI * 2)
-        obj.setoption("drawtarget", "tempbuffer", SID, SID)
+    local create_piece_caches = function(piece_size, half_piece_size, piece_canvas_size)
+        obj.copybuffer("cache:PC1", "tempbuffer")
+        obj.copybuffer("cache:PC2", "tempbuffer")
+        obj.load("figure", "四角形", 0xffffff, piece_size * 2)
+        obj.setoption("drawtarget", "tempbuffer", piece_canvas_size, piece_canvas_size)
         obj.setoption("blend", "alpha_add")
         obj.draw()
-        obj.copybuffer("obj", "cache:PC1")
+        obj.copybuffer("object", "cache:PC1")
         obj.setoption("blend", "alpha_sub")
-        if Pfig == 18 then
+        if track_piece_shape == 18 then
             obj.draw(0, 0, 0, 1.01)
         else
             obj.draw()
         end
 
-        obj.copybuffer("cache:PC1", "tmp")
-        if Pfig ~= 2 and Pfig ~= 6 and Pfig ~= 10 and Pfig ~= 14 and Pfig ~= 19 and Pfig ~= 17 and Pfig ~= 22 then
-            obj.setoption("drawtarget", "tempbuffer", SID, SID)
+        obj.copybuffer("cache:PC1", "tempbuffer")
+        if
+            track_piece_shape ~= 2
+            and track_piece_shape ~= 6
+            and track_piece_shape ~= 10
+            and track_piece_shape ~= 14
+            and track_piece_shape ~= 19
+            and track_piece_shape ~= 17
+            and track_piece_shape ~= 22
+        then
+            obj.setoption("drawtarget", "tempbuffer", piece_canvas_size, piece_canvas_size)
             obj.load("figure", "四角形", 0xffffff, 1)
             obj.setoption("blend", "alpha_add")
-            obj.drawpoly(-SI2, -SI2, 0, SI2, -SI2, 0, SI2, SI2, 0, -SI2, SI2, 0)
-            obj.drawpoly(0, -SI, 0, 0, -SI, 0, SI2, -SI2, 0, -SI2, -SI2, 0)
-            obj.drawpoly(SI, 0, 0, SI, 0, 0, SI2, SI2, 0, SI2, -SI2, 0)
-            obj.drawpoly(0, SI, 0, 0, SI, 0, -SI2, SI2, 0, SI2, SI2, 0)
-            obj.drawpoly(-SI, 0, 0, -SI, 0, 0, -SI2, -SI2, 0, -SI2, SI2, 0)
-            obj.copybuffer("obj", "cache:PC2")
+            obj.drawpoly(
+                -half_piece_size,
+                -half_piece_size,
+                0,
+                half_piece_size,
+                -half_piece_size,
+                0,
+                half_piece_size,
+                half_piece_size,
+                0,
+                -half_piece_size,
+                half_piece_size,
+                0
+            )
+            obj.drawpoly(
+                0,
+                -piece_size,
+                0,
+                0,
+                -piece_size,
+                0,
+                half_piece_size,
+                -half_piece_size,
+                0,
+                -half_piece_size,
+                -half_piece_size,
+                0
+            )
+            obj.drawpoly(
+                piece_size,
+                0,
+                0,
+                piece_size,
+                0,
+                0,
+                half_piece_size,
+                half_piece_size,
+                0,
+                half_piece_size,
+                -half_piece_size,
+                0
+            )
+            obj.drawpoly(
+                0,
+                piece_size,
+                0,
+                0,
+                piece_size,
+                0,
+                -half_piece_size,
+                half_piece_size,
+                0,
+                half_piece_size,
+                half_piece_size,
+                0
+            )
+            obj.drawpoly(
+                -piece_size,
+                0,
+                0,
+                -piece_size,
+                0,
+                0,
+                -half_piece_size,
+                -half_piece_size,
+                0,
+                -half_piece_size,
+                half_piece_size,
+                0
+            )
+            obj.copybuffer("object", "cache:PC2")
             obj.setoption("blend", "alpha_sub")
-            obj.draw(-SI, 0, 0)
-            obj.draw(SI, 0, 0)
-            obj.draw(0, -SI, 0)
-            obj.draw(0, SI, 0)
+            obj.draw(-piece_size, 0, 0)
+            obj.draw(piece_size, 0, 0)
+            obj.draw(0, -piece_size, 0)
+            obj.draw(0, piece_size, 0)
 
-            obj.copybuffer("cache:PC2", "tmp")
-            obj.load("figure", "四角形", 0xffffff, SI * 2)
-            obj.setoption("drawtarget", "tempbuffer", SID, SID)
+            obj.copybuffer("cache:PC2", "tempbuffer")
+            obj.load("figure", "四角形", 0xffffff, piece_size * 2)
+            obj.setoption("drawtarget", "tempbuffer", piece_canvas_size, piece_canvas_size)
             obj.setoption("blend", "alpha_add")
             obj.draw()
-            obj.copybuffer("obj", "cache:PC2")
+            obj.copybuffer("object", "cache:PC2")
             obj.setoption("blend", "alpha_sub")
             obj.draw()
         end
-        obj.copybuffer("cache:PC2", "tmp")
+        obj.copybuffer("cache:PC2", "tempbuffer")
     end
-    local MakeSpl = function(SI, spt, Pfig)
-        local SI = SI
-        local SI2 = SI / 2
-        local SI4 = SI / 4
-        local SID = 2 * SI + SI % 2 -- 四隅に隙間ができることがあるのを防止
-        local comSI2 = 2 * math.floor((SI2 + 1) / 2) -- 余分な線が入るのを防止
-        if Pfig < 0 then --レイヤー読み込み
-            obj.copybuffer("tmp", "cache:LayImg")
-        elseif Pfig >= 1 and Pfig <= 4 then
-            obj.setoption("drawtarget", "tempbuffer", SI, SI)
-            local se = 2
-            local bai = SI / 200
-            obj.load("figure", "円", 0xffffff, 78 * bai * se)
+    local create_piece_image = function(piece_size, track_gap, track_piece_shape)
+        local piece_size = piece_size
+        local half_piece_size = piece_size / 2
+        local quarter_piece_size = piece_size / 4
+        local piece_canvas_size = 2 * piece_size + piece_size % 2 -- 四隅に隙間ができることがあるのを防止
+        local aligned_half_piece_size = 2 * math.floor((half_piece_size + 1) / 2) -- 余分な線が入るのを防止
+        if track_piece_shape < 0 then --レイヤー読み込み
+            obj.copybuffer("tempbuffer", "cache:LayImg")
+        elseif track_piece_shape >= 1 and track_piece_shape <= 4 then
+            obj.setoption("drawtarget", "tempbuffer", piece_size, piece_size)
+            local antialias_scale = 2
+            local scale_ratio = piece_size / 200
+            obj.load("figure", "円", 0xffffff, 78 * scale_ratio * antialias_scale)
             obj.setoption("blend", "alpha_add")
-            x0 = -39 * bai
-            y0 = (-138 - 39 * 0.79 + 100) * bai
-            y2 = (-138 + 39 * 0.79 + 100 + 2) * bai
+            local x0 = -39 * scale_ratio
+            local y0 = (-138 - 39 * 0.79 + 100) * scale_ratio
+            local y2 = (-138 + 39 * 0.79 + 100 + 2) * scale_ratio
             obj.drawpoly(x0, y0, 0, -x0, y0, 0, -x0, y2, 0, x0, y2, 0)
-            DS = (2857 - 21 * math.sqrt(18119)) / 4640
-            x4, y4 = 32.5445 * bai, (121.0223 + 0.4) * bai - 100 * bai
-            x5, y5 = 23.9438 * bai, 110.7341 * bai - 100 * bai
-            x6, y6 = (32 + DS) * bai, (104 - math.sqrt(21 * 21 / 4 - DS * DS)) * bai - 100 * bai
+            local curve_adjustment = (2857 - 21 * math.sqrt(18119)) / 4640
+            local x4, y4 = 32.5445 * scale_ratio, (121.0223 + 0.4) * scale_ratio - 100 * scale_ratio
+            local x5, y5 = 23.9438 * scale_ratio, 110.7341 * scale_ratio - 100 * scale_ratio
+            local x6, y6 =
+                (32 + curve_adjustment) * scale_ratio,
+                (104 - math.sqrt(21 * 21 / 4 - curve_adjustment * curve_adjustment)) * scale_ratio - 100 * scale_ratio
             obj.load("figure", "四角形", 0xffffff, 1)
             obj.setoption("blend", "alpha_add")
             obj.drawpoly(-x4, -y4, 0, x4, -y4, 0, x5, -y5, 0, -x5, -y5, 0)
             obj.drawpoly(-x5, -y5, 0, x5, -y5, 0, x6, -y6, 0, -x6, -y6, 0)
-            obj.drawpoly(-x6, -y6, 0, x6, -y6, 0, x6, SI / 2, 0, -x6, SI / 2, 0)
-            obj.drawpoly(x6, -y6, 0, SI2, 0, 0, SI2, SI2, 0, x6, SI2, 0)
-            obj.drawpoly(-x6, -y6, 0, -SI2, 0, 0, -SI2, SI2, 0, -x6, SI2, 0)
-            obj.load("figure", "円", 0xffffff, 21 * bai * se)
+            obj.drawpoly(-x6, -y6, 0, x6, -y6, 0, x6, piece_size / 2, 0, -x6, piece_size / 2, 0)
+            obj.drawpoly(x6, -y6, 0, half_piece_size, 0, 0, half_piece_size, half_piece_size, 0, x6, half_piece_size, 0)
+            obj.drawpoly(
+                -x6,
+                -y6,
+                0,
+                -half_piece_size,
+                0,
+                0,
+                -half_piece_size,
+                half_piece_size,
+                0,
+                -x6,
+                half_piece_size,
+                0
+            )
+            obj.load("figure", "円", 0xffffff, 21 * scale_ratio * antialias_scale)
             obj.setoption("blend", "alpha_sub")
-            obj.draw(32 * bai, -104 * bai + 100 * bai, 0, 1 / se)
-            obj.draw(-32 * bai, -104 * bai + 100 * bai, 0, 1 / se)
+            obj.draw(32 * scale_ratio, -104 * scale_ratio + 100 * scale_ratio, 0, 1 / antialias_scale)
+            obj.draw(-32 * scale_ratio, -104 * scale_ratio + 100 * scale_ratio, 0, 1 / antialias_scale)
 
-            obj.copybuffer("cache:Img2", "tmp")
+            obj.copybuffer("cache:Img2", "tempbuffer")
             obj.load("figure", "四角形", 0xffffff, 1)
             obj.setoption("blend", "alpha_sub")
-            obj.drawpoly(-SI2, 0, 0, SI2, 0, 0, SI2, SI2, 0, -SI2, SI2, 0)
+            obj.drawpoly(
+                -half_piece_size,
+                0,
+                0,
+                half_piece_size,
+                0,
+                0,
+                half_piece_size,
+                half_piece_size,
+                0,
+                -half_piece_size,
+                half_piece_size,
+                0
+            )
 
-            obj.copybuffer("cache:Img1", "tmp")
-            obj.copybuffer("tmp", "cache:Img2")
+            obj.copybuffer("cache:Img1", "tempbuffer")
+            obj.copybuffer("tempbuffer", "cache:Img2")
             obj.load("figure", "四角形", 0xffffff, 1)
             obj.setoption("blend", "alpha_add")
-            obj.drawpoly(-SI2, 0, 0, SI2, 0, 0, SI2, -SI2, 0, -SI2, -SI2, 0)
-            obj.copybuffer("obj", "tmp")
+            obj.drawpoly(
+                -half_piece_size,
+                0,
+                0,
+                half_piece_size,
+                0,
+                0,
+                half_piece_size,
+                -half_piece_size,
+                0,
+                -half_piece_size,
+                -half_piece_size,
+                0
+            )
+            obj.copybuffer("object", "tempbuffer")
             obj.effect("反転", "透明度反転", 1)
             obj.effect("ローテーション", "90度回転", 2)
-            obj.copybuffer("cache:Img2", "obj")
-            MakeUnit(SI, SI2, Pfig)
-        elseif Pfig >= 5 and Pfig <= 8 then
-            local L = math.sqrt(2) * SI + 1
-            obj.setoption("drawtarget", "tempbuffer", SID, SID)
-            obj.load("figure", "円", 0xffffff, 3 * L)
+            obj.copybuffer("cache:Img2", "object")
+            create_piece_shape(piece_size, half_piece_size, track_piece_shape)
+        elseif track_piece_shape >= 5 and track_piece_shape <= 8 then
+            local diagonal_size = math.sqrt(2) * piece_size + 1
+            obj.setoption("drawtarget", "tempbuffer", piece_canvas_size, piece_canvas_size)
+            obj.load("figure", "円", 0xffffff, 3 * diagonal_size)
             obj.setoption("blend", "alpha_add")
             obj.draw(0, 0, 0, 1 / 3)
-            obj.copybuffer("obj", "tmp")
+            obj.copybuffer("object", "tempbuffer")
             obj.setoption("blend", "alpha_sub")
-            if Pfig == 5 then
-                obj.draw(-SI - 1, 0, 0) --ゴミ対策で±1
-                obj.draw(SI + 1, 0, 0)
-            elseif Pfig == 6 then
-                obj.draw(0, SI + 1, 0)
-                obj.draw(-SI - 1, 0, 0)
-            elseif Pfig == 8 then
-                obj.draw(0, SI + 1, 0)
+            if track_piece_shape == 5 then
+                obj.draw(-piece_size - 1, 0, 0) --ゴミ対策で±1
+                obj.draw(piece_size + 1, 0, 0)
+            elseif track_piece_shape == 6 then
+                obj.draw(0, piece_size + 1, 0)
+                obj.draw(-piece_size - 1, 0, 0)
+            elseif track_piece_shape == 8 then
+                obj.draw(0, piece_size + 1, 0)
             end
-        elseif Pfig >= 9 and Pfig <= 22 then
+        elseif track_piece_shape >= 9 and track_piece_shape <= 22 then
             local x0, x1, x2, x3
             local y0, y1, y2, y3
-            if Pfig >= 9 and Pfig <= 12 then
+            if track_piece_shape >= 9 and track_piece_shape <= 12 then
                 x0, y0, x1, y1, x2, y2, x3, y3 =
-                    -SI2 * 0.44, -SI2 * 0.25, SI2 * 0.44, -SI2 * 0.25, SI2 * 0.3, 0, -SI2 * 0.3, 0
-            elseif Pfig >= 13 and Pfig <= 17 then
-                local dH = SI / 5
+                    -half_piece_size * 0.44,
+                    -half_piece_size * 0.25,
+                    half_piece_size * 0.44,
+                    -half_piece_size * 0.25,
+                    half_piece_size * 0.3,
+                    0,
+                    -half_piece_size * 0.3,
+                    0
+            elseif track_piece_shape >= 13 and track_piece_shape <= 17 then
+                local notch_unit = piece_size / 5
                 x0, y0, x1, y1, x2, y2, x3, y3 =
-                    -SI2 + dH, -0.6 * dH, -SI2 + 2 * dH, -0.6 * dH, -SI2 + 2 * dH, 0, -SI2 + dH, 0
-            elseif Pfig >= 18 and Pfig <= 22 then
-                local dH = SI / 7
+                    -half_piece_size + notch_unit,
+                    -0.6 * notch_unit,
+                    -half_piece_size + 2 * notch_unit,
+                    -0.6 * notch_unit,
+                    -half_piece_size + 2 * notch_unit,
+                    0,
+                    -half_piece_size + notch_unit,
+                    0
+            elseif track_piece_shape >= 18 and track_piece_shape <= 22 then
+                local notch_unit = piece_size / 7
                 x0, y0, x1, y1, x2, y2, x3, y3 =
-                    -SI2 + 2 * dH, -1.2 * dH, -SI2 + 2 * dH, -1.2 * dH, -SI2 + 3 * dH, 0, -SI2 + dH, 0
+                    -half_piece_size + 2 * notch_unit,
+                    -1.2 * notch_unit,
+                    -half_piece_size + 2 * notch_unit,
+                    -1.2 * notch_unit,
+                    -half_piece_size + 3 * notch_unit,
+                    0,
+                    -half_piece_size + notch_unit,
+                    0
             end
-            obj.setoption("drawtarget", "tempbuffer", SI, comSI2)
+            obj.setoption("drawtarget", "tempbuffer", piece_size, aligned_half_piece_size)
             obj.load("figure", "四角形", 0xffffff, 1)
             obj.setoption("blend", "alpha_add")
             obj.drawpoly(x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0)
-            if (Pfig >= 13 and Pfig <= 16) or (Pfig >= 18 and Pfig <= 21) then
+            if
+                (track_piece_shape >= 13 and track_piece_shape <= 16)
+                or (track_piece_shape >= 18 and track_piece_shape <= 21)
+            then
                 obj.drawpoly(-x0, y0, 0, -x1, y1, 0, -x2, y2, 0, -x3, y3, 0)
             end
-            obj.copybuffer("cache:Img1", "tmp")
-            MakeUnit(SI, SI2, Pfig)
+            obj.copybuffer("cache:Img1", "tempbuffer")
+            create_piece_shape(piece_size, half_piece_size, track_piece_shape)
         end
-        MakeCachePC(SI, SI2, SID)
-        if spt > 0 then
+        create_piece_caches(piece_size, half_piece_size, piece_canvas_size)
+        if track_gap > 0 then
             for i = 1, 2 do
-                obj.copybuffer("obj", "cache:PC" .. i)
-                obj.effect("縁取り", "サイズ", spt, "ぼかし", 0)
-                obj.setoption("drawtarget", "tempbuffer", SID, SID)
+                obj.copybuffer("object", "cache:PC" .. i)
+                obj.effect("縁取り", "サイズ", track_gap, "ぼかし", 0)
+                obj.setoption("drawtarget", "tempbuffer", piece_canvas_size, piece_canvas_size)
                 obj.setoption("blend", 0)
                 obj.draw()
-                obj.copybuffer("cache:PC" .. i, "tmp")
+                obj.copybuffer("cache:PC" .. i, "tempbuffer")
             end
         end
     end
     --時間（マップ）作成----------
-    local MakeMap = function(SI, mapnum, mapdeg, nx, ny, nxd, nyd, Cmap, loadmap, check0, apt, limap)
-        local T = {}
-        if loadmap == 0 then
-            local Tcal = ({
-                function(ii, jj, RR, seed)
-                    return math.sqrt(ii * ii + jj * jj) / RR
+    local create_animation_map = function(
+        piece_size,
+        track_map_number,
+        track_map_angle,
+        horizontal_radius,
+        vertical_radius,
+        horizontal_extent,
+        vertical_extent,
+        value_map_center,
+        check_load_map_image,
+        check_invert_map,
+        unfold_progress,
+        track_map_limit_percent
+    )
+        local piece_times = {}
+        if check_load_map_image == 0 then
+            local calculate_map_value = ({
+                function(grid_x, grid_y, map_normalizer, track_random_seed)
+                    return math.sqrt(grid_x * grid_x + grid_y * grid_y) / map_normalizer
                 end, --1.円
-                function(ii, jj, RR, seed)
-                    return math.max(math.abs(ii), math.abs(jj)) / RR
+                function(grid_x, grid_y, map_normalizer, track_random_seed)
+                    return math.max(math.abs(grid_x), math.abs(grid_y)) / map_normalizer
                 end, --2.四角
-                function(ii, jj, RR, seed)
-                    return math.min(math.abs(ii), math.abs(jj)) / RR
+                function(grid_x, grid_y, map_normalizer, track_random_seed)
+                    return math.min(math.abs(grid_x), math.abs(grid_y)) / map_normalizer
                 end, --3.十字
-                function(ii, jj, RR, seed)
-                    return math.abs(jj) / RR
+                function(grid_x, grid_y, map_normalizer, track_random_seed)
+                    return math.abs(grid_y) / map_normalizer
                 end, --4.中央直線
-                function(ii, jj, RR, seed)
-                    return (math.pi - math.atan2(ii, jj)) / RR
+                function(grid_x, grid_y, map_normalizer, track_random_seed)
+                    return (math.pi - math.atan2(grid_x, grid_y)) / map_normalizer
                 end, --5.時計
-                function(ii, jj, RR, seed)
-                    return obj.rand(0, RR, -(RR + ii + seed), RR + jj + 1000) / RR
+                function(grid_x, grid_y, map_normalizer, track_random_seed)
+                    return obj.rand(
+                        0,
+                        map_normalizer,
+                        -(map_normalizer + grid_x + track_random_seed),
+                        map_normalizer + grid_y + 1000
+                    ) / map_normalizer
                 end, --6.ランダム
-            })[mapnum]
-            local RR = ({
-                math.sqrt(nxd * nxd + nyd * nyd),
-                math.max(nxd, nyd),
-                math.min(nxd, nyd),
-                ny,
+            })[track_map_number]
+            local map_normalizer = ({
+                math.sqrt(horizontal_extent * horizontal_extent + vertical_extent * vertical_extent),
+                math.max(horizontal_extent, vertical_extent),
+                math.min(horizontal_extent, vertical_extent),
+                vertical_radius,
                 math.pi * 2,
-                (2 * nxd + 1) * (2 * nyd + 1),
-            })[mapnum]
-            local Cnx, Cny = Cmap[1] / SI, Cmap[2] / SI
-            local sin, cos = math.sin(mapdeg), math.cos(mapdeg)
-            for i = -nx, nx do
-                T[i] = {}
-                local iCnx = i - Cnx
-                for j = -ny, ny do
-                    local ii, jj = iCnx * cos + (j - Cny) * sin, -iCnx * sin + (j - Cny) * cos
-                    T[i][j] = Tcal(ii, jj, RR, seed)
+                (2 * horizontal_extent + 1) * (2 * vertical_extent + 1),
+            })[track_map_number]
+            local map_center_x, map_center_y = value_map_center[1] / piece_size, value_map_center[2] / piece_size
+            local sin, cos = math.sin(track_map_angle), math.cos(track_map_angle)
+            for i = -horizontal_radius, horizontal_radius do
+                piece_times[i] = {}
+                local centered_column = i - map_center_x
+                for j = -vertical_radius, vertical_radius do
+                    local grid_x, grid_y =
+                        centered_column * cos + (j - map_center_y) * sin,
+                        -centered_column * sin + (j - map_center_y) * cos
+                    piece_times[i][j] = calculate_map_value(grid_x, grid_y, map_normalizer, track_random_seed)
                 end
             end
         else
-            obj.load("layer", mapnum, true)
+            obj.load("layer", track_map_number, true)
             local w, h = obj.getpixel()
             obj.pixeloption("type", "yc")
             obj.pixeloption("get", "obj")
-            for i = -nx, nx do
-                T[i] = {}
-                for j = -ny, ny do
-                    local yi, cbi, cri, ai =
-                        obj.getpixel((w - 1) * (i + nx) / (2 * nx), (h - 1) * (j + ny) / (2 * ny), "yc")
-                    T[i][j] = yi / 4096
+            for i = -horizontal_radius, horizontal_radius do
+                piece_times[i] = {}
+                for j = -vertical_radius, vertical_radius do
+                    local luminance, blue_difference, red_difference, alpha = obj.getpixel(
+                        (w - 1) * (i + horizontal_radius) / (2 * horizontal_radius),
+                        (h - 1) * (j + vertical_radius) / (2 * vertical_radius),
+                        "yc"
+                    )
+                    piece_times[i][j] = luminance / 4096
                 end
             end
         end
-        if check0 then
-            local Tmax = -100000
-            for i = -nx, nx do
-                for j = -ny, ny do
-                    Tmax = Tmax > T[i][j] and Tmax or T[i][j]
+        if check_invert_map then
+            local max_map_value = -100000
+            for i = -horizontal_radius, horizontal_radius do
+                for j = -vertical_radius, vertical_radius do
+                    max_map_value = max_map_value > piece_times[i][j] and max_map_value or piece_times[i][j]
                 end
             end
-            for i = -nx, nx do
-                for j = -ny, ny do
-                    T[i][j] = Tmax - T[i][j]
+            for i = -horizontal_radius, horizontal_radius do
+                for j = -vertical_radius, vertical_radius do
+                    piece_times[i][j] = max_map_value - piece_times[i][j]
                 end
             end
         end
-        for i = -nx, nx do
-            for j = -ny, ny do
-                local t
-                if T[i][j] <= limap then
-                    t = -T[i][j] + apt
-                    T[i][j] = math.max(t, 0)
+        for i = -horizontal_radius, horizontal_radius do
+            for j = -vertical_radius, vertical_radius do
+                local piece_time
+                if piece_times[i][j] <= track_map_limit_percent then
+                    piece_time = -piece_times[i][j] + unfold_progress
+                    piece_times[i][j] = math.max(piece_time, 0)
                 else
-                    T[i][j] = 0
+                    piece_times[i][j] = 0
                 end
             end
         end
-        return T
+        return piece_times
     end
     --メイン----------
     local zoom = obj.getvalue("zoom") * 0.01
-    local apt = track_unfold * 0.01
-    local Vs = track_speed * 7.5
-    local dir = -math.rad(track_direction)
-    Csht = Csht or 0
-    LayAp = LayAp or 0
-    Cmap = Cmap or { 0, 0 }
-    mapdeg = (mapdeg or 0) * math.pi / 180
-    FBR = FBR or 0
-    obj.setanchor("Cmap", #Cmap / 2, "line")
+    local unfold_progress = track_unfold * 0.01
+    local scatter_speed = track_speed * 7.5
+    local scatter_direction = -math.direction_radians(track_direction)
+    check_shift_placement = check_shift_placement or 0
+    check_show_loaded_image = check_show_loaded_image or 0
+    value_map_center = value_map_center or { 0, 0 }
+    track_map_angle = (track_map_angle or 0) * math.pi / 180
+    check_reverse_faces = check_reverse_faces or 0
+    obj.setanchor("value_map_center", #value_map_center / 2, "line")
     obj.setanchor("track_scatter_center_x,track_scatter_center_y", 0)
-    if #Cmap > 3 then
-        mapdeg = -math.atan2(Cmap[3] - Cmap[1], Cmap[4] - Cmap[2])
+    if #value_map_center > 3 then
+        track_map_angle =
+            -math.atan2(value_map_center[3] - value_map_center[1], value_map_center[4] - value_map_center[2])
     end
-    rv = rv * 0.03
-    Gr[1] = Gr[1] * 30 * zoom
-    Gr[2] = Gr[2] * 30 * zoom
-    Gr[3] = Gr[3] * 30 * zoom
-    limap = limap * 0.01
-    local SI = math.floor(track_size)
+    track_rotation_speed = track_rotation_speed * 0.03
+    gravity[1] = gravity[1] * 30 * zoom
+    gravity[2] = gravity[2] * 30 * zoom
+    gravity[3] = gravity[3] * 30 * zoom
+    track_map_limit_percent = track_map_limit_percent * 0.01
+    local piece_size = math.floor(track_piece_size)
     local w, h = obj.getpixel()
-    local nxd = (w - SI) / SI * 0.5
-    local nyd = (h - SI) / SI * 0.5
-    local nx = math.floor(w / SI * 0.5 + 1)
-    local ny = math.floor(h / SI * 0.5 + 1)
+    local horizontal_extent = (w - piece_size) / piece_size * 0.5
+    local vertical_extent = (h - piece_size) / piece_size * 0.5
+    local horizontal_radius = math.floor(w / piece_size * 0.5 + 1)
+    local vertical_radius = math.floor(h / piece_size * 0.5 + 1)
     local w2, h2 = w * 0.5, h * 0.5
-    local SIz = SI * zoom
-    local wz = w * zoom
-    local hz = h * zoom
-    local wz2 = wz / 2
-    local hz2 = hz / 2
-    Vs = Vs * zoom
-    Ct[1] = Ct[1] / SI
-    Ct[2] = Ct[2] / SI
-    if Pfig < 0 then --レイヤー読み込み
-        obj.copybuffer("cache:ORI", "obj")
-        obj.setoption("drawtarget", "tempbuffer", SI * 2 + SI % 2, SI * 2 + SI % 2)
-        obj.load("layer", -Pfig, true)
-        obj.drawpoly(-SI, -SI, 0, SI, -SI, 0, SI, SI, 0, -SI, SI, 0)
-        obj.copybuffer("cache:LayImg", "tmp")
-        if LayAp == 1 then
-            obj.copybuffer("obj", "tmp")
-            obj.copybuffer("tmp", "cache:ORI")
-            local di = ((nx + ny) % 2 == Csht) and 1 or 0
-            for j = -ny, ny do
-                di = 1 - di
-                for i = -nx + di, nx, 2 do
-                    obj.draw(SI * i, SI * j)
+    local scaled_piece_size = piece_size * zoom
+    local scaled_image_width = w * zoom
+    local scaled_image_height = h * zoom
+    local half_scaled_image_width = scaled_image_width / 2
+    local half_scaled_image_height = scaled_image_height / 2
+    scatter_speed = scatter_speed * zoom
+    scatter_center[1] = scatter_center[1] / piece_size
+    scatter_center[2] = scatter_center[2] / piece_size
+    if track_piece_shape < 0 then --レイヤー読み込み
+        obj.copybuffer("cache:ORI", "object")
+        obj.setoption("drawtarget", "tempbuffer", piece_size * 2 + piece_size % 2, piece_size * 2 + piece_size % 2)
+        obj.load("layer", -track_piece_shape, true)
+        obj.drawpoly(
+            -piece_size,
+            -piece_size,
+            0,
+            piece_size,
+            -piece_size,
+            0,
+            piece_size,
+            piece_size,
+            0,
+            -piece_size,
+            piece_size,
+            0
+        )
+        obj.copybuffer("cache:LayImg", "tempbuffer")
+        if check_show_loaded_image == 1 then
+            obj.copybuffer("object", "tempbuffer")
+            obj.copybuffer("tempbuffer", "cache:ORI")
+            local column_parity = ((horizontal_radius + vertical_radius) % 2 == check_shift_placement) and 1 or 0
+            for j = -vertical_radius, vertical_radius do
+                column_parity = 1 - column_parity
+                for i = -horizontal_radius + column_parity, horizontal_radius, 2 do
+                    obj.draw(piece_size * i, piece_size * j)
                 end
             end
-            obj.copybuffer("cache:ORI", "tmp")
+            obj.copybuffer("cache:ORI", "tempbuffer")
         end
     else
-        obj.copybuffer("cache:ORI", "obj")
+        obj.copybuffer("cache:ORI", "object")
     end
     --ピース作成
-    MakeSpl(SI, spt, Pfig)
+    create_piece_image(piece_size, track_gap, track_piece_shape)
     --時間（マップ）作成
-    local T = MakeMap(SI, mapnum, mapdeg, nx, ny, nxd, nyd, Cmap, loadmap, check0, apt, limap)
+    local piece_times = create_animation_map(
+        piece_size,
+        track_map_number,
+        track_map_angle,
+        horizontal_radius,
+        vertical_radius,
+        horizontal_extent,
+        vertical_extent,
+        value_map_center,
+        check_load_map_image,
+        check_invert_map,
+        unfold_progress,
+        track_map_limit_percent
+    )
     --表示
     obj.setoption("drawtarget", "tempbuffer")
     local vertices = {}
-    DrawPoly = ({
-        function(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3)
-            vertices[#vertices + 1] = { x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3 }
+    local draw_poly = ({
+        function(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, radial_speed, u2, forward_speed, u3, v3)
+            vertices[#vertices + 1] =
+                { x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, radial_speed, u2, forward_speed, u3, v3 }
         end,
-        function(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3)
-            vertices[#vertices + 1] = { x3, y3, z3, x2, y2, z2, x1, y1, z1, x0, y0, z0, u3, v3, u2, v2, u1, v1, u0, v0 }
+        function(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, radial_speed, u2, forward_speed, u3, v3)
+            vertices[#vertices + 1] =
+                { x3, y3, z3, x2, y2, z2, x1, y1, z1, x0, y0, z0, u3, v3, u2, forward_speed, u1, radial_speed, u0, v0 }
         end,
-    })[FBR + 1]
-    local sht = ((nx + ny) % 2 == Csht) and 0 or 1
-    for dj = 0, 1 do
-        for di = 0, 1 do
-            obj.copybuffer("tmp", "cache:ORI")
+    })[check_reverse_faces + 1]
+    local placement_parity = ((horizontal_radius + vertical_radius) % 2 == check_shift_placement) and 0 or 1
+    for row_parity = 0, 1 do
+        for column_parity = 0, 1 do
+            obj.copybuffer("tempbuffer", "cache:ORI")
             obj.setoption("drawtarget", "tempbuffer")
-            if (di + dj) % 2 == sht then
-                obj.copybuffer("obj", "cache:PC1")
+            if (column_parity + row_parity) % 2 == placement_parity then
+                obj.copybuffer("object", "cache:PC1")
             else
-                obj.copybuffer("obj", "cache:PC2")
+                obj.copybuffer("object", "cache:PC2")
             end
             obj.setoption("blend", "alpha_sub")
-            for j = -ny + dj, ny, 2 do
-                for i = -nx + di, nx, 2 do
-                    obj.draw(i * SI, j * SI, 0)
+            for j = -vertical_radius + row_parity, vertical_radius, 2 do
+                for i = -horizontal_radius + column_parity, horizontal_radius, 2 do
+                    obj.draw(i * piece_size, j * piece_size, 0)
                 end
             end
 
-            obj.copybuffer("obj", "tmp")
+            obj.copybuffer("object", "tempbuffer")
             obj.setoption("drawtarget", "framebuffer")
             obj.setoption("blend", 0)
             vertices = {}
-            for j = -ny + dj, ny, 2 do
-                local yy = SIz * j
-                for i = -nx + di, nx, 2 do
-                    local t = T[i][j]
-                    local xx = SIz * i
-                    local x0, x1, x2, x3 = xx - SIz, xx + SIz, xx + SIz, xx - SIz
-                    local y0, y1, y2, y3 = yy - SIz, yy - SIz, yy + SIz, yy + SIz
+            for j = -vertical_radius + row_parity, vertical_radius, 2 do
+                local piece_center_y = scaled_piece_size * j
+                for i = -horizontal_radius + column_parity, horizontal_radius, 2 do
+                    local piece_time = piece_times[i][j]
+                    local piece_center_x = scaled_piece_size * i
+                    local x0, x1, x2, x3 =
+                        piece_center_x - scaled_piece_size,
+                        piece_center_x + scaled_piece_size,
+                        piece_center_x + scaled_piece_size,
+                        piece_center_x - scaled_piece_size
+                    local y0, y1, y2, y3 =
+                        piece_center_y - scaled_piece_size,
+                        piece_center_y - scaled_piece_size,
+                        piece_center_y + scaled_piece_size,
+                        piece_center_y + scaled_piece_size
                     local z0, z1, z2, z3
-                    x0 = x0 < -wz2 and -wz2 or (x0 > wz2 and wz2 or x0)
-                    x1 = x1 < -wz2 and -wz2 or (x1 > wz2 and wz2 or x1)
-                    x2 = x2 < -wz2 and -wz2 or (x2 > wz2 and wz2 or x2)
-                    x3 = x3 < -wz2 and -wz2 or (x3 > wz2 and wz2 or x3)
-                    y0 = y0 < -hz2 and -hz2 or (y0 > hz2 and hz2 or y0)
-                    y1 = y1 < -hz2 and -hz2 or (y1 > hz2 and hz2 or y1)
-                    y2 = y2 < -hz2 and -hz2 or (y2 > hz2 and hz2 or y2)
-                    y3 = y3 < -hz2 and -hz2 or (y3 > hz2 and hz2 or y3)
-                    local u0, u1, u2, u3 = x0 + wz2, x1 + wz2, x2 + wz2, x3 + wz2
-                    local v0, v1, v2, v3 = y0 + hz2, y1 + hz2, y2 + hz2, y3 + hz2
-                    local r1 = obj.rand(-100, 100, -(i + nx + j + ny + seed), 2000) * 0.01 * t * rv
-                    local r2 = obj.rand(-100, 100, -(i + nx + j + ny + seed), 3000) * 0.01 * t * rv
-                    local r3 = obj.rand(-100, 100, -(i + nx + j + ny + seed), 4000) * 0.01 * t * rv
-                    local sin_x = math.sin(r1)
-                    local cos_x = math.cos(r1)
-                    local sin_y = math.sin(r2)
-                    local cos_y = math.cos(r2)
-                    local sin_z = math.sin(r3)
-                    local cos_z = math.cos(r3)
+                    x0 = x0 < -half_scaled_image_width and -half_scaled_image_width
+                        or (x0 > half_scaled_image_width and half_scaled_image_width or x0)
+                    x1 = x1 < -half_scaled_image_width and -half_scaled_image_width
+                        or (x1 > half_scaled_image_width and half_scaled_image_width or x1)
+                    x2 = x2 < -half_scaled_image_width and -half_scaled_image_width
+                        or (x2 > half_scaled_image_width and half_scaled_image_width or x2)
+                    x3 = x3 < -half_scaled_image_width and -half_scaled_image_width
+                        or (x3 > half_scaled_image_width and half_scaled_image_width or x3)
+                    y0 = y0 < -half_scaled_image_height and -half_scaled_image_height
+                        or (y0 > half_scaled_image_height and half_scaled_image_height or y0)
+                    y1 = y1 < -half_scaled_image_height and -half_scaled_image_height
+                        or (y1 > half_scaled_image_height and half_scaled_image_height or y1)
+                    y2 = y2 < -half_scaled_image_height and -half_scaled_image_height
+                        or (y2 > half_scaled_image_height and half_scaled_image_height or y2)
+                    y3 = y3 < -half_scaled_image_height and -half_scaled_image_height
+                        or (y3 > half_scaled_image_height and half_scaled_image_height or y3)
+                    local u0, u1, u2, u3 =
+                        x0 + half_scaled_image_width,
+                        x1 + half_scaled_image_width,
+                        x2 + half_scaled_image_width,
+                        x3 + half_scaled_image_width
+                    local v0, radial_speed, forward_speed, v3 =
+                        y0 + half_scaled_image_height,
+                        y1 + half_scaled_image_height,
+                        y2 + half_scaled_image_height,
+                        y3 + half_scaled_image_height
+                    local rotation_x = obj.rand(
+                        -100,
+                        100,
+                        -(i + horizontal_radius + j + vertical_radius + track_random_seed),
+                        2000
+                    ) * 0.01 * piece_time * track_rotation_speed
+                    local rotation_y = obj.rand(
+                        -100,
+                        100,
+                        -(i + horizontal_radius + j + vertical_radius + track_random_seed),
+                        3000
+                    ) * 0.01 * piece_time * track_rotation_speed
+                    local rotation_z = obj.rand(
+                        -100,
+                        100,
+                        -(i + horizontal_radius + j + vertical_radius + track_random_seed),
+                        4000
+                    ) * 0.01 * piece_time * track_rotation_speed
+                    local sin_x = math.sin(rotation_x)
+                    local cos_x = math.cos(rotation_x)
+                    local sin_y = math.sin(rotation_y)
+                    local cos_y = math.cos(rotation_y)
+                    local sin_z = math.sin(rotation_z)
+                    local cos_z = math.cos(rotation_z)
                     local dx = (x0 + x1 + x2 + x3) / 4
                     local dy = (y0 + y1 + y2 + y3) / 4
-                    x0, y0, z0 = Rotxy(x0 - dx, y0 - dy, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
-                    x1, y1, z1 = Rotxy(x1 - dx, y1 - dy, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
-                    x2, y2, z2 = Rotxy(x2 - dx, y2 - dy, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
-                    x3, y3, z3 = Rotxy(x3 - dx, y3 - dy, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
+                    x0, y0, z0 = rotate_xy_vector(x0 - dx, y0 - dy, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
+                    x1, y1, z1 = rotate_xy_vector(x1 - dx, y1 - dy, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
+                    x2, y2, z2 = rotate_xy_vector(x2 - dx, y2 - dy, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
+                    x3, y3, z3 = rotate_xy_vector(x3 - dx, y3 - dy, sin_x, cos_x, sin_y, cos_y, sin_z, cos_z)
                     x0, x1, x2, x3 = x0 + dx, x1 + dx, x2 + dx, x3 + dx
                     y0, y1, y2, y3 = y0 + dy, y1 + dy, y2 + dy, y3 + dy
-                    local ii = i - Ct[1]
-                    local jj = j - Ct[2]
-                    local rads = dir * math.sqrt(ii * ii + jj * jj) / ny
-                    local vg1 = -Vs * math.sin(rads)
-                    local Vz = -Vs * math.cos(rads)
-                    rads = math.atan2(ii, jj)
-                    local Vx = vg1 * math.sin(rads)
-                    local Vy = vg1 * math.cos(rads)
-                    local itix = Gr[1] * t * t * 0.5 + Vx * t
-                    local itiy = Gr[2] * t * t * 0.5 + Vy * t
-                    local itiz = Gr[3] * t * t * 0.5 + Vz * t
-                    x0, x1, x2, x3 = x0 + itix, x1 + itix, x2 + itix, x3 + itix
-                    y0, y1, y2, y3 = y0 + itiy, y1 + itiy, y2 + itiy, y3 + itiy
-                    z0, z1, z2, z3 = z0 + itiz, z1 + itiz, z2 + itiz, z3 + itiz
-                    DrawPoly(x0, y0, z0, x1, y1, z1, x2, y2, z2, x3, y3, z3, u0, v0, u1, v1, u2, v2, u3, v3)
+                    local grid_x = i - scatter_center[1]
+                    local grid_y = j - scatter_center[2]
+                    local direction_radians = scatter_direction
+                        * math.sqrt(grid_x * grid_x + grid_y * grid_y)
+                        / vertical_radius
+                    local radial_speed = -scatter_speed * math.sin(direction_radians)
+                    local velocity_z = -scatter_speed * math.cos(direction_radians)
+                    direction_radians = math.atan2(grid_x, grid_y)
+                    local velocity_x = radial_speed * math.sin(direction_radians)
+                    local velocity_y = radial_speed * math.cos(direction_radians)
+                    local translation_x = gravity[1] * piece_time * piece_time * 0.5 + velocity_x * piece_time
+                    local translation_y = gravity[2] * piece_time * piece_time * 0.5 + velocity_y * piece_time
+                    local translation_z = gravity[3] * piece_time * piece_time * 0.5 + velocity_z * piece_time
+                    x0, x1, x2, x3 = x0 + translation_x, x1 + translation_x, x2 + translation_x, x3 + translation_x
+                    y0, y1, y2, y3 = y0 + translation_y, y1 + translation_y, y2 + translation_y, y3 + translation_y
+                    z0, z1, z2, z3 = z0 + translation_z, z1 + translation_z, z2 + translation_z, z3 + translation_z
+                    draw_poly(
+                        x0,
+                        y0,
+                        z0,
+                        x1,
+                        y1,
+                        z1,
+                        x2,
+                        y2,
+                        z2,
+                        x3,
+                        y3,
+                        z3,
+                        u0,
+                        v0,
+                        u1,
+                        radial_speed,
+                        u2,
+                        forward_speed,
+                        u3,
+                        v3
+                    )
                 end
             end
             if #vertices > 0 then

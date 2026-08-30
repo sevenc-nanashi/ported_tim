@@ -77,7 +77,7 @@ local track_time_offset = 1000
 --group:
 
 ---$value:PI
-local _0 = nil
+local override_params = nil
 
 ---$check:波形反転
 local check_reverse_waveform = false
@@ -91,32 +91,33 @@ local max = math.max
 local min = math.min
 local sin = math.sin
 local cos = math.cos
-local mpi = math.pi
+local pi = math.pi
 local exp = math.exp
-_0 = _0 or {}
-local aoi = _0
-if _0[1] == "蒼井" then
-    _0 = {}
+override_params = override_params or {}
+local params = override_params
+if override_params[1] == "蒼井" then
+    override_params = {}
 end
-local Rev = _0[0] == nil and check_reverse_waveform or _0[0]
-local Siz = math.floor(_0[1] or track_size)
-local SpN = floor(_0[2] or track_split_amount)
-local MxL = (_0[3] or track_max_percent) * Siz / 100
-local SdU = floor(_0[4] or track_upper_limit)
-local SdD = floor(track_lower_limit or 0)
-local col1 = wave_color_1 or 0xc19ec1
-local col2 = wave_color_2 or 0x40acac
-local col3 = wave_color_3 or 0x5a72ec
-local col4 = circle_color_1 or 0x40acac
-local col5 = circle_color_2 or 0xed7aff
-local Bor = track_boundary_adjust or 2
-local S1, S2, S3, S4, S5 = unpack(size_array or { 4, 3, 4, 4, 1 })
-local N1, N2, N3 = unpack(count_array or { 100, 230, 180 })
-local V1, V2, V3 = unpack(speed_array or { 2, 2.8, 0 })
-local Bap = check_original_background
-local Wal = (track_wave_opacity_percent or 35) / 100
-local Tof = (track_time_offset or 1000) + obj.time
-_0 = nil
+local reverse_waveform = override_params[0] == nil and check_reverse_waveform or override_params[0]
+local base_size = math.floor(override_params[1] or track_size)
+local split_count = floor(override_params[2] or track_split_amount)
+local max_wave_length = (override_params[3] or track_max_percent) * base_size / 100
+local upper_limit = floor(override_params[4] or track_upper_limit)
+local lower_limit = floor(track_lower_limit or 0)
+local wave_color_1_value = wave_color_1 or 0xc19ec1
+local wave_color_2_value = wave_color_2 or 0x40acac
+local wave_color_3_value = wave_color_3 or 0x5a72ec
+local circle_color_1_value = circle_color_1 or 0x40acac
+local circle_color_2_value = circle_color_2 or 0xed7aff
+local boundary_adjust = track_boundary_adjust or 2
+local inner_circle_dot_size, middle_circle_dot_size, outer_circle_dot_size, wave_dot_size, wave_bar_width =
+    unpack(size_array or { 4, 3, 4, 4, 1 })
+local inner_circle_count, middle_circle_count, outer_circle_count = unpack(count_array or { 100, 230, 180 })
+local inner_circle_phase, outer_circle_phase, wave_phase = unpack(speed_array or { 2, 2.8, 0 })
+local use_original_background = check_original_background
+local wave_opacity = (track_wave_opacity_percent or 35) / 100
+local time_offset = (track_time_offset or 1000) + obj.time
+override_params = nil
 wave_color_1 = nil
 wave_color_2 = nil
 wave_color_3 = nil
@@ -131,129 +132,131 @@ check_original_background = nil
 track_wave_opacity_percent = nil
 track_time_offset = nil
 check_reverse_waveform = nil
-local SizH = Siz / 300
+local size_scale = base_size / 300
 local dt = -obj.time / 180
-S1 = (S1 or 4) * SizH
-S1 = max(S1, 1)
-S2 = (S2 or 1) * SizH
-S2 = max(S2, 1)
-S3 = (S3 or 4) * SizH
-S3 = max(S3, 1)
-S4 = (S4 or 3) * SizH
-S4 = max(S4, 1)
-S5 = (S5 or 4) * SizH
-S5 = max(S5, 1)
-N1 = N1 or 100
-N2 = N2 or 230
-N3 = N3 or 180
-V1 = (V1 or 2) * dt
-V2 = (V2 or 2.8) * dt
-V3 = (V3 or 0) * dt
-local N, rate, buf = obj.getaudio(nil, "audiobuffer", "pcm", 5000)
-local Mus = {}
-local SN = 3 * SpN
-Bor = min(Bor, SpN - 1)
-for i = 1, SN do
-    local k = floor(1 + (i - 1) * (N - 1) / (SN - 1))
-    local L = abs(buf[k])
-    L = max(L, SdD)
-    L = min(L, SdU)
-    Mus[i] = L * MxL / SdU
+inner_circle_dot_size = (inner_circle_dot_size or 4) * size_scale
+inner_circle_dot_size = max(inner_circle_dot_size, 1)
+middle_circle_dot_size = (middle_circle_dot_size or 1) * size_scale
+middle_circle_dot_size = max(middle_circle_dot_size, 1)
+outer_circle_dot_size = (outer_circle_dot_size or 4) * size_scale
+outer_circle_dot_size = max(outer_circle_dot_size, 1)
+wave_dot_size = (wave_dot_size or 3) * size_scale
+wave_dot_size = max(wave_dot_size, 1)
+wave_bar_width = (wave_bar_width or 4) * size_scale
+wave_bar_width = max(wave_bar_width, 1)
+inner_circle_count = inner_circle_count or 100
+middle_circle_count = middle_circle_count or 230
+outer_circle_count = outer_circle_count or 180
+inner_circle_phase = (inner_circle_phase or 2) * dt
+outer_circle_phase = (outer_circle_phase or 2.8) * dt
+wave_phase = (wave_phase or 0) * dt
+local audio_sample_count, rate, audio_buffer = obj.getaudio(nil, "audiobuffer", "pcm", 5000)
+local wave_samples = {}
+local sample_count = 3 * split_count
+boundary_adjust = min(boundary_adjust, split_count - 1)
+for i = 1, sample_count do
+    local k = floor(1 + (i - 1) * (audio_sample_count - 1) / (sample_count - 1))
+    local l = abs(audio_buffer[k])
+    l = max(l, lower_limit)
+    l = min(l, upper_limit)
+    wave_samples[i] = l * max_wave_length / upper_limit
 end
-if Rev then
-    for i = 1, SN / 2 do
-        Mus[i], Mus[SN - i + 1] = Mus[SN - i + 1], Mus[i]
+if reverse_waveform then
+    for i = 1, sample_count / 2 do
+        wave_samples[i], wave_samples[sample_count - i + 1] = wave_samples[sample_count - i + 1], wave_samples[i]
     end
 end
-if Bor > 0 then
+if boundary_adjust > 0 then
     for k = 0, 2 do
-        local kSpN = k * SpN + 1
-        local M = (Mus[kSpN + SpN - 1] + Mus[kSpN]) / 2
-        Mus[kSpN] = M
-        for i = 1, Bor - 1 do
-            Mus[kSpN + i] = (Mus[kSpN + i] * i + M * (Bor - i)) / Bor
-            Mus[kSpN + SpN - i] = (Mus[kSpN + SpN - i] * i + M * (Bor - i)) / Bor
+        local k_sp_n = k * split_count + 1
+        local m = (wave_samples[k_sp_n + split_count - 1] + wave_samples[k_sp_n]) / 2
+        wave_samples[k_sp_n] = m
+        for i = 1, boundary_adjust - 1 do
+            wave_samples[k_sp_n + i] = (wave_samples[k_sp_n + i] * i + m * (boundary_adjust - i)) / boundary_adjust
+            wave_samples[k_sp_n + split_count - i] = (
+                wave_samples[k_sp_n + split_count - i] * i + m * (boundary_adjust - i)
+            ) / boundary_adjust
         end
     end
 end
-local w = Siz + MxL + S4
-if Bap then
-    w = max(w, Siz * 678 / 300)
+local w = base_size + max_wave_length + wave_dot_size
+if use_original_background then
+    w = max(w, base_size * 678 / 300)
 end
 w = 2 * floor(w / 2) + 10
 local h = w
 w = w + abs(obj.screen_w - w) % 2
 h = h + abs(obj.screen_h - h) % 2
-if Bap then
+if use_original_background then
     obj.setoption("drawtarget", "tempbuffer")
     obj.load("figure", "四角形", 0x00001e, 1)
     obj.effect("リサイズ", "ドット数でサイズ指定", 1, "X", w, "Y", h)
-    obj.copybuffer("tmp", "obj")
-    obj.load("figure", "円", 0x508787, Siz * 1.2)
-    obj.effect("ぼかし", "範囲", Siz / 3 * 1.2)
+    obj.copybuffer("tempbuffer", "object")
+    obj.load("figure", "円", 0x508787, base_size * 1.2)
+    obj.effect("ぼかし", "範囲", base_size / 3 * 1.2)
     obj.draw()
 
-    obj.load("figure", "円", 0x4a6074, 36 * SizH)
+    obj.load("figure", "円", 0x4a6074, 36 * size_scale)
     for k = 1, 5 do
-        local R = SizH * (150 + 36 * k)
-        local dS = (k + 3) / (12 * k + 50)
-        local n = 2 * mpi / dS
+        local r = size_scale * (150 + 36 * k)
+        local d_s = (k + 3) / (12 * k + 50)
+        local n = 2 * pi / d_s
         local bai = (k + 4) / 18
         for i = 0, n do
-            local sBai = bai * (n - i) / n
-            local ss = i * dS - Tof * exp((0.205 * (k - 1)) ^ 3) / 35
-            local x = R * cos(ss)
-            local y = R * sin(ss)
-            obj.draw(x, y, 0, sBai, 0.5)
+            local s_bai = bai * (n - i) / n
+            local ss = i * d_s - time_offset * exp((0.205 * (k - 1)) ^ 3) / 35
+            local x = r * cos(ss)
+            local y = r * sin(ss)
+            obj.draw(x, y, 0, s_bai, 0.5)
         end
     end
-    if Wal > 0 then
-        obj.copybuffer("cache:wave", "tmp")
+    if wave_opacity > 0 then
+        obj.copybuffer("cache:wave", "tempbuffer")
     end
 else
     obj.setoption("drawtarget", "tempbuffer", w, h)
 end
-local MakeCircle = function(col, SS, NN, Vt, RR)
-    obj.load("figure", "円", col, SS * 2)
-    for i = 0, NN - 1 do
-        local s = (i / NN * 2 + Vt) * mpi
-        obj.draw(RR * cos(s), RR * sin(s), 0, 0.5)
+local make_circle = function(color, circle_size, count, phase, radius)
+    obj.load("figure", "円", color, circle_size * 2)
+    for i = 0, count - 1 do
+        local s = (i / count * 2 + phase) * pi
+        obj.draw(radius * cos(s), radius * sin(s), 0, 0.5)
     end
 end
-MakeCircle(col4, S1, N1, V1, Siz / 4)
-MakeCircle(col4, S2, N2, V1, Siz / 2 * 0.95)
-MakeCircle(col5, S3, N3, V2, Siz / 2)
-local MakeWave = function(col, KK, RR)
-    local NN1 = floor((KK - 1) * N / 3 + 1) -- N>2
-    local NN2 = floor(KK * N / 3)
-    local DD = (KK - 1) / 3
-    local dt = (KK - 1) * SpN + 1
-    obj.load("figure", "円", col, S4 * 2)
-    for i = 0, SpN - 1 do
-        local L2 = Mus[i + dt] / 2
-        local s = ((i + DD) / SpN * 2 + V3) * mpi
-        obj.draw((RR - L2) * cos(s), (RR - L2) * sin(s), 0, 0.5)
-        obj.draw((RR + L2) * cos(s), (RR + L2) * sin(s), 0, 0.5)
+make_circle(circle_color_1_value, inner_circle_dot_size, inner_circle_count, inner_circle_phase, base_size / 4)
+make_circle(circle_color_1_value, middle_circle_dot_size, middle_circle_count, inner_circle_phase, base_size / 2 * 0.95)
+make_circle(circle_color_2_value, outer_circle_dot_size, outer_circle_count, outer_circle_phase, base_size / 2)
+local make_wave = function(color, band_index, radius)
+    local nn1 = floor((band_index - 1) * audio_sample_count / 3 + 1) -- N>2
+    local nn2 = floor(band_index * audio_sample_count / 3)
+    local dd = (band_index - 1) / 3
+    local dt = (band_index - 1) * split_count + 1
+    obj.load("figure", "円", color, wave_dot_size * 2)
+    for i = 0, split_count - 1 do
+        local l2 = wave_samples[i + dt] / 2
+        local s = ((i + dd) / split_count * 2 + wave_phase) * pi
+        obj.draw((radius - l2) * cos(s), (radius - l2) * sin(s), 0, 0.5)
+        obj.draw((radius + l2) * cos(s), (radius + l2) * sin(s), 0, 0.5)
     end
-    for i = 0, SpN - 1 do
-        local L = Mus[i + dt]
-        local s = ((i + DD) / SpN * 2 + V3) * mpi
-        local d = (i + DD) / SpN * 360 + 90 + V3 * 180
-        obj.load("figure", "四角形", col, 1)
-        obj.effect("リサイズ", "ドット数でサイズ指定", 1, "X", S5, "Y", L)
-        obj.draw(RR * cos(s), RR * sin(s), 0, 1, 1, 0, 0, d)
+    for i = 0, split_count - 1 do
+        local l = wave_samples[i + dt]
+        local s = ((i + dd) / split_count * 2 + wave_phase) * pi
+        local d = (i + dd) / split_count * 360 + 90 + wave_phase * 180
+        obj.load("figure", "四角形", color, 1)
+        obj.effect("リサイズ", "ドット数でサイズ指定", 1, "X", wave_bar_width, "Y", l)
+        obj.draw(radius * cos(s), radius * sin(s), 0, 1, 1, 0, 0, d)
     end
 end
-MakeWave(col1, 1, Siz * 5 / 16)
-MakeWave(col2, 2, Siz * 6 / 16)
-MakeWave(col3, 3, Siz * 7 / 16)
-if Bap and Wal > 0 then
-    obj.copybuffer("obj", "cache:wave")
-    obj.draw(0, 0, 0, 1, Wal)
+make_wave(wave_color_1_value, 1, base_size * 5 / 16)
+make_wave(wave_color_2_value, 2, base_size * 6 / 16)
+make_wave(wave_color_3_value, 3, base_size * 7 / 16)
+if use_original_background and wave_opacity > 0 then
+    obj.copybuffer("object", "cache:wave")
+    obj.draw(0, 0, 0, 1, wave_opacity)
 end
-if aoi[1] == "蒼井" then
-    local Lw = aoi[3] or Siz / 10
-    local sf = { aoi[2] or "", Lw, aoi[4] or 3, aoi[5] or 0xffffff, aoi[6] or 0x0 }
+if params[1] == "蒼井" then
+    local lw = params[3] or base_size / 10
+    local sf = { params[2] or "", lw, params[4] or 3, params[5] or 0xffffff, params[6] or 0x0 }
     local txt1 = "前は・・・だれもまもれなかった・・・"
     local txt2 = "こんどはまもれましたか・・・？"
     local t = 3 * floor(6 * (obj.time - 2))
@@ -267,12 +270,12 @@ if aoi[1] == "蒼井" then
         obj.setfont(unpack(sf))
         obj.load("text", txt1)
         w = obj.getpixel()
-        obj.draw(-w0 / 2 + w / 2, -Lw / 2 * 1.2)
+        obj.draw(-w0 / 2 + w / 2, -lw / 2 * 1.2)
         if txt2 ~= "" then
             obj.setfont(unpack(sf))
             obj.load("text", txt2)
             w = obj.getpixel()
-            obj.draw(-w0 / 2 + w / 2, Lw / 2 * 1.2)
+            obj.draw(-w0 / 2 + w / 2, lw / 2 * 1.2)
         end
     end
 end

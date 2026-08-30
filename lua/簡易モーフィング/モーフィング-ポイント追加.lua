@@ -6,20 +6,20 @@
 local track_point_count = 1
 
 ---$value:座標
-local pos = { 0, 0 }
+local point_positions = { 0, 0 }
 
-local AN = track_point_count
-obj.setanchor("pos", AN)
+local anchor_count = track_point_count
+obj.setanchor("point_positions", anchor_count)
 
-local MP = Morphing_obj[Morphing_PC].pos
-local Np = #MP
-for i = 1, AN do
-    MP[Np + i] = {}
-    MP[Np + i].x = pos[2 * i - 1]
-    MP[Np + i].y = pos[2 * i]
+local morph_points = T_MORPHING_OBJECTS[T_MORPHING_POINT_COUNT].pos
+local existing_point_count = #morph_points
+for i = 1, anchor_count do
+    morph_points[existing_point_count + i] = {}
+    morph_points[existing_point_count + i].x = point_positions[2 * i - 1]
+    morph_points[existing_point_count + i].y = point_positions[2 * i]
 end
 
 if obj.getoption("script_name", 1, true) ~= "モーフィング-ポイント追加@モーフィング@tim.anm2" then
-    Morphing_drawANC()
-    Morphing_drawANC = nil
+    T_MORPHING_DRAW_ANCHOR()
+    T_MORPHING_DRAW_ANCHOR = nil
 end

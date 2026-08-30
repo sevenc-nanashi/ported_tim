@@ -19,45 +19,45 @@ local track_v = 5
 local track_gamma = 100
 
 ---$check:参考表示
-local check0 = false
+local check_show_reference = false
 
 ---$check:極座標指定
-local POL = 0
+local check_use_polar_coordinates = 0
 
-local UU = track_u * 0.01
-local VV = track_v * 0.01
-local GM = track_gamma * 0.01
-local POL2 = POL or 0
-if POL2 == 1 then
-    VV = math.pi * track_v / 360
-    UU, VV = UU * math.cos(VV), UU * math.sin(VV)
+local u_offset = track_u * 0.01
+local v_offset = track_v * 0.01
+local gamma = track_gamma * 0.01
+local polar_coordinate_mode = check_use_polar_coordinates or 0
+if polar_coordinate_mode == 1 then
+    v_offset = math.pi * track_v / 360
+    u_offset, v_offset = u_offset * math.cos(v_offset), u_offset * math.sin(v_offset)
 end
 
 --[[pixelshader@monochromatic2
 ---$include "./shaders/monochromatic2.hlsl"
 ]]
 
-if check0 then
+if check_show_reference then
     obj.effect("リサイズ", "拡大率", 100 / 3)
     obj.copybuffer("cache:ORI", "object")
-    local w, h = obj.getpixel()
-    obj.setoption("drawtarget", "tempbuffer", 3 * w, 3 * h)
+    local width, height = obj.getpixel()
+    obj.setoption("drawtarget", "tempbuffer", 3 * width, 3 * height)
     for i = -1, 1 do
         for j = -1, 1 do
             obj.copybuffer("object", "cache:ORI")
             obj.pixelshader("monochromatic2", "object", "object", {
-                UU + i * 0.1,
-                VV + j * 0.1,
-                GM,
+                u_offset + i * 0.1,
+                v_offset + j * 0.1,
+                gamma,
             })
-            obj.draw(w * i, -h * j, 0)
+            obj.draw(width * i, -height * j, 0)
         end
     end
     obj.load("tempbuffer")
 else
     obj.pixelshader("monochromatic2", "object", "object", {
-        UU,
-        VV,
-        GM,
+        u_offset,
+        v_offset,
+        gamma,
     })
 end

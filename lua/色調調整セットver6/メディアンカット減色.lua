@@ -4,87 +4,106 @@
 ---min=0
 ---max=500
 ---step=1
-local track_mc_color_count = 16
+local track_median_cut_color_count = 16
 
 ---$track:CL色数
 ---min=0
 ---max=500
 ---step=1
-local track_cl_color_count = 0
+local track_cluster_color_count = 0
 
 ---$color:指定色1
-local col1 = nil
+local specified_color_1 = nil
 
 ---$color:指定色2
-local col2 = nil
+local specified_color_2 = nil
 
 ---$color:指定色3
-local col3 = nil
+local specified_color_3 = nil
 
 ---$color:指定色4
-local col4 = nil
+local specified_color_4 = nil
 
 ---$color:指定色5
-local col5 = nil
+local specified_color_5 = nil
 
 ---$color:指定色6
-local col6 = nil
+local specified_color_6 = nil
 
 ---$color:指定色7
-local col7 = nil
+local specified_color_7 = nil
 
 ---$color:指定色8
-local col8 = nil
+local specified_color_8 = nil
 
 ---$color:指定色9
-local col9 = nil
+local specified_color_9 = nil
 
 ---$color:指定色10
-local col10 = nil
+local specified_color_10 = nil
 
 ---$check:色表示
-local Cap = false
+local check_show_colors = false
 
 ---$check:指定色を有効にする
-local check0 = false
+local check_enable_specified_colors = false
 
---hide@col1:check0==0
---hide@col2:check0==0
---hide@col3:check0==0
---hide@col4:check0==0
---hide@col5:check0==0
---hide@col6:check0==0
---hide@col7:check0==0
---hide@col8:check0==0
---hide@col9:check0==0
---hide@col10:check0==0
+--hide@specified_color_1:check_enable_specified_colors==0
+--hide@specified_color_2:check_enable_specified_colors==0
+--hide@specified_color_3:check_enable_specified_colors==0
+--hide@specified_color_4:check_enable_specified_colors==0
+--hide@specified_color_5:check_enable_specified_colors==0
+--hide@specified_color_6:check_enable_specified_colors==0
+--hide@specified_color_7:check_enable_specified_colors==0
+--hide@specified_color_8:check_enable_specified_colors==0
+--hide@specified_color_9:check_enable_specified_colors==0
+--hide@specified_color_10:check_enable_specified_colors==0
 
 -- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-if ClusterReductionIdxC_T then
-    -- T_Color_Module.DispReduction(userdata, w, h, ClusterReductionIdxC_T.N, ClusterReductionIdxC_T.T)
+local color_module = obj.module("tim2")
+local pixel_data, width, height = obj.getpixeldata("object", "bgra")
+if T_CLUSTER_REDUCTION_PALETTE then
+    -- color_module.DispReduction(pixel_data, width, height, T_CLUSTER_REDUCTION_PALETTE.count, T_CLUSTER_REDUCTION_PALETTE.colors)
     local colors = {}
-    for i = 1, ClusterReductionIdxC_T.N do
-        colors[i] = ClusterReductionIdxC_T.T[i]
+    for i = 1, T_CLUSTER_REDUCTION_PALETTE.count do
+        colors[i] = T_CLUSTER_REDUCTION_PALETTE.colors[i]
     end
-    T_Color_Module.color_disp_reduction(userdata, w, h, colors)
-    ClusterReductionIdxC_T = nil
+    color_module.color_disp_reduction(pixel_data, width, height, colors)
+    T_CLUSTER_REDUCTION_PALETTE = nil
 else
-    local mN = track_mc_color_count
-    local cN = track_cl_color_count
-    local col = {}
-    local colN = 0
-    if check0 then
-        local cc = { col1, col2, col3, col4, col5, col6, col7, col8, col9, col10 }
+    local median_cut_color_count = track_median_cut_color_count
+    local cluster_color_count = track_cluster_color_count
+    local specified_colors = {}
+    local specified_color_count = 0
+    if check_enable_specified_colors then
+        local color_candidates = {
+            specified_color_1,
+            specified_color_2,
+            specified_color_3,
+            specified_color_4,
+            specified_color_5,
+            specified_color_6,
+            specified_color_7,
+            specified_color_8,
+            specified_color_9,
+            specified_color_10,
+        }
         for i = 1, 10 do
-            if cc[i] ~= nil and cc[i] ~= "" then
-                colN = colN + 1
-                col[colN] = cc[i]
+            if color_candidates[i] ~= nil and color_candidates[i] ~= "" then
+                specified_color_count = specified_color_count + 1
+                specified_colors[specified_color_count] = color_candidates[i]
             end
         end
     end
-    -- T_Color_Module.MCutReduction(userdata, w, h, mN, cN, Cap, colN, col)
-    T_Color_Module.color_mcut_reduction(userdata, w, h, mN, cN, Cap, col)
+    -- color_module.MCutReduction(pixel_data, width, height, median_cut_color_count, cluster_color_count, check_show_colors, specified_colors)
+    color_module.color_mcut_reduction(
+        pixel_data,
+        width,
+        height,
+        median_cut_color_count,
+        cluster_color_count,
+        check_show_colors,
+        specified_colors
+    )
 end
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.putpixeldata("object", pixel_data, width, height, "bgra")

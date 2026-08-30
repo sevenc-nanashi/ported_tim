@@ -24,16 +24,16 @@ local track_threshold = 128
 local track_offset = 0
 
 ---$color:ライン色
-local col2 = 0xffffff
+local line_color = 0xffffff
 
-Out_morph_T = Out_morph_T or {}
-Out_morph_T.Lw = track_width
-Out_morph_T.Deg = track_rotation
-Out_morph_T.T = track_threshold
-Out_morph_T.SF = track_offset
-Out_morph_T.col2 = col2
+T_OUTLINE_MORPHING_RESULT = T_OUTLINE_MORPHING_RESULT or {}
+T_OUTLINE_MORPHING_RESULT.line_width = track_width
+T_OUTLINE_MORPHING_RESULT.rotation_degrees = track_rotation
+T_OUTLINE_MORPHING_RESULT.threshold = track_threshold
+T_OUTLINE_MORPHING_RESULT.point_offset = track_offset
+T_OUTLINE_MORPHING_RESULT.line_color = line_color
 if obj.getoption("script_name", 1, true) ~= "モーフィング(輪郭)-表示@モーフィング@tim.anm2" then
-    Outlinemorphing_T(Out_morph_T)
-    Outlinemorphing_T = nil
-    Out_morph_T = nil
+    T_OUTLINE_MORPHING_OPTIONS(T_OUTLINE_MORPHING_RESULT)
+    T_OUTLINE_MORPHING_OPTIONS = nil
+    T_OUTLINE_MORPHING_RESULT = nil
 end

@@ -27,61 +27,70 @@ local track_glass_intensity = 100
 ---min=1
 ---max=1000
 ---step=1
-local GIL = 1
+local glass_image_file = 1
 
 ---$check:境界を透過
-local Edg = 0
+local check_transparent_boundary = 0
 
 ---$color:マップ背景色
-local Bcol = 0x0
+local map_background_color = 0x0
 
 ---$track:パターン
 ---min=0
 ---max=10000
 ---step=1
-local PT = 0
+local select_pattern = 0
 
 ---$check:マップ表示
-local check0 = false
+local check_show_map = false
 
---hide@track_offset:check0==1
---hide@track_glass_intensity:check0==1
---hide@Edg:check0==1
+--hide@track_offset:check_show_map==1
+--hide@track_glass_intensity:check_show_map==1
+--hide@check_transparent_boundary:check_show_map==1
 
-local Sh = track_threshold
-local bkb = track_blur
-PT = math.abs(PT or 0)
+local threshold = track_threshold
+local blur_amount = track_blur
+select_pattern = math.abs(select_pattern or 0)
 -- require("T_CrackedGlass_Module")
-local T_CrackedGlass_Module = obj.module("tim2")
-local Pr = { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
-local w, h = obj.getpixel()
-obj.effect("ぼかし", "範囲", bkb, "サイズ固定", 1)
+local t_cracked_glass_module = obj.module("tim2")
+local original_transform =
+    { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
+local image_width, image_height = obj.getpixel()
+obj.effect("ぼかし", "範囲", blur_amount, "サイズ固定", 1)
 obj.copybuffer("cache:CG_ORG", "object")
-obj.load("layer", GIL or 1, true)
-local wg, hg = obj.getpixel()
-local Zm
-if w * hg < h * wg then
-    Zm = h / hg
+obj.load("layer", glass_image_file or 1, true)
+local glass_width, glass_height = obj.getpixel()
+local glass_scale
+if image_width * glass_height < image_height * glass_width then
+    glass_scale = image_height / glass_height
 else
-    Zm = w / wg
+    glass_scale = image_width / glass_width
 end
-obj.setoption("drawtarget", "tempbuffer", w, h)
-obj.draw(0, 0, 0, Zm)
+obj.setoption("drawtarget", "tempbuffer", image_width, image_height)
+obj.draw(0, 0, 0, glass_scale)
 obj.copybuffer("object", "tempbuffer")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_CrackedGlass_Module.cracked_glass_cracked_glass(userdata, w, h, Sh, PT, check0, Bcol or 0)
-obj.putpixeldata("object", userdata, w, h, "bgra")
-if not check0 then
+local userdata, image_width, image_height = obj.getpixeldata("object", "bgra")
+t_cracked_glass_module.cracked_glass_cracked_glass(
+    userdata,
+    image_width,
+    image_height,
+    threshold,
+    select_pattern,
+    check_show_map,
+    map_background_color or 0
+)
+obj.putpixeldata("object", userdata, image_width, image_height, "bgra")
+if not check_show_map then
     obj.copybuffer("tempbuffer", "object")
     obj.copybuffer("object", "cache:CG_ORG")
-    local T = track_offset
-    local CS = track_glass_intensity
+    local displacement_amount = track_offset
+    local glass_intensity = track_glass_intensity
     obj.effect(
         "ディスプレイスメントマップ",
         "変形X",
-        T,
+        displacement_amount,
         "変形Y",
-        T,
+        displacement_amount,
         "ぼかし",
         0,
         "元のサイズに合わせる",
@@ -91,8 +100,16 @@ if not check0 then
         "マップの種類",
         "*tempbuffer"
     )
-    userdata, w, h = obj.getpixeldata("object", "bgra")
-    T_CrackedGlass_Module.cracked_glass_add_glass(userdata, w, h, CS, Edg, Sh)
-    obj.putpixeldata("object", userdata, w, h, "bgra")
+    userdata, image_width, image_height = obj.getpixeldata("object", "bgra")
+    t_cracked_glass_module.cracked_glass_add_glass(
+        userdata,
+        image_width,
+        image_height,
+        glass_intensity,
+        check_transparent_boundary,
+        threshold
+    )
+    obj.putpixeldata("object", userdata, image_width, image_height, "bgra")
 end
-obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect = unpack(Pr)
+obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect =
+    unpack(original_transform)

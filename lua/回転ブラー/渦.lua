@@ -40,18 +40,19 @@ local center_x = track_center_x
 local center_y = track_center_y
 local swirl_amount = track_swirl_amount
 local change_mode = select_change_mode
-local w, h = obj.getpixel()
-local r = math.sqrt(w * w + h * h)
+local image_width, image_height = obj.getpixel()
+local image_diagonal = math.sqrt(image_width * image_width + image_height * image_height)
 if not is_enabled(check_keep_size) then
-    local addX, addY = math.ceil((r - w) / 2 + 1), math.ceil((r - h) / 2 + 1)
-    obj.effect("領域拡張", "上", addY, "下", addY, "右", addX, "左", addX)
+    local add_x, add_y =
+        math.ceil((image_diagonal - image_width) / 2 + 1), math.ceil((image_diagonal - image_height) / 2 + 1)
+    obj.effect("領域拡張", "上", add_y, "下", add_y, "右", add_x, "左", add_x)
 end
 
-w, h = obj.getpixel()
-if w > 0 and h > 0 then
+image_width, image_height = obj.getpixel()
+if image_width > 0 and image_height > 0 then
     obj.pixelshader("whirlpool", "object", "object", {
         swirl_amount,
-        r / 2,
+        image_diagonal / 2,
         center_x,
         center_y,
         change_mode,

@@ -15,7 +15,7 @@ local track_boundary_blur = 2
 ---min=0
 ---max=254
 ---step=1
-local alpha_base = 128
+local track_alpha_base = 128
 
 ---$track:合成量
 ---min=-100
@@ -28,17 +28,17 @@ local track_blend_amount = 100
 -- local high_precision = false
 
 ---$color:色1
-local color1 = 0xffffff
+local outline_color_parameter = 0xffffff
 
 ---$color:色2
-local color2 = 0x0
+local fill_color_parameter = 0x0
 
 ---$check:距離グラデ
-local gradient = true
+local check_distance_gradient = true
 
 --group:錯覚補正,false
 ---$check:錯覚補正を有効化
-local enable_adjust = false
+local check_enable_adjustment = false
 
 ---$track:色ぼかし量%
 ---min=0
@@ -57,11 +57,11 @@ local adjust_alpha_blur = 25
 ---外側=0
 ---両方=1
 ---内側=2
-local mode = 0
+local select_mode = 0
 
---hide@color2:gradient==0
---hide@adjust_color_blur:enable_adjust==0
---hide@adjust_alpha_blur:enable_adjust==0
+--hide@fill_color_parameter:check_distance_gradient==0
+--hide@adjust_color_blur:check_enable_adjustment==0
+--hide@adjust_alpha_blur:check_enable_adjustment==0
 
 --[[pixelshader@distance_map:
 ---$include "./shaders/distance_map.hlsl"
@@ -82,17 +82,17 @@ local mode = 0
 local outline_size = track_size
 local boundary_blur = track_boundary_blur
 local blend_amount = track_blend_amount / 100
-local outline_color = color1 or 0xffffff
-local fill_color = color2 or 0x0
+local outline_color = outline_color_parameter or 0xffffff
+local fill_color = fill_color_parameter or 0x0
 local expanded_size = -math.floor(-outline_size)
 adjust_color_blur = outline_size * (adjust_color_blur or 0) / 100
 adjust_alpha_blur = boundary_blur * (adjust_alpha_blur or 0) / 100
-mode = mode or 0
+select_mode = select_mode or 0
 
-obj.copybuffer("cache:Org", "obj")
-if mode == 0 then
+obj.copybuffer("cache:Org", "object")
+if select_mode == 0 then
     obj.effect("領域拡張", "上", expanded_size, "下", expanded_size, "右", expanded_size, "左", expanded_size)
-elseif mode == 1 then
+elseif select_mode == 1 then
     obj.effect("領域拡張", "上", expanded_size, "下", expanded_size, "右", expanded_size, "左", expanded_size)
     obj.effect("エッジ抽出", "透明度エッジを抽出", 1, "輝度エッジを抽出", 0)
 else
@@ -103,7 +103,7 @@ end
 local width, height = obj.getpixel()
 local color1_r, color1_g, color1_b = RGB(outline_color)
 local color2_r, color2_g, color2_b = RGB(fill_color)
-if not gradient then
+if not check_distance_gradient then
     color2_r, color2_g, color2_b = color1_r, color1_g, color1_b
 end
 
@@ -113,7 +113,7 @@ if use_gpu then
     obj.pixelshader("distance_map", "cache:distance_map", "object", {
         width,
         height,
-        alpha_base / 255,
+        track_alpha_base / 255,
         boundary_blur,
         outline_size,
     })
@@ -126,7 +126,7 @@ else
         dest_pixel_data,
         w,
         h,
-        alpha_base,
+        track_alpha_base,
         boundary_blur,
         outline_size
     )
@@ -152,13 +152,13 @@ obj.pixelshader("map_color_with_alpha", "cache:premult_alpha", "cache:distance_m
     color2_b / 255,
 })
 -- if high_precision then
---     tim2.framing_framing_hi(pixel_data, width, height, outline_size, boundary_blur, alpha_base, outline_color, fill_color, gradient)
+--     tim2.framing_framing_hi(pixel_data, width, height, outline_size, boundary_blur, track_alpha_base, outline_color, fill_color, check_distance_gradient)
 -- else
---     tim2.framing_framing(pixel_data, width, height, outline_size, boundary_blur, alpha_base, outline_color, fill_color, gradient)
+--     tim2.framing_framing(pixel_data, width, height, outline_size, boundary_blur, track_alpha_base, outline_color, fill_color, check_distance_gradient)
 -- end
 -- obj.putpixeldata("object", pixel_data, width, height, "bgra")
 
-if enable_adjust then
+if check_enable_adjustment then
     if adjust_color_blur > 0 then
         -- local pixel_data, width, height = obj.getpixeldata("object", "bgra")
         -- tim2.framing_re_alpha(pixel_data, width, height)
@@ -188,7 +188,7 @@ else
 end
 
 obj.setoption("drawtarget", "tempbuffer", width, height)
-if mode == 0 then
+if select_mode == 0 then
     if blend_amount ~= 0 then
         obj.copybuffer("tempbuffer", "object")
         obj.copybuffer("object", "cache:Org")
@@ -199,29 +199,29 @@ if mode == 0 then
         obj.draw(0, 0, 0, 1, blend_amount)
         obj.copybuffer("object", "tempbuffer")
     end
-elseif mode == 1 then
+elseif select_mode == 1 then
     if blend_amount > 0 then
-        obj.copybuffer("cache:Frm", "obj")
-        obj.copybuffer("obj", "cache:Org")
+        obj.copybuffer("cache:Frm", "object")
+        obj.copybuffer("object", "cache:Org")
         obj.draw(0, 0, 0, 1, blend_amount)
-        obj.copybuffer("obj", "cache:Frm")
+        obj.copybuffer("object", "cache:Frm")
         obj.draw()
-        obj.copybuffer("obj", "tmp")
+        obj.copybuffer("object", "tempbuffer")
     end
 else
     if blend_amount < 1 then
-        obj.copybuffer("cache:Frm", "obj")
-        obj.copybuffer("obj", "cache:Org")
+        obj.copybuffer("cache:Frm", "object")
+        obj.copybuffer("object", "cache:Org")
         obj.draw(0, 0, 0, 1, blend_amount)
-        obj.copybuffer("obj", "cache:Frm")
+        obj.copybuffer("object", "cache:Frm")
     else
-        obj.copybuffer("tmp", "cache:Org")
+        obj.copybuffer("tempbuffer", "cache:Org")
     end
     obj.draw()
-    obj.copybuffer("obj", "cache:Org")
+    obj.copybuffer("object", "cache:Org")
     obj.effect("反転", "透明度反転", 1)
     obj.setoption("blend", "alpha_sub")
     obj.draw()
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
 end
 obj.setoption("blend", 0)

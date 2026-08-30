@@ -1,4 +1,5 @@
 --label:${ROOT_CATEGORY}\装飾
+local seed_interval_index
 ---$track:サイズ
 ---min=0
 ---max=3000
@@ -33,7 +34,7 @@ local param_figure = "円"
 ---min=-100
 ---max=500
 ---step=0.1
-local param_extension_pct = 10
+local param_extension_percent = 10
 
 ---$track:縦横比
 ---min=-100
@@ -91,145 +92,203 @@ local param_seed_change_interval = 0
 local param_override = {}
 
 ---$check:単一線
-local check0 = false
+local check_single_line = false
 
---hide@param_aspect_ratio:check0==1
+--hide@param_aspect_ratio:check_single_line==1
 
 param_override = param_override or {}
-local FgS = math.floor(param_override[1] or track_size)
-local LnW = math.floor(param_override[2] or track_line_width)
-local LnA = (param_override[3] or track_fluctuation_amount)
-local LnL = math.floor(param_override[4] or track_fluctuation_length)
-local Col = param_line_color or 0xffffff
-local Fig = param_figure or "円"
-local SmL = (param_extension_pct or 0) / 100
-local Asp = (param_aspect_ratio or 0) / 100
-local DoS = math.floor(param_dot_spacing or 1)
-local drz = param_additional_angle or 0
-local AuA = param_auto_direction == 1
-local Sn = math.floor(param_subdivision_precision or 10)
-local Ju = math.floor(param_overdraw_count or 1)
-local JA = param_auto_adjust_overdraw == 1
-local SeD = param_seed or 0
-local ChI = param_seed_change_interval or 0
-local SL = param_override[0] == nil and check0 or param_override[0]
-if DoS == 0 then
-    DoS = math.floor(2 * math.sqrt(0.2 * (2 * LnW - 0.2)))
+local frame_size = math.floor(param_override[1] or track_size)
+local line_width = math.floor(param_override[2] or track_line_width)
+local fluctuation_amount = (param_override[3] or track_fluctuation_amount)
+local fluctuation_length = math.floor(param_override[4] or track_fluctuation_length)
+local line_color = param_line_color or 0xffffff
+local figure = param_figure or "円"
+local extension_ratio = (param_extension_percent or 0) / 100
+local aspect_ratio = (param_aspect_ratio or 0) / 100
+local dot_spacing = math.floor(param_dot_spacing or 1)
+local additional_angle = param_additional_angle or 0
+local auto_direction = param_auto_direction == 1
+local subdivision_count = math.floor(param_subdivision_precision or 10)
+local overdraw_count = math.floor(param_overdraw_count or 1)
+local auto_adjust_overdraw = param_auto_adjust_overdraw == 1
+local random_seeds = param_seed or 0
+local seed_change_interval = param_seed_change_interval or 0
+local single_line = param_override[0] == nil and check_single_line or param_override[0]
+if dot_spacing == 0 then
+    dot_spacing = math.floor(2 * math.sqrt(0.2 * (2 * line_width - 0.2)))
 end --円と円の交わりによる窪みが0.2ピクセル以下
-DoS = math.max(DoS, 1)
-Sn = math.max(Sn, 1)
-if JA and LnW < 4 then
-    Ju = ({ 5, 3, 2 })[LnW]
+dot_spacing = math.max(dot_spacing, 1)
+subdivision_count = math.max(subdivision_count, 1)
+if auto_adjust_overdraw and line_width < 4 then
+    overdraw_count = ({ 5, 3, 2 })[line_width]
 end
-Asp = math.max(Asp, -1)
-Asp = math.min(Asp, 1)
-if string.find(tostring(SeD), "table:") then
-    local ss = SeD[1] or 0
-    SeD[1] = math.abs(math.floor(ss)) + 2
+aspect_ratio = math.max(aspect_ratio, -1)
+aspect_ratio = math.min(aspect_ratio, 1)
+if string.find(tostring(random_seeds), "table:") then
+    local base_seed = random_seeds[1] or 0
+    random_seeds[1] = math.abs(math.floor(base_seed)) + 2
     for i = 2, 4 do
-        SeD[i] = math.abs(math.floor(SeD[i] or ss)) + 2
+        random_seeds[i] = math.abs(math.floor(random_seeds[i] or base_seed)) + 2
     end
 else
-    SeD = math.abs(math.floor(SeD or 0)) + 2
-    SeD = { SeD, SeD, SeD, SeD }
+    random_seeds = math.abs(math.floor(random_seeds or 0)) + 2
+    random_seeds = { random_seeds, random_seeds, random_seeds, random_seeds }
 end
-if ChI > 0 then
-    iS = math.floor(obj.time * obj.framerate / ChI)
+if seed_change_interval > 0 then
+    seed_interval_index = math.floor(obj.time * obj.framerate / seed_change_interval)
     for i = 1, 4 do
-        SeD[i] = SeD[i] + iS
+        random_seeds[i] = random_seeds[i] + seed_interval_index
     end
 end
-obj.load("figure", Fig, Col, LnW * 2)
+obj.load("figure", figure, line_color, line_width * 2)
 obj.effect("リサイズ", "拡大率", 50 * obj.zoom)
 obj.zoom = 1
-local Pset = function(X0, Y0, sgn, Cx, Cy, NN, LL, XX, YY, Rot, Sdn)
-    local ds = DoS
-    local x0, y0 = X0, Y0
-    local x1, y1 = XX[sgn], YY[sgn]
-    local rz0 = 90 * (4 - sgn - 2 * math.abs(Sdn - 2.5)) --({0,180,180,0})[Sdn]
-    for i = 1, NN do
-        local x2, y2 = XX[sgn * (i + 1)], YY[sgn * (i + 1)]
-        local Lng = math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0))
-        local rz = drz
-        if AuA then
-            rz = rz + math.atan2(y2 - y0, x2 - x0) / math.pi * 180 + rz0
+local draw_points_along_curve = function(
+    x0_value,
+    y0_value,
+    direction_sign,
+    center_x,
+    center_y,
+    sampled_point_count,
+    side_length,
+    sampled_x,
+    sampled_y,
+    swap_axes,
+    side_index
+)
+    local next_draw_distance = dot_spacing
+    local x0, y0 = x0_value, y0_value
+    local x1, y1 = sampled_x[direction_sign], sampled_y[direction_sign]
+    local rz0 = 90 * (4 - direction_sign - 2 * math.abs(side_index - 2.5)) --({0,180,180,0})[Sdn]
+    for i = 1, sampled_point_count do
+        local x2, y2 = sampled_x[direction_sign * (i + 1)], sampled_y[direction_sign * (i + 1)]
+        local segment_length = math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0))
+        local rotation_degrees = additional_angle
+        if auto_direction then
+            rotation_degrees = rotation_degrees + math.atan2(y2 - y0, x2 - x0) / math.pi * 180 + rz0
         end
-        while Lng > ds do
-            local s = ds / Lng
-            local X, Y = (1 - s) * x0 + s * x1, (1 - s) * y0 + s * y1
-            if 2 * sgn * ((1 - Rot) * X + Rot * Y) > LL then
+        while segment_length > next_draw_distance do
+            local segment_ratio = next_draw_distance / segment_length
+            local x, y = (1 - segment_ratio) * x0 + segment_ratio * x1, (1 - segment_ratio) * y0 + segment_ratio * y1
+            if 2 * direction_sign * ((1 - swap_axes) * x + swap_axes * y) > side_length then
                 return
             end
-            obj.draw(X + Cx, Y + Cy, 0, 1, 1, 0, 0, rz)
-            ds = ds + DoS
+            obj.draw(x + center_x, y + center_y, 0, 1, 1, 0, 0, rotation_degrees)
+            next_draw_distance = next_draw_distance + dot_spacing
         end
-        ds = ds - Lng
+        next_draw_distance = next_draw_distance - segment_length
         x0, y0, x1, y1 = x1, y1, x2, y2
     end
 end
-local Lset = function(LL, Cx, Cy, Sdn, Rot)
-    local Ns = math.ceil(LL / LnL / 2) + 3
-    local Ps = {}
-    local RND = 4 * SeD[Sdn] + Sdn
-    Ps[0] = LnA * obj.rand(-500, 500, -2, RND) / 1000
-    for i = 1, Ns do
-        Ps[i] = LnA * obj.rand(-500, 500, -(2 * i + 2), RND) / 1000
-        Ps[-i] = LnA * obj.rand(-500, 500, -(2 * i + 1), RND) / 1000
+local draw_side = function(side_length, center_x, center_y, side_index, swap_axes)
+    local sample_extent_count = math.ceil(side_length / fluctuation_length / 2) + 3
+    local random_offsets = {}
+    local random_seed = 4 * random_seeds[side_index] + side_index
+    random_offsets[0] = fluctuation_amount * obj.rand(-500, 500, -2, random_seed) / 1000
+    for i = 1, sample_extent_count do
+        random_offsets[i] = fluctuation_amount * obj.rand(-500, 500, -(2 * i + 2), random_seed) / 1000
+        random_offsets[-i] = fluctuation_amount * obj.rand(-500, 500, -(2 * i + 1), random_seed) / 1000
     end
-    local XX = {}
-    local YY = {}
-    local NN = -1
-    local x0, y0, z0, x1, y1, z1, x2, y2, z2 = -LnL, Ps[-1], Ps[1], 0, Ps[0], Ps[0], LnL, Ps[1], Ps[-1]
-    for i = 0, Ns - 2 do
-        local x3, y3, z3 = LnL * (i + 2), Ps[i + 2], Ps[-i - 2]
-        for j = 0, Sn - 1 do
-            local t = j / Sn
-            NN = NN + 1
-            XX[NN], YY[NN] = obj.interpolation(t, x0, y0, x1, y1, x2, y2, x3, y3)
-            XX[-NN], YY[-NN] = obj.interpolation(t, -x0, z0, -x1, z1, -x2, z2, -x3, z3)
+    local sampled_x = {}
+    local sampled_y = {}
+    local sampled_point_count = -1
+    local x0, y0, z0, x1, y1, z1, x2, y2, z2 =
+        -fluctuation_length,
+        random_offsets[-1],
+        random_offsets[1],
+        0,
+        random_offsets[0],
+        random_offsets[0],
+        fluctuation_length,
+        random_offsets[1],
+        random_offsets[-1]
+    for i = 0, sample_extent_count - 2 do
+        local x3, y3, z3 = fluctuation_length * (i + 2), random_offsets[i + 2], random_offsets[-i - 2]
+        for j = 0, subdivision_count - 1 do
+            local t = j / subdivision_count
+            sampled_point_count = sampled_point_count + 1
+            sampled_x[sampled_point_count], sampled_y[sampled_point_count] =
+                obj.interpolation(t, x0, y0, x1, y1, x2, y2, x3, y3)
+            sampled_x[-sampled_point_count], sampled_y[-sampled_point_count] =
+                obj.interpolation(t, -x0, z0, -x1, z1, -x2, z2, -x3, z3)
         end
         x0, y0, z0, x1, y1, z1, x2, y2, z2 = x1, y1, z1, x2, y2, z2, x3, y3, z3
     end
-    if Rot == 1 then
-        XX, YY = YY, XX
+    if swap_axes == 1 then
+        sampled_x, sampled_y = sampled_y, sampled_x
     end
-    local X0, Y0 = XX[0], YY[0]
-    local rz = drz
-    if AuA then
-        rz = rz + (math.atan2(YY[1] - YY[-1], XX[1] - XX[-1]) / math.pi + 1.5 - math.abs(Sdn - 2.5)) * 180
+    local x0_value, y0_value = sampled_x[0], sampled_y[0]
+    local rotation_degrees = additional_angle
+    if auto_direction then
+        rotation_degrees = rotation_degrees
+            + (
+                    math.atan2(sampled_y[1] - sampled_y[-1], sampled_x[1] - sampled_x[-1]) / math.pi
+                    + 1.5
+                    - math.abs(side_index - 2.5)
+                )
+                * 180
     end
-    obj.draw(X0 + Cx, Y0 + Cy, 0, 1, 1, 0, 0, rz)
-    Pset(X0, Y0, 1, Cx, Cy, NN, LL, XX, YY, Rot, Sdn)
-    Pset(X0, Y0, -1, Cx, Cy, NN, LL, XX, YY, Rot, Sdn)
+    obj.draw(x0_value + center_x, y0_value + center_y, 0, 1, 1, 0, 0, rotation_degrees)
+    draw_points_along_curve(
+        x0_value,
+        y0_value,
+        1,
+        center_x,
+        center_y,
+        sampled_point_count,
+        side_length,
+        sampled_x,
+        sampled_y,
+        swap_axes,
+        side_index
+    )
+    draw_points_along_curve(
+        x0_value,
+        y0_value,
+        -1,
+        center_x,
+        center_y,
+        sampled_point_count,
+        side_length,
+        sampled_x,
+        sampled_y,
+        swap_axes,
+        side_index
+    )
 end
-local LL1, LL2 = FgS, FgS
-local dL = FgS * 2 * SmL
-local idL = math.max(dL, 0)
-local WS, HS
-if SL then
-    HS = LnW + 10
-    WS = HS + FgS + idL
-    HS = HS + math.abs(LnA)
+local frame_width, frame_height = frame_size, frame_size
+local extension_length = frame_size * 2 * extension_ratio
+local positive_extension_length = math.max(extension_length, 0)
+local output_width, output_height
+if single_line then
+    output_height = line_width + 10
+    output_width = output_height + frame_size + positive_extension_length
+    output_height = output_height + math.abs(fluctuation_amount)
 else
-    if Asp > 0 then
-        LL2 = LL2 * (1 - Asp)
+    if aspect_ratio > 0 then
+        frame_height = frame_height * (1 - aspect_ratio)
     else
-        LL1 = LL1 * (1 + Asp)
+        frame_width = frame_width * (1 + aspect_ratio)
     end
-    local LA2 = math.abs(LnA) + idL + LnW + 10
-    WS, HS = math.floor(LL1 + LA2), math.floor(LL2 + LA2)
+    local frame_margin = math.abs(fluctuation_amount) + positive_extension_length + line_width + 10
+    output_width, output_height = math.floor(frame_width + frame_margin), math.floor(frame_height + frame_margin)
 end
-obj.setoption("drawtarget", "tempbuffer", WS + (obj.screen_w - WS) % 2, HS + (obj.screen_h - HS) % 2)
-if SL then
-    Lset(LL1 + dL, 0, 0, 1, 0)
+obj.setoption(
+    "drawtarget",
+    "tempbuffer",
+    output_width + (obj.screen_w - output_width) % 2,
+    output_height + (obj.screen_h - output_height) % 2
+)
+if single_line then
+    draw_side(frame_width + extension_length, 0, 0, 1, 0)
 else
-    Lset(LL1 + dL, 0, -LL2 / 2, 1, 0) --上
-    Lset(LL1 + dL, 0, LL2 / 2, 2, 0) --下
-    Lset(LL2 + dL, -LL1 / 2, 0, 3, 1) --左
-    Lset(LL2 + dL, LL1 / 2, 0, 4, 1) --右
+    draw_side(frame_width + extension_length, 0, -frame_height / 2, 1, 0) --上
+    draw_side(frame_width + extension_length, 0, frame_height / 2, 2, 0) --下
+    draw_side(frame_height + extension_length, -frame_width / 2, 0, 3, 1) --左
+    draw_side(frame_height + extension_length, frame_width / 2, 0, 4, 1) --右
 end
-obj.copybuffer("obj", "tmp")
-for i = 2, Ju do
+obj.copybuffer("object", "tempbuffer")
+for i = 2, overdraw_count do
     obj.draw()
-    obj.copybuffer("obj", "tmp")
+    obj.copybuffer("object", "tempbuffer")
 end

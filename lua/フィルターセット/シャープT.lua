@@ -15,11 +15,11 @@ local track_radius = 1
 ---$select:処理方式
 ---アンシャープマスク=1
 ---シャープ=0
-local mode = 1
+local select_processing_method = 1
 
---hide@track_radius:mode~=1
+--hide@track_radius:select_processing_method~=1
 
-local St = track_strength * 0.01
+local strength_ratio = track_strength * 0.01
 
 --[[pixelshader@sharp
 ---$include "./shaders/sharp.hlsl"
@@ -28,12 +28,12 @@ local St = track_strength * 0.01
 ---$include "./shaders/unsharp_mask.hlsl"
 ]]
 
-if mode == 1 then
+if select_processing_method == 1 then
     obj.copybuffer("cache:unsharp_original", "object")
     obj.effect("ぼかし", "範囲", track_radius, "サイズ固定", 1)
-    obj.pixelshader("unsharp_mask", "object", { "cache:unsharp_original", "object" }, { St })
+    obj.pixelshader("unsharp_mask", "object", { "cache:unsharp_original", "object" }, { strength_ratio })
 else
     obj.effect("領域拡張", "塗りつぶし", 1, "上", 1, "下", 1, "左", 1, "右", 1)
-    obj.pixelshader("sharp", "object", "object", { St })
+    obj.pixelshader("sharp", "object", "object", { strength_ratio })
     obj.effect("クリッピング", "上", 1, "下", 1, "左", 1, "右", 1)
 end

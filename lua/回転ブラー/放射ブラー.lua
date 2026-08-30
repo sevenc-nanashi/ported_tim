@@ -40,7 +40,7 @@ local track_display_limit_scale = 3
 ---$include "./shaders/rad_blur.hlsl"
 ]]
 
-local log2 = math.log(2)
+local log_two = math.log(2)
 
 local is_enabled = function(value)
     return value == true or value == 1
@@ -50,7 +50,7 @@ local next_power_of_two = function(value)
     if value <= 0 or value ~= value or value == math.huge then
         return 1
     end
-    return math.floor(2 ^ math.ceil(math.log(value) / log2))
+    return math.floor(2 ^ math.ceil(math.log(value) / log_two))
 end
 
 obj.setanchor("track_center_x,track_center_y", 0, "line")
@@ -61,44 +61,45 @@ local base_position = 0.01 * track_base_position
 blur_amount = math.min(blur_amount, 200 / (1 + base_position) - 0.1)
 local expand_right, expand_left, expand_bottom, expand_top = 0, 0, 0, 0
 if not is_enabled(check_keep_size) then
-    local w0, h0 = obj.getpixel()
-    local w2, h2 = w0 / 2, h0 / 2
+    local source_width, source_height = obj.getpixel()
+    local half_width, half_height = source_width / 2, source_height / 2
     local display_limit_scale = math.max(0, (track_display_limit_scale - 1) / 2)
-    local iw, ih = w0 * display_limit_scale, h0 * display_limit_scale
+    local maximum_expand_x, maximum_expand_y = source_width * display_limit_scale, source_height * display_limit_scale
     local inner_scale = 1 / (1 - blur_amount * (1 + base_position) / 200)
     local outer_scale = 1 / (1 + blur_amount * (1 - base_position) / 200)
-    expand_right = ((w2 > center_x and inner_scale or outer_scale) - 1) * (w2 - center_x)
-    expand_left = ((-w2 < center_x and inner_scale or outer_scale) - 1) * (w2 + center_x)
-    expand_bottom = ((h2 > center_y and inner_scale or outer_scale) - 1) * (h2 - center_y)
-    expand_top = ((-h2 < center_y and inner_scale or outer_scale) - 1) * (h2 + center_y)
-    expand_right = (expand_right > iw) and iw or expand_right
-    expand_left = (expand_left > iw) and iw or expand_left
-    expand_bottom = (expand_bottom > ih) and ih or expand_bottom
-    expand_top = (expand_top > ih) and ih or expand_top
+    expand_right = ((half_width > center_x and inner_scale or outer_scale) - 1) * (half_width - center_x)
+    expand_left = ((-half_width < center_x and inner_scale or outer_scale) - 1) * (half_width + center_x)
+    expand_bottom = ((half_height > center_y and inner_scale or outer_scale) - 1) * (half_height - center_y)
+    expand_top = ((-half_height < center_y and inner_scale or outer_scale) - 1) * (half_height + center_y)
+    expand_right = (expand_right > maximum_expand_x) and maximum_expand_x or expand_right
+    expand_left = (expand_left > maximum_expand_x) and maximum_expand_x or expand_left
+    expand_bottom = (expand_bottom > maximum_expand_y) and maximum_expand_y or expand_bottom
+    expand_top = (expand_top > maximum_expand_y) and maximum_expand_y or expand_top
     expand_right, expand_bottom = math.ceil(math.max(expand_right, 1)), math.ceil(math.max(expand_bottom, 1))
     expand_left, expand_top = math.ceil(math.max(expand_left, 1)), math.ceil(math.max(expand_top, 1))
     obj.effect("領域拡張", "上", expand_top, "下", expand_bottom, "右", expand_right, "左", expand_left)
 end
 
-local w, h = obj.getpixel()
-if w > 0 and h > 0 and blur_amount ~= 0 then
+local image_width, image_height = obj.getpixel()
+if image_width > 0 and image_height > 0 and blur_amount ~= 0 then
     local adjusted_center_x = center_x + (expand_left - expand_right) / 2
     local adjusted_center_y = center_y + (expand_top - expand_bottom) / 2
     local blur_scale = blur_amount / 200
     local inner = 1 - (base_position + 1) * blur_scale
     local outer_scale = 1 + (1 - base_position) * blur_scale
-    local sign = 1
+    local inner_scale_sign = 1
     local inner_abs = inner
     if inner < 0 then
-        sign = -1
+        inner_scale_sign = -1
         inner_abs = -inner
     end
 
-    local origin_x = w * 0.5 + adjusted_center_x
-    local origin_y = h * 0.5 + adjusted_center_y
-    local max_dx = math.max(math.abs(origin_x), math.abs(w - origin_x))
-    local max_dy = math.max(math.abs(origin_y), math.abs(h - origin_y))
-    local displacement = math.sqrt(max_dx * max_dx + max_dy * max_dy) * math.abs(outer_scale - sign * inner_abs)
+    local origin_x = image_width * 0.5 + adjusted_center_x
+    local origin_y = image_height * 0.5 + adjusted_center_y
+    local max_dx = math.max(math.abs(origin_x), math.abs(image_width - origin_x))
+    local max_dy = math.max(math.abs(origin_y), math.abs(image_height - origin_y))
+    local displacement = math.sqrt(max_dx * max_dx + max_dy * max_dy)
+        * math.abs(outer_scale - inner_scale_sign * inner_abs)
     local iterations = math.max(next_power_of_two(displacement), 2)
 
     while iterations > 1 do
@@ -108,7 +109,7 @@ if w > 0 and h > 0 and blur_amount ~= 0 then
         obj.pixelshader("rad_blur", "object", "object", {
             adjusted_center_x,
             adjusted_center_y,
-            sign,
+            inner_scale_sign,
             inner_abs,
             outer_scale,
             scale_sum,

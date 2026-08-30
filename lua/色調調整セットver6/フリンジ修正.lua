@@ -5,7 +5,7 @@
 ---背景色の削除=1
 ---フリンジの上書き=2
 ---透明度に応じたフリンジの上書き=3
-local track_adjust_method = 1
+local select_adjustment_method = 1
 
 ---$track:α上限
 ---min=0
@@ -20,24 +20,24 @@ local track_alpha_upper_limit = 255
 local track_alpha_lower_limit = 0
 
 ---$color:色
-local col = 0xffffff
+local background_color = 0xffffff
 
 ---$check:処理後α補正
-local Af = 1
+local check_adjust_alpha_after = 1
 
---hide@col:track_adjust_method==0
+--hide@background_color:select_adjustment_method==0
 
 --[[pixelshader@fringe_fix
 ---$include "./shaders/fringe_fix.hlsl"
 ]]
 
-local bg_r, bg_g, bg_b = RGB(col or 0xffffff)
+local background_red, background_green, background_blue = RGB(background_color or 0xffffff)
 obj.pixelshader("fringe_fix", "object", "object", {
-    track_adjust_method,
+    select_adjustment_method,
     track_alpha_upper_limit,
     track_alpha_lower_limit,
-    bg_r,
-    bg_g,
-    bg_b,
-    Af or 0,
+    background_red,
+    background_green,
+    background_blue,
+    check_adjust_alpha_after or 0,
 })

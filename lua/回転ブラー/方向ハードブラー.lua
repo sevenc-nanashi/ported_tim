@@ -88,23 +88,23 @@ if blur_amount ~= 0 then
         change_seed = math.floor(obj.time * obj.framerate)
     end
 
-    local w, h = obj.getpixel()
+    local image_width, image_height = obj.getpixel()
     if not is_enabled(check_keep_size) then
         local display_limit_scale = math.max(0, (track_display_limit_scale - 1) / 2)
-        local iw, ih = w * display_limit_scale, h * display_limit_scale
-        local ds1 = blur_amount * (1 - base_position) / 2
-        local ds2 = -blur_amount * (1 + base_position) / 2
-        local addX1, addY1 = ds1 * cos_theta, ds1 * sin_theta
-        local addX2, addY2 = ds2 * cos_theta, ds2 * sin_theta
-        addX1, addX2 = math.max(addX1, addX2), -math.min(addX1, addX2)
-        addY1, addY2 = math.max(addY1, addY2), -math.min(addY1, addY2)
-        addX1 = (addX1 > iw) and iw or addX1
-        addX2 = (addX2 > iw) and iw or addX2
-        addY1 = (addY1 > ih) and ih or addY1
-        addY2 = (addY2 > ih) and ih or addY2
-        addX1, addY1 = math.ceil(math.max(addX1, 1)), math.ceil(math.max(addY1, 1))
-        addX2, addY2 = math.ceil(math.max(addX2, 1)), math.ceil(math.max(addY2, 1))
-        obj.effect("領域拡張", "上", addY2, "下", addY1, "右", addX1, "左", addX2)
+        local maximum_expand_x, maximum_expand_y = image_width * display_limit_scale, image_height * display_limit_scale
+        local positive_displacement = blur_amount * (1 - base_position) / 2
+        local negative_displacement = -blur_amount * (1 + base_position) / 2
+        local add_x1, add_y1 = positive_displacement * cos_theta, positive_displacement * sin_theta
+        local add_x2, add_y2 = negative_displacement * cos_theta, negative_displacement * sin_theta
+        add_x1, add_x2 = math.max(add_x1, add_x2), -math.min(add_x1, add_x2)
+        add_y1, add_y2 = math.max(add_y1, add_y2), -math.min(add_y1, add_y2)
+        add_x1 = (add_x1 > maximum_expand_x) and maximum_expand_x or add_x1
+        add_x2 = (add_x2 > maximum_expand_x) and maximum_expand_x or add_x2
+        add_y1 = (add_y1 > maximum_expand_y) and maximum_expand_y or add_y1
+        add_y2 = (add_y2 > maximum_expand_y) and maximum_expand_y or add_y2
+        add_x1, add_y1 = math.ceil(math.max(add_x1, 1)), math.ceil(math.max(add_y1, 1))
+        add_x2, add_y2 = math.ceil(math.max(add_x2, 1)), math.ceil(math.max(add_y2, 1))
+        obj.effect("領域拡張", "上", add_y2, "下", add_y1, "右", add_x1, "左", add_x2)
     end
     if is_enabled(check_blur_correction) then
         obj.effect(
@@ -118,8 +118,8 @@ if blur_amount ~= 0 then
         )
     end
 
-    w, h = obj.getpixel()
-    if w > 0 and h > 0 then
+    image_width, image_height = obj.getpixel()
+    if image_width > 0 and image_height > 0 then
         obj.pixelshader("dir_hard_blur", "object", "object", {
             blur_amount,
             bump_size,

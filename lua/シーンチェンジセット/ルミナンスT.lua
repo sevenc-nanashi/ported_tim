@@ -3,26 +3,26 @@
 ---min=0
 ---max=100
 ---step=0.1
-local blur = 10
+local track_blur_percent = 10
 
 ---$check:透過反転
-local invert = true
+local check_invert_transparency = true
 
-local blur = 4096 * blur * 0.01
-local T = obj.getvalue("scenechange")
-local L = (4096 + 2 * blur) * T - blur
+local blur_radius = 4096 * track_blur_percent * 0.01
+local transition_progress = obj.getvalue("scenechange")
+local luminance_threshold = (4096 + 2 * blur_radius) * transition_progress - blur_radius
 
-obj.copybuffer("tmp", "obj")
+obj.copybuffer("tempbuffer", "object")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", "alpha_sub")
 
 obj.effect("単色化")
-if invert then
+if check_invert_transparency then
     obj.effect("反転", "輝度反転", 1)
 end
-obj.effect("ルミナンスキー", "基準輝度", L, "ぼかし", blur, "type", 1)
+obj.effect("ルミナンスキー", "基準輝度", luminance_threshold, "ぼかし", blur_radius, "type", 1)
 obj.draw()
 
-obj.copybuffer("obj", "tmp")
+obj.copybuffer("object", "tempbuffer")
 obj.setoption("drawtarget", "framebuffer")
 obj.draw()

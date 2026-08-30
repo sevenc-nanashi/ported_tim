@@ -27,64 +27,64 @@ local track_interval = 5
 ---直線=0
 ---曲線=1
 ---方法2=2
-local dm = 1
+local drawing_method = 1
 
 ---$track:定数(方法2のみ)
 ---min=0
 ---max=100
 ---step=0.1
-local C = 35
+local curve_tension = 35
 
 ---$check:等速度_等間隔
-local ec = 0
+local use_equal_spacing = 0
 
 ---$track:精度
 ---min=1
 ---max=1000
 ---step=1
-local Ac = 20
+local interpolation_accuracy = 20
 
 ---$check:環状にする
-local cy = 0
+local closed_loop = 0
 
 ---$check:同時に出現
-local ST = 0
+local simultaneous = 0
 
 ---$check:全長指定表示
-local sp = 0
+local use_total_length = 0
 
 ---$value:線幅
-local Lw = { 100, 100, 100 }
+local line_width_percentages = { 100, 100, 100 }
 
 ---$color:変化色
-local col = nil
+local gradient_color = nil
 
 ---$value:領域拡張
-local dSI = { 0, 0 }
+local area_padding = { 0, 0 }
 
 ---$value:座標
-local pos = { 0, 0, 100, 100 }
+local control_points = { 0, 0, 100, 100 }
 
 ---$check:頂点群を分離
-local check0 = false
+local separate_vertex_groups = false
 
---hide@C:dm~=2
---hide@Ac:ec==0
---hide@Ac:dm==0
+--hide@curve_tension:drawing_method~=2
+--hide@interpolation_accuracy:use_equal_spacing==0
+--hide@interpolation_accuracy:drawing_method==0
 
-Tracking = {}
+T_TRACKING = {}
 
-Tracking.DoTrackingLineEasy = function(Trk)
-    local Tracking_st = Trk.st
-    local Tracking_ed = Trk.ed
+T_TRACKING.draw = function(tracking_state)
+    local start_progress = tracking_state.start_progress
+    local end_progress = tracking_state.end_progress
 
-    local myinterpolation
-    if Trk.dm == 1 then
-        myinterpolation = function(t, x0, y0, x1, y1, x2, y2, x3, y3)
+    local interpolate_point
+    if tracking_state.drawing_method == 1 then
+        interpolate_point = function(t, x0, y0, x1, y1, x2, y2, x3, y3)
             return obj.interpolation(t, x0, y0, x1, y1, x2, y2, x3, y3)
         end
-    elseif Trk.dm == 2 then
-        myinterpolation = function(t, x0, y0, x1, y1, x2, y2, x3, y3)
+    elseif tracking_state.drawing_method == 2 then
+        interpolate_point = function(t, x0, y0, x1, y1, x2, y2, x3, y3)
             local x10 = x1 - x0
             local x21 = x2 - x1
             local x32 = x3 - x2
@@ -97,340 +97,397 @@ Tracking.DoTrackingLineEasy = function(Trk)
             local l2 = math.sqrt(x32 * x32 + y32 * y32)
 
             if l1 > 0 then
-                x0 = x1 + Trk.C * (x21 * l0 + x10 * l1) / (l1 + l0)
-                x3 = x2 - Trk.C * (x21 * l2 + x32 * l1) / (l1 + l2)
-                y0 = y1 + Trk.C * (y21 * l0 + y10 * l1) / (l1 + l0)
-                y3 = y2 - Trk.C * (y21 * l2 + y32 * l1) / (l1 + l2)
-                s = 1 - t
+                x0 = x1 + tracking_state.curve_tension * (x21 * l0 + x10 * l1) / (l1 + l0)
+                x3 = x2 - tracking_state.curve_tension * (x21 * l2 + x32 * l1) / (l1 + l2)
+                y0 = y1 + tracking_state.curve_tension * (y21 * l0 + y10 * l1) / (l1 + l0)
+                y3 = y2 - tracking_state.curve_tension * (y21 * l2 + y32 * l1) / (l1 + l2)
+                local s = 1 - t
                 x1 = s * s * s * x1 + 3 * s * s * t * x0 + 3 * s * t * t * x3 + t * t * t * x2
                 y1 = s * s * s * y1 + 3 * s * s * t * y0 + 3 * s * t * t * y3 + t * t * t * y2
             end
             return x1, y1
         end
     else
-        myinterpolation = function(t, x0, y0, x1, y1, x2, y2, x3, y3)
+        interpolate_point = function(t, x0, y0, x1, y1, x2, y2, x3, y3)
             return x1 + t * (x2 - x1), y1 + t * (y2 - y1)
         end
     end
 
-    if Trk.sp == 1 then
-        local st = Tracking_st
-        local ed = Tracking_ed
-        Tracking_ed = st * (ed + 1) - ed
-        Tracking_st = Tracking_ed + ed
+    if tracking_state.use_total_length == 1 then
+        local st = start_progress
+        local ed = end_progress
+        end_progress = st * (ed + 1) - ed
+        start_progress = end_progress + ed
     else
-        if Tracking_st < Tracking_ed then
-            Tracking_st, Tracking_ed = Tracking_ed, Tracking_st
+        if start_progress < end_progress then
+            start_progress, end_progress = end_progress, start_progress
         end
     end
 
-    local alp = 0
+    local output_alpha = 0
 
-    if not Trk.ck then
-        for i = 2, #Trk.X do
-            for j = 1, #Trk.X[i] do
-                table.insert(Trk.X[1], Trk.X[i][j])
-                table.insert(Trk.Y[1], Trk.Y[i][j])
+    if not tracking_state.separate_vertex_groups then
+        for i = 2, #tracking_state.points_x do
+            for j = 1, #tracking_state.points_x[i] do
+                table.insert(tracking_state.points_x[1], tracking_state.points_x[i][j])
+                table.insert(tracking_state.points_y[1], tracking_state.points_y[i][j])
             end
-            Trk.X[i] = nil
+            tracking_state.points_x[i] = nil
         end
     end
 
-    local TN = {}
-    for i = 1, #Trk.X do
-        TN[i] = #Trk.X[i]
-        if Trk.cy[i] == 1 then --円の場合
-            Trk.X[i][0] = Trk.X[i][TN[i]]
-            Trk.Y[i][0] = Trk.Y[i][TN[i]]
-            Trk.X[i][TN[i] + 1] = Trk.X[i][1]
-            Trk.Y[i][TN[i] + 1] = Trk.Y[i][1]
-            Trk.X[i][TN[i] + 2] = Trk.X[i][2]
-            Trk.Y[i][TN[i] + 2] = Trk.Y[i][2]
-            TN[i] = TN[i] + 1
+    local point_counts = {}
+    for i = 1, #tracking_state.points_x do
+        point_counts[i] = #tracking_state.points_x[i]
+        if tracking_state.closed_loop[i] == 1 then --円の場合
+            tracking_state.points_x[i][0] = tracking_state.points_x[i][point_counts[i]]
+            tracking_state.points_y[i][0] = tracking_state.points_y[i][point_counts[i]]
+            tracking_state.points_x[i][point_counts[i] + 1] = tracking_state.points_x[i][1]
+            tracking_state.points_y[i][point_counts[i] + 1] = tracking_state.points_y[i][1]
+            tracking_state.points_x[i][point_counts[i] + 2] = tracking_state.points_x[i][2]
+            tracking_state.points_y[i][point_counts[i] + 2] = tracking_state.points_y[i][2]
+            point_counts[i] = point_counts[i] + 1
         else --その他
-            Trk.X[i][0] = Trk.X[i][1]
-            Trk.Y[i][0] = Trk.Y[i][1]
-            Trk.X[i][TN[i] + 1] = Trk.X[i][TN[i]]
-            Trk.Y[i][TN[i] + 1] = Trk.Y[i][TN[i]]
+            tracking_state.points_x[i][0] = tracking_state.points_x[i][1]
+            tracking_state.points_y[i][0] = tracking_state.points_y[i][1]
+            tracking_state.points_x[i][point_counts[i] + 1] = tracking_state.points_x[i][point_counts[i]]
+            tracking_state.points_y[i][point_counts[i] + 1] = tracking_state.points_y[i][point_counts[i]]
         end
     end
 
-    local Sum = {}
-    local SumS = {}
-    Sum[0] = 0
-    if Trk.ec == 0 then
-        for i = 1, #Trk.X do
-            Sum[i] = Sum[i - 1] + TN[i] - 1
+    local cumulative_lengths = {}
+    local segment_length_ratios = {}
+    cumulative_lengths[0] = 0
+    if tracking_state.use_equal_spacing == 0 then
+        for i = 1, #tracking_state.points_x do
+            cumulative_lengths[i] = cumulative_lengths[i - 1] + point_counts[i] - 1
         end
     else
-        for i = 1, #Trk.X do
-            SumS[i] = {}
-            SumS[i][0] = 0
-            for j = 1, TN[i] - 1 do
-                SumS[i][j] = 0
-                local x0 = Trk.X[i][j - 1]
-                local x1 = Trk.X[i][j]
-                local x2 = Trk.X[i][j + 1]
-                local x3 = Trk.X[i][j + 2]
+        for i = 1, #tracking_state.points_x do
+            segment_length_ratios[i] = {}
+            segment_length_ratios[i][0] = 0
+            for j = 1, point_counts[i] - 1 do
+                segment_length_ratios[i][j] = 0
+                local x0 = tracking_state.points_x[i][j - 1]
+                local x1 = tracking_state.points_x[i][j]
+                local x2 = tracking_state.points_x[i][j + 1]
+                local x3 = tracking_state.points_x[i][j + 2]
 
-                local y0 = Trk.Y[i][j - 1]
-                local y1 = Trk.Y[i][j]
-                local y2 = Trk.Y[i][j + 1]
-                local y3 = Trk.Y[i][j + 2]
+                local y0 = tracking_state.points_y[i][j - 1]
+                local y1 = tracking_state.points_y[i][j]
+                local y2 = tracking_state.points_y[i][j + 1]
+                local y3 = tracking_state.points_y[i][j + 2]
 
-                local xx = {}
-                local yy = {}
+                local sampled_points_x = {}
+                local sampled_points_y = {}
 
-                local iTA = math.ceil(Trk.Ac * 0.5)
-                for k = 0, iTA do
-                    local t = k / iTA
-                    xx[k], yy[k] = myinterpolation(t, x0, y0, x1, y1, x2, y2, x3, y3)
+                local sample_count = math.ceil(tracking_state.interpolation_accuracy * 0.5)
+                for k = 0, sample_count do
+                    local t = k / sample_count
+                    sampled_points_x[k], sampled_points_y[k] = interpolate_point(t, x0, y0, x1, y1, x2, y2, x3, y3)
                 end
-                for k = 0, iTA - 1 do
-                    SumS[i][j] = SumS[i][j] + math.sqrt((xx[k + 1] - xx[k]) ^ 2 + (yy[k + 1] - yy[k]) ^ 2)
+                for k = 0, sample_count - 1 do
+                    segment_length_ratios[i][j] = segment_length_ratios[i][j]
+                        + math.sqrt(
+                            (sampled_points_x[k + 1] - sampled_points_x[k]) ^ 2
+                                + (sampled_points_y[k + 1] - sampled_points_y[k]) ^ 2
+                        )
                 end
-                SumS[i][j] = SumS[i][j] + SumS[i][j - 1]
+                segment_length_ratios[i][j] = segment_length_ratios[i][j] + segment_length_ratios[i][j - 1]
             end
-            Sum[i] = SumS[i][TN[i] - 1] + Sum[i - 1]
-            for j = 1, TN[i] - 1 do
-                SumS[i][j] = SumS[i][j] / SumS[i][TN[i] - 1]
+            cumulative_lengths[i] = segment_length_ratios[i][point_counts[i] - 1] + cumulative_lengths[i - 1]
+            for j = 1, point_counts[i] - 1 do
+                segment_length_ratios[i][j] = segment_length_ratios[i][j]
+                    / segment_length_ratios[i][point_counts[i] - 1]
             end
         end
     end
 
-    local maxX = math.max(unpack(Trk.X[1]))
-    local maxY = math.max(unpack(Trk.Y[1]))
-    local minX = math.min(unpack(Trk.X[1]))
-    local minY = math.min(unpack(Trk.Y[1]))
-    for i = 2, #Trk.X do
-        maxX = math.max(maxX, unpack(Trk.X[i]))
-        maxY = math.max(maxY, unpack(Trk.Y[i]))
-        minX = math.min(minX, unpack(Trk.X[i]))
-        minY = math.min(minY, unpack(Trk.Y[i]))
+    local max_x = math.max(unpack(tracking_state.points_x[1]))
+    local max_y = math.max(unpack(tracking_state.points_y[1]))
+    local min_x = math.min(unpack(tracking_state.points_x[1]))
+    local min_y = math.min(unpack(tracking_state.points_y[1]))
+    for i = 2, #tracking_state.points_x do
+        max_x = math.max(max_x, unpack(tracking_state.points_x[i]))
+        max_y = math.max(max_y, unpack(tracking_state.points_y[i]))
+        min_x = math.min(min_x, unpack(tracking_state.points_x[i]))
+        min_y = math.min(min_y, unpack(tracking_state.points_y[i]))
     end
 
-    local Sww = (maxX - minX) * 1.2 + 2 * Trk.SI + Trk.dSI[1]
-    local Shh = (maxY - minY) * 1.2 + 2 * Trk.SI + Trk.dSI[2]
-    local SCx = (maxX + minX) * 0.5
-    local SCy = (maxY + minY) * 0.5
+    local render_width = (max_x - min_x) * 1.2 + 2 * tracking_state.base_size + tracking_state.area_padding[1]
+    local render_height = (max_y - min_y) * 1.2 + 2 * tracking_state.base_size + tracking_state.area_padding[2]
+    local render_center_x = (max_x + min_x) * 0.5
+    local render_center_y = (max_y + min_y) * 0.5
 
-    obj.setoption("drawtarget", "tempbuffer", Sww, Shh)
+    obj.setoption("drawtarget", "tempbuffer", render_width, render_height)
 
-    local stn = Sum[#Trk.X]
-    for i = 1, #Trk.X do
-        Sum[i] = Sum[i] / stn
+    local total_path_length = cumulative_lengths[#tracking_state.points_x]
+    for i = 1, #tracking_state.points_x do
+        cumulative_lengths[i] = cumulative_lengths[i] / total_path_length
     end
 
-    local t = Tracking_st
-    local t0 = t * stn
-    for i = 0, #Trk.X - 1 do
-        if Sum[i] <= t and t < Sum[i + 1] then
-            t0 = (i + (t - Sum[i]) / (Sum[i + 1] - Sum[i]))
+    local t = start_progress
+    local t0 = t * total_path_length
+    for i = 0, #tracking_state.points_x - 1 do
+        if cumulative_lengths[i] <= t and t < cumulative_lengths[i + 1] then
+            t0 = (i + (t - cumulative_lengths[i]) / (cumulative_lengths[i + 1] - cumulative_lengths[i]))
             break
         end
     end
-    Tracking_st = t0
+    start_progress = t0
 
-    t = Tracking_ed
-    t0 = t * stn
-    for i = 0, #Trk.X - 1 do
-        if Sum[i] <= t and t < Sum[i + 1] then
-            t0 = (i + (t - Sum[i]) / (Sum[i + 1] - Sum[i]))
+    t = end_progress
+    t0 = t * total_path_length
+    for i = 0, #tracking_state.points_x - 1 do
+        if cumulative_lengths[i] <= t and t < cumulative_lengths[i + 1] then
+            t0 = (i + (t - cumulative_lengths[i]) / (cumulative_lengths[i + 1] - cumulative_lengths[i]))
             break
         end
     end
-    Tracking_ed = t0
+    end_progress = t0
 
-    local maxsum = 0
-    if Trk.ST == 1 then
-        for i = 1, #Trk.X do
-            maxsum = math.max(maxsum, Sum[i] - Sum[i - 1])
+    local max_group_length_ratio = 0
+    if tracking_state.simultaneous == 1 then
+        for i = 1, #tracking_state.points_x do
+            max_group_length_ratio = math.max(max_group_length_ratio, cumulative_lengths[i] - cumulative_lengths[i - 1])
         end
     end
 
-    for i = 1, #Trk.X do
-        local Tracking_st = Tracking_st
-        local Tracking_ed = Tracking_ed
+    for i = 1, #tracking_state.points_x do
+        local start_progress = start_progress
+        local end_progress = end_progress
 
-        if Trk.ST == 0 then
-            Tracking_st = Tracking_st - i + 1
-            Tracking_ed = Tracking_ed - i + 1
+        if tracking_state.simultaneous == 0 then
+            start_progress = start_progress - i + 1
+            end_progress = end_progress - i + 1
         else
-            Tracking_st = Tracking_st / #Trk.X
-            Tracking_ed = Tracking_ed / #Trk.X
-            if Trk.ec == 1 then
-                Tracking_st = Tracking_st * maxsum / (Sum[i] - Sum[i - 1])
-                Tracking_ed = Tracking_ed * maxsum / (Sum[i] - Sum[i - 1])
+            start_progress = start_progress / #tracking_state.points_x
+            end_progress = end_progress / #tracking_state.points_x
+            if tracking_state.use_equal_spacing == 1 then
+                start_progress = start_progress
+                    * max_group_length_ratio
+                    / (cumulative_lengths[i] - cumulative_lengths[i - 1])
+                end_progress = end_progress
+                    * max_group_length_ratio
+                    / (cumulative_lengths[i] - cumulative_lengths[i - 1])
             end
         end
 
-        if not (Tracking_st < 0 or Tracking_ed > 1) then
-            if Tracking_st > 1 then
-                Tracking_st = 1
+        if not (start_progress < 0 or end_progress > 1) then
+            if start_progress > 1 then
+                start_progress = 1
             end
-            if Tracking_ed < 0 then
-                Tracking_ed = 0
+            if end_progress < 0 then
+                end_progress = 0
             end
 
-            if Trk.ec == 1 then
-                local tq1 = Tracking_st
-                local t0 = tq1
-                for j = 0, TN[i] - 2 do
-                    if SumS[i][j] <= tq1 and tq1 < SumS[i][j + 1] then
-                        t0 = (j + (tq1 - SumS[i][j]) / (SumS[i][j + 1] - SumS[i][j])) / (TN[i] - 1)
+            if tracking_state.use_equal_spacing == 1 then
+                local equalized_start_progress = start_progress
+                local t0 = equalized_start_progress
+                for j = 0, point_counts[i] - 2 do
+                    if
+                        segment_length_ratios[i][j] <= equalized_start_progress
+                        and equalized_start_progress < segment_length_ratios[i][j + 1]
+                    then
+                        t0 = (
+                            j
+                            + (equalized_start_progress - segment_length_ratios[i][j])
+                                / (segment_length_ratios[i][j + 1] - segment_length_ratios[i][j])
+                        ) / (point_counts[i] - 1)
                         break
                     end
                 end
-                Tracking_st = t0
+                start_progress = t0
 
-                local tq2 = Tracking_ed
-                t0 = tq2
-                for j = 0, TN[i] - 2 do
-                    if SumS[i][j] <= tq2 and tq2 < SumS[i][j + 1] then
-                        t0 = (j + (tq2 - SumS[i][j]) / (SumS[i][j + 1] - SumS[i][j])) / (TN[i] - 1)
+                local equalized_end_progress = end_progress
+                t0 = equalized_end_progress
+                for j = 0, point_counts[i] - 2 do
+                    if
+                        segment_length_ratios[i][j] <= equalized_end_progress
+                        and equalized_end_progress < segment_length_ratios[i][j + 1]
+                    then
+                        t0 = (
+                            j
+                            + (equalized_end_progress - segment_length_ratios[i][j])
+                                / (segment_length_ratios[i][j + 1] - segment_length_ratios[i][j])
+                        ) / (point_counts[i] - 1)
                         break
                     end
                 end
-                Tracking_ed = t0
+                end_progress = t0
             end
-            local dotN = 0
-            local poxX = {}
-            local poxY = {}
-            for j = 1, TN[i] - 1 do
-                if j == TN[i] - 1 and Trk.cy[i] == 0 then
-                    hugo = 1
+            local drawn_point_count = 0
+            local drawn_points_x = {}
+            local drawn_points_y = {}
+            for j = 1, point_counts[i] - 1 do
+                local step_direction
+                if j == point_counts[i] - 1 and tracking_state.closed_loop[i] == 0 then
+                    step_direction = 1
                 else
-                    hugo = -1
+                    step_direction = -1
                 end
 
-                local x0 = Trk.X[i][j - 1]
-                local x1 = Trk.X[i][j]
-                local x2 = Trk.X[i][j + 1]
-                local x3 = Trk.X[i][j + 2]
+                local x0 = tracking_state.points_x[i][j - 1]
+                local x1 = tracking_state.points_x[i][j]
+                local x2 = tracking_state.points_x[i][j + 1]
+                local x3 = tracking_state.points_x[i][j + 2]
 
-                local y0 = Trk.Y[i][j - 1]
-                local y1 = Trk.Y[i][j]
-                local y2 = Trk.Y[i][j + 1]
-                local y3 = Trk.Y[i][j + 2]
+                local y0 = tracking_state.points_y[i][j - 1]
+                local y1 = tracking_state.points_y[i][j]
+                local y2 = tracking_state.points_y[i][j + 1]
+                local y3 = tracking_state.points_y[i][j + 2]
 
                 local r
-                local Sum2 = {}
+                local sampled_length_ratios = {}
 
-                if Trk.ec == 1 then
-                    local xx = {}
-                    local yy = {}
-                    for k = 0, Trk.Ac do
-                        local t = k / Trk.Ac
-                        xx[k], yy[k] = myinterpolation(t, x0, y0, x1, y1, x2, y2, x3, y3)
+                if tracking_state.use_equal_spacing == 1 then
+                    local sampled_points_x = {}
+                    local sampled_points_y = {}
+                    for k = 0, tracking_state.interpolation_accuracy do
+                        local t = k / tracking_state.interpolation_accuracy
+                        sampled_points_x[k], sampled_points_y[k] = interpolate_point(t, x0, y0, x1, y1, x2, y2, x3, y3)
                     end
-                    Sum2[0] = 0
-                    for k = 1, Trk.Ac do
-                        Sum2[k] = Sum2[k - 1] + math.sqrt((xx[k] - xx[k - 1]) ^ 2 + (yy[k] - yy[k - 1]) ^ 2)
+                    sampled_length_ratios[0] = 0
+                    for k = 1, tracking_state.interpolation_accuracy do
+                        sampled_length_ratios[k] = sampled_length_ratios[k - 1]
+                            + math.sqrt(
+                                (sampled_points_x[k] - sampled_points_x[k - 1]) ^ 2
+                                    + (sampled_points_y[k] - sampled_points_y[k - 1]) ^ 2
+                            )
                     end
 
-                    r = Sum2[Trk.Ac]
+                    r = sampled_length_ratios[tracking_state.interpolation_accuracy]
 
-                    for k = 1, Trk.Ac do
-                        Sum2[k] = Sum2[k] / Sum2[Trk.Ac]
+                    for k = 1, tracking_state.interpolation_accuracy do
+                        sampled_length_ratios[k] = sampled_length_ratios[k]
+                            / sampled_length_ratios[tracking_state.interpolation_accuracy]
                     end
                 else
                     r = math.sqrt((x2 - x1) ^ 2 + (y2 - y1) ^ 2)
                 end
 
-                local step = 1 / math.ceil(r / Trk.iv)
+                local step = 1 / math.ceil(r / tracking_state.interval)
 
-                local Tracking_st = (TN[i] - 1) * Tracking_st - (j - 1)
-                local Tracking_ed = (TN[i] - 1) * Tracking_ed - (j - 1)
+                local start_progress = (point_counts[i] - 1) * start_progress - (j - 1)
+                local end_progress = (point_counts[i] - 1) * end_progress - (j - 1)
 
-                if not (Tracking_st < 0 or Tracking_ed > 1) then
-                    if Tracking_st > 1 then
-                        Tracking_st = 1
+                if not (start_progress < 0 or end_progress > 1) then
+                    if start_progress > 1 then
+                        start_progress = 1
                     end
-                    if Tracking_ed < 0 then
-                        Tracking_ed = 0
+                    if end_progress < 0 then
+                        end_progress = 0
                     end
-                    Tracking_ed = step * math.ceil(Tracking_ed / step)
+                    end_progress = step * math.ceil(end_progress / step)
 
-                    if Trk.ec == 0 then
-                        for t = Tracking_ed, Tracking_st + hugo * step * 0.01, step do
-                            local x, y = myinterpolation(t, x0, y0, x1, y1, x2, y2, x3, y3)
-                            dotN = dotN + 1
-                            poxX[dotN], poxY[dotN] = x - SCx, y - SCy
-                            alp = 1
+                    if tracking_state.use_equal_spacing == 0 then
+                        for t = end_progress, start_progress + step_direction * step * 0.01, step do
+                            local x, y = interpolate_point(t, x0, y0, x1, y1, x2, y2, x3, y3)
+                            drawn_point_count = drawn_point_count + 1
+                            drawn_points_x[drawn_point_count], drawn_points_y[drawn_point_count] =
+                                x - render_center_x, y - render_center_y
+                            output_alpha = 1
                         end
                     else
-                        for t = Tracking_ed, Tracking_st + hugo * step * 0.01, step do
+                        for t = end_progress, start_progress + step_direction * step * 0.01, step do
                             local t0 = t
-                            for k = 0, Trk.Ac - 1 do
-                                if Sum2[k] <= t and t < Sum2[k + 1] then
-                                    t0 = (k + (t - Sum2[k]) / (Sum2[k + 1] - Sum2[k])) / Trk.Ac
+                            for k = 0, tracking_state.interpolation_accuracy - 1 do
+                                if sampled_length_ratios[k] <= t and t < sampled_length_ratios[k + 1] then
+                                    t0 = (
+                                        k
+                                        + (t - sampled_length_ratios[k])
+                                            / (sampled_length_ratios[k + 1] - sampled_length_ratios[k])
+                                    ) / tracking_state.interpolation_accuracy
                                     break
                                 end
                             end
 
-                            local x, y = myinterpolation(t0, x0, y0, x1, y1, x2, y2, x3, y3)
-                            dotN = dotN + 1
-                            poxX[dotN], poxY[dotN] = x - SCx, y - SCy
-                            alp = 1
+                            local x, y = interpolate_point(t0, x0, y0, x1, y1, x2, y2, x3, y3)
+                            drawn_point_count = drawn_point_count + 1
+                            drawn_points_x[drawn_point_count], drawn_points_y[drawn_point_count] =
+                                x - render_center_x, y - render_center_y
+                            output_alpha = 1
                         end
                     end
                 end
             end
 
-            if Trk.col == "" then
-                for k = 1, dotN do
-                    local s = (k - 1) / (dotN - 1)
-                    s = s * Trk.Lw[3] + (2 * s * (2 * Trk.Lw[2] - Trk.Lw[1] - Trk.Lw[3]) + Trk.Lw[1]) * (1 - s)
-                    obj.draw(poxX[k], poxY[k], 0, s * 0.01)
+            if tracking_state.gradient_color == "" then
+                for k = 1, drawn_point_count do
+                    local s = (k - 1) / (drawn_point_count - 1)
+                    s = s * tracking_state.line_width_percentages[3]
+                        + (
+                                2
+                                    * s
+                                    * (2 * tracking_state.line_width_percentages[2] - tracking_state.line_width_percentages[1] - tracking_state.line_width_percentages[3])
+                                + tracking_state.line_width_percentages[1]
+                            )
+                            * (1 - s)
+                    obj.draw(drawn_points_x[k], drawn_points_y[k], 0, s * 0.01)
                 end
             else
-                obj.copybuffer("cache:img", "obj")
-                for k = 1, dotN do
-                    local s = (k - 1) / (dotN - 1)
-                    local s2 = s * Trk.Lw[3] + (2 * s * (2 * Trk.Lw[2] - Trk.Lw[1] - Trk.Lw[3]) + Trk.Lw[1]) * (1 - s)
-                    obj.copybuffer("obj", "cache:img")
-                    obj.effect("単色化", "color", Trk.col, "輝度を保持する", 0, "強さ", 100 * (1 - s))
-                    obj.draw(poxX[k], poxY[k], 0, s2 * 0.01)
+                obj.copybuffer("cache:img", "object")
+                for k = 1, drawn_point_count do
+                    local s = (k - 1) / (drawn_point_count - 1)
+                    local s2 = s * tracking_state.line_width_percentages[3]
+                        + (
+                                2
+                                    * s
+                                    * (2 * tracking_state.line_width_percentages[2] - tracking_state.line_width_percentages[1] - tracking_state.line_width_percentages[3])
+                                + tracking_state.line_width_percentages[1]
+                            )
+                            * (1 - s)
+                    obj.copybuffer("object", "cache:img")
+                    obj.effect(
+                        "単色化",
+                        "color",
+                        tracking_state.gradient_color,
+                        "輝度を保持する",
+                        0,
+                        "強さ",
+                        100 * (1 - s)
+                    )
+                    obj.draw(drawn_points_x[k], drawn_points_y[k], 0, s2 * 0.01)
                 end
             end
         end
     end
-    obj.alpha = alp
+    obj.alpha = output_alpha
     obj.load("tempbuffer")
-    obj.cx = obj.cx - SCx
-    obj.cy = obj.cy - SCy
+    obj.cx = obj.cx - render_center_x
+    obj.cy = obj.cy - render_center_y
 end
 
-Tracking.SI = math.max(obj.getpixel())
-Tracking.dm = dm or 1
-Tracking.C = (C or 35) * 0.01
-Tracking.ec = ec or 0
-Tracking.Ac = Ac or 10
-Tracking.sp = sp or 0
-Tracking.ST = ST or 0
-Tracking.Lw = Lw or { 100, 100, 100 }
-Tracking.col = col or ""
-Tracking.dSI = dSI or { 0, 0 }
+T_TRACKING.base_size = math.max(obj.getpixel())
+T_TRACKING.drawing_method = drawing_method or 1
+T_TRACKING.curve_tension = (curve_tension or 35) * 0.01
+T_TRACKING.use_equal_spacing = use_equal_spacing or 0
+T_TRACKING.interpolation_accuracy = interpolation_accuracy or 10
+T_TRACKING.use_total_length = use_total_length or 0
+T_TRACKING.simultaneous = simultaneous or 0
+T_TRACKING.line_width_percentages = line_width_percentages or { 100, 100, 100 }
+T_TRACKING.gradient_color = gradient_color or ""
+T_TRACKING.area_padding = area_padding or { 0, 0 }
 
-Tracking.st = track_start_shift * 0.01
-Tracking.ed = track_end_total_length * 0.01
-local num = track_vertex_count
-Tracking.iv = track_interval
-Tracking.ck = check0
+T_TRACKING.start_progress = track_start_shift * 0.01
+T_TRACKING.end_progress = track_end_total_length * 0.01
+local vertex_count = track_vertex_count
+T_TRACKING.interval = track_interval
+T_TRACKING.separate_vertex_groups = separate_vertex_groups
 
-obj.setanchor("pos", num, "line")
+obj.setanchor("control_points", vertex_count, "line")
 
-Tracking.cy = {}
-Tracking.cy[1] = cy or 0
-Tracking.X = {}
-Tracking.Y = {}
-Tracking.X[1] = {}
-Tracking.Y[1] = {}
-for i = 1, num do
-    Tracking.X[1][i] = pos[2 * i - 1]
-    Tracking.Y[1][i] = pos[2 * i]
+T_TRACKING.closed_loop = {}
+T_TRACKING.closed_loop[1] = closed_loop or 0
+T_TRACKING.points_x = {}
+T_TRACKING.points_y = {}
+T_TRACKING.points_x[1] = {}
+T_TRACKING.points_y[1] = {}
+for i = 1, vertex_count do
+    T_TRACKING.points_x[1][i] = control_points[2 * i - 1]
+    T_TRACKING.points_y[1][i] = control_points[2 * i]
 end
 if obj.getoption("script_name", 1) ~= "TrackingラインEasy(頂点追加)@TrackingラインEasy@tim.anm2" then
-    Tracking.DoTrackingLineEasy(Tracking)
-    Tracking = nil
+    T_TRACKING.draw(T_TRACKING)
+    T_TRACKING = nil
 end

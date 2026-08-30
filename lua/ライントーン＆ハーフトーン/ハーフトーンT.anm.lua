@@ -26,85 +26,93 @@ local track_tone_large = 100
 local track_rotation = 0
 
 ---$color:シャドウ色
-local col2 = 0x0
+local shadow_color = 0x0
 
 ---$color:ハイライト色
-local col1 = 0xffffff
+local highlight_color = 0xffffff
 
 ---$figure:トーン形状
-local fig = "円"
+local tone_figure = "円"
 
 ---$check:段違い
-local fzs = true
+local check_staggered = true
 
 ---$check:背景色非表示
-local bkap = false
+local check_hide_background_color = false
 
 ---$check:トーン反転
-local tnrep = false
+local check_invert_tone = false
 
 ---$check:自分自身で型抜き
-local check0 = true
+local check_punch_out_self = true
 
-obj.copybuffer("cache:ori_img", "obj")
-local si_x = track_size
-local tsi1 = track_tone_small * 0.01
-local tsi2 = track_tone_large * 0.01 - tsi1
-local rz = track_rotation
-local w, h = obj.getpixel()
-local si_y = si_x
-local figsz = si_x
-gm = gm or 0
-ogchk = ogchk or 1
-if fzs then
-    si_x = math.sqrt(2) * si_x
-    si_y = si_x * 0.5
+obj.copybuffer("cache:ori_img", "object")
+local horizontal_spacing = track_size
+local minimum_tone_scale = track_tone_small * 0.01
+local tone_scale_range = track_tone_large * 0.01 - minimum_tone_scale
+local rotation_degrees = track_rotation
+local image_width, image_height = obj.getpixel()
+local vertical_spacing = horizontal_spacing
+local figure_size = horizontal_spacing
+if check_staggered then
+    horizontal_spacing = math.sqrt(2) * horizontal_spacing
+    vertical_spacing = horizontal_spacing * 0.5
 end
-local nx = math.floor(w / (2 * si_x)) + 1
-local ny = math.floor(h / (2 * si_y))
+local horizontal_cell_count = math.floor(image_width / (2 * horizontal_spacing)) + 1
+local vertical_cell_count = math.floor(image_height / (2 * vertical_spacing))
 
-if tnrep then
+if check_invert_tone then
     obj.effect("反転", "輝度反転", 1)
-    col1, col2 = col2, col1
+    highlight_color, shadow_color = shadow_color, highlight_color
 end
 
 obj.pixeloption("type", "yc")
-local con = {}
-local al = {}
-local posx = {}
-local posy = {}
-for i = -nx, nx do
-    con[i] = {}
-    al[i] = {}
-    posx[i] = {}
-    posy[i] = {}
-    for j = -ny, ny do
-        local dx = 0
-        if fzs then
-            dx = si_y * (j % 2)
+local cell_scales = {}
+local cell_alphas = {}
+local cell_x_positions = {}
+local cell_y_positions = {}
+for i = -horizontal_cell_count, horizontal_cell_count do
+    cell_scales[i] = {}
+    cell_alphas[i] = {}
+    cell_x_positions[i] = {}
+    cell_y_positions[i] = {}
+    for j = -vertical_cell_count, vertical_cell_count do
+        local stagger_offset = 0
+        if check_staggered then
+            stagger_offset = vertical_spacing * (j % 2)
         end
-        posx[i][j] = i * si_x + dx
-        posy[i][j] = j * si_y
-        local y, cb, cr, a = obj.getpixel(posx[i][j] + w * 0.5, posy[i][j] + h * 0.5, "yc")
-        local t = math.sqrt(1 - y / 4096)
-        t = tsi1 + t * tsi2
-        con[i][j] = t * 0.5
-        al[i][j] = a / 4095
+        cell_x_positions[i][j] = i * horizontal_spacing + stagger_offset
+        cell_y_positions[i][j] = j * vertical_spacing
+        local luminance, chroma_blue, chroma_red, pixel_alpha =
+            obj.getpixel(cell_x_positions[i][j] + image_width * 0.5, cell_y_positions[i][j] + image_height * 0.5, "yc")
+        local tone_scale = math.sqrt(1 - luminance / 4096)
+        tone_scale = minimum_tone_scale + tone_scale * tone_scale_range
+        cell_scales[i][j] = tone_scale * 0.5
+        cell_alphas[i][j] = pixel_alpha / 4095
     end
 end
-obj.setoption("drawtarget", "tempbuffer", w, h)
-if not bkap then
-    obj.effect("単色化", "color", col1, "輝度を保持する", 0)
+obj.setoption("drawtarget", "tempbuffer", image_width, image_height)
+if not check_hide_background_color then
+    obj.effect("単色化", "color", highlight_color, "輝度を保持する", 0)
     obj.draw()
 end
-obj.load("figure", fig, col2, 2 * figsz)
-for i = -nx, nx do
-    for j = -ny, ny do
-        obj.draw(posx[i][j], posy[i][j], 0, con[i][j], al[i][j], 0, 0, rz)
+obj.load("figure", tone_figure, shadow_color, 2 * figure_size)
+for i = -horizontal_cell_count, horizontal_cell_count do
+    for j = -vertical_cell_count, vertical_cell_count do
+        obj.draw(
+            cell_x_positions[i][j],
+            cell_y_positions[i][j],
+            0,
+            cell_scales[i][j],
+            cell_alphas[i][j],
+            0,
+            0,
+            rotation_degrees
+        )
     end
 end
-if check0 then
-    obj.copybuffer("obj", "cache:ori_img")
+if check_punch_out_self then
+    obj.copybuffer("object", "cache:ori_img")
     obj.effect("反転", "透明度反転", 1)
     obj.setoption("blend", "alpha_sub")
     obj.draw()

@@ -60,10 +60,10 @@ local track_move_direction_error = 12
 local track_rotation_speed = 10
 
 ---$check:重心を中心にする
-local check0 = false
+local check_center_on_centroid = false
 
-local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
-    local ROTxyz = function(x, y, z, rx, ry, rz)
+local set_3d_image = function(n, w, h, max_horizontal_angle, max_vertical_angle, rx, ry, rz, cx, cy, cz)
+    local rotate_xyz = function(x, y, z, rx, ry, rz)
         local sin_x = math.sin(rx)
         local cos_x = math.cos(rx)
         local sin_y = math.sin(ry)
@@ -87,10 +87,10 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
         return xx, yy, zz
     end
 
-    local e_x = 2 * thx_max / w
-    local e_y = 2 * thy_max / h
+    local e_x = 2 * max_horizontal_angle / w
+    local e_y = 2 * max_vertical_angle / h
 
-    Nh = math.max(1, math.floor(N / 2))
+    local half_divisions = math.max(1, math.floor(n / 2))
     local x = {}
     local y = {}
     local z = {}
@@ -98,14 +98,14 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
     local v = {}
     local gz = 0
 
-    for i = 0, Nh do
-        local th = i / Nh * thx_max
+    for i = 0, half_divisions do
+        local th = i / half_divisions * max_horizontal_angle
         local xx, zz
         if e_x ~= 0 then
             xx = math.sin(th) / e_x
             zz = (1 - math.cos(th)) / e_x
         else
-            xx = i / Nh * w / 2
+            xx = i / half_divisions * w / 2
             zz = 0
         end
 
@@ -121,9 +121,9 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
         v[-i] = {}
 
         if e_y ~= 0 then
-            for j = 0, N do
-                local jj = j / N - 0.5
-                local th2 = 2 * jj * thy_max
+            for j = 0, n do
+                local jj = j / n - 0.5
+                local th2 = 2 * jj * max_vertical_angle
                 local yy2, rr2
                 yy2 = math.sin(th2) / e_y
                 rr2 = (1 - math.cos(th2)) / e_y
@@ -136,9 +136,9 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
                 gz = gz + z[i][j]
             end
         else
-            for j = 0, N do
+            for j = 0, n do
                 x[i][j] = xx
-                y[i][j] = (j / N - 0.5) * h
+                y[i][j] = (j / n - 0.5) * h
                 z[i][j] = zz
                 x[-i][j] = -xx
                 y[-i][j] = y[i][j]
@@ -146,23 +146,23 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
                 gz = gz + z[i][j]
             end
         end
-        for j = 0, N do
-            u[i][j] = (1 + i / Nh) * obj.w / 2
-            v[i][j] = j / N * obj.h
-            u[-i][j] = (Nh - i) / Nh * obj.w / 2
+        for j = 0, n do
+            u[i][j] = (1 + i / half_divisions) * obj.w / 2
+            v[i][j] = j / n * obj.h
+            u[-i][j] = (half_divisions - i) / half_divisions * obj.w / 2
             v[-i][j] = v[i][j]
         end
     end
 
-    if check0 then
-        gz = gz / ((Nh + 1) * (N + 1))
+    if check_center_on_centroid then
+        gz = gz / ((half_divisions + 1) * (n + 1))
     else
         gz = 0
     end
 
-    for i = -Nh, Nh do
-        for j = 0, N do
-            local xx, yy, zz = ROTxyz(x[i][j], y[i][j], z[i][j] - gz, rx, ry, rz)
+    for i = -half_divisions, half_divisions do
+        for j = 0, n do
+            local xx, yy, zz = rotate_xyz(x[i][j], y[i][j], z[i][j] - gz, rx, ry, rz)
 
             x[i][j] = xx + cx
             y[i][j] = yy + cy
@@ -171,8 +171,8 @@ local set3Dimg = function(N, w, h, thx_max, thy_max, rx, ry, rz, cx, cy, cz)
     end
 
     local vertices = {}
-    for i = -Nh, Nh - 1 do
-        for j = 0, N - 1 do
+    for i = -half_divisions, half_divisions - 1 do
+        for j = 0, n - 1 do
             vertices[#vertices + 1] = {
                 x[i][j],
                 y[i][j],
@@ -212,30 +212,42 @@ local area_size_z = math.max(1, track_area_size_z or 2000)
 local move_speed = track_move_speed or 100
 local move_direction_error = math.max(10, 100 - (track_move_direction_error or 12))
 local rotation_speed = track_rotation_speed or 10
-local thx_max = math.pi * track_deform_1 * 0.01
-local thy_max = math.pi * track_deform_2 * 0.01
+local max_horizontal_angle = math.pi * track_deform_1 * 0.01
+local max_vertical_angle = math.pi * track_deform_2 * 0.01
 local object_count = track_object_count
 
-local T = obj.time
+local t = obj.time
 
 if object_count == 0 then
-    set3Dimg(division_count, w, h, thx_max, thy_max, 0, 0, 0, 0, 0, 0)
+    set_3d_image(division_count, w, h, max_horizontal_angle, max_vertical_angle, 0, 0, 0, 0, 0, 0)
 else
     for i = 1, object_count do
-        local rx = obj.rand(0, 360, i, 1000) + rotation_speed * T * obj.rand(0, 1000, i, 7000) * 0.001
-        local ry = obj.rand(0, 360, i, 2000) + rotation_speed * T * obj.rand(0, 1000, i, 8000) * 0.001
-        local rz = obj.rand(0, 360, i, 3000) + rotation_speed * T * obj.rand(0, 1000, i, 9000) * 0.001
+        local rx = obj.rand(0, 360, i, 1000) + rotation_speed * t * obj.rand(0, 1000, i, 7000) * 0.001
+        local ry = obj.rand(0, 360, i, 2000) + rotation_speed * t * obj.rand(0, 1000, i, 8000) * 0.001
+        local rz = obj.rand(0, 360, i, 3000) + rotation_speed * t * obj.rand(0, 1000, i, 9000) * 0.001
 
-        local divVx = move_speed * obj.rand(move_direction_error, 100, i, 10000) * 0.01
-        local dvyz = math.sqrt(move_speed * move_speed - divVx * divVx)
+        local div_vx = move_speed * obj.rand(move_direction_error, 100, i, 10000) * 0.01
+        local dvyz = math.sqrt(move_speed * move_speed - div_vx * div_vx)
         local radi = math.rad(obj.rand(0, 3600, i, 11000) * 0.1)
-        local divVy = dvyz * math.cos(radi)
-        local divVz = dvyz * math.sin(radi)
+        local div_vy = dvyz * math.cos(radi)
+        local div_vz = dvyz * math.sin(radi)
 
-        local cx = (obj.rand(0, area_size_x, i, 4000) + divVx * T) % area_size_x - area_size_x * 0.5
-        local cy = obj.rand(0, area_size_y, i, 5000) + divVy * T - area_size_y * 0.5
-        local cz = obj.rand(0, area_size_z, i, 6000) + divVz * T
+        local cx = (obj.rand(0, area_size_x, i, 4000) + div_vx * t) % area_size_x - area_size_x * 0.5
+        local cy = obj.rand(0, area_size_y, i, 5000) + div_vy * t - area_size_y * 0.5
+        local cz = obj.rand(0, area_size_z, i, 6000) + div_vz * t
 
-        set3Dimg(division_count, w, h, thx_max, thy_max, math.rad(rx), math.rad(ry), math.rad(rz), cx, cy, cz)
+        set_3d_image(
+            division_count,
+            w,
+            h,
+            max_horizontal_angle,
+            max_vertical_angle,
+            math.rad(rx),
+            math.rad(ry),
+            math.rad(rz),
+            cx,
+            cy,
+            cz
+        )
     end
 end

@@ -7,4 +7,4 @@ local track_image_id = 0
 
 ---$embed
 local extbuffer = require("extbuffer")
-extbuffer.read(track_image_id)
+extbuffer.read_image(track_image_id)

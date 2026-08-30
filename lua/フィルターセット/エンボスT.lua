@@ -11,13 +11,13 @@ local track_strength = 100
 ---step=1
 local track_direction = 1
 
-local St = track_strength * 0.01
-local Vec = track_direction
+local strength_ratio = track_strength * 0.01
+local direction_index = track_direction
 
 --[[pixelshader@emboss
 ---$include "./shaders/emboss.hlsl"
 ]]
 
 obj.effect("領域拡張", "塗りつぶし", 1, "上", 1, "下", 1, "左", 1, "右", 1)
-obj.pixelshader("emboss", "object", "object", { St, Vec })
+obj.pixelshader("emboss", "object", "object", { strength_ratio, direction_index })
 obj.effect("クリッピング", "上", 1, "下", 1, "左", 1, "右", 1)

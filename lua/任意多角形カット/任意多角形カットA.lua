@@ -26,20 +26,20 @@ local track_vertex_count = 4
 local track_thickness = 0
 
 ---$color:側面色
-local wcol = nil
+local color_side = nil
 
 ---$value:領域
-local are = { -100, -100, 100, -100, 100, 100, -100, 100 }
+local value_polygon_vertices = { -100, -100, 100, -100, 100, 100, -100, 100 }
 
 -- ---$value:アンチエイリアス
 -- local ANT = 0
 
-while #are / 2 < track_vertex_count do
-    are[#are + 1] = 0
-    are[#are + 1] = 0
+while #value_polygon_vertices / 2 < track_vertex_count do
+    value_polygon_vertices[#value_polygon_vertices + 1] = 0
+    value_polygon_vertices[#value_polygon_vertices + 1] = 0
 end
 
-function muki(ax, ay, bx, by)
+local function orientation_sign(ax, ay, bx, by)
     if ax * by - ay * bx > 0 then
         return 1
     else
@@ -47,18 +47,27 @@ function muki(ax, ay, bx, by)
     end
 end
 
-function intersectM(p1, p2, p3, p4)
-    return ((p1.x - p2.x) * (p3.y - p1.y) + (p1.y - p2.y) * (p1.x - p3.x))
-        * ((p1.x - p2.x) * (p4.y - p1.y) + (p1.y - p2.y) * (p1.x - p4.x))
+local function intersection_product(vertex_1, vertex_2, vertex_3, vertex_4)
+    return (
+        (vertex_1.x - vertex_2.x) * (vertex_3.y - vertex_1.y)
+        + (vertex_1.y - vertex_2.y) * (vertex_1.x - vertex_3.x)
+    )
+        * (
+            (vertex_1.x - vertex_2.x) * (vertex_4.y - vertex_1.y)
+            + (vertex_1.y - vertex_2.y) * (vertex_1.x - vertex_4.x)
+        )
 end
 
-function PosIncludeTriEx(tp1, tp2, tp3, xp)
-    if (tp1.x - tp3.x) * (tp1.y - tp2.y) == (tp1.x - tp2.x) * (tp1.y - tp3.y) then
+local function point_in_triangle(triangle_vertex_1, triangle_vertex_2, triangle_vertex_3, test_point)
+    if
+        (triangle_vertex_1.x - triangle_vertex_3.x) * (triangle_vertex_1.y - triangle_vertex_2.y)
+        == (triangle_vertex_1.x - triangle_vertex_2.x) * (triangle_vertex_1.y - triangle_vertex_3.y)
+    then
         return 0
     elseif
-        (intersectM(tp1, tp2, xp, tp3) < 0)
-        or (intersectM(tp1, tp3, xp, tp2) < 0)
-        or (intersectM(tp2, tp3, xp, tp1) < 0)
+        (intersection_product(triangle_vertex_1, triangle_vertex_2, test_point, triangle_vertex_3) < 0)
+        or (intersection_product(triangle_vertex_1, triangle_vertex_3, test_point, triangle_vertex_2) < 0)
+        or (intersection_product(triangle_vertex_2, triangle_vertex_3, test_point, triangle_vertex_1) < 0)
     then
         return 0
     else
@@ -66,215 +75,227 @@ function PosIncludeTriEx(tp1, tp2, tp3, xp)
     end
 end
 
-function mydp(p1, p2, p3)
-    if TC == 0 then
+local half_thickness, active_vertex_count, zoom, w, h, texture_center_x, texture_center_y, vertices, scaled_vertices, original_vertex_count, max_x, max_y, max_radius_squared, furthest_vertex_index, polygon_orientation, found_ear, corner_orientation, contains_vertex
+
+local function draw_triangle(vertex_1, vertex_2, vertex_3)
+    if half_thickness == 0 then
         obj.drawpoly(
-            p1.x,
-            p1.y,
-            TC,
-            p1.x,
-            p1.y,
-            TC,
-            p2.x,
-            p2.y,
-            TC,
-            p3.x,
-            p3.y,
-            TC,
-            p1.x + w2,
-            p1.y + h2,
-            p1.x + w2,
-            p1.y + h2,
-            p2.x + w2,
-            p2.y + h2,
-            p3.x + w2,
-            p3.y + h2
+            vertex_1.x,
+            vertex_1.y,
+            half_thickness,
+            vertex_1.x,
+            vertex_1.y,
+            half_thickness,
+            vertex_2.x,
+            vertex_2.y,
+            half_thickness,
+            vertex_3.x,
+            vertex_3.y,
+            half_thickness,
+            vertex_1.x + texture_center_x,
+            vertex_1.y + texture_center_y,
+            vertex_1.x + texture_center_x,
+            vertex_1.y + texture_center_y,
+            vertex_2.x + texture_center_x,
+            vertex_2.y + texture_center_y,
+            vertex_3.x + texture_center_x,
+            vertex_3.y + texture_center_y
         )
     else
-        p1x, p2x, p3x = p1.x * zoom, p2.x * zoom, p3.x * zoom
-        p1y, p2y, p3y = p1.y * zoom, p2.y * zoom, p3.y * zoom
+        local vertex_1_x, vertex_2_x, vertex_3_x = vertex_1.x * zoom, vertex_2.x * zoom, vertex_3.x * zoom
+        local vertex_1_y, vertex_2_y, vertex_3_y = vertex_1.y * zoom, vertex_2.y * zoom, vertex_3.y * zoom
         obj.drawpoly(
-            p1x,
-            p1y,
-            TC,
-            p1x,
-            p1y,
-            TC,
-            p2x,
-            p2y,
-            TC,
-            p3x,
-            p3y,
-            TC,
-            p1x + w2,
-            p1y + h2,
-            p1x + w2,
-            p1y + h2,
-            p2x + w2,
-            p2y + h2,
-            p3x + w2,
-            p3y + h2
+            vertex_1_x,
+            vertex_1_y,
+            half_thickness,
+            vertex_1_x,
+            vertex_1_y,
+            half_thickness,
+            vertex_2_x,
+            vertex_2_y,
+            half_thickness,
+            vertex_3_x,
+            vertex_3_y,
+            half_thickness,
+            vertex_1_x + texture_center_x,
+            vertex_1_y + texture_center_y,
+            vertex_1_x + texture_center_x,
+            vertex_1_y + texture_center_y,
+            vertex_2_x + texture_center_x,
+            vertex_2_y + texture_center_y,
+            vertex_3_x + texture_center_x,
+            vertex_3_y + texture_center_y
         )
         obj.drawpoly(
-            p1x,
-            p1y,
-            -TC,
-            p1x,
-            p1y,
-            -TC,
-            p2x,
-            p2y,
-            -TC,
-            p3x,
-            p3y,
-            -TC,
-            p1x + w2,
-            p1y + h2,
-            p1x + w2,
-            p1y + h2,
-            p2x + w2,
-            p2y + h2,
-            p3x + w2,
-            p3y + h2
+            vertex_1_x,
+            vertex_1_y,
+            -half_thickness,
+            vertex_1_x,
+            vertex_1_y,
+            -half_thickness,
+            vertex_2_x,
+            vertex_2_y,
+            -half_thickness,
+            vertex_3_x,
+            vertex_3_y,
+            -half_thickness,
+            vertex_1_x + texture_center_x,
+            vertex_1_y + texture_center_y,
+            vertex_1_x + texture_center_x,
+            vertex_1_y + texture_center_y,
+            vertex_2_x + texture_center_x,
+            vertex_2_y + texture_center_y,
+            vertex_3_x + texture_center_x,
+            vertex_3_y + texture_center_y
         )
     end
 end
 
-TC = track_thickness / 2
-N = track_vertex_count
+half_thickness = track_thickness / 2
+active_vertex_count = track_vertex_count
 
 zoom = obj.getvalue("zoom") * 0.01
 w, h = obj.getpixel()
-if TC == 0 then
-    w2 = w / 2
-    h2 = h / 2
+if half_thickness == 0 then
+    texture_center_x = w / 2
+    texture_center_y = h / 2
 else
-    w2 = obj.w / 2
-    h2 = obj.h / 2
+    texture_center_x = obj.w / 2
+    texture_center_y = obj.h / 2
 end
 
-if TC == 0 then
+if half_thickness == 0 then
     obj.setoption("drawtarget", "tempbuffer", w, h)
     obj.setoption("blend", "alpha_add")
 end
 
 -- obj.setoption("antialias", ANT)
-pos = {}
-pos2 = {}
+vertices = {}
+scaled_vertices = {}
 
-if N == 0 then
+if active_vertex_count == 0 then
     obj.setanchor("track_vertex_x,track_vertex_y", 0, "loop")
-    N = obj.getoption("section_num") + 1
-    for i = 1, N - 1 do
-        pos[i] = {}
-        pos[i].x = obj.getvalue("track.track_vertex_x", 0, i - 1)
-        pos[i].y = obj.getvalue("track.track_vertex_y", 0, i - 1)
+    active_vertex_count = obj.getoption("section_num") + 1
+    for i = 1, active_vertex_count - 1 do
+        vertices[i] = {}
+        vertices[i].x = obj.getvalue("track.track_vertex_x", 0, i - 1)
+        vertices[i].y = obj.getvalue("track.track_vertex_y", 0, i - 1)
     end
-    pos[N] = {}
-    pos[N].x = obj.getvalue(0, 0, -1)
-    pos[N].y = obj.getvalue(1, 0, -1)
+    vertices[active_vertex_count] = {}
+    vertices[active_vertex_count].x = obj.getvalue(0, 0, -1)
+    vertices[active_vertex_count].y = obj.getvalue(1, 0, -1)
 else
-    obj.setanchor("are", N, "loop")
-    for i = 1, N do
-        pos[i] = {}
-        pos[i].x = are[2 * i - 1]
-        pos[i].y = are[2 * i]
+    obj.setanchor("value_polygon_vertices", active_vertex_count, "loop")
+    for i = 1, active_vertex_count do
+        vertices[i] = {}
+        vertices[i].x = value_polygon_vertices[2 * i - 1]
+        vertices[i].y = value_polygon_vertices[2 * i]
     end
 end
 
-N2 = N
+original_vertex_count = active_vertex_count
 
-pos[0] = {}
-pos[0] = pos[N]
-pos[N + 1] = {}
-pos[N + 1] = pos[1]
+vertices[0] = {}
+vertices[0] = vertices[active_vertex_count]
+vertices[active_vertex_count + 1] = {}
+vertices[active_vertex_count + 1] = vertices[1]
 
-for i = 0, N + 1 do
-    pos2[i] = { x = pos[i].x * zoom, y = pos[i].y * zoom }
+for i = 0, active_vertex_count + 1 do
+    scaled_vertices[i] = { x = vertices[i].x * zoom, y = vertices[i].y * zoom }
 end
 
-maxX = math.abs(pos[1].x)
-maxY = math.abs(pos[1].y)
-rr = maxX * maxX + maxY * maxY
-maxi = 1
-for i = 2, N do
-    maxX = math.max(math.abs(pos[i].x), maxX)
-    maxY = math.max(math.abs(pos[i].y), maxY)
-    if rr < pos[i].x * pos[i].x + pos[i].y * pos[i].y then
-        rr = pos[i].x * pos[i].x + pos[i].y * pos[i].y
-        maxi = i
+max_x = math.abs(vertices[1].x)
+max_y = math.abs(vertices[1].y)
+max_radius_squared = max_x * max_x + max_y * max_y
+furthest_vertex_index = 1
+for i = 2, active_vertex_count do
+    max_x = math.max(math.abs(vertices[i].x), max_x)
+    max_y = math.max(math.abs(vertices[i].y), max_y)
+    if max_radius_squared < vertices[i].x * vertices[i].x + vertices[i].y * vertices[i].y then
+        max_radius_squared = vertices[i].x * vertices[i].x + vertices[i].y * vertices[i].y
+        furthest_vertex_index = i
     end
 end
 
-hmuki = muki(
-    pos[maxi].x - pos[maxi - 1].x,
-    pos[maxi].y - pos[maxi - 1].y,
-    pos[maxi + 1].x - pos[maxi].x,
-    pos[maxi + 1].y - pos[maxi].y
+polygon_orientation = orientation_sign(
+    vertices[furthest_vertex_index].x - vertices[furthest_vertex_index - 1].x,
+    vertices[furthest_vertex_index].y - vertices[furthest_vertex_index - 1].y,
+    vertices[furthest_vertex_index + 1].x - vertices[furthest_vertex_index].x,
+    vertices[furthest_vertex_index + 1].y - vertices[furthest_vertex_index].y
 )
 repeat
-    i = 0
+    local ear_index = 0
     repeat
-        han = 0
-        i = i + 1
-        imuki = muki(pos[i].x - pos[i - 1].x, pos[i].y - pos[i - 1].y, pos[i + 1].x - pos[i].x, pos[i + 1].y - pos[i].y)
-        if imuki == hmuki then
-            plot_han = 0
-            for j = 1, N do
-                if j < i - 1 or j > i + 1 then
-                    plot_han = PosIncludeTriEx(pos[i - 1], pos[i], pos[i + 1], pos[j])
+        found_ear = 0
+        ear_index = ear_index + 1
+        corner_orientation = orientation_sign(
+            vertices[ear_index].x - vertices[ear_index - 1].x,
+            vertices[ear_index].y - vertices[ear_index - 1].y,
+            vertices[ear_index + 1].x - vertices[ear_index].x,
+            vertices[ear_index + 1].y - vertices[ear_index].y
+        )
+        if corner_orientation == polygon_orientation then
+            contains_vertex = 0
+            for j = 1, active_vertex_count do
+                if j < ear_index - 1 or j > ear_index + 1 then
+                    contains_vertex = point_in_triangle(
+                        vertices[ear_index - 1],
+                        vertices[ear_index],
+                        vertices[ear_index + 1],
+                        vertices[j]
+                    )
                 end --if
-                if plot_han == 1 then
+                if contains_vertex == 1 then
                     break
                 end
             end --j
-            if plot_han == 0 then
-                han = 1
+            if contains_vertex == 0 then
+                found_ear = 1
             end
         end
-    until han == 1
-    mydp(pos[i - 1], pos[i], pos[i + 1])
-    for j = i + 1, N do
-        pos[j - 1] = pos[j]
+    until found_ear == 1
+    draw_triangle(vertices[ear_index - 1], vertices[ear_index], vertices[ear_index + 1])
+    for j = ear_index + 1, active_vertex_count do
+        vertices[j - 1] = vertices[j]
     end
-    N = N - 1
-    pos[0] = pos[N]
-    pos[N + 1] = pos[1]
-until N < 4
-mydp(pos[1], pos[2], pos[3])
+    active_vertex_count = active_vertex_count - 1
+    vertices[0] = vertices[active_vertex_count]
+    vertices[active_vertex_count + 1] = vertices[1]
+until active_vertex_count < 4
+draw_triangle(vertices[1], vertices[2], vertices[3])
 
-if TC == 0 then
+if half_thickness == 0 then
     obj.load("tempbuffer")
 end
 
-if TC ~= 0 then
+if half_thickness ~= 0 then
     obj.setoption("drawtarget", "framebuffer")
-    if wcol ~= "" and wcol ~= nil then
-        obj.load("figure", "四角形", wcol, 100)
+    if color_side ~= "" and color_side ~= nil then
+        obj.load("figure", "四角形", color_side, 100)
         -- obj.setoption("antialias", ANT)
     end
-    for i = 1, N2 do
+    for i = 1, original_vertex_count do
         obj.drawpoly(
-            pos2[i].x,
-            pos2[i].y,
-            -TC,
-            pos2[i].x,
-            pos2[i].y,
-            TC,
-            pos2[i + 1].x,
-            pos2[i + 1].y,
-            TC,
-            pos2[i + 1].x,
-            pos2[i + 1].y,
-            -TC,
-            pos2[i].x + w2,
-            pos2[i].y + h2,
-            pos2[i].x + w2,
-            pos2[i].y + h2,
-            pos2[i + 1].x + w2,
-            pos2[i + 1].y + h2,
-            pos2[i + 1].x + w2,
-            pos2[i + 1].y + h2
+            scaled_vertices[i].x,
+            scaled_vertices[i].y,
+            -half_thickness,
+            scaled_vertices[i].x,
+            scaled_vertices[i].y,
+            half_thickness,
+            scaled_vertices[i + 1].x,
+            scaled_vertices[i + 1].y,
+            half_thickness,
+            scaled_vertices[i + 1].x,
+            scaled_vertices[i + 1].y,
+            -half_thickness,
+            scaled_vertices[i].x + texture_center_x,
+            scaled_vertices[i].y + texture_center_y,
+            scaled_vertices[i].x + texture_center_x,
+            scaled_vertices[i].y + texture_center_y,
+            scaled_vertices[i + 1].x + texture_center_x,
+            scaled_vertices[i + 1].y + texture_center_y,
+            scaled_vertices[i + 1].x + texture_center_x,
+            scaled_vertices[i + 1].y + texture_center_y
         )
     end
 end

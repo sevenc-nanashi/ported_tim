@@ -12,7 +12,7 @@ local track_range = 100
 local track_apply_amount = 100
 
 ---$check:逆変換
-local track_inverse_transform = 0
+local check_inverse_transform = 0
 
 --[[pixelshader@polar_conversion
 ---$include "./shaders/polcon.hlsl"
@@ -21,19 +21,19 @@ local track_inverse_transform = 0
 local range = track_range * 0.01
 local apply_amount = track_apply_amount * 0.01
 
-local w, h = obj.getpixel()
-local diag_half = math.sqrt(w * w + h * h) * 0.5
-local half_w = w * 0.5
-local half_h = h * 0.5
-local radius_x = half_w * range + diag_half * (1.0 - range)
-local radius_y = half_h * range + diag_half * (1.0 - range)
+local width, height = obj.getpixel()
+local half_diagonal = math.sqrt(width * width + height * height) * 0.5
+local half_width = width * 0.5
+local half_height = height * 0.5
+local radius_x = half_width * range + half_diagonal * (1.0 - range)
+local radius_y = half_height * range + half_diagonal * (1.0 - range)
 
 obj.pixelshader("polar_conversion", "object", "object", {
-    w,
-    h,
+    width,
+    height,
     range,
     apply_amount,
-    track_inverse_transform,
+    check_inverse_transform,
     radius_x,
     radius_y,
 })

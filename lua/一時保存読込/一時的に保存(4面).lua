@@ -6,13 +6,13 @@
 local track_save_target = 1
 
 obj.load("framebuffer")
-i = track_save_target
-if set == nil or set == 0 then
-    obj.setoption("dst", "tmp", 2 * obj.screen_w, 2 * obj.screen_h)
-    set = 1
+local panel_index = track_save_target
+if T_TEMP_IMAGE_FOUR_PANEL_INITIALIZED == nil or T_TEMP_IMAGE_FOUR_PANEL_INITIALIZED == 0 then
+    obj.setoption("drawtarget", "tempbuffer", 2 * obj.screen_w, 2 * obj.screen_h)
+    T_TEMP_IMAGE_FOUR_PANEL_INITIALIZED = 1
 else
-    obj.setoption("dst", "tmp")
+    obj.setoption("drawtarget", "tempbuffer")
 end
-obj.draw((((i - 1) % 2) - 0.5) * obj.screen_w, (math.floor((i - 1) / 2) - 0.5) * obj.screen_h, 0)
+obj.draw((((panel_index - 1) % 2) - 0.5) * obj.screen_w, (math.floor((panel_index - 1) / 2) - 0.5) * obj.screen_h, 0)
 obj.copybuffer("cache:__ichijitekinihozon__", "tempbuffer")
 obj.alpha = 0

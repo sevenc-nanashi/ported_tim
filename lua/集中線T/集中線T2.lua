@@ -63,7 +63,7 @@ local track_swirl = 0
 ---Type4=4
 ---Type5=5
 ---Type6=6
-local track_type = 1
+local select_noise_type = 1
 
 ---$track:シード
 ---min=0
@@ -83,10 +83,10 @@ local track_width = 0
 ---step=1
 local track_height = 0
 
-local sh = 100 - track_spawn_amount
-local clipY = track_center
-local fr1 = track_distribution
-local yfr = track_period
+local noise_threshold = 100 - track_spawn_amount
+local clipping_center_y = track_center
+local noise_period_x = track_distribution
+local noise_period_y = track_period
 local screen_w = track_width > 0 and track_width or obj.screen_w
 local screen_h = track_height > 0 and track_height or obj.screen_h
 local glow_strength = track_brightness
@@ -94,32 +94,32 @@ local radial_speed = track_radial_speed
 local noise_change_speed = track_change_speed
 local rotation_speed = track_rotation_speed
 local swirl = track_swirl
-local noise_type = math.floor(track_type or 1)
+local noise_type = math.floor(select_noise_type or 1)
 local seed = math.floor(track_seed or 0)
 
-fr1 = fr1 * fr1 * 0.01
-yfr = yfr / 25
+noise_period_x = noise_period_x * noise_period_x * 0.01
+noise_period_y = noise_period_y / 25
 local size = (screen_w < screen_h) and screen_h or screen_w
-clipY = 0.01 * (clipY - 50) * size
+clipping_center_y = 0.01 * (clipping_center_y - 50) * size
 obj.load("figure", "四角形", 0xffffff, size)
 obj.effect(
     "ノイズ",
     "変化速度",
     noise_change_speed,
     "周期X",
-    fr1,
+    noise_period_x,
     "周期Y",
-    yfr,
+    noise_period_y,
     "速度Y",
     -radial_speed,
     "しきい値",
-    sh,
+    noise_threshold,
     "seed",
     seed + 3000,
     "type",
     noise_type
 )
-obj.effect("斜めクリッピング", "角度", 180, "ぼかし", size, "中心Y", clipY)
+obj.effect("斜めクリッピング", "角度", 180, "ぼかし", size, "中心Y", clipping_center_y)
 obj.effect("極座標変換", "渦巻", swirl * 0.1, "回転", rotation_speed * obj.time)
 obj.setoption("drawtarget", "tempbuffer", screen_w, screen_h)
 obj.draw(0, 0, 0, 1.2)

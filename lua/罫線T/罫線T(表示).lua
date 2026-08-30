@@ -9,13 +9,13 @@ local track_line_width = 6
 ---min=0
 ---max=500
 ---step=0.1
-local track_n_1_ratio = 100
+local track_first_row_height_percent = 100
 
 ---$track:1列目幅比[%]
 ---min=0
 ---max=500
 ---step=0.1
-local track_n_1_width_ratio = 100
+local track_first_column_width_percent = 100
 
 ---$track:背景透明度
 ---min=0
@@ -36,223 +36,253 @@ local is_enabled = function(value)
     return value == true or value == 1
 end
 
-local RL = RuledlineT
-local Lw = track_line_width
-local balp = 1 - track_opacity * 0.01
-local wcl = line_color or 0xffffff
-local EGC = is_enabled(check_edge_adjust) and 1 or 0
-local LPX = RL.LPX
-local LPY = RL.LPY
-local ACX = RL.ACX or {}
-local ACY = RL.ACY or {}
-local SLX = RL.SLX or {}
-local SLY = RL.SLY or {}
-local CX = RL.cx
-local CY = RL.cy
-local LwH = Lw * 0.5
-local DrawSL = function(x0, y0, x1, y1, Lw, P)
-    local MP = 1 - P
-    local dx, dy = y1 - y0, x0 - x1
-    local dr = math.sqrt(dx * dx + dy * dy)
-    dx, dy = Lw * 0.5 * dx / dr, Lw * 0.5 * dy / dr
-    local u0, v0, u1, v1, u2, v2, u3, v3 = x0 + dx, y0 + dy, x1 + dx, y1 + dy, x1 - dx, y1 - dy, x0 - dx, y0 - dy
-    u0, u1 = P * u0 + MP * u1, MP * u0 + P * u1
-    v0, v1 = P * v0 + MP * v1, MP * v0 + P * v1
-    u2, u3 = P * u2 + MP * u3, MP * u2 + P * u3
-    v2, v3 = P * v2 + MP * v3, MP * v2 + P * v3
+local ruled_line_state = T_RULED_LINE_STATE
+local definition = ruled_line_state.definition
+local line_width = track_line_width
+local background_alpha = 1 - track_opacity * 0.01
+local line_color_value = line_color or 0xffffff
+local edge_adjust_factor = is_enabled(check_edge_adjust) and 1 or 0
+local vertical_line_x_positions = definition.vertical_line_x_positions
+local horizontal_line_y_positions = definition.horizontal_line_y_positions
+local deletion_anchor_x_groups = definition.deletion_anchor_x_groups or {}
+local deletion_anchor_y_groups = definition.deletion_anchor_y_groups or {}
+local diagonal_anchor_x_groups = definition.diagonal_anchor_x_groups or {}
+local diagonal_anchor_y_groups = definition.diagonal_anchor_y_groups or {}
+local cx_value = definition.center_x
+local cy_value = definition.center_y
+local half_line_width = line_width * 0.5
+local draw_diagonal = function(x0, y0, x1, y1, line_width, padding_ratio)
+    local remaining_ratio = 1 - padding_ratio
+    local normal_x, normal_y = y1 - y0, x0 - x1
+    local segment_length = math.sqrt(normal_x * normal_x + normal_y * normal_y)
+    normal_x, normal_y = line_width * 0.5 * normal_x / segment_length, line_width * 0.5 * normal_y / segment_length
+    local u0, v0, u1, v1, u2, v2, u3, v3 =
+        x0 + normal_x,
+        y0 + normal_y,
+        x1 + normal_x,
+        y1 + normal_y,
+        x1 - normal_x,
+        y1 - normal_y,
+        x0 - normal_x,
+        y0 - normal_y
+    u0, u1 = padding_ratio * u0 + remaining_ratio * u1, remaining_ratio * u0 + padding_ratio * u1
+    v0, v1 = padding_ratio * v0 + remaining_ratio * v1, remaining_ratio * v0 + padding_ratio * v1
+    u2, u3 = padding_ratio * u2 + remaining_ratio * u3, remaining_ratio * u2 + padding_ratio * u3
+    v2, v3 = padding_ratio * v2 + remaining_ratio * v3, remaining_ratio * v2 + padding_ratio * v3
     obj.drawpoly(u0, v0, 0, u1, v1, 0, u2, v2, 0, u3, v3, 0)
 end
-if RL.typ == 1 then
-    hp = track_n_1_ratio
-    wp = track_n_1_width_ratio
-    local dw = RL.dw
-    local dh = dw
-    local nx = RL.nx
-    local ny = RL.ny
-    local asp = RL.asp
-    if asp > 0 then
-        dw = dw * (1 - asp)
+if definition.type == 1 then
+    local first_row_height = track_first_row_height_percent
+    local first_column_width = track_first_column_width_percent
+    local cell_width = definition.cell_width
+    local cell_height = cell_width
+    local horizontal_count = definition.horizontal_count
+    local vertical_count = definition.vertical_count
+    local aspect_ratio = definition.aspect_ratio
+    if aspect_ratio > 0 then
+        cell_width = cell_width * (1 - aspect_ratio)
     else
-        dh = dh * (1 + asp)
+        cell_height = cell_height * (1 + aspect_ratio)
     end
-    wp = (RL.wp or wp or 100) * 0.01 * dw
-    hp = (RL.hp or hp or 100) * 0.01 * dh
-    dh, hp, wp = math.floor(dh), math.floor(hp), math.floor(wp)
-    RL.Tw = wp + (nx - 1) * dw
-    RL.Th = hp + (ny - 1) * dh
-    RL.LPX[1] = -RL.Tw * 0.5
-    for i = 2, nx + 1 do
-        LPX[i] = wp + (i - 2) * dw - RL.Tw * 0.5
+    first_column_width = (definition.first_column_width or first_column_width or 100) * 0.01 * cell_width
+    first_row_height = (definition.first_row_height or first_row_height or 100) * 0.01 * cell_height
+    cell_height, first_row_height, first_column_width =
+        math.floor(cell_height), math.floor(first_row_height), math.floor(first_column_width)
+    definition.total_width = first_column_width + (horizontal_count - 1) * cell_width
+    definition.total_height = first_row_height + (vertical_count - 1) * cell_height
+    definition.vertical_line_x_positions[1] = -definition.total_width * 0.5
+    for i = 2, horizontal_count + 1 do
+        vertical_line_x_positions[i] = first_column_width + (i - 2) * cell_width - definition.total_width * 0.5
     end
-    RL.LPY[1] = -RL.Th * 0.5
-    for i = 2, ny + 1 do
-        LPY[i] = hp + (i - 2) * dh - RL.Th * 0.5
+    definition.horizontal_line_y_positions[1] = -definition.total_height * 0.5
+    for i = 2, vertical_count + 1 do
+        horizontal_line_y_positions[i] = first_row_height + (i - 2) * cell_height - definition.total_height * 0.5
     end
 end
-local ImW, ImH = RL.Tw + Lw, RL.Th + Lw
-obj.copybuffer("cache:bk", "obj")
-obj.setoption("drawtarget", "tempbuffer", ImW, ImH)
-if #SLX > 0 then
-    for m = 1, #SLX do
-        obj.load("figure", "四角形", RL.Scl[m], 1)
-        local Sdw = RL.Sdw[m]
-        local Pdw = RL.Pdw[m]
-        local SLC = RL.SLC[m]
-        for k = 1, #SLX[m] do
-            local x0 = SLX[m][k] - CX
-            local y0 = SLY[m][k] - CY
-            local Hx = -1
-            local Hy = -1
-            for s = 1, #LPX - 1 do
-                if LPX[s] <= x0 and x0 < LPX[s + 1] then
-                    Hx = s
+local canvas_width, canvas_height = definition.total_width + line_width, definition.total_height + line_width
+obj.copybuffer("cache:bk", "object")
+obj.setoption("drawtarget", "tempbuffer", canvas_width, canvas_height)
+if #diagonal_anchor_x_groups > 0 then
+    for group_index = 1, #diagonal_anchor_x_groups do
+        obj.load("figure", "四角形", definition.diagonal_colors[group_index], 1)
+        local diagonal_width = definition.diagonal_widths[group_index]
+        local diagonal_padding_ratio = definition.diagonal_padding_ratios[group_index]
+        local diagonal_shape = definition.diagonal_shapes[group_index]
+        for anchor_index = 1, #diagonal_anchor_x_groups[group_index] do
+            local x0 = diagonal_anchor_x_groups[group_index][anchor_index] - cx_value
+            local y0 = diagonal_anchor_y_groups[group_index][anchor_index] - cy_value
+            local column_index = -1
+            local row_index = -1
+            for position_index = 1, #vertical_line_x_positions - 1 do
+                if
+                    vertical_line_x_positions[position_index] <= x0
+                    and x0 < vertical_line_x_positions[position_index + 1]
+                then
+                    column_index = position_index
                     break
                 end
             end
-            for s = 1, #LPY - 1 do
-                if LPY[s] <= y0 and y0 < LPY[s + 1] then
-                    Hy = s
+            for position_index = 1, #horizontal_line_y_positions - 1 do
+                if
+                    horizontal_line_y_positions[position_index] <= y0
+                    and y0 < horizontal_line_y_positions[position_index + 1]
+                then
+                    row_index = position_index
                     break
                 end
             end
-            if Hx > 0 and Hy > 0 then
-                x0 = LPX[Hx] + LwH
-                y0 = LPY[Hy + 1] - LwH
-                x1 = LPX[Hx + 1] - LwH
-                y1 = LPY[Hy] + LwH
-                if SLC == 0 or SLC == 2 then
-                    DrawSL(x0, y0, x1, y1, Sdw, Pdw)
+            if column_index > 0 and row_index > 0 then
+                x0 = vertical_line_x_positions[column_index] + half_line_width
+                y0 = horizontal_line_y_positions[row_index + 1] - half_line_width
+                x1 = vertical_line_x_positions[column_index + 1] - half_line_width
+                y1 = horizontal_line_y_positions[row_index] + half_line_width
+                if diagonal_shape == 0 or diagonal_shape == 2 then
+                    draw_diagonal(x0, y0, x1, y1, diagonal_width, diagonal_padding_ratio)
                 end
-                if SLC == 1 or SLC == 2 then
-                    DrawSL(x0, y1, x1, y0, Sdw, Pdw)
+                if diagonal_shape == 1 or diagonal_shape == 2 then
+                    draw_diagonal(x0, y1, x1, y0, diagonal_width, diagonal_padding_ratio)
                 end
             end
         end
     end
 end
-obj.load("figure", "四角形", wcl, 1)
-local delX = {}
-local delY = {}
-for i = 0, #LPX do
-    delX[i] = {}
-    delY[i] = {}
+obj.load("figure", "四角形", line_color_value, 1)
+local deleted_horizontal_segments = {}
+local deleted_vertical_segments = {}
+for i = 0, #vertical_line_x_positions do
+    deleted_horizontal_segments[i] = {}
+    deleted_vertical_segments[i] = {}
 end
-if #ACX > 0 then
-    for m = 1, #ACX do
-        for k = 1, #ACX[m] do
-            ACX[m][k] = ACX[m][k] - CX
-            ACY[m][k] = ACY[m][k] - CY
+if #deletion_anchor_x_groups > 0 then
+    for group_index = 1, #deletion_anchor_x_groups do
+        for anchor_index = 1, #deletion_anchor_x_groups[group_index] do
+            deletion_anchor_x_groups[group_index][anchor_index] = deletion_anchor_x_groups[group_index][anchor_index]
+                - cx_value
+            deletion_anchor_y_groups[group_index][anchor_index] = deletion_anchor_y_groups[group_index][anchor_index]
+                - cy_value
         end
     end
-    for m = 1, #ACX do
-        for k = 1, #RL.ACX[m] - 1 do
-            local i0, i1, j0, j1 = 0, 0, 0, 0
-            local x0 = ACX[m][k]
-            local x1 = ACX[m][k + 1]
-            local y0 = ACY[m][k]
-            local y1 = ACY[m][k + 1]
-            for s = 1, #LPX - 1 do
-                if LPX[s] <= x0 and x0 < LPX[s + 1] then
-                    i0 = s
+    for group_index = 1, #deletion_anchor_x_groups do
+        for anchor_index = 1, #definition.deletion_anchor_x_groups[group_index] - 1 do
+            local start_column, end_column, start_row, end_row = 0, 0, 0, 0
+            local x0 = deletion_anchor_x_groups[group_index][anchor_index]
+            local x1 = deletion_anchor_x_groups[group_index][anchor_index + 1]
+            local y0 = deletion_anchor_y_groups[group_index][anchor_index]
+            local y1 = deletion_anchor_y_groups[group_index][anchor_index + 1]
+            for position_index = 1, #vertical_line_x_positions - 1 do
+                if
+                    vertical_line_x_positions[position_index] <= x0
+                    and x0 < vertical_line_x_positions[position_index + 1]
+                then
+                    start_column = position_index
                     break
                 end
             end
-            for s = 1, #LPX - 1 do
-                if LPX[s] <= x1 and x1 < LPX[s + 1] then
-                    i1 = s
+            for position_index = 1, #vertical_line_x_positions - 1 do
+                if
+                    vertical_line_x_positions[position_index] <= x1
+                    and x1 < vertical_line_x_positions[position_index + 1]
+                then
+                    end_column = position_index
                     break
                 end
             end
-            for s = 1, #LPY - 1 do
-                if LPY[s] <= y0 and y0 < LPY[s + 1] then
-                    j0 = s
+            for position_index = 1, #horizontal_line_y_positions - 1 do
+                if
+                    horizontal_line_y_positions[position_index] <= y0
+                    and y0 < horizontal_line_y_positions[position_index + 1]
+                then
+                    start_row = position_index
                     break
                 end
             end
-            for s = 1, #LPY - 1 do
-                if LPY[s] <= y1 and y1 < LPY[s + 1] then
-                    j1 = s
+            for position_index = 1, #horizontal_line_y_positions - 1 do
+                if
+                    horizontal_line_y_positions[position_index] <= y1
+                    and y1 < horizontal_line_y_positions[position_index + 1]
+                then
+                    end_row = position_index
                     break
                 end
             end
-            if LPX[#LPX] <= x0 then
-                i0 = #LPX
+            if vertical_line_x_positions[#vertical_line_x_positions] <= x0 then
+                start_column = #vertical_line_x_positions
             end
-            if LPX[#LPX] <= x1 then
-                i1 = #LPX
+            if vertical_line_x_positions[#vertical_line_x_positions] <= x1 then
+                end_column = #vertical_line_x_positions
             end
-            if LPY[#LPY] <= y0 then
-                j0 = #LPY
+            if horizontal_line_y_positions[#horizontal_line_y_positions] <= y0 then
+                start_row = #horizontal_line_y_positions
             end
-            if LPY[#LPY] <= y1 then
-                j1 = #LPY
+            if horizontal_line_y_positions[#horizontal_line_y_positions] <= y1 then
+                end_row = #horizontal_line_y_positions
             end
-            if i0 > i1 then
-                i0, i1 = i1, i0
+            if start_column > end_column then
+                start_column, end_column = end_column, start_column
             end
-            if j0 > j1 then
-                j0, j1 = j1, j0
+            if start_row > end_row then
+                start_row, end_row = end_row, start_row
             end
-            for i = i0, i1 do
-                for j = j0, j1 - 1 do
-                    if j1 > j0 then
-                        delX[i][j + 1] = 1
+            for i = start_column, end_column do
+                for j = start_row, end_row - 1 do
+                    if end_row > start_row then
+                        deleted_horizontal_segments[i][j + 1] = 1
                     end
                 end
             end
-            for j = j0, j1 do
-                for i = i0, i1 - 1 do
-                    if i1 > i0 then
-                        delY[i + 1][j] = 1
+            for j = start_row, end_row do
+                for i = start_column, end_column - 1 do
+                    if end_column > start_column then
+                        deleted_vertical_segments[i + 1][j] = 1
                     end
                 end
             end
         end
     end
 end
-for j = 1, #LPY do
-    local y0 = LPY[j] - LwH
-    local y1 = LPY[j] + LwH
-    for i = 1, #LPX - 1 do
-        local x0 = LPX[i] - LwH
-        local x1 = LPX[i + 1] + LwH
-        if delX[i][j] == nil then
+for j = 1, #horizontal_line_y_positions do
+    local y0 = horizontal_line_y_positions[j] - half_line_width
+    local y1 = horizontal_line_y_positions[j] + half_line_width
+    for i = 1, #vertical_line_x_positions - 1 do
+        local x0 = vertical_line_x_positions[i] - half_line_width
+        local x1 = vertical_line_x_positions[i + 1] + half_line_width
+        if deleted_horizontal_segments[i][j] == nil then
             obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0)
         end
     end
 end
-for i = 1, #LPX do
-    local x0 = LPX[i] - LwH
-    local x1 = LPX[i] + LwH
-    for j = 1, #LPY - 1 do
-        local y0 = LPY[j] - LwH
-        local y1 = LPY[j + 1] + LwH
-        if delY[i][j] == nil then
+for i = 1, #vertical_line_x_positions do
+    local x0 = vertical_line_x_positions[i] - half_line_width
+    local x1 = vertical_line_x_positions[i] + half_line_width
+    for j = 1, #horizontal_line_y_positions - 1 do
+        local y0 = horizontal_line_y_positions[j] - half_line_width
+        local y1 = horizontal_line_y_positions[j + 1] + half_line_width
+        if deleted_vertical_segments[i][j] == nil then
             obj.drawpoly(x0, y0, 0, x1, y0, 0, x1, y1, 0, x0, y1, 0)
         end
     end
 end
-obj.copybuffer("cache:img", "tmp")
-obj.copybuffer("obj", "cache:bk")
-obj.setoption("drawtarget", "tempbuffer", ImW, ImH)
-obj.draw(-CX, -CY, 0, 1, balp)
-obj.copybuffer("obj", "cache:img")
+obj.copybuffer("cache:img", "tempbuffer")
+obj.copybuffer("object", "cache:bk")
+obj.setoption("drawtarget", "tempbuffer", canvas_width, canvas_height)
+obj.draw(-cx_value, -cy_value, 0, 1, background_alpha)
+obj.copybuffer("object", "cache:img")
 obj.draw()
 obj.load("tempbuffer")
-if RL.typ == 1 then
-    CX = 0.5 * ((ImW - obj.screen_w) % 2) * EGC
-    CY = 0.5 * ((ImH - obj.screen_h) % 2) * EGC
+if definition.type == 1 then
+    cx_value = 0.5 * ((canvas_width - obj.screen_w) % 2) * edge_adjust_factor
+    cy_value = 0.5 * ((canvas_height - obj.screen_h) % 2) * edge_adjust_factor
 else
-    CX = -CX + 0.5 * ((Lw - obj.screen_w) % 2) * EGC
-    CY = -CY + 0.5 * ((Lw - obj.screen_h) % 2) * EGC
+    cx_value = -cx_value + 0.5 * ((line_width - obj.screen_w) % 2) * edge_adjust_factor
+    cy_value = -cy_value + 0.5 * ((line_width - obj.screen_h) % 2) * edge_adjust_factor
 end
-obj.cx, obj.cy = CX, CY
+obj.center_x, obj.center_y = cx_value, cy_value
 if is_enabled(check_save_coordinates) then
-    RuledlineTcrd = {}
-    RuledlineTcrd.X = LPX
-    RuledlineTcrd.Y = LPY
-    RuledlineTcrd.CX = -CX
-    RuledlineTcrd.CY = -CY
+    ruled_line_state.coordinates = {}
+    ruled_line_state.coordinates.x_positions = vertical_line_x_positions
+    ruled_line_state.coordinates.y_positions = horizontal_line_y_positions
+    ruled_line_state.coordinates.center_x = -cx_value
+    ruled_line_state.coordinates.center_y = -cy_value
 end
-RuledlineT = nil
-RuledlineTASN = nil
+ruled_line_state.definition = nil
+ruled_line_state.auto_placement_index = nil

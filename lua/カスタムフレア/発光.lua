@@ -24,69 +24,71 @@ local track_intensity = 30
 local track_center_intensity = 100
 
 ---$check:ベースカラー
-local basechk = 1
+local check_use_base_color = 1
 
 ---$color:色
-local col = 0xccccff
+local color = 0xccccff
 
 ---$track:位置％
 ---min=-5000
 ---max=5000
 ---step=0.1
-local t = -100
+local position_percent = -100
 
 ---$value:位置オフセット％
-local OFSET = { 0, 0, 0 }
+local position_offset = { 0, 0, 0 }
 
 ---$track:発光中心サイズ％
 ---min=0
 ---max=100
 ---step=0.1
-local hs = 80
+local size_falloff = 80
 
 ---$check:自動拡大
-local aubg = 0
+local check_auto_hide = 0
 
 ---$track:基準距離
 ---min=0
 ---max=5000
 ---step=0.1
-local Rmax = 400
+local reference_distance = 400
 
---hide@col:basechk==1
---hide@Rmax:aubg==0
+--hide@color:check_use_base_color==1
+--hide@reference_distance:check_auto_hide==0
 
-obj.copybuffer("tmp", "obj")
+obj.copybuffer("tempbuffer", "object")
 obj.setoption("drawtarget", "tempbuffer")
-obj.setoption("blend", CustomFlareMode)
-if basechk == 1 then
-    col = CustomFlareColor
+obj.setoption("blend", T_CUSTOM_FLARE_BLEND_MODE)
+if check_use_base_color == 1 then
+    color = T_CUSTOM_FLARE_COLOR
 end
 local size = track_size
-local alp = track_intensity * 0.01
-hs = hs * 0.01
-if aubg == 1 then
+local intensity_ratio = track_intensity * 0.01
+size_falloff = size_falloff * 0.01
+if check_auto_hide == 1 then
     size = size
         * (
             1
             - math.sqrt(
-                    CustomFlaredX * CustomFlaredX + CustomFlaredY * CustomFlaredY + CustomFlaredZ * CustomFlaredZ
+                    T_CUSTOM_FLARE_DELTA_X * T_CUSTOM_FLARE_DELTA_X
+                        + T_CUSTOM_FLARE_DELTA_Y * T_CUSTOM_FLARE_DELTA_Y
+                        + T_CUSTOM_FLARE_DELTA_Z * T_CUSTOM_FLARE_DELTA_Z
                 )
-                / Rmax
+                / reference_distance
         )
     if size < 0 then
         size = 0
     end
 end
 local blur = size * track_percent * 0.01
-local dx = (t + OFSET[1]) * 0.01 * CustomFlaredX + CustomFlareCX
-local dy = (t + OFSET[2]) * 0.01 * CustomFlaredY + CustomFlareCY
-local dz = (t + OFSET[3]) * 0.01 * CustomFlaredZ + CustomFlareCZ
-obj.load("figure", "円", col, size)
+local draw_x = (position_percent + position_offset[1]) * 0.01 * T_CUSTOM_FLARE_DELTA_X + T_CUSTOM_FLARE_CENTER_X
+local draw_y = (position_percent + position_offset[2]) * 0.01 * T_CUSTOM_FLARE_DELTA_Y + T_CUSTOM_FLARE_CENTER_Y
+local draw_z = (position_percent + position_offset[3]) * 0.01 * T_CUSTOM_FLARE_DELTA_Z + T_CUSTOM_FLARE_CENTER_Z
+obj.load("figure", "円", color, size)
 obj.effect("ぼかし", "範囲", blur)
-obj.draw(dx, dy, dz, 1, alp)
-obj.load("figure", "円", 0xffffff, size * hs)
-obj.effect("ぼかし", "範囲", blur * hs)
-obj.draw(dx, dy, dz, 1, alp * track_center_intensity * 0.01)
+obj.draw(draw_x, draw_y, draw_z, 1, intensity_ratio)
+obj.load("figure", "円", 0xffffff, size * size_falloff)
+obj.effect("ぼかし", "範囲", blur * size_falloff)
+obj.draw(draw_x, draw_y, draw_z, 1, intensity_ratio * track_center_intensity * 0.01)
 obj.load("tempbuffer")
 obj.setoption("blend", 0)

@@ -1,4 +1,5 @@
 --label:${ROOT_CATEGORY}\色調整\@多色グラデーション
+local color_index
 ---$track:番号
 ---min=1
 ---max=8
@@ -23,13 +24,13 @@ local track_center_x = 0
 ---step=0.1
 local track_center_y = 0
 
-if hantei == nil or hantei == 0 then
-    kaX = { 0, 0, 0, 0, 0, 0, 0, 0 }
-    kaY = { 0, 0, 0, 0, 0, 0, 0, 0 }
-    kaS = { 0, 0, 0, 0, 0, 0, 0, 0 }
+if T_GRADIENT_EXTENSION_ACTIVE == nil or T_GRADIENT_EXTENSION_ACTIVE == 0 then
+    T_GRADIENT_OFFSET_X = { 0, 0, 0, 0, 0, 0, 0, 0 }
+    T_GRADIENT_OFFSET_Y = { 0, 0, 0, 0, 0, 0, 0, 0 }
+    T_GRADIENT_WIDTH_OFFSETS = { 0, 0, 0, 0, 0, 0, 0, 0 }
 end
-ban = math.floor(track_index)
-kaS[ban] = track_width
-kaX[ban] = track_center_x
-kaY[ban] = track_center_y
-hantei = 1
+color_index = math.floor(track_index)
+T_GRADIENT_WIDTH_OFFSETS[color_index] = track_width
+T_GRADIENT_OFFSET_X[color_index] = track_center_x
+T_GRADIENT_OFFSET_Y[color_index] = track_center_y
+T_GRADIENT_EXTENSION_ACTIVE = 1

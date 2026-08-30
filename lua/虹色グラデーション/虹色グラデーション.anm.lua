@@ -25,13 +25,13 @@ local track_shift = 0
 local track_original_image = 0
 
 ---$check:円形配置
-local chk = 0
+local check_circular_layout = 0
 
 ---$check:反転
-local rev = 0
+local check_reverse = 0
 
 ---$check:繰返し
-local rep = 0
+local check_repeat = 0
 
 ---$track:混色度合
 ---min=0
@@ -59,12 +59,12 @@ local track_boundary_correction = 0.055
 local track_blend_mode = 0
 
 ---$check:位置ズレ補正
-local chk_position_correction = 1
+local check_restore_position = 1
 
-local iox = obj.ox
-local ioy = obj.oy
-local icx = obj.cx
-local icy = obj.cy
+local original_ox = obj.ox
+local original_oy = obj.oy
+local original_cx = obj.cx
+local original_cy = obj.cy
 
 --[[pixelshader@rainbow_gradation
 ---$include "./shaders/rainbow_gradation.hlsl"
@@ -78,10 +78,10 @@ obj.pixelshader("rainbow_gradation", "object", "object", {
     track_mix_rate,
     track_shrink_rate * 0.01,
     math.rad(track_rotation),
-    rev,
-    chk,
+    check_reverse,
+    check_circular_layout,
     track_shift,
-    rep,
+    check_repeat,
     track_boundary_correction,
 })
 obj.setoption("blend", math.floor(track_blend_mode))
@@ -89,9 +89,9 @@ obj.draw(0, 0, 0, 1, 1 - track_original_image * 0.01)
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
 
-if chk_position_correction == 1 then
-    obj.ox = iox
-    obj.oy = ioy
-    obj.cx = icx
-    obj.cy = icy
+if check_restore_position == 1 then
+    obj.ox = original_ox
+    obj.oy = original_oy
+    obj.cx = original_cx
+    obj.cy = original_cy
 end

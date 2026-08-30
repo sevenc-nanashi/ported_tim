@@ -28,160 +28,180 @@ local track_fov = 30
 ---min=1
 ---max=300
 ---step=1
-local N = 30
+local division_count = 30
 
 ---$check:描画処理
-local chk = 1
+local check_additive_blend = 1
 
 ---$check:親カメラデータを使用
-local check0 = false
+local check_use_parent_camera = false
 
---hide@track_fov:check0==1
+--hide@track_fov:check_use_parent_camera==1
 
-local chgRP = function(t, f)
+local change_rotation_position = function(t, f)
     f = -f + math.pi
     return math.sin(f) * math.sin(t), -math.cos(t), -math.cos(f) * math.sin(t)
 end
 
-local ROT = function(x, y, z, t, f, drz)
-    local st = math.sin(t)
-    local ct = math.cos(t)
-    local sf = math.sin(f)
-    local cf = math.cos(f)
-    local sz = math.sin(drz)
-    local cz = math.cos(drz)
-    local zx = cf * z + sf * x
-    local x0 = cf * x - sf * z
-    local y0 = ct * y + st * zx
-    local z0 = -st * y + ct * zx
-    x0, y0 = cz * x0 - sz * y0, sz * x0 + cz * y0
+local rotate = function(x, y, z, t, f, roll)
+    local sin_tilt = math.sin(t)
+    local cos_tilt = math.cos(t)
+    local sin_pan = math.sin(f)
+    local cos_pan = math.cos(f)
+    local sin_roll = math.sin(roll)
+    local cos_roll = math.cos(roll)
+    local rotated_zx = cos_pan * z + sin_pan * x
+    local x0 = cos_pan * x - sin_pan * z
+    local y0 = cos_tilt * y + sin_tilt * rotated_zx
+    local z0 = -sin_tilt * y + cos_tilt * rotated_zx
+    x0, y0 = cos_roll * x0 - sin_roll * y0, sin_roll * x0 + cos_roll * y0
     return x0, y0, z0
 end
 
-local hantei = function(ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3, wf, hf)
+local intersects_screen = function(ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3, half_screen_width, half_screen_height)
     local abs = math.abs
-    local poshantei = function(wf, hf, ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3)
-        local dd = 0
-        if (ix0 - wf) * (iy1 - hf) - (iy0 - hf) * (ix1 - wf) > 0 then
-            dd = dd + 1
+    local poshantei = function(half_screen_width, half_screen_height, ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3)
+        local winding_score = 0
+        if
+            (ix0 - half_screen_width) * (iy1 - half_screen_height)
+                - (iy0 - half_screen_height) * (ix1 - half_screen_width)
+            > 0
+        then
+            winding_score = winding_score + 1
         else
-            dd = dd - 1
+            winding_score = winding_score - 1
         end
-        if (ix1 - wf) * (iy2 - hf) - (iy1 - hf) * (ix2 - wf) > 0 then
-            dd = dd + 1
+        if
+            (ix1 - half_screen_width) * (iy2 - half_screen_height)
+                - (iy1 - half_screen_height) * (ix2 - half_screen_width)
+            > 0
+        then
+            winding_score = winding_score + 1
         else
-            dd = dd - 1
+            winding_score = winding_score - 1
         end
-        if (ix2 - wf) * (iy3 - hf) - (iy2 - hf) * (ix3 - wf) > 0 then
-            dd = dd + 1
+        if
+            (ix2 - half_screen_width) * (iy3 - half_screen_height)
+                - (iy2 - half_screen_height) * (ix3 - half_screen_width)
+            > 0
+        then
+            winding_score = winding_score + 1
         else
-            dd = dd - 1
+            winding_score = winding_score - 1
         end
-        if (ix3 - wf) * (iy0 - hf) - (iy3 - hf) * (ix0 - wf) > 0 then
-            dd = dd + 1
+        if
+            (ix3 - half_screen_width) * (iy0 - half_screen_height)
+                - (iy3 - half_screen_height) * (ix0 - half_screen_width)
+            > 0
+        then
+            winding_score = winding_score + 1
         else
-            dd = dd - 1
+            winding_score = winding_score - 1
         end
-        return (dd == 4 or dd == -4)
+        return (winding_score == 4 or winding_score == -4)
     end
 
     if
-        (abs(ix0) <= wf and abs(iy0) <= hf)
-        or (abs(ix1) <= wf and abs(iy1) <= hf)
-        or (abs(ix2) <= wf and abs(iy2) <= hf)
-        or (abs(ix3) <= wf and abs(iy3) <= hf)
+        (abs(ix0) <= half_screen_width and abs(iy0) <= half_screen_height)
+        or (abs(ix1) <= half_screen_width and abs(iy1) <= half_screen_height)
+        or (abs(ix2) <= half_screen_width and abs(iy2) <= half_screen_height)
+        or (abs(ix3) <= half_screen_width and abs(iy3) <= half_screen_height)
     then
         return true
     else
-        local cc = poshantei(wf, hf, ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3)
-        cc = cc or poshantei(-wf, hf, ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3)
-        cc = cc or poshantei(wf, -hf, ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3)
-        return cc or poshantei(-wf, -hf, ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3)
+        local contains_corner = poshantei(half_screen_width, half_screen_height, ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3)
+        contains_corner = contains_corner
+            or poshantei(-half_screen_width, half_screen_height, ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3)
+        contains_corner = contains_corner
+            or poshantei(half_screen_width, -half_screen_height, ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3)
+        return contains_corner
+            or poshantei(-half_screen_width, -half_screen_height, ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3)
     end
 end
 
-if T_skydoom_H == nil then
-    T_skydoom_H = 1
-    T_skydoom_V = 1
+if T_SKYDOME_HORIZONTAL_RATIO == nil then
+    T_SKYDOME_HORIZONTAL_RATIO = 1
+    T_SKYDOME_VERTICAL_RATIO = 1
 end
 
-local L, drz, camt, camf
+local projection_distance, roll, camera_tilt, camera_pan
 
-if check0 then
-    local camx, camy, camz
-    L = aviutl_camera_param_copy.d
+if check_use_parent_camera then
+    local camera_direction_x, camera_direction_y, camera_direction_z
+    projection_distance = T_AVIUTL_CAMERA_PARAM_COPY.d
 
-    camx = aviutl_camera_param_copy.x - aviutl_camera_param_copy.tx
-    camy = aviutl_camera_param_copy.y - aviutl_camera_param_copy.ty
-    camz = aviutl_camera_param_copy.z - aviutl_camera_param_copy.tz
+    camera_direction_x = T_AVIUTL_CAMERA_PARAM_COPY.x - T_AVIUTL_CAMERA_PARAM_COPY.tx
+    camera_direction_y = T_AVIUTL_CAMERA_PARAM_COPY.y - T_AVIUTL_CAMERA_PARAM_COPY.ty
+    camera_direction_z = T_AVIUTL_CAMERA_PARAM_COPY.z - T_AVIUTL_CAMERA_PARAM_COPY.tz
 
-    local Rxz = camx * camx + camz * camz
-    local Rxyz = math.sqrt(camy * camy + Rxz)
-    local Rxz = math.sqrt(Rxz)
+    local horizontal_distance = camera_direction_x * camera_direction_x + camera_direction_z * camera_direction_z
+    local camera_distance = math.sqrt(camera_direction_y * camera_direction_y + horizontal_distance)
+    horizontal_distance = math.sqrt(horizontal_distance)
 
-    ucx = aviutl_camera_param_copy.ux
-    ucy = aviutl_camera_param_copy.uy
-    ucz = aviutl_camera_param_copy.uz
+    local camera_up_x = T_AVIUTL_CAMERA_PARAM_COPY.ux
+    local camera_up_y = T_AVIUTL_CAMERA_PARAM_COPY.uy
+    local camera_up_z = T_AVIUTL_CAMERA_PARAM_COPY.uz
 
-    if Rxz == 0 then
-        camf = 0
-        if camy > 0 then
-            camt = -math.pi * 0.5
-            drz = math.atan2(ucx, ucz) + math.pi
+    if horizontal_distance == 0 then
+        camera_pan = 0
+        if camera_direction_y > 0 then
+            camera_tilt = -math.pi * 0.5
+            roll = math.atan2(camera_up_x, camera_up_z) + math.pi
         else
-            camt = math.pi * 0.5
-            drz = -math.atan2(ucx, ucz)
+            camera_tilt = math.pi * 0.5
+            roll = -math.atan2(camera_up_x, camera_up_z)
         end
     else
-        local s1, c1, s2, c2
-        camf = math.atan2(-camx, -camz) --水平
-        camt = math.atan2(-camy, Rxz) --垂直
+        local sin_camera_pan, cos_camera_pan, sin_camera_tilt, cos_camera_tilt
+        camera_pan = math.atan2(-camera_direction_x, -camera_direction_z) --水平
+        camera_tilt = math.atan2(-camera_direction_y, horizontal_distance) --垂直
 
-        s1 = -camx / Rxz
-        c1 = -camz / Rxz
-        s2 = -camy / Rxyz
-        c2 = Rxz / Rxyz
+        sin_camera_pan = -camera_direction_x / horizontal_distance
+        cos_camera_pan = -camera_direction_z / horizontal_distance
+        sin_camera_tilt = -camera_direction_y / camera_distance
+        cos_camera_tilt = horizontal_distance / camera_distance
 
-        local oucx, oucy, oucz
+        local rotated_up_x, rotated_up_y, rotated_up_z
 
-        oucx = c1 * ucx - s1 * ucz
-        oucy = c2 * ucy - s2 * (s1 * ucx + c1 * ucz)
+        rotated_up_x = cos_camera_pan * camera_up_x - sin_camera_pan * camera_up_z
+        rotated_up_y = cos_camera_tilt * camera_up_y
+            - sin_camera_tilt * (sin_camera_pan * camera_up_x + cos_camera_pan * camera_up_z)
 
-        local l = math.sqrt(oucx * oucx + oucy * oucy)
-        oucx, oucy = oucx / l, oucy / l
+        local rotated_up_length = math.sqrt(rotated_up_x * rotated_up_x + rotated_up_y * rotated_up_y)
+        rotated_up_x, rotated_up_y = rotated_up_x / rotated_up_length, rotated_up_y / rotated_up_length
 
-        naiseki = math.max(math.min(1, -oucy), -1)
-        drz = math.acos(naiseki)
+        local dot_product = math.max(math.min(1, -rotated_up_y), -1)
+        roll = math.acos(dot_product)
 
-        if oucx > 0 then
-            drz = -drz
+        if rotated_up_x > 0 then
+            roll = -roll
         end
     end
 
-    drz = drz + math.rad(aviutl_camera_param_copy.rz + track_rotation_3)
+    roll = roll + math.rad(T_AVIUTL_CAMERA_PARAM_COPY.rz + track_rotation_3)
 else
-    drz = math.rad(track_rotation_3)
-    L = obj.screen_h * 0.5 / math.tan(math.rad(track_fov * 0.5))
-    camt = 0
-    camf = 0
+    roll = math.rad(track_rotation_3)
+    projection_distance = obj.screen_h * 0.5 / math.tan(math.rad(track_fov * 0.5))
+    camera_tilt = 0
+    camera_pan = 0
 end
 
 local w, h = obj.getpixel()
 
-local dx = w / N
-local dy = h / N
-local N2 = N * 0.5
-local iw2 = math.pi / N2 * T_skydoom_H
-local ih2 = math.pi / N
-local hpi = math.pi * 0.5
-local wf = obj.screen_w * 0.5
-local hf = obj.screen_h * 0.5
+local texture_cell_width = w / division_count
+local texture_cell_height = h / division_count
+local half_division_count = division_count * 0.5
+local longitude_step = math.pi / half_division_count * T_SKYDOME_HORIZONTAL_RATIO
+local latitude_step = math.pi / division_count
+local half_pi = math.pi * 0.5
+local half_screen_width = obj.screen_w * 0.5
+local half_screen_height = obj.screen_h * 0.5
 
-local dt = math.rad(track_rotation_2) - camt
-local df = -math.rad(track_rotation) + camf
+local effective_tilt = math.rad(track_rotation_2) - camera_tilt
+local effective_pan = -math.rad(track_rotation) + camera_pan
 
 obj.setoption("drawtarget", "tempbuffer", obj.screen_w, obj.screen_h)
-if chk == 1 then
+if check_additive_blend == 1 then
     obj.setoption("blend", "alpha_add")
 else
     obj.setoption("blend", 0)
@@ -189,37 +209,37 @@ end
 
 local vertices = {}
 
-for i = 0, N - 1 do
-    local u1 = i * dx
-    local u2 = u1 + dx
-    local f1 = (i - N2) * iw2
-    local f2 = f1 + iw2
+for i = 0, division_count - 1 do
+    local u1 = i * texture_cell_width
+    local u2 = u1 + texture_cell_width
+    local f1 = (i - half_division_count) * longitude_step
+    local f2 = f1 + longitude_step
 
-    local v1 = 0 * dy
-    local t1 = (0 * ih2 - hpi) * T_skydoom_V + hpi
+    local v1 = 0 * texture_cell_height
+    local t1 = (0 * latitude_step - half_pi) * T_SKYDOME_VERTICAL_RATIO + half_pi
 
-    local x0, y0, z0 = chgRP(t1, f1)
-    local x1, y1, z1 = chgRP(t1, f2)
-    x0, y0, z0 = ROT(x0, y0, z0, dt, df, drz)
-    x1, y1, z1 = ROT(x1, y1, z1, dt, df, drz)
+    local x0, y0, z0 = change_rotation_position(t1, f1)
+    local x1, y1, z1 = change_rotation_position(t1, f2)
+    x0, y0, z0 = rotate(x0, y0, z0, effective_tilt, effective_pan, roll)
+    x1, y1, z1 = rotate(x1, y1, z1, effective_tilt, effective_pan, roll)
 
-    for j = 1, N do
-        local v2 = j * dy
-        local t2 = (j * ih2 - hpi) * T_skydoom_V + hpi
+    for j = 1, division_count do
+        local v2 = j * texture_cell_height
+        local t2 = (j * latitude_step - half_pi) * T_SKYDOME_VERTICAL_RATIO + half_pi
 
-        local x2, y2, z2 = chgRP(t2, f2)
-        local x3, y3, z3 = chgRP(t2, f1)
+        local x2, y2, z2 = change_rotation_position(t2, f2)
+        local x3, y3, z3 = change_rotation_position(t2, f1)
 
-        x2, y2, z2 = ROT(x2, y2, z2, dt, df, drz)
-        x3, y3, z3 = ROT(x3, y3, z3, dt, df, drz)
+        x2, y2, z2 = rotate(x2, y2, z2, effective_tilt, effective_pan, roll)
+        x3, y3, z3 = rotate(x3, y3, z3, effective_tilt, effective_pan, roll)
 
         if z0 > 0 and z1 > 0 and z2 > 0 and z3 > 0 then
-            local ix0, iy0 = L * x0 / z0, L * y0 / z0
-            local ix1, iy1 = L * x1 / z1, L * y1 / z1
-            local ix2, iy2 = L * x2 / z2, L * y2 / z2
-            local ix3, iy3 = L * x3 / z3, L * y3 / z3
+            local ix0, iy0 = projection_distance * x0 / z0, projection_distance * y0 / z0
+            local ix1, iy1 = projection_distance * x1 / z1, projection_distance * y1 / z1
+            local ix2, iy2 = projection_distance * x2 / z2, projection_distance * y2 / z2
+            local ix3, iy3 = projection_distance * x3 / z3, projection_distance * y3 / z3
 
-            if hantei(ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3, wf, hf) then
+            if intersects_screen(ix0, iy0, ix1, iy1, ix2, iy2, ix3, iy3, half_screen_width, half_screen_height) then
                 vertices[#vertices + 1] =
                     { ix0, iy0, 0, ix1, iy1, 0, ix2, iy2, 0, ix3, iy3, 0, u1, v1, u2, v1, u2, v2, u1, v2 }
             end
@@ -234,5 +254,5 @@ if #vertices > 0 then
     obj.drawpoly(vertices)
 end
 obj.load("tempbuffer")
-T_skydoom_H = nil
-T_skydoom_V = nil
+T_SKYDOME_HORIZONTAL_RATIO = nil
+T_SKYDOME_VERTICAL_RATIO = nil

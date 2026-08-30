@@ -23,7 +23,7 @@ local track_width = 200
 ---step=0.1
 local track_rotation = 0
 
-T_split_CX = track_center_x
-T_split_CY = track_center_y
-T_split_W = track_width
-T_split_ROT = math.rad(track_rotation)
+T_SPLIT_CENTER_X = track_center_x
+T_SPLIT_CENTER_Y = track_center_y
+T_SPLIT_WIDTH = track_width
+T_SPLIT_ROTATION = math.rad(track_rotation)

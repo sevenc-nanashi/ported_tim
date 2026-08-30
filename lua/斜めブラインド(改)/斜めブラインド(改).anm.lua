@@ -27,58 +27,59 @@ local track_base = 0
 ---min=-100
 ---max=100
 ---step=0.1
-local TS = 0
+local track_time_offset_percent = 0
 
 ---$check:透明度反転
-local chk = 0
+local check_invert_opacity = 0
 
-local t = 100 - track_ratio
-TS = TS * 0.01
-local ATS = math.abs(TS)
+local transition_progress = 100 - track_ratio
+track_time_offset_percent = track_time_offset_percent * 0.01
+local absolute_time_offset = math.abs(track_time_offset_percent)
 
 obj.copybuffer("cache:original", "object")
-t = t * 0.01
-local spw = track_width
-local deg = track_angle
-local rad = math.rad(deg)
-local bas = track_base * 0.005
+transition_progress = transition_progress * 0.01
+local stripe_width = track_width
+local angle_degrees = track_angle
+local angle_radians = math.rad(angle_degrees)
+local base_offset_ratio = track_base * 0.005
 
-local w, h = obj.getpixel()
-local L = math.sqrt(w * w + h * h)
-local N = math.ceil(L * 0.5 / spw)
+local width, height = obj.getpixel()
+local diagonal_length = math.sqrt(width * width + height * height)
+local stripe_count = math.ceil(diagonal_length * 0.5 / stripe_width)
 
-local sin = math.sin(rad)
-local cos = -math.cos(rad)
+local angle_sine = math.sin(angle_radians)
+local negative_angle_cosine = -math.cos(angle_radians)
 
-for i = -N, N do
-    local t0 = t * (2 * N * ATS + 1) - N * ATS
-    t0 = t0 - i * TS
-    if t0 > 1 then
-        t0 = 1
+for i = -stripe_count, stripe_count do
+    local stripe_progress = transition_progress * (2 * stripe_count * absolute_time_offset + 1)
+        - stripe_count * absolute_time_offset
+    stripe_progress = stripe_progress - i * track_time_offset_percent
+    if stripe_progress > 1 then
+        stripe_progress = 1
     end
 
-    local haba = math.floor((spw + 1) * t0)
+    local visible_width = math.floor((stripe_width + 1) * stripe_progress)
 
-    local sf = i * spw + haba * bas
-    if t0 > 0 and haba > 0 then
+    local stripe_center_offset = i * stripe_width + visible_width * base_offset_ratio
+    if stripe_progress > 0 and visible_width > 0 then
         obj.effect(
             "斜めクリッピング",
             "中心X",
-            sf * sin,
+            stripe_center_offset * angle_sine,
             "中心Y",
-            sf * cos,
+            stripe_center_offset * negative_angle_cosine,
             "角度",
-            deg,
+            angle_degrees,
             "ぼかし",
             0,
             "幅",
-            -haba
+            -visible_width
         )
     end
 end
-if chk == 1 then
+if check_invert_opacity == 1 then
     obj.copybuffer("cache:cropped", "object")
-    obj.setoption("drawtarget", "tempbuffer", w, h)
+    obj.setoption("drawtarget", "tempbuffer", width, height)
     obj.copybuffer("tempbuffer", "cache:original")
     obj.copybuffer("object", "cache:cropped")
     obj.setoption("blend", "alpha_sub")

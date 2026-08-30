@@ -1,7 +1,8 @@
 --label:${ROOT_CATEGORY}\カスタムオブジェクト\@任意多角形
+local half_thickness, vertex_count, original_vertex_count
 
 ---$color:色
-local col = 0xffffff
+local fill_color = 0xffffff
 
 --group:ガイド
 ---$check:ガイド表示
@@ -20,100 +21,117 @@ local track_guide_size = 50
 local track_thickness = 0
 
 ---$color:ガイド色
-local colG = 0xff0000
+local guide_color = 0xff0000
 
 ---$figure:図形
-local fig = "円"
+local guide_figure = "円"
 
 --hide@track_guide_size:check_show_guide==0
---hide@colG:check_show_guide==0
---hide@fig:check_show_guide==0
+--hide@guide_color:check_show_guide==0
+--hide@guide_figure:check_show_guide==0
 
 local guide_size = track_guide_size
-TC = track_thickness / 2
-N = obj.getoption("section_num") + 1
-N2 = N
-local pos = {}
-for i = 1, N - 1 do
-    pos[i] = {}
-    pos[i].x = obj.getvalue("x", 0, i - 1)
-    pos[i].y = obj.getvalue("y", 0, i - 1)
+half_thickness = track_thickness / 2
+vertex_count = obj.getoption("section_num") + 1
+original_vertex_count = vertex_count
+local vertices = {}
+for i = 1, vertex_count - 1 do
+    vertices[i] = {}
+    vertices[i].x = obj.getvalue("x", 0, i - 1)
+    vertices[i].y = obj.getvalue("y", 0, i - 1)
 end
-pos[N] = {}
-pos[N].x = obj.getvalue("x", 0, -1)
-pos[N].y = obj.getvalue("y", 0, -1)
-pos[0] = {}
-pos[0] = pos[N]
-pos[N + 1] = {}
-pos[N + 1] = pos[1]
+vertices[vertex_count] = {}
+vertices[vertex_count].x = obj.getvalue("x", 0, -1)
+vertices[vertex_count].y = obj.getvalue("y", 0, -1)
+vertices[0] = {}
+vertices[0] = vertices[vertex_count]
+vertices[vertex_count + 1] = {}
+vertices[vertex_count + 1] = vertices[1]
 
-local pos2 = {}
-for i = 0, N + 1 do
-    pos2[i] = {}
-    pos2[i].x = pos[i].x
-    pos2[i].y = pos[i].y
+local original_vertices = {}
+for i = 0, vertex_count + 1 do
+    original_vertices[i] = {}
+    original_vertices[i].x = vertices[i].x
+    original_vertices[i].y = vertices[i].y
 end
 
-obj.load("figure", fig, colG, guide_size)
+obj.load("figure", guide_figure, guide_color, guide_size)
 
 if check_show_guide then
-    obj.load("figure", fig, colG, guide_size)
+    obj.load("figure", guide_figure, guide_color, guide_size)
     obj.effect("縁取り")
-    for i = 1, N do
-        pos[i].x = pos[i].x - obj.getvalue("x")
-        pos[i].y = pos[i].y - obj.getvalue("y")
-        obj.draw(pos[i].x, pos[i].y)
+    for i = 1, vertex_count do
+        vertices[i].x = vertices[i].x - obj.getvalue("x")
+        vertices[i].y = vertices[i].y - obj.getvalue("y")
+        obj.draw(vertices[i].x, vertices[i].y)
     end
 else
-    local maxX = math.abs(pos[1].x)
-    local maxY = math.abs(pos[1].y)
-    for i = 2, N do
-        maxX = math.max(math.abs(pos[i].x), maxX)
-        maxY = math.max(math.abs(pos[i].y), maxY)
+    local max_x = math.abs(vertices[1].x)
+    local max_y = math.abs(vertices[1].y)
+    for i = 2, vertex_count do
+        max_x = math.max(math.abs(vertices[i].x), max_x)
+        max_y = math.max(math.abs(vertices[i].y), max_y)
     end
 
-    obj.load("figure", "四角形", col, 2 * math.max(maxX, maxY) + 10)
+    obj.load("figure", "四角形", fill_color, 2 * math.max(max_x, max_y) + 10)
 
-    for i = 1, N do
-        local st = math.atan2(pos[i + 1].y - pos[i].y, pos[i + 1].x - pos[i].x) * 180 / math.pi + 180
-        local cx, cy
-        if math.abs(pos[i + 1].x - pos[i].x) > math.abs(pos[i + 1].y - pos[i].y) then
-            cx = 0
-            cy = -pos[i].x * (pos[i + 1].y - pos[i].y) / (pos[i + 1].x - pos[i].x) + pos[i].y
+    for i = 1, vertex_count do
+        local edge_angle_degrees = math.atan2(vertices[i + 1].y - vertices[i].y, vertices[i + 1].x - vertices[i].x)
+                * 180
+                / math.pi
+            + 180
+        local clipping_center_x, clipping_center_y
+        if math.abs(vertices[i + 1].x - vertices[i].x) > math.abs(vertices[i + 1].y - vertices[i].y) then
+            clipping_center_x = 0
+            clipping_center_y = -vertices[i].x
+                    * (vertices[i + 1].y - vertices[i].y)
+                    / (vertices[i + 1].x - vertices[i].x)
+                + vertices[i].y
         else
-            cx = -pos[i].y * (pos[i + 1].x - pos[i].x) / (pos[i + 1].y - pos[i].y) + pos[i].x
-            cy = 0
+            clipping_center_x = -vertices[i].y
+                    * (vertices[i + 1].x - vertices[i].x)
+                    / (vertices[i + 1].y - vertices[i].y)
+                + vertices[i].x
+            clipping_center_y = 0
         end
-        obj.effect("斜めクリッピング", "角度", st + 180, "中心X", cx, "中心Y", cy)
+        obj.effect(
+            "斜めクリッピング",
+            "角度",
+            edge_angle_degrees + 180,
+            "中心X",
+            clipping_center_x,
+            "中心Y",
+            clipping_center_y
+        )
     end
     obj.ox = -obj.getvalue("x")
     obj.oy = -obj.getvalue("y")
 
-    if TC ~= 0 then
+    if half_thickness ~= 0 then
         obj.setoption("drawtarget", "framebuffer")
-        obj.oz = TC
+        obj.oz = half_thickness
         obj.draw()
-        obj.oz = -TC
+        obj.oz = -half_thickness
         obj.draw()
-        obj.load("figure", "四角形", col, 500)
-        for i = 0, N2 + 1 do
-            pos2[i].x = pos2[i].x - obj.getvalue("x")
-            pos2[i].y = pos2[i].y - obj.getvalue("y")
+        obj.load("figure", "四角形", fill_color, 500)
+        for i = 0, original_vertex_count + 1 do
+            original_vertices[i].x = original_vertices[i].x - obj.getvalue("x")
+            original_vertices[i].y = original_vertices[i].y - obj.getvalue("y")
         end
-        for i = 1, N2 do
+        for i = 1, original_vertex_count do
             obj.drawpoly(
-                pos2[i].x,
-                pos2[i].y,
-                -TC,
-                pos2[i].x,
-                pos2[i].y,
-                TC,
-                pos2[i + 1].x,
-                pos2[i + 1].y,
-                TC,
-                pos2[i + 1].x,
-                pos2[i + 1].y,
-                -TC
+                original_vertices[i].x,
+                original_vertices[i].y,
+                -half_thickness,
+                original_vertices[i].x,
+                original_vertices[i].y,
+                half_thickness,
+                original_vertices[i + 1].x,
+                original_vertices[i + 1].y,
+                half_thickness,
+                original_vertices[i + 1].x,
+                original_vertices[i + 1].y,
+                -half_thickness
             )
         end
     end

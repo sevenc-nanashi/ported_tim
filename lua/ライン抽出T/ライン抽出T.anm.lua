@@ -18,106 +18,116 @@ local track_intensity = 300
 local track_threshold = 0
 
 ---$color:ライン色
-local col1 = 0xff0000
+local line_color = 0xff0000
 
 ---$color:背景色
-local col2 = 0xffffff
+local background_color = 0xffffff
 
 ---$track:背景透明度
 ---min=0
 ---max=100
 ---step=1
-local bal = 0
+local track_background_opacity = 0
 
 ---$track:オリジナル透明度
 ---min=0
 ---max=100
 ---step=1
-local oal = 100
+local track_original_opacity = 100
 
 ---$check:輝度反転
-local lr = false
+local check_invert_luminance = false
 
 ---$check:ラインのみ
-local line_only = false
+local check_line_only = false
 
 ---$track:粒子化幅
 ---min=0
 ---max=1000
 ---step=1
-local track_width = 0
+local track_particle_width = 0
 
 ---$check:粒子[移動/参照]
-local par = false
+local check_reference_particles = false
 
 ---$track:飛散方向(開始)
 ---min=0
 ---max=360
 ---step=1
-local dir_start = 0
+local track_scatter_direction_start = 0
 
 ---$track:飛散方向(終了)
 ---min=0
 ---max=360
 ---step=1
-local dir_end = 360
+local track_scatter_direction_end = 360
 
 ---$check:飛散ループ
-local dck = true
+local check_loop_scatter = true
 
 ---$track:シード
 ---min=0
 ---max=1000000
 ---step=1
-local seed = 0
+local track_seed = 0
 
 ---$track:シード変化間隔
 ---min=0
 ---max=600
 ---step=1
-local seed_interval = 0
+local track_seed_change_interval = 0
 
 ---$track:追加領域サイズ
 ---min=0
 ---max=500
 ---step=1
-local arc = 0
+local track_expansion_size = 0
 
---hide@col2:line_only==1
---hide@bal:line_only==1
---hide@oal:line_only==1
+--hide@background_color:check_line_only==1
+--hide@track_background_opacity:check_line_only==1
+--hide@track_original_opacity:check_line_only==1
 
-if seed_interval > 0 then
-    seed = seed + math.floor(obj.time * obj.framerate / seed_interval)
+if track_seed_change_interval > 0 then
+    track_seed = track_seed + math.floor(obj.time * obj.framerate / track_seed_change_interval)
 end
-local tim2 = obj.module("tim2")
-if lr then
+local line_module = obj.module("tim2")
+if check_invert_luminance then
     obj.effect("反転", "輝度反転", 1)
 end
-if arc > 0 then
-    arc = (arc + 1) / 2
-    obj.effect("領域拡張", "上", arc, "下", arc, "右", arc, "左", arc)
+if track_expansion_size > 0 then
+    track_expansion_size = (track_expansion_size + 1) / 2
+    obj.effect(
+        "領域拡張",
+        "上",
+        track_expansion_size,
+        "下",
+        track_expansion_size,
+        "右",
+        track_expansion_size,
+        "左",
+        track_expansion_size
+    )
 end
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-tim2.lineextra_set_public_image(userdata, w, h)
+local pixel_data, width, height = obj.getpixeldata("object", "bgra")
+line_module.lineextra_set_public_image(pixel_data, width, height)
 obj.effect("ぼかし", "範囲", track_radius, "サイズ固定", 1)
-userdata, w, h = obj.getpixeldata("object", "bgra")
-tim2.lineextra_line_ext(
-    userdata,
-    w,
-    h,
+pixel_data, width, height = obj.getpixeldata("object", "bgra")
+line_module.lineextra_line_ext(
+    pixel_data,
+    width,
+    height,
     track_intensity,
-    track_width,
+    track_particle_width,
     track_threshold,
-    line_only,
-    bal,
-    oal,
-    col1,
-    col2,
-    par,
-    dck,
-    dir_start,
-    dir_end,
-    seed
+    check_line_only,
+    track_background_opacity,
+    track_original_opacity,
+    line_color,
+    background_color,
+    check_reference_particles,
+    check_loop_scatter,
+    track_scatter_direction_start,
+    track_scatter_direction_end,
+    track_seed
 )
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.putpixeldata("object", pixel_data, width, height, "bgra")

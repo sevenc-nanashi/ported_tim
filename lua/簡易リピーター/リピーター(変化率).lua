@@ -23,7 +23,7 @@ local track_scale_rate = 0
 ---step=0.1
 local track_rotation_rate = 0
 
-repeater_henx = track_x_change * 0.01
-repeater_heny = track_y_change * 0.01
-repeater_henzo = track_scale_rate * 0.01
-repeater_henrz = track_rotation_rate * 0.01
+T_REPEATER_X_RATE = track_x_change * 0.01
+T_REPEATER_Y_RATE = track_y_change * 0.01
+T_REPEATER_SCALE_RATE = track_scale_rate * 0.01
+T_REPEATER_ROTATION_RATE = track_rotation_rate * 0.01

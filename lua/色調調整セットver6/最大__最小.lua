@@ -3,14 +3,14 @@
 ---$select:モード
 ---最大=1
 ---最小=2
-local track_max_min = 1
+local select_operation = 1
 
 ---$select:チャンネル
 ---全て=1
 ---R=2
 ---G=3
 ---B=4
-local track_channel = 1
+local select_channel = 1
 
 ---$track:範囲
 ---min=1
@@ -27,22 +27,22 @@ local track_range = 10
 local track_angle = 0
 
 ---$check:水平
-local HC = true
+local check_horizontal = true
 
 ---$check:垂直
-local VC = true
+local check_vertical = true
 
 ---$track:縦横比
 ---min=1
 ---max=100
 ---step=0.01
-local asp = 100
+local track_aspect_ratio = 100
 
 ---$check:範囲対称
-local Sym2 = true
+local check_symmetric_range = true
 
 ---$check:色も保存
-local svC2 = false
+local check_preserve_color = false
 
 ---$select:形状
 ---四角=0
@@ -50,110 +50,121 @@ local svC2 = false
 ---菱形=2
 ---十字=3
 ---六角形=4
-local fig = 0
+local select_shape = 0
 
 ---$track:限界範囲
 ---min=1
 ---max=1000
 ---step=1
-local lmt = 50
+local track_range_limit = 50
 
 ---$track:α拡張
 ---min=0
 ---max=255
 ---step=1
-local Aen = 0
+local track_alpha_expansion = 0
 
 ---$check:結果を保存(同条件1度のみ)
-local check0 = false
+local check_cache_result = false
 
---hide@HC:fig~=0
---hide@VC:fig~=0
---hide@Sym2:fig~=0
---hide@lmt:fig==0
---hide@lmt:fig==3
+--hide@check_horizontal:select_shape~=0
+--hide@check_vertical:select_shape~=0
+--hide@check_symmetric_range:select_shape~=0
+--hide@track_range_limit:select_shape==0
+--hide@track_range_limit:select_shape==3
 
 -- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local Deg = -track_angle % 360
-local asp2 = (asp or 100) / 100
-local fig2 = math.floor(fig or 0)
-local lmt2 = (lmt or 50)
-local Rng = track_range
-local Aen2 = Aen or 0
-if fig2 > 0 then
-    if fig2 ~= 3 then
-        Rng = math.min(Rng, lmt2)
+local color_module = obj.module("tim2")
+local rotation_angle = -track_angle % 360
+local aspect_ratio = (track_aspect_ratio or 100) / 100
+local shape = math.floor(select_shape or 0)
+local range_limit = (track_range_limit or 50)
+local effect_range = track_range
+local alpha_expansion = track_alpha_expansion or 0
+if shape > 0 then
+    if shape ~= 3 then
+        effect_range = math.min(effect_range, range_limit)
     end
 end
-Rng = math.max(1, Rng)
-local ckr = 0
-if check0 then
-    local userdata, w, h = obj.getpixeldata("object", "bgra")
-    ckr = T_Color_Module.color_minimax_check(
-        userdata,
-        w,
-        h,
-        math.floor(track_max_min),
-        math.floor(track_channel),
-        Rng,
-        Deg,
-        HC,
-        VC,
-        asp2,
-        Sym2,
-        svC2,
-        fig2
+effect_range = math.max(1, effect_range)
+local cache_status = 0
+if check_cache_result then
+    local pixel_data, width, height = obj.getpixeldata("object", "bgra")
+    cache_status = color_module.color_minimax_check(
+        pixel_data,
+        width,
+        height,
+        math.floor(select_operation),
+        math.floor(select_channel),
+        effect_range,
+        rotation_angle,
+        check_horizontal,
+        check_vertical,
+        aspect_ratio,
+        check_symmetric_range,
+        check_preserve_color,
+        shape
     )
-    if ckr == 1 then
-        obj.putpixeldata("object", userdata, w, h, "bgra")
+    if cache_status == 1 then
+        obj.putpixeldata("object", pixel_data, width, height, "bgra")
     end
 end
-if ckr == 0 then
-    local w0, h0 = obj.getpixel()
-    if Deg ~= 0 then
-        local RR = Deg / 180 * math.pi
-        local w1 = w0 * math.abs(math.cos(RR)) + h0 * math.abs(math.sin(RR))
-        local h1 = h0 * math.abs(math.cos(RR)) + w0 * math.abs(math.sin(RR))
-        local w2 = w1 + (w1 - w0) % 2
-        local h2 = h1 + (h1 - h0) % 2
-        local RH = 0
-        local wr, hr = w0, h0
-        if w1 < w0 then
+if cache_status == 0 then
+    local original_width, original_height = obj.getpixel()
+    if rotation_angle ~= 0 then
+        local rotation_radians = rotation_angle / 180 * math.pi
+        local rotated_width = original_width * math.abs(math.cos(rotation_radians))
+            + original_height * math.abs(math.sin(rotation_radians))
+        local rotated_height = original_height * math.abs(math.cos(rotation_radians))
+            + original_width * math.abs(math.sin(rotation_radians))
+        local expanded_width = rotated_width + (rotated_width - original_width) % 2
+        local expanded_height = rotated_height + (rotated_height - original_height) % 2
+        local rotated_quarter_turn = 0
+        local working_width, working_height = original_width, original_height
+        if rotated_width < original_width then
             obj.effect("ローテーション", "90度回転", 1)
-            RH = 1
-            wr, hr = hr, wr
+            rotated_quarter_turn = 1
+            working_width, working_height = working_height, working_width
         end
-        obj.effect("領域拡張", "右", w2 - wr, "下", h2 - hr)
-        local userdata, w, h = obj.getpixeldata("object", "bgra")
-        T_Color_Module.color_minimax_rot(userdata, w, h, wr, hr, RR, RH, track_max_min)
-        obj.putpixeldata("object", userdata, w, h, "bgra")
+        obj.effect("領域拡張", "右", expanded_width - working_width, "下", expanded_height - working_height)
+        local pixel_data, width, height = obj.getpixeldata("object", "bgra")
+        color_module.color_minimax_rot(
+            pixel_data,
+            width,
+            height,
+            working_width,
+            working_height,
+            rotation_radians,
+            rotated_quarter_turn,
+            select_operation
+        )
+        obj.putpixeldata("object", pixel_data, width, height, "bgra")
     end
-    local userdata, w, h = obj.getpixeldata("object", "bgra")
-    T_Color_Module.color_minimax(
-        userdata,
-        w,
-        h,
-        track_max_min,
-        Rng,
-        track_channel,
-        HC,
-        VC,
-        Sym2,
-        asp2,
-        svC2,
-        fig2,
-        Aen2
+    local pixel_data, width, height = obj.getpixeldata("object", "bgra")
+    color_module.color_minimax(
+        pixel_data,
+        width,
+        height,
+        select_operation,
+        effect_range,
+        select_channel,
+        check_horizontal,
+        check_vertical,
+        check_symmetric_range,
+        aspect_ratio,
+        check_preserve_color,
+        shape,
+        alpha_expansion
     )
-    obj.putpixeldata("object", userdata, w, h, "bgra")
-    if Deg ~= 0 then
-        obj.setoption("drawtarget", "tempbuffer", w0, h0)
-        obj.draw(0, 0, 0, 1, 1, 0, 0, -Deg)
+    obj.putpixeldata("object", pixel_data, width, height, "bgra")
+    if rotation_angle ~= 0 then
+        obj.setoption("drawtarget", "tempbuffer", original_width, original_height)
+        obj.draw(0, 0, 0, 1, 1, 0, 0, -rotation_angle)
         obj.copybuffer("object", "tempbuffer")
     end
-    if check0 then
-        local userdata, w, h = obj.getpixeldata("object", "bgra")
-        T_Color_Module.color_minimax_save(userdata, w, h)
+    if check_cache_result then
+        local pixel_data, width, height = obj.getpixeldata("object", "bgra")
+        color_module.color_minimax_save(pixel_data, width, height)
     end
 end
 obj.cx = 0

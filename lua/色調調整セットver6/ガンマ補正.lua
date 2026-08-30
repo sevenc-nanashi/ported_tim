@@ -22,17 +22,17 @@ local track_blue = 100
 ---min=1
 ---max=1000
 ---step=0.1
-local track_all = 100
+local track_all_channels = 100
 
 -- require("T_Color_Module")
-local r, g, b
-if track_all == 100 then
-    r = 100 / track_red
-    g = 100 / track_green
-    b = 100 / track_blue
+local red_gamma, green_gamma, blue_gamma
+if track_all_channels == 100 then
+    red_gamma = 100 / track_red
+    green_gamma = 100 / track_green
+    blue_gamma = 100 / track_blue
 else
-    r = 100 / track_all
-    g, b = r, r
+    red_gamma = 100 / track_all_channels
+    green_gamma, blue_gamma = red_gamma, red_gamma
 end
 
 --[[pixelshader@gamma_correction
@@ -40,7 +40,7 @@ end
 ]]
 
 obj.pixelshader("gamma_correction", "object", "object", {
-    r,
-    g,
-    b,
+    red_gamma,
+    green_gamma,
+    blue_gamma,
 })

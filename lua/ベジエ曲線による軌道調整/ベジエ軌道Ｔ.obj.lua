@@ -10,7 +10,7 @@ local track_index = 1
 ---リンク1=1
 ---リンク2=2
 ---リンク3=3
-local orbit_mode = 0
+local select_orbit_target = 0
 
 ---$track:グラフサイズ
 ---min=50
@@ -19,43 +19,50 @@ local orbit_mode = 0
 local track_graph_size = 200
 
 ---$value:アンカー
-local pos = { -50, 50, 50, -50 }
+local value_control_points = { -50, 50, 50, -50 }
 
 ---$check:グラフ表示
 local check_show_graph = true
 
-local Orbit = function(t, x1, y1, x2, y2)
-    local s = 1 - t
-    x1 = (3 * s * s * x1 + (3 * s * x2 + t) * t) * t
-    y1 = (3 * s * s * y1 + (3 * s * y2 + t) * t) * t
+local evaluate_bezier = function(t, x1, y1, x2, y2)
+    local inverse_time = 1 - t
+    x1 = (3 * inverse_time * inverse_time * x1 + (3 * inverse_time * x2 + t) * t) * t
+    y1 = (3 * inverse_time * inverse_time * y1 + (3 * inverse_time * y2 + t) * t) * t
     return x1, y1
 end
 
-if OrbitNumber == nil then
-    OrbitNumber = {}
+if T_BEZIER_ORBITS == nil then
+    T_BEZIER_ORBITS = {}
 end
-pos = pos or { -50, 50, 50, -50 }
+value_control_points = value_control_points or { -50, 50, 50, -50 }
 local orbit_index = track_index
 local graph_size = track_graph_size
 local half_graph_size = graph_size * 0.5
-obj.setanchor("pos", 2)
-local P1x, P1y, P2x, P2y = pos[1], pos[2], pos[3], pos[4]
-if P1x < -half_graph_size then
-    P1x = -half_graph_size
-elseif P1x > half_graph_size then
-    P1x = half_graph_size
+obj.setanchor("value_control_points", 2)
+local control_1_x, control_1_y, control_2_x, control_2_y =
+    value_control_points[1], value_control_points[2], value_control_points[3], value_control_points[4]
+if control_1_x < -half_graph_size then
+    control_1_x = -half_graph_size
+elseif control_1_x > half_graph_size then
+    control_1_x = half_graph_size
 end
-if P2x < -half_graph_size then
-    P2x = -half_graph_size
-elseif P2x > half_graph_size then
-    P2x = half_graph_size
+if control_2_x < -half_graph_size then
+    control_2_x = -half_graph_size
+elseif control_2_x > half_graph_size then
+    control_2_x = half_graph_size
 end
-local q1x, q1y, q2x, q2y =
-    (P1x + half_graph_size) / graph_size,
-    (-P1y + half_graph_size) / graph_size,
-    (P2x + half_graph_size) / graph_size,
-    (-P2y + half_graph_size) / graph_size
-OrbitNumber[orbit_index] = { q1x, q1y, q2x, q2y, orbit_mode }
+local normalized_control_1_x, normalized_control_1_y, normalized_control_2_x, normalized_control_2_y =
+    (control_1_x + half_graph_size) / graph_size,
+    (-control_1_y + half_graph_size) / graph_size,
+    (control_2_x + half_graph_size) / graph_size,
+    (-control_2_y + half_graph_size) / graph_size
+T_BEZIER_ORBITS[orbit_index] = {
+    normalized_control_1_x,
+    normalized_control_1_y,
+    normalized_control_2_x,
+    normalized_control_2_y,
+    select_orbit_target,
+}
 
 if check_show_graph then
     obj.setoption("drawtarget", "tempbuffer", 1.5 * graph_size, 2 * graph_size)
@@ -68,31 +75,43 @@ if check_show_graph then
     time_marks[section_count] = obj.getvalue("time", 0, -1)
     local object_time = obj.time
 
-    local z = 1
+    local section_progress = 1
     if obj.frame < obj.totalframe - 1 then
         local i = 1
         while time_marks[i] <= object_time do
             i = i + 1
         end
         i = i - 1
-        z = (object_time - time_marks[i]) / (time_marks[i + 1] - time_marks[i])
+        section_progress = (object_time - time_marks[i]) / (time_marks[i + 1] - time_marks[i])
     end
 
-    local t1 = 0
-    local t2 = 1
+    local lower_time = 0
+    local upper_time = 1
 
     for i = 1, 10 do
-        local tm = (t1 + t2) * 0.5
-        local xm, y = Orbit(tm, q1x, q1y, q2x, q2y)
-        if z < xm then
-            t2 = tm
+        local mid_time = (lower_time + upper_time) * 0.5
+        local curve_x, y = evaluate_bezier(
+            mid_time,
+            normalized_control_1_x,
+            normalized_control_1_y,
+            normalized_control_2_x,
+            normalized_control_2_y
+        )
+        if section_progress < curve_x then
+            upper_time = mid_time
         else
-            t1 = tm
+            lower_time = mid_time
         end
     end
 
     obj.load("figure", "円", 0xffff00, 20)
-    local x, y = Orbit((t1 + t2) * 0.5, q1x, q1y, q2x, q2y)
+    local x, y = evaluate_bezier(
+        (lower_time + upper_time) * 0.5,
+        normalized_control_1_x,
+        normalized_control_1_y,
+        normalized_control_2_x,
+        normalized_control_2_y
+    )
     x = x * graph_size - half_graph_size
     y = -(y * graph_size - half_graph_size)
     obj.draw(x, y)
@@ -104,13 +123,19 @@ if check_show_graph then
     obj.load("figure", "円", 0x00ff00, 5)
 
     for t = 0, 1, 0.01 do
-        local x, y = Orbit(t, q1x, q1y, q2x, q2y, Cor)
+        local x, y = evaluate_bezier(
+            t,
+            normalized_control_1_x,
+            normalized_control_1_y,
+            normalized_control_2_x,
+            normalized_control_2_y
+        )
         x = x * graph_size - half_graph_size
         y = -(y * graph_size - half_graph_size)
         obj.draw(x, y)
     end
     obj.load("figure", "円", 0xff0000, 20)
-    obj.draw(P1x, P1y)
-    obj.draw(P2x, P2y)
+    obj.draw(control_1_x, control_1_y)
+    obj.draw(control_2_x, control_2_y)
     obj.load("tempbuffer")
 end

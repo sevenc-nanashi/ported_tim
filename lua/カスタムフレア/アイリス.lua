@@ -27,43 +27,43 @@ local track_intensity = 50
 ---min=0
 ---max=100
 ---step=0.1
-local dsize = 50
+local size_variation_percent = 50
 
 ---$check:順次拡大
-local biger = 0
+local check_sequential_scale = 0
 
 ---$track:強度幅％
 ---min=0
 ---max=100
 ---step=0.1
-local dalp = 5
+local intensity_variation_percent = 5
 
 ---$check:ベースカラー
-local basechk = 1
+local check_use_base_color = 1
 
 ---$color:色
-local col = 0xccccff
+local color = 0xccccff
 
 ---$track:色幅％
 ---min=0
 ---max=100
 ---step=0.1
-local dcol = 5
+local color_variation_percent = 5
 
 ---$value:位置％
-local PP = { 0, 5 }
+local position_range_percent = { 0, 5 }
 
 ---$value:位置オフセット
-local OFSET = { 0, 0, 0 }
+local position_offset = { 0, 0, 0 }
 
 ---$value:散らばり％
-local SIG = { 100, 25 }
+local distribution_percent = { 100, 25 }
 
 ---$value:回転
-local KAITEN = { 0, 0 }
+local rotation_range = { 0, 0 }
 
 ---$check:アンカーに合わせる
-local acr = 0
+local check_align_to_anchor = 0
 
 ---$track:ぼかし
 ---min=0
@@ -83,74 +83,83 @@ local blink = 0.2
 ---step=1
 local seed = 0
 
---hide@col:basechk==1
+--hide@color:check_use_base_color==1
 
-obj.copybuffer("tmp", "obj")
+obj.copybuffer("tempbuffer", "object")
 obj.setoption("drawtarget", "tempbuffer")
-obj.setoption("blend", CustomFlareMode)
+obj.setoption("blend", T_CUSTOM_FLARE_BLEND_MODE)
 local tim2_images = obj.module("tim2")
-if basechk == 1 then
-    col = CustomFlareColor
+if check_use_base_color == 1 then
+    color = T_CUSTOM_FLARE_COLOR
 end
-local fig = track_shape
+local shape_index = track_shape
 local count = track_count
 local size = track_size_percent * 0.01
-local alp = track_intensity * 0.01
-local t = PP[1] * 0.01
-local dt = PP[2]
-local sp = SIG[1] * 0.01
-local dsp = SIG[2]
-local rot = KAITEN[1]
-local drot = KAITEN[2] * 0.5
-OFSET[1] = OFSET[1] * 0.01
-OFSET[2] = OFSET[2] * 0.01
-OFSET[3] = OFSET[3] * 0.01
-local data, w, h = tim2_images.custom_flare_load_image("I" .. fig)
+local intensity = track_intensity * 0.01
+local t = position_range_percent[1] * 0.01
+local position_variation = position_range_percent[2]
+local distribution_scale = distribution_percent[1] * 0.01
+local distribution_variation = distribution_percent[2]
+local base_rotation = rotation_range[1]
+local rotation_variation = rotation_range[2] * 0.5
+position_offset[1] = position_offset[1] * 0.01
+position_offset[2] = position_offset[2] * 0.01
+position_offset[3] = position_offset[3] * 0.01
+local data, w, h = tim2_images.custom_flare_load_image("I" .. shape_index)
 obj.putpixeldata("object", data, w, h)
-obj.effect("グラデーション", "color", col, "color2", col, "blend", 5)
+obj.effect("グラデーション", "color", color, "color2", color, "blend", 5)
 obj.effect("ぼかし", "範囲", blur)
-local OF = math.floor(obj.time * obj.framerate)
+local frame_index = math.floor(obj.time * obj.framerate)
 for i = 1, count do
-    if dcol > 0 then
-        local data, w, h = tim2_images.custom_flare_load_image("I" .. fig)
+    if color_variation_percent > 0 then
+        local data, w, h = tim2_images.custom_flare_load_image("I" .. shape_index)
         obj.putpixeldata("object", data, w, h)
-        local h, s, v = HSV(col)
-        h = math.floor(h + math.floor(3.6 * obj.rand(0, dcol, i, seed))) % 360
-        col = HSV(h, s, v)
-        obj.effect("グラデーション", "color", col, "color2", col, "blend", 5)
+        local h, s, v = HSV(color)
+        h = math.floor(h + math.floor(3.6 * obj.rand(0, color_variation_percent, i, seed))) % 360
+        color = HSV(h, s, v)
+        obj.effect("グラデーション", "color", color, "color2", color, "blend", 5)
         obj.effect("ぼかし", "範囲", blur)
     end
-    local hi = ((i - 0.5) / count - 0.5) * (1 + obj.rand(-dsp, dsp, i, 1000 + seed) * 0.01)
-    hi = t + hi * sp
-    local ox = CustomFlaredX * (hi + obj.rand(-dt, dt, i, 2000 + seed) * 0.005 + OFSET[1])
-    local oy = CustomFlaredY * (hi + obj.rand(-dt, dt, i, 3000 + seed) * 0.005 + OFSET[2])
-    local oz = CustomFlaredZ * (hi + obj.rand(-dt, dt, i, 4000 + seed) * 0.005 + OFSET[3])
-    local zoom = CustomFlaredX * CustomFlaredX + CustomFlaredY * CustomFlaredY + CustomFlaredZ * CustomFlaredZ
-    if zoom == 0 or biger == 0 then
+    local hi = ((i - 0.5) / count - 0.5)
+        * (1 + obj.rand(-distribution_variation, distribution_variation, i, 1000 + seed) * 0.01)
+    hi = t + hi * distribution_scale
+    local ox = T_CUSTOM_FLARE_DELTA_X
+        * (hi + obj.rand(-position_variation, position_variation, i, 2000 + seed) * 0.005 + position_offset[1])
+    local oy = T_CUSTOM_FLARE_DELTA_Y
+        * (hi + obj.rand(-position_variation, position_variation, i, 3000 + seed) * 0.005 + position_offset[2])
+    local oz = T_CUSTOM_FLARE_DELTA_Z
+        * (hi + obj.rand(-position_variation, position_variation, i, 4000 + seed) * 0.005 + position_offset[3])
+    local zoom = T_CUSTOM_FLARE_DELTA_X * T_CUSTOM_FLARE_DELTA_X
+        + T_CUSTOM_FLARE_DELTA_Y * T_CUSTOM_FLARE_DELTA_Y
+        + T_CUSTOM_FLARE_DELTA_Z * T_CUSTOM_FLARE_DELTA_Z
+    if zoom == 0 or check_sequential_scale == 0 then
         zoom = 1
     else
         zoom = math.sqrt(
             (
-                (CustomFlaredX + ox) * (CustomFlaredX + ox)
-                + (CustomFlaredY + oy) * (CustomFlaredY + oy)
-                + (CustomFlaredZ + oz) * (CustomFlaredZ + oz)
+                (T_CUSTOM_FLARE_DELTA_X + ox) * (T_CUSTOM_FLARE_DELTA_X + ox)
+                + (T_CUSTOM_FLARE_DELTA_Y + oy) * (T_CUSTOM_FLARE_DELTA_Y + oy)
+                + (T_CUSTOM_FLARE_DELTA_Z + oz) * (T_CUSTOM_FLARE_DELTA_Z + oz)
             )
                 / zoom
                 * 0.25
         )
     end
-    ox = CustomFlareCX + ox
-    oy = CustomFlareCY + oy
-    oz = CustomFlareCZ + oz
-    zoom = zoom * size * (1 - obj.rand(0, dsize, i, 5000 + seed) * 0.01)
-    local alpha = obj.rand(0, 100, i, OF + seed) / 100 + (1 - blink)
+    ox = T_CUSTOM_FLARE_CENTER_X + ox
+    oy = T_CUSTOM_FLARE_CENTER_Y + oy
+    oz = T_CUSTOM_FLARE_CENTER_Z + oz
+    zoom = zoom * size * (1 - obj.rand(0, size_variation_percent, i, 5000 + seed) * 0.01)
+    local alpha = obj.rand(0, 100, i, frame_index + seed) / 100 + (1 - blink)
     if alpha > 1 then
         alpha = 1
     end
-    alpha = alp * alpha * obj.rand(100 - dalp * 0.5, 100 + dalp * 0.5, i, 6000 + seed) * 0.01
-    local rz = rot + obj.rand(-drot, drot, i, 7000 + seed)
-    if acr == 1 then
-        rz = rz + math.deg(math.atan2(CustomFlaredY, CustomFlaredX))
+    alpha = intensity
+        * alpha
+        * obj.rand(100 - intensity_variation_percent * 0.5, 100 + intensity_variation_percent * 0.5, i, 6000 + seed)
+        * 0.01
+    local rz = base_rotation + obj.rand(-rotation_variation, rotation_variation, i, 7000 + seed)
+    if check_align_to_anchor == 1 then
+        rz = rz + math.deg(math.atan2(T_CUSTOM_FLARE_DELTA_Y, T_CUSTOM_FLARE_DELTA_X))
     end
     obj.draw(ox, oy, oz, zoom, alpha, 0, 0, rz)
 end

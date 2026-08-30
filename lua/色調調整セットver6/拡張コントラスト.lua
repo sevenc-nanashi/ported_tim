@@ -22,18 +22,18 @@ local track_brightness = 0
 ---min=0
 ---max=100
 ---step=0.001
-local track_smooth = 50
+local track_smoothness = 50
 
 ---$track:カーブサイズ
 ---min=100
 ---max=1000
 ---step=1
-local curve_size = 260
+local track_curve_size = 260
 
 ---$check:カーブ表示
-local show_curve = false
+local check_show_curve = false
 
---hide@curve_size:show_curve==0
+--hide@track_curve_size:check_show_curve==0
 
 --[[pixelshader@extended_contrast
 ---$include "./shaders/extended_contrast.hlsl"
@@ -42,16 +42,16 @@ local show_curve = false
 ---$include "./shaders/extended_contrast.hlsl"
 ]]
 
-local params = {
+local shader_parameters = {
     track_center,
     track_intensity / 100,
     track_brightness,
-    track_smooth / 100,
+    track_smoothness / 100,
 }
 
-if show_curve then
-    obj.load("figure", "四角形", 0xffffff, math.max(100, curve_size or 260))
-    obj.pixelshader("extended_contrast_curve", "object", "object", params)
+if check_show_curve then
+    obj.load("figure", "四角形", 0xffffff, math.max(100, track_curve_size or 260))
+    obj.pixelshader("extended_contrast_curve", "object", "object", shader_parameters)
 else
-    obj.pixelshader("extended_contrast", "object", "object", params)
+    obj.pixelshader("extended_contrast", "object", "object", shader_parameters)
 end

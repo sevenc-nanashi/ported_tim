@@ -4,13 +4,13 @@
 ---min=0
 ---max=255
 ---step=1
-local track_n_1 = 64
+local track_lower_saturation_point = 64
 
 ---$track:飽和点2
 ---min=0
 ---max=255
 ---step=1
-local track_n_2 = 178
+local track_upper_saturation_point = 178
 
 -- local p3 = math.floor(track_n_1)
 -- local p1 = math.floor(track_n_2)
@@ -23,11 +23,11 @@ local track_n_2 = 178
 obj.effect(
     "トライトーン@T_Color_Module@tim.anm2",
     "飽和点1",
-    track_n_1,
+    track_lower_saturation_point,
     "中心点",
-    track_n_1,
+    track_lower_saturation_point,
     "飽和点2",
-    track_n_2,
+    track_upper_saturation_point,
     "シャドウ",
     0x2e1601,
     "ミッドトーン",

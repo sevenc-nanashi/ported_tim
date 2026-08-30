@@ -23,44 +23,44 @@ local check_smooth = true
 ---$file:ファイル
 local file = ""
 
-local of = track_offset * 0.01
-local rp = track_repeat
-local a = track_slope * 0.01
+local offset_ratio = track_offset * 0.01
+local repeat_count = track_repeat
+local slope_ratio = track_slope * 0.01
 
-T_line_data = {}
-local one = io.input(file)
-while one do
-    one = io.read("*l")
-    if one then
-        table.insert(T_line_data, one)
+T_SPLIT_LINE_DATA = {}
+local line = io.input(file)
+while line do
+    line = io.read("*l")
+    if line then
+        table.insert(T_SPLIT_LINE_DATA, line)
     end
 end
 
-local Min = math.min(unpack(T_line_data))
-for i = 1, #T_line_data do
-    T_line_data[i] = T_line_data[i] - Min
+local min = math.min(unpack(T_SPLIT_LINE_DATA))
+for i = 1, #T_SPLIT_LINE_DATA do
+    T_SPLIT_LINE_DATA[i] = T_SPLIT_LINE_DATA[i] - min
 end
 
-local N = #T_line_data
-for j = 2, rp do
-    for i = 1, N do
-        T_line_data[i + (j - 1) * N] = T_line_data[i]
+local n = #T_SPLIT_LINE_DATA
+for j = 2, repeat_count do
+    for i = 1, n do
+        T_SPLIT_LINE_DATA[i + (j - 1) * n] = T_SPLIT_LINE_DATA[i]
     end
 end
 
-local sfi = (1 + #T_line_data) * 0.5
-for i = 1, #T_line_data do
-    T_line_data[i] = T_line_data[i] * (a * (i - sfi) / sfi + 1)
+local center_index = (1 + #T_SPLIT_LINE_DATA) * 0.5
+for i = 1, #T_SPLIT_LINE_DATA do
+    T_SPLIT_LINE_DATA[i] = T_SPLIT_LINE_DATA[i] * (slope_ratio * (i - center_index) / center_index + 1)
 end
 
-local Max = math.max(unpack(T_line_data))
-Min = math.min(unpack(T_line_data))
-for i = 1, #T_line_data do
-    T_line_data[i] = (T_line_data[i] - Min) / (Max - Min) * (1 - of) + of
+local max = math.max(unpack(T_SPLIT_LINE_DATA))
+min = math.min(unpack(T_SPLIT_LINE_DATA))
+for i = 1, #T_SPLIT_LINE_DATA do
+    T_SPLIT_LINE_DATA[i] = (T_SPLIT_LINE_DATA[i] - min) / (max - min) * (1 - offset_ratio) + offset_ratio
 end
 
 if check_smooth then
-    T_line_data_fl = 1
+    T_SPLIT_LINE_DATA_MODE = 1
 else
-    T_line_data_fl = 2
+    T_SPLIT_LINE_DATA_MODE = 2
 end

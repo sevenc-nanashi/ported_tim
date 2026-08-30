@@ -21,13 +21,13 @@ local track_luminance = 100
 ---min=0
 ---max=1000
 ---step=0.1
-local track_adjust = 1
+local track_edge_adjust = 1
 
 ---$check:透明度エッジ
-local Edchk = 0
+local check_extract_alpha_edge = 0
 
 ---$check:オリジナル表示
-local orichk = 0
+local check_show_original = 0
 
 ---$track:エッジ強さ
 ---min=0
@@ -47,13 +47,13 @@ local track_edge_threshold = 0
 ---step=0.1
 local track_edge_blur = 2
 
-local dx = track_offset_x
-local dy = track_offset_y
-local ld = track_luminance
-local edc = track_adjust
-local pow = track_edge_strength
-local sh = track_edge_threshold
-local blur = track_edge_blur
+local offset_x = track_offset_x
+local offset_y = track_offset_y
+local luminance = track_luminance
+local outline_size = track_edge_adjust
+local edge_strength = track_edge_strength
+local edge_threshold = track_edge_threshold
+local edge_blur = track_edge_blur
 
 local w, h = obj.getpixel()
 
@@ -61,18 +61,18 @@ obj.setoption("drawtarget", "tempbuffer", w, h)
 
 obj.copybuffer("cache:ori", "object")
 
-obj.effect("色調補正", "輝度", ld)
+obj.effect("色調補正", "輝度", luminance)
 obj.draw()
 
 obj.copybuffer("object", "cache:ori")
 
-if Edchk == 0 then
+if check_extract_alpha_edge == 0 then
     obj.effect(
         "エッジ抽出",
         "強さ",
-        pow,
+        edge_strength,
         "しきい値",
-        sh,
+        edge_threshold,
         "輝度エッジを抽出",
         1,
         "透明度エッジを抽出",
@@ -82,9 +82,9 @@ else
     obj.effect(
         "エッジ抽出",
         "強さ",
-        pow,
+        edge_strength,
         "しきい値",
-        sh,
+        edge_threshold,
         "輝度エッジを抽出",
         0,
         "透明度エッジを抽出",
@@ -92,7 +92,7 @@ else
     )
 end
 
-obj.effect("縁取り", "サイズ", edc, "ぼかし", blur, "color", 0xffffff)
+obj.effect("縁取り", "サイズ", outline_size, "ぼかし", edge_blur, "color", 0xffffff)
 
 obj.effect("反転", "透明度反転", 1)
 
@@ -102,11 +102,11 @@ obj.draw()
 obj.copybuffer("object", "tempbuffer")
 obj.setoption("blend", "none")
 
-if orichk == 1 then
+if check_show_original == 1 then
     obj.copybuffer("tempbuffer", "cache:ori")
 else
     obj.setoption("drawtarget", "tempbuffer", w, h)
 end
 
-obj.draw(dx, dy)
+obj.draw(offset_x, offset_y)
 obj.load("tempbuffer")

@@ -26,8 +26,8 @@ local track_rotation = 0
 local track_scale_percent = 100
 
 obj.setanchor("track_x,track_y", 0, "line")
-repeater_dx = track_x
-repeater_dy = track_y
-repeater_dr = track_rotation
-repeater_dk = track_scale_percent * 0.01
-repeater_rep = 0
+T_REPEATER_X = track_x
+T_REPEATER_Y = track_y
+T_REPEATER_ROTATION = track_rotation
+T_REPEATER_SCALE = track_scale_percent * 0.01
+T_REPEATER_MODE = 0

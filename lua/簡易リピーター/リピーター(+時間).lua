@@ -3,13 +3,13 @@
 ---min=-5000
 ---max=5000
 ---step=0.1
-local track_offset_s = 0
+local track_time_offset_seconds = 0
 
 ---$track:送り(mS)
 ---min=-50000
 ---max=50000
 ---step=0.1
-local track_ms = 40
+local track_frame_interval_ms = 40
 
 ---$track:ループ
 ---min=0
@@ -24,11 +24,11 @@ local track_loop = 1
 local track_alpha_load = 1
 
 ---$file:ファイル
-local file = ""
-file = file
+local file_path = ""
 
-repeater_SS = track_offset_s + obj.time
-repeater_dS = track_ms * 0.001
-repeater_mrp = track_loop
-repeater_alf = track_alpha_load
-repeater_rep = 1
+T_REPEATER_FILE = file_path
+T_REPEATER_START_TIME = track_time_offset_seconds + obj.time
+T_REPEATER_TIME_STEP = track_frame_interval_ms * 0.001
+T_REPEATER_LOOP = track_loop
+T_REPEATER_LOAD_ALPHA = track_alpha_load
+T_REPEATER_MODE = 1

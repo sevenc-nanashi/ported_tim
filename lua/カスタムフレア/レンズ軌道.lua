@@ -24,43 +24,43 @@ local track_intensity = 15
 local track_attenuation_rate = 40
 
 ---$figure:形状
-local fig = "円"
+local particle_shape = "円"
 
 ---$track:サイズ幅％
 ---min=0
 ---max=100
 ---step=0.1
-local dsize = 10
+local size_randomness = 10
 
 ---$track:強度幅％
 ---min=0
 ---max=100
 ---step=0.1
-local dalp = 0
+local alpha_randomness = 0
 
 ---$check:ベースカラー
-local basechk = 1
+local check_use_base_color = 1
 
 ---$color:色
-local col = 0xccccff
+local color = 0xccccff
 
 ---$track:色幅％
 ---min=0
 ---max=100
 ---step=0.1
-local dcol = 0
+local color_randomness = 0
 
 ---$track:回転
 ---min=-3600
 ---max=3600
 ---step=0.1
-local rot = 0
+local base_rotation = 0
 
 ---$track:回転幅
 ---min=-3600
 ---max=3600
 ---step=0.1
-local drot = 0
+local rotation_randomness = 0
 
 ---$track:ぼかし
 ---min=0
@@ -74,40 +74,45 @@ local blur = 0
 ---step=1
 local seed = 0
 
---hide@col:basechk==1
+--hide@color:check_use_base_color==1
 
-obj.copybuffer("tmp", "obj")
+obj.copybuffer("tempbuffer", "object")
 obj.setoption("drawtarget", "tempbuffer")
-obj.setoption("blend", CustomFlareMode)
-if basechk == 1 then
-    col = CustomFlareColor
+obj.setoption("blend", T_CUSTOM_FLARE_BLEND_MODE)
+if check_use_base_color == 1 then
+    color = T_CUSTOM_FLARE_COLOR
 end
-local size = CustomFlareW * track_size_percent * 0.01
-local alp = track_intensity * 0.01
-local gen = track_attenuation_rate * 0.01
-obj.load("figure", fig, col, size)
+local size = T_CUSTOM_FLARE_WIDTH * track_size_percent * 0.01
+local intensity = track_intensity * 0.01
+local attenuation = track_attenuation_rate * 0.01
+obj.load("figure", particle_shape, color, size)
 obj.effect("ぼかし", "範囲", blur)
-local countx = math.floor(CustomFlareW / 600 * track_density)
-local county = math.floor(CustomFlareH / 600 * track_density)
-gen = -200 * gen / (CustomFlareW * CustomFlareW)
-local st = CustomFlareW / countx
-local dw = st * 0.5
-for i = 0, countx do
-    for j = 0, county do
-        if dcol > 0 then
-            local h, s, v = HSV(col)
-            h = math.floor(h + math.floor(3.6 * obj.rand(0, dcol, i, j + seed))) % 360
-            col = HSV(h, s, v)
-            obj.load("figure", fig, col, size)
+local horizontal_count = math.floor(T_CUSTOM_FLARE_WIDTH / 600 * track_density)
+local vertical_count = math.floor(T_CUSTOM_FLARE_HEIGHT / 600 * track_density)
+attenuation = -200 * attenuation / (T_CUSTOM_FLARE_WIDTH * T_CUSTOM_FLARE_WIDTH)
+local cell_size = T_CUSTOM_FLARE_WIDTH / horizontal_count
+local position_randomness = cell_size * 0.5
+for i = 0, horizontal_count do
+    for j = 0, vertical_count do
+        if color_randomness > 0 then
+            local h, s, v = HSV(color)
+            h = math.floor(h + math.floor(3.6 * obj.rand(0, color_randomness, i, j + seed))) % 360
+            color = HSV(h, s, v)
+            obj.load("figure", particle_shape, color, size)
             obj.effect("ぼかし", "範囲", blur)
         end
-        local zoom = 1 - obj.rand(0, dsize, i, j + 4000 + seed) * 0.01
-        local alpha = alp * obj.rand(100 - dalp, 100, i, j + 6000 + seed) * 0.01
-        local ox = i * st - CustomFlareW * 0.5 + obj.rand(-dw, dw, i, j + 1000 + seed)
-        local oy = j * st - CustomFlareH * 0.5 + obj.rand(-dw, dw, i, j + 2000 + seed)
-        local rr = (ox - CustomFlareXX) * (ox - CustomFlareXX) + (oy - CustomFlareYY) * (oy - CustomFlareYY)
-        alpha = alpha * math.exp(gen * rr)
-        local rz = rot + obj.rand(-drot, drot, i, j + 7000 + seed)
+        local zoom = 1 - obj.rand(0, size_randomness, i, j + 4000 + seed) * 0.01
+        local alpha = intensity * obj.rand(100 - alpha_randomness, 100, i, j + 6000 + seed) * 0.01
+        local ox = i * cell_size
+            - T_CUSTOM_FLARE_WIDTH * 0.5
+            + obj.rand(-position_randomness, position_randomness, i, j + 1000 + seed)
+        local oy = j * cell_size
+            - T_CUSTOM_FLARE_HEIGHT * 0.5
+            + obj.rand(-position_randomness, position_randomness, i, j + 2000 + seed)
+        local rr = (ox - T_CUSTOM_FLARE_SOURCE_X) * (ox - T_CUSTOM_FLARE_SOURCE_X)
+            + (oy - T_CUSTOM_FLARE_SOURCE_Y) * (oy - T_CUSTOM_FLARE_SOURCE_Y)
+        alpha = alpha * math.exp(attenuation * rr)
+        local rz = base_rotation + obj.rand(-rotation_randomness, rotation_randomness, i, j + 7000 + seed)
         obj.draw(ox, oy, 0, zoom, alpha, 0, 0, rz)
     end
 end

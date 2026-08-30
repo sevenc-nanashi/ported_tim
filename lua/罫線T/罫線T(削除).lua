@@ -8,15 +8,17 @@ local track_delete_point = 2
 ---$value:削除アンカー
 local delete_anchors = { -70, -60, 70, -60 }
 
-RuledlineT = RuledlineT or {}
+T_RULED_LINE_STATE = T_RULED_LINE_STATE or {}
+T_RULED_LINE_STATE.definition = T_RULED_LINE_STATE.definition or {}
+local ruled_line = T_RULED_LINE_STATE.definition
 local anchor_count = track_delete_point
 obj.setanchor("delete_anchors", anchor_count, "line")
-RuledlineT.ACX = RuledlineT.ACX or {}
-RuledlineT.ACY = RuledlineT.ACY or {}
-local num = (#RuledlineT.ACX or 0) + 1
-RuledlineT.ACX[num] = {}
-RuledlineT.ACY[num] = {}
-for k = 1, anchor_count do
-    RuledlineT.ACX[num][k] = delete_anchors[2 * k - 1]
-    RuledlineT.ACY[num][k] = delete_anchors[2 * k]
+ruled_line.deletion_anchor_x_groups = ruled_line.deletion_anchor_x_groups or {}
+ruled_line.deletion_anchor_y_groups = ruled_line.deletion_anchor_y_groups or {}
+local group_index = (#ruled_line.deletion_anchor_x_groups or 0) + 1
+ruled_line.deletion_anchor_x_groups[group_index] = {}
+ruled_line.deletion_anchor_y_groups[group_index] = {}
+for anchor_index = 1, anchor_count do
+    ruled_line.deletion_anchor_x_groups[group_index][anchor_index] = delete_anchors[2 * anchor_index - 1]
+    ruled_line.deletion_anchor_y_groups[group_index][anchor_index] = delete_anchors[2 * anchor_index]
 end

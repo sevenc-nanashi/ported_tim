@@ -4,12 +4,12 @@
 ---min=0
 ---max=7
 ---step=1
-local track_color = 3
+local track_reduction_level = 3
 
 --[[pixelshader@color_reduction
 ---$include "./shaders/color_reduction.hlsl"
 ]]
 
 obj.pixelshader("color_reduction", "object", "object", {
-    track_color,
+    track_reduction_level,
 })

@@ -94,19 +94,19 @@ local random_seed = math.floor(track_random_seed or 200)
 local sector_count = math.min(particle_count, 8)
 local radius_distribution_min = is_even_radius_distribution and 1000 or 0
 
-local T = obj.time
+local elapsed_time = obj.time
 local total_time = obj.totaltime
 obj.setoption("drawtarget", "tempbuffer", obj.screen_w, obj.screen_h)
 for i = 1, particle_count do
-    local q = obj.rand(radius_distribution_min, 1000, i, 1000 + random_seed) * 0.001
-    local r = initial_radius * math.sqrt(q)
-        + speed * (1 + speed_error * obj.rand(0, 1000, i, 2000 + random_seed) * 0.001) * T
+    local radius_random_ratio = obj.rand(radius_distribution_min, 1000, i, 1000 + random_seed) * 0.001
+    local particle_radius = initial_radius * math.sqrt(radius_random_ratio)
+        + speed * (1 + speed_error * obj.rand(0, 1000, i, 2000 + random_seed) * 0.001) * elapsed_time
     local sector_index = i % sector_count
-    local d1
+    local particle_angle
     if is_even_angle_distribution then
-        d1 = 2 * math.pi * (i - 1) / particle_count
+        particle_angle = 2 * math.pi * (i - 1) / particle_count
     else
-        d1 = 2
+        particle_angle = 2
             * math.pi
             * obj.rand(
                 sector_index / sector_count * 1000,
@@ -116,17 +116,17 @@ for i = 1, particle_count do
             )
             * 0.001
     end
-    r = r * radial_amount
-    local x = r * math.cos(d1)
-    local y = r * math.sin(d1)
-    local rot = obj.rand(0, initial_rotation_error, i, 4000 + random_seed) * 0.1
-        + max_rotation_speed * obj.rand(-1000, 1000, i, 5000 + random_seed) * 0.001 * T
-    local alp = 1
+    particle_radius = particle_radius * radial_amount
+    local particle_x = particle_radius * math.cos(particle_angle)
+    local particle_y = particle_radius * math.sin(particle_angle)
+    local particle_rotation = obj.rand(0, initial_rotation_error, i, 4000 + random_seed) * 0.1
+        + max_rotation_speed * obj.rand(-1000, 1000, i, 5000 + random_seed) * 0.001 * elapsed_time
+    local particle_alpha = 1
     local fade_start_time = total_time - i / particle_count * fade_duration
-    if T > fade_start_time then
-        alp = math.max(0, 1 - fade_speed * (T - fade_start_time))
+    if elapsed_time > fade_start_time then
+        particle_alpha = math.max(0, 1 - fade_speed * (elapsed_time - fade_start_time))
     end
-    obj.draw(x + center_x, y + center_y, 0, radial_amount, alp, 0, 0, rot)
+    obj.draw(particle_x + center_x, particle_y + center_y, 0, radial_amount, particle_alpha, 0, 0, particle_rotation)
 end
 
-obj.copybuffer("obj", "tmp")
+obj.copybuffer("object", "tempbuffer")

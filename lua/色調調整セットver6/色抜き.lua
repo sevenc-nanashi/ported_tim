@@ -23,21 +23,21 @@ local track_edge = 50
 ---L*a*b*色相=2
 ---L*a*b*輝度=3
 ---HSV色相=4
-local track_matching_method = 1
+local select_matching_method = 1
 
 ---$color:抽出色
-local col = 0xff0000
+local extraction_color = 0xff0000
 
-local r, g, b = RGB(col)
+local extraction_red, extraction_green, extraction_blue = RGB(extraction_color)
 --[[pixelshader@leave_color
 ---$include "./shaders/leave_color.hlsl"
 ]]
 obj.pixelshader("leave_color", "object", "object", {
-    r / 255,
-    g / 255,
-    b / 255,
+    extraction_red / 255,
+    extraction_green / 255,
+    extraction_blue / 255,
     track_color_cut_amount / 100,
     track_color_difference_range,
     track_edge,
-    track_matching_method,
+    select_matching_method,
 })

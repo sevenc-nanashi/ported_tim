@@ -3,7 +3,7 @@
 ---min=3
 ---max=300
 ---step=1
-local track_size = 10
+local track_point_size = 10
 
 ---$track:位置ズレ[%]
 ---min=0
@@ -83,23 +83,24 @@ local track_seed_change_interval = 0
 --hide@track_shininess:check_enable_3d==0
 
 ---$value: PI
-local _0 = nil
+local point_cache = nil
 
 ---$check:色参照位置固定
 local check_lock_color_reference = false
 
-local tim2 = obj.module("tim2")
+local tim_module = obj.module("tim2")
 local is_enabled = function(value)
     return value == true or value == 1
 end
 
-_0 = _0 or {}
-local size = _0[1] or track_size
-local position_offset_percent = _0[2] or track_position_offset_percent
-local pitch_percent = _0[3] or track_pitch_percent
-local color_width = _0[4] or track_color_width
-local lock_color_reference = _0[0] == nil and is_enabled(check_lock_color_reference) or is_enabled(_0[0])
-_0 = nil
+point_cache = point_cache or {}
+local point_size = point_cache[1] or track_point_size
+local position_offset_percent = point_cache[2] or track_position_offset_percent
+local pitch_percent = point_cache[3] or track_pitch_percent
+local color_width = point_cache[4] or track_color_width
+local lock_color_reference = point_cache[0] == nil and is_enabled(check_lock_color_reference)
+    or is_enabled(point_cache[0])
+point_cache = nil
 local background_mode = (is_enabled(check_colorize_background) and 1 or 0)
     + (is_enabled(check_use_original_background) and 2 or 0)
 local background_color = color_background or 0xffffff
@@ -114,11 +115,11 @@ if seed_change_interval > 0 then
     random_seed = random_seed + math.floor(obj.time * obj.framerate / seed_change_interval)
 end
 local userdata, w, h = obj.getpixeldata("object", "bgra")
-tim2.sketch_sketch(
+tim_module.sketch_sketch(
     userdata,
     w,
     h,
-    size,
+    point_size,
     position_offset_percent,
     pitch_percent,
     color_width,

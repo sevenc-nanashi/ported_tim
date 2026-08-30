@@ -11,37 +11,38 @@ local track_move_amount = 0
 local track_blend_mode = 0
 
 ---$color:ベースカラー
-local col = 0x5588ff
+local base_color = 0x5588ff
 
 ---$check:位置移動
-local mv = 0
+local interpolate_position = 0
 
 ---$value:座標
-local pos = { -200, -100, 0, 0, 0, 0 }
+local positions = { -200, -100, 0, 0, 0, 0 }
 
---hide@track_move_amount:mv==0
+--hide@track_move_amount:interpolate_position==0
 
-if mv == 0 then
-    obj.setanchor("pos", 2, "line", "xyz")
-    CustomFlareXX = pos[1]
-    CustomFlareYY = pos[2]
-    CustomFlareZZ = pos[3]
-    CustomFlareCX = pos[4]
-    CustomFlareCY = pos[5]
-    CustomFlareCZ = pos[6]
+local source_z
+if interpolate_position == 0 then
+    obj.setanchor("positions", 2, "line", "xyz")
+    T_CUSTOM_FLARE_SOURCE_X = positions[1]
+    T_CUSTOM_FLARE_SOURCE_Y = positions[2]
+    source_z = positions[3]
+    T_CUSTOM_FLARE_CENTER_X = positions[4]
+    T_CUSTOM_FLARE_CENTER_Y = positions[5]
+    T_CUSTOM_FLARE_CENTER_Z = positions[6]
 else
-    obj.setanchor("pos", 4, "line", "xyz", "inout")
+    obj.setanchor("positions", 4, "line", "xyz", "inout")
     local s = track_move_amount * 0.01
-    CustomFlareXX = (1 - s) * pos[1] + s * pos[7]
-    CustomFlareYY = (1 - s) * pos[2] + s * pos[8]
-    CustomFlareZZ = (1 - s) * pos[3] + s * pos[9]
-    CustomFlareCX = (1 - s) * pos[4] + s * pos[10]
-    CustomFlareCY = (1 - s) * pos[5] + s * pos[11]
-    CustomFlareCZ = (1 - s) * pos[6] + s * pos[12]
+    T_CUSTOM_FLARE_SOURCE_X = (1 - s) * positions[1] + s * positions[7]
+    T_CUSTOM_FLARE_SOURCE_Y = (1 - s) * positions[2] + s * positions[8]
+    source_z = (1 - s) * positions[3] + s * positions[9]
+    T_CUSTOM_FLARE_CENTER_X = (1 - s) * positions[4] + s * positions[10]
+    T_CUSTOM_FLARE_CENTER_Y = (1 - s) * positions[5] + s * positions[11]
+    T_CUSTOM_FLARE_CENTER_Z = (1 - s) * positions[6] + s * positions[12]
 end
-CustomFlaredX = CustomFlareCX - CustomFlareXX
-CustomFlaredY = CustomFlareCY - CustomFlareYY
-CustomFlaredZ = CustomFlareCZ - CustomFlareZZ
-CustomFlareColor = col
-CustomFlareW, CustomFlareH = obj.getpixel()
-CustomFlareMode = 1 + 3 * track_blend_mode
+T_CUSTOM_FLARE_DELTA_X = T_CUSTOM_FLARE_CENTER_X - T_CUSTOM_FLARE_SOURCE_X
+T_CUSTOM_FLARE_DELTA_Y = T_CUSTOM_FLARE_CENTER_Y - T_CUSTOM_FLARE_SOURCE_Y
+T_CUSTOM_FLARE_DELTA_Z = T_CUSTOM_FLARE_CENTER_Z - source_z
+T_CUSTOM_FLARE_COLOR = base_color
+T_CUSTOM_FLARE_WIDTH, T_CUSTOM_FLARE_HEIGHT = obj.getpixel()
+T_CUSTOM_FLARE_BLEND_MODE = 1 + 3 * track_blend_mode

@@ -23,8 +23,8 @@ local track_phi_coord = 0
 ---step=0.1
 local track_twist = 0
 
-NN = NN + 1
-XX[NN] = track_r_coord
-YY[NN] = track_theta_coord
-ZZ[NN] = track_phi_coord
-TW[NN] = track_twist
+T_MP_SECTION_COUNT = T_MP_SECTION_COUNT + 1
+T_MP_X_POSITIONS[T_MP_SECTION_COUNT] = track_r_coord
+T_MP_Y_POSITIONS[T_MP_SECTION_COUNT] = track_theta_coord
+T_MP_Z_POSITIONS[T_MP_SECTION_COUNT] = track_phi_coord
+T_MP_TWISTS[T_MP_SECTION_COUNT] = track_twist

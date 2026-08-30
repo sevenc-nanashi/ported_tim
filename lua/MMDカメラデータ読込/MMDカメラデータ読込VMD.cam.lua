@@ -21,31 +21,31 @@ local tim2 = obj.module("tim2")
 local loaded_camera_count = tim2.mmdcam_read_data(file_path)
 
 if loaded_camera_count ~= 0 then
-    local x, y, z, tx, ty, tz, rz, view_angle, srvt = tim2.mmdcam_get_camera_data(
+    local x, y, z, target_x, target_y, target_z, roll, view_angle, vertical_sign = tim2.mmdcam_get_camera_data(
         obj.frame + track_frame_offset,
         obj.totalframe + track_frame_offset,
         3000 / track_size_correction
     )
 
-    local cam = obj.getoption("camera_param")
+    local camera = obj.getoption("camera_param")
 
-    cam.x = x
-    cam.y = y
-    cam.z = z
-    cam.tx = tx
-    cam.ty = ty
-    cam.tz = tz
-    cam.rz = cam.rz + rz
+    camera.x = x
+    camera.y = y
+    camera.z = z
+    camera.target_x = target_x
+    camera.target_y = target_y
+    camera.target_z = target_z
+    camera.roll = camera.roll + roll
 
-    if srvt < 0 then
-        cam.ux = -cam.ux
-        cam.uy = -cam.uy
-        cam.uz = -cam.uz
+    if vertical_sign < 0 then
+        camera.ux = -camera.ux
+        camera.uy = -camera.uy
+        camera.uz = -camera.uz
     end
 
     if check_auto_view_angle then
-        cam.d = obj.screen_h / math.tan(view_angle * math.pi / 360) / 2
+        camera.d = obj.screen_h / math.tan(view_angle * math.pi / 360) / 2
     end
 
-    obj.setoption("camera_param", cam)
+    obj.setoption("camera_param", camera)
 end

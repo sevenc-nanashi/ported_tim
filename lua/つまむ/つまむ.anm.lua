@@ -3,7 +3,7 @@
 ---min=-1000
 ---max=1000
 ---step=0.1
-local track_percent = 100
+local track_pinch_amount_percent = 100
 
 ---$track:半径％
 ---min=0
@@ -21,7 +21,7 @@ local track_horizontal_ratio_percent = 100
 ---min=2
 ---max=200
 ---step=1
-local N = 30
+local track_division_count = 30
 
 ---$track:中心X
 ---min=-10000
@@ -37,63 +37,64 @@ local track_center_y = 0
 
 --trackgroup@track_center_x,track_center_y:中心
 
-local w, h = obj.getpixel()
-local A = h * track_percent * 0.01
-local hr = track_radius_percent * 0.01
-local hw = track_horizontal_ratio_percent * 0.01
+local width, height = obj.getpixel()
+local maximum_displacement = height * track_pinch_amount_percent * 0.01
+local radius_ratio = track_radius_percent * 0.01
+local horizontal_ratio = track_horizontal_ratio_percent * 0.01
 
-N = math.max(2, N)
-local Nh = N * 0.5
+track_division_count = math.max(2, track_division_count)
+local half_division_count = track_division_count * 0.5
 
 obj.setanchor("track_center_x,track_center_y", 0)
 
-local w2 = w * 0.5
-local h2 = h * 0.5
-obj.setoption("drawtarget", "tempbuffer", w, h)
+local half_width = width * 0.5
+local half_height = height * 0.5
+obj.setoption("drawtarget", "tempbuffer", width, height)
 obj.setoption("blend", "alpha_add")
 
-local hy = 1 / (h2 * hr)
-local hx = hy / hw
+local normalized_y_scale = 1 / (half_height * radius_ratio)
+local normalized_x_scale = normalized_y_scale / horizontal_ratio
 
-local TPz = {}
-for i = 0, N do
-    TPz[i] = {}
-    local x = w2 * (i - Nh) / Nh
-    for j = 0, N do
-        local y = h2 * (j - Nh) / Nh
-        local dx = (x - track_center_x) * hx
-        local dy = (y - track_center_y) * hy
-        local dr = math.sqrt(dx * dx + dy * dy)
-        TPz[i][j] = 0
-        if dr <= 1 then
-            TPz[i][j] = TPz[i][j] + A * (dr * dr - 1) ^ 2
+local z_displacements = {}
+for i = 0, track_division_count do
+    z_displacements[i] = {}
+    local x = half_width * (i - half_division_count) / half_division_count
+    for j = 0, track_division_count do
+        local y = half_height * (j - half_division_count) / half_division_count
+        local normalized_x = (x - track_center_x) * normalized_x_scale
+        local normalized_y = (y - track_center_y) * normalized_y_scale
+        local normalized_radius = math.sqrt(normalized_x * normalized_x + normalized_y * normalized_y)
+        z_displacements[i][j] = 0
+        if normalized_radius <= 1 then
+            z_displacements[i][j] = z_displacements[i][j]
+                + maximum_displacement * (normalized_radius * normalized_radius - 1) ^ 2
         end
     end
 end
 local u0 = 0
 local vertices = {}
-for i = 0, N - 1 do
-    local u1 = w * (i + 1) / N
-    local x0 = u0 - w2
-    local x1 = u1 - w2
+for i = 0, track_division_count - 1 do
+    local u1 = width * (i + 1) / track_division_count
+    local x0 = u0 - half_width
+    local x1 = u1 - half_width
     local v0 = 0
-    for j = 0, N - 1 do
-        local v1 = h * (j + 1) / N
-        local y0 = v0 - h2
-        local y1 = v1 - h2
+    for j = 0, track_division_count - 1 do
+        local v1 = height * (j + 1) / track_division_count
+        local y0 = v0 - half_height
+        local y1 = v1 - half_height
         vertices[#vertices + 1] = {
             x0,
             y0,
-            TPz[i][j],
+            z_displacements[i][j],
             x1,
             y0,
-            TPz[i + 1][j],
+            z_displacements[i + 1][j],
             x1,
             y1,
-            TPz[i + 1][j + 1],
+            z_displacements[i + 1][j + 1],
             x0,
             y1,
-            TPz[i][j + 1],
+            z_displacements[i][j + 1],
             u0,
             v0,
             u1,

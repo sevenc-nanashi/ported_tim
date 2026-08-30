@@ -4,70 +4,70 @@
 ---min=-500
 ---max=500
 ---step=0.1
-local red = 100
+local track_red_percent = 100
 
 ---$track:G%
 ---min=-500
 ---max=500
 ---step=0.1
-local green = 100
+local track_green_percent = 100
 
 ---$track:B%
 ---min=-500
 ---max=500
 ---step=0.1
-local blue = 100
+local track_blue_percent = 100
 
 ---$track:W%
 ---min=-500
 ---max=500
 ---step=0.1
-local white = 100
+local track_white_percent = 100
 
 ---$track:C%
 ---min=-500
 ---max=500
 ---step=0.1
-local cyan = 100
+local track_cyan_percent = 100
 
 ---$track:M%
 ---min=-500
 ---max=500
 ---step=0.1
-local magenta = 100
+local track_magenta_percent = 100
 
 ---$track:Y%
 ---min=-500
 ---max=500
 ---step=0.1
-local yellow = 100
+local track_yellow_percent = 100
 
 ---$color:色付け
-local col = nil
+local tint_color = nil
 
 ---$track:ガンマ値
 ---min=1
 ---max=1000
 ---step=0.1
-local gamma = 100
+local track_gamma = 100
 
 --[[pixelshader@enh_grayscale
 ---$include "./shaders/enh_grayscale.hlsl"
 ]]
 
-local color_r, color_g, color_b = RGB(col or 0xffffff)
+local tint_red, tint_green, tint_blue = RGB(tint_color or 0xffffff)
 
 obj.pixelshader("enh_grayscale", "object", "object", {
-    red * 0.01,
-    green * 0.01,
-    blue * 0.01,
-    (cyan or 100) * 0.01,
-    (magenta or 100) * 0.01,
-    (yellow or 100) * 0.01,
-    white * 0.01,
-    100 / gamma,
-    col and 1 or 0,
-    color_r / 255,
-    color_g / 255,
-    color_b / 255,
+    track_red_percent * 0.01,
+    track_green_percent * 0.01,
+    track_blue_percent * 0.01,
+    (track_cyan_percent or 100) * 0.01,
+    (track_magenta_percent or 100) * 0.01,
+    (track_yellow_percent or 100) * 0.01,
+    track_white_percent * 0.01,
+    100 / track_gamma,
+    tint_color and 1 or 0,
+    tint_red / 255,
+    tint_green / 255,
+    tint_blue / 255,
 })

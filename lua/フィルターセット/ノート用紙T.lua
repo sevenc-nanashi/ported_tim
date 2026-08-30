@@ -27,13 +27,13 @@ local track_relief = 100
 ---右下=5
 ---下=6
 ---左下=7
-local direction = 3
+local select_direction = 3
 
 ---$color:シャドウ
-local col1 = 0x0
+local color_shadow = 0x0
 
 ---$color:ハイライト
-local col2 = 0xffffff
+local color_highlight = 0xffffff
 
 local w, h = obj.getpixel()
 
@@ -67,14 +67,14 @@ obj.setoption("blend", 2)
 obj.draw(0, 0, 0, 1, 0.5 * (1 - track_grain * 0.01))
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
-obj.pixelshader("emboss", "object", "object", { track_relief * 0.01, direction })
-local r1, g1, b1 = RGB(col1)
-local r2, g2, b2 = RGB(col2)
+obj.pixelshader("emboss", "object", "object", { track_relief * 0.01, select_direction })
+local shadow_red, shadow_green, shadow_blue = RGB(color_shadow)
+local highlight_red, highlight_green, highlight_blue = RGB(color_highlight)
 obj.pixelshader("note_gray_color", "object", "object", {
-    r1 / 255,
-    g1 / 255,
-    b1 / 255,
-    r2 / 255,
-    g2 / 255,
-    b2 / 255,
+    shadow_red / 255,
+    shadow_green / 255,
+    shadow_blue / 255,
+    highlight_red / 255,
+    highlight_green / 255,
+    highlight_blue / 255,
 })

@@ -24,227 +24,294 @@ local track_max = 120
 local track_adjust = 50
 
 ---$figure:形状
-local fig = "円"
+local dot_figure = "円"
 
 ---$track:網点角度1
 ---min=0
 ---max=360
 ---step=0.1
-local deg1 = 15
+local track_dot_angle_1 = 15
 
 ---$track:網点角度2
 ---min=0
 ---max=360
 ---step=0.1
-local deg2 = 75
+local track_dot_angle_2 = 75
 
 ---$track:網点角度3
 ---min=0
 ---max=360
 ---step=0.1
-local deg3 = 30
+local track_dot_angle_3 = 30
 
 ---$check:網点も回転
-local Drt = 0
+local check_rotate_dots = 0
 
 ---$track:公転速度
 ---min=-10
 ---max=10
 ---step=0.1
-local rV = 0
+local track_orbit_speed = 0
 
 ---$track:自転速度
 ---min=-10
 ---max=10
 ---step=0.1
-local mV = 0
+local track_rotation_speed = 0
 
 ---$color:色1
-local col1 = 0x00ffff
+local separation_color_1 = 0x00ffff
 
 ---$color:色2
-local col2 = 0xff00ff
+local separation_color_2 = 0xff00ff
 
 ---$color:色3
-local col3 = 0xffff00
+local separation_color_3 = 0xffff00
 
 ---$color:背景色
-local Bcol = 0xffffff
+local background_color = 0xffffff
 
 ---$select:型抜法
 ---なし=0
 ---網点のみ=1
 ---網点と元画像=2
-local Dcut = 2
+local select_cutout_method = 2
 
-local EAP = 0
-if check0 and obj.getinfo("saving") == false then
-    EAP = 1
-end
+local simple_preview_active = 0
 
-local siz = track_size
-local tsi1 = track_min * 0.01
-local tsi2 = track_max * 0.01
-local BS = track_adjust * 0.01 * siz
+local dot_size = track_size
+local minimum_dot_scale = track_min * 0.01
+local maximum_dot_scale = track_max * 0.01
+local blur_size = track_adjust * 0.01 * dot_size
 
-if EAP == 1 then
-    siz = siz / 4
-    BS = BS / 4
+if simple_preview_active == 1 then
+    dot_size = dot_size / 4
+    blur_size = blur_size / 4
     obj.effect("リサイズ", "拡大率", 25)
 end
 
-local deg = { deg1, deg2, deg3 }
-local w, h = obj.getpixel()
-local w2, h2 = w / 2, h / 2
+local channel_angles = { track_dot_angle_1, track_dot_angle_2, track_dot_angle_3 }
+local image_width, image_height = obj.getpixel()
+local half_width, half_height = image_width / 2, image_height / 2
 
-local oT = obj.time * rV
-local mT = obj.time * mV
+local orbit_angle = obj.time * track_orbit_speed
+local rotation_angle = obj.time * track_rotation_speed
 
-local Cnum
-if not col1 then
-    Cnum = 3
-    col1 = 0x00ffff
-    col2 = 0xff00ff
-    col3 = 0xffff00
-elseif not col2 then
-    Cnum = 1
-elseif not col3 then
-    Cnum = 2
+local separation_color_count
+if not separation_color_1 then
+    separation_color_count = 3
+    separation_color_1 = 0x00ffff
+    separation_color_2 = 0xff00ff
+    separation_color_3 = 0xffff00
+elseif not separation_color_2 then
+    separation_color_count = 1
+elseif not separation_color_3 then
+    separation_color_count = 2
 else
-    Cnum = 3
+    separation_color_count = 3
 end
 
-local r1, g1, b1 = RGB(col1)
-local r2, g2, b2 = RGB(col2 or 0x0)
-local r3, g3, b3 = RGB(col3 or 0x0)
-r1, g1, b1 = 255 - r1, 255 - g1, 255 - b1
-r2, g2, b2 = 255 - r2, 255 - g2, 255 - b2
-r3, g3, b3 = 255 - r3, 255 - g3, 255 - b3
+local inverse_red_1, inverse_green_1, inverse_blue_1 = RGB(separation_color_1)
+local inverse_red_2, inverse_green_2, inverse_blue_2 = RGB(separation_color_2 or 0x0)
+local inverse_red_3, inverse_green_3, inverse_blue_3 = RGB(separation_color_3 or 0x0)
+inverse_red_1, inverse_green_1, inverse_blue_1 = 255 - inverse_red_1, 255 - inverse_green_1, 255 - inverse_blue_1
+inverse_red_2, inverse_green_2, inverse_blue_2 = 255 - inverse_red_2, 255 - inverse_green_2, 255 - inverse_blue_2
+inverse_red_3, inverse_green_3, inverse_blue_3 = 255 - inverse_red_3, 255 - inverse_green_3, 255 - inverse_blue_3
 
-local A = {}
-if Cnum == 1 then
-    local deti = 1 / (r1 * r1 + g1 * g1 + b1 * b1)
-    A[1] = { r1 * deti, g1 * deti, b1 * deti }
-elseif Cnum == 2 then
-    local a11 = r1 * r1 + g1 * g1 + b1 * b1
-    local a22 = r2 * r2 + g2 * g2 + b2 * b2
-    local a12 = r1 * r2 + g1 * g2 + b1 * b2
-    local deti = 1 / (a11 * a22 - a12 * a12)
-    local b11 = a22 * deti
-    local b12 = -a12 * deti
-    local b22 = a11 * deti
-    A[1] = { b11 * r1 + b12 * r2, b11 * g1 + b12 * g2, b11 * b1 + b12 * b2 }
-    A[2] = { b12 * r1 + b22 * r2, b12 * g1 + b22 * g2, b12 * b1 + b22 * b2 }
+local separation_coefficients = {}
+if separation_color_count == 1 then
+    local inverse_determinant = 1
+        / (inverse_red_1 * inverse_red_1 + inverse_green_1 * inverse_green_1 + inverse_blue_1 * inverse_blue_1)
+    separation_coefficients[1] = {
+        inverse_red_1 * inverse_determinant,
+        inverse_green_1 * inverse_determinant,
+        inverse_blue_1 * inverse_determinant,
+    }
+elseif separation_color_count == 2 then
+    local gram_11 = inverse_red_1 * inverse_red_1 + inverse_green_1 * inverse_green_1 + inverse_blue_1 * inverse_blue_1
+    local gram_22 = inverse_red_2 * inverse_red_2 + inverse_green_2 * inverse_green_2 + inverse_blue_2 * inverse_blue_2
+    local gram_12 = inverse_red_1 * inverse_red_2 + inverse_green_1 * inverse_green_2 + inverse_blue_1 * inverse_blue_2
+    local inverse_determinant = 1 / (gram_11 * gram_22 - gram_12 * gram_12)
+    local inverse_gram_11 = gram_22 * inverse_determinant
+    local inverse_gram_12 = -gram_12 * inverse_determinant
+    local inverse_gram_22 = gram_11 * inverse_determinant
+    separation_coefficients[1] = {
+        inverse_gram_11 * inverse_red_1 + inverse_gram_12 * inverse_red_2,
+        inverse_gram_11 * inverse_green_1 + inverse_gram_12 * inverse_green_2,
+        inverse_gram_11 * inverse_blue_1 + inverse_gram_12 * inverse_blue_2,
+    }
+    separation_coefficients[2] = {
+        inverse_gram_12 * inverse_red_1 + inverse_gram_22 * inverse_red_2,
+        inverse_gram_12 * inverse_green_1 + inverse_gram_22 * inverse_green_2,
+        inverse_gram_12 * inverse_blue_1 + inverse_gram_22 * inverse_blue_2,
+    }
 else
-    local deti = 1 / (r1 * g2 * b3 + r2 * g3 * b1 + r3 * g1 * b2 - r1 * g3 * b2 - r2 * g1 * b3 - r3 * g2 * b1)
-    A[1] = { (g2 * b3 - g3 * b2) * deti, -(r2 * b3 - r3 * b2) * deti, (r2 * g3 - r3 * g2) * deti }
-    A[2] = { -(g1 * b3 - g3 * b1) * deti, (r1 * b3 - r3 * b1) * deti, -(r1 * g3 - r3 * g1) * deti }
-    A[3] = { (g1 * b2 - g2 * b1) * deti, -(r1 * b2 - r2 * b1) * deti, (r1 * g2 - r2 * g1) * deti }
+    local inverse_determinant = 1
+        / (
+            inverse_red_1 * inverse_green_2 * inverse_blue_3
+            + inverse_red_2 * inverse_green_3 * inverse_blue_1
+            + inverse_red_3 * inverse_green_1 * inverse_blue_2
+            - inverse_red_1 * inverse_green_3 * inverse_blue_2
+            - inverse_red_2 * inverse_green_1 * inverse_blue_3
+            - inverse_red_3 * inverse_green_2 * inverse_blue_1
+        )
+    separation_coefficients[1] = {
+        (inverse_green_2 * inverse_blue_3 - inverse_green_3 * inverse_blue_2) * inverse_determinant,
+        -(inverse_red_2 * inverse_blue_3 - inverse_red_3 * inverse_blue_2) * inverse_determinant,
+        (inverse_red_2 * inverse_green_3 - inverse_red_3 * inverse_green_2) * inverse_determinant,
+    }
+    separation_coefficients[2] = {
+        -(inverse_green_1 * inverse_blue_3 - inverse_green_3 * inverse_blue_1) * inverse_determinant,
+        (inverse_red_1 * inverse_blue_3 - inverse_red_3 * inverse_blue_1) * inverse_determinant,
+        -(inverse_red_1 * inverse_green_3 - inverse_red_3 * inverse_green_1) * inverse_determinant,
+    }
+    separation_coefficients[3] = {
+        (inverse_green_1 * inverse_blue_2 - inverse_green_2 * inverse_blue_1) * inverse_determinant,
+        -(inverse_red_1 * inverse_blue_2 - inverse_red_2 * inverse_blue_1) * inverse_determinant,
+        (inverse_red_1 * inverse_green_2 - inverse_red_2 * inverse_green_1) * inverse_determinant,
+    }
 end
 
-local col = {}
-col[1] = RGB(r1, g1, b1)
-col[2] = RGB(r2, g2, b2)
-col[3] = RGB(r3, g3, b3)
+local channel_colors = {}
+channel_colors[1] = RGB(inverse_red_1, inverse_green_1, inverse_blue_1)
+channel_colors[2] = RGB(inverse_red_2, inverse_green_2, inverse_blue_2)
+channel_colors[3] = RGB(inverse_red_3, inverse_green_3, inverse_blue_3)
 
-local al = {}
-local posx = {}
-local posy = {}
-local cl = {}
-local rad = {}
-local Num = {}
+local channel_alphas = {}
+local channel_x_positions = {}
+local channel_y_positions = {}
+local channel_scales = {}
+local channel_rotations = {}
+local channel_point_counts = {}
 
-local MakeData = function(dim, rot)
-    local rot2 = math.pi * ((rot + oT) % 90) / 180 --dxが0になることはない
-    local cos, sin = math.cos(rot2), math.sin(rot2) --cos,sin>=0
-    local dx, dy = siz * cos, siz * sin
-    local nx = math.floor((w2 * sin + h2 * cos) / siz)
-    local Pnum = 0
+local generate_channel_data = function(channel_index, base_rotation)
+    local grid_rotation_radians = math.pi * ((base_rotation + orbit_angle) % 90) / 180 --dxが0になることはない
+    local grid_cosine, grid_sine = math.cos(grid_rotation_radians), math.sin(grid_rotation_radians) --cos,sin>=0
+    local grid_step_x, grid_step_y = dot_size * grid_cosine, dot_size * grid_sine
+    local grid_line_count = math.floor((half_width * grid_sine + half_height * grid_cosine) / dot_size)
+    local point_count = 0
 
-    al[dim] = {}
-    posx[dim] = {}
-    posy[dim] = {}
-    cl[dim] = {}
+    channel_alphas[channel_index] = {}
+    channel_x_positions[channel_index] = {}
+    channel_y_positions[channel_index] = {}
+    channel_scales[channel_index] = {}
 
-    for k = -nx, nx do
-        local Cx = -k * dy
-        local Cy = k * dx
-        local L1 = math.ceil(math.max((-w2 - Cx) / math.abs(dx), (-h2 - Cy) / math.abs(dy))) --dy=0でもうまくいく
-        local L2 = math.floor(math.min((w2 - Cx) / math.abs(dx), (h2 - Cy) / math.abs(dy)))
-        for j = L1, L2 do
-            local Lposx = j * dx + Cx
-            local Lposy = j * dy + Cy
-            local C = {}
-            local a
-            C[1], C[2], C[3], a = obj.getpixel(Lposx + w2, Lposy + h2, "rgb")
-            if a > 0 then
-                Pnum = Pnum + 1
-                local CC = A[dim][1] * (255 - C[1]) + A[dim][2] * (255 - C[2]) + A[dim][3] * (255 - C[3])
-                if CC < 0 then
-                    CC = 0
-                elseif CC > 1 then
-                    CC = 1
+    for k = -grid_line_count, grid_line_count do
+        local line_origin_x = -k * grid_step_y
+        local line_origin_y = k * grid_step_x
+        local first_grid_index = math.ceil(
+            math.max(
+                (-half_width - line_origin_x) / math.abs(grid_step_x),
+                (-half_height - line_origin_y) / math.abs(grid_step_y)
+            )
+        ) --dy=0でもうまくいく
+        local last_grid_index = math.floor(
+            math.min(
+                (half_width - line_origin_x) / math.abs(grid_step_x),
+                (half_height - line_origin_y) / math.abs(grid_step_y)
+            )
+        )
+        for j = first_grid_index, last_grid_index do
+            local point_x = j * grid_step_x + line_origin_x
+            local point_y = j * grid_step_y + line_origin_y
+            local pixel_channels = {}
+            local pixel_alpha
+            pixel_channels[1], pixel_channels[2], pixel_channels[3], pixel_alpha =
+                obj.getpixel(point_x + half_width, point_y + half_height, "rgb")
+            if pixel_alpha > 0 then
+                point_count = point_count + 1
+                local channel_amount = separation_coefficients[channel_index][1] * (255 - pixel_channels[1])
+                    + separation_coefficients[channel_index][2] * (255 - pixel_channels[2])
+                    + separation_coefficients[channel_index][3] * (255 - pixel_channels[3])
+                if channel_amount < 0 then
+                    channel_amount = 0
+                elseif channel_amount > 1 then
+                    channel_amount = 1
                 end
-                al[dim][Pnum] = a / 255
-                posx[dim][Pnum] = Lposx
-                posy[dim][Pnum] = Lposy
-                cl[dim][Pnum] = math.sqrt(CC) * (tsi2 - tsi1) + tsi1
+                channel_alphas[channel_index][point_count] = pixel_alpha / 255
+                channel_x_positions[channel_index][point_count] = point_x
+                channel_y_positions[channel_index][point_count] = point_y
+                channel_scales[channel_index][point_count] = math.sqrt(channel_amount)
+                        * (maximum_dot_scale - minimum_dot_scale)
+                    + minimum_dot_scale
             end
         end
     end
-    rad[dim] = rot * Drt + oT + mT
-    Num[dim] = Pnum
+    channel_rotations[channel_index] = base_rotation * check_rotate_dots + orbit_angle + rotation_angle
+    channel_point_counts[channel_index] = point_count
 end
 
-local MakeImage = function(col, dim)
-    obj.setoption("drawtarget", "tempbuffer", w, h)
-    if siz < 100 then
-        obj.load("figure", fig, col, 100)
-        obj.effect("リサイズ", "拡大率", siz)
+local render_channel = function(channel_colors, channel_index)
+    obj.setoption("drawtarget", "tempbuffer", image_width, image_height)
+    if dot_size < 100 then
+        obj.load("figure", dot_figure, channel_colors, 100)
+        obj.effect("リサイズ", "拡大率", dot_size)
     else
-        obj.load("figure", fig, col, siz)
+        obj.load("figure", dot_figure, channel_colors, dot_size)
     end
-    for i = 1, Num[dim] do
-        obj.draw(posx[dim][i], posy[dim][i], 0, cl[dim][i], al[dim][i], 0, 0, rad[dim])
+    for i = 1, channel_point_counts[channel_index] do
+        obj.draw(
+            channel_x_positions[channel_index][i],
+            channel_y_positions[channel_index][i],
+            0,
+            channel_scales[channel_index][i],
+            channel_alphas[channel_index][i],
+            0,
+            0,
+            channel_rotations[channel_index]
+        )
     end
-    obj.copybuffer("cache:C" .. dim, "tmp")
+    obj.copybuffer("cache:C" .. channel_index, "tempbuffer")
 end
 
-obj.effect("ぼかし", "範囲", BS, "縦横比", 0, "光の強さ", 0, "サイズ固定", 1)
-obj.copybuffer("cache:ori_img", "obj")
+obj.effect("ぼかし", "範囲", blur_size, "縦横比", 0, "光の強さ", 0, "サイズ固定", 1)
+obj.copybuffer("cache:ori_img", "object")
 
-for i = 1, Cnum do
-    MakeData(i, deg[i])
+for i = 1, separation_color_count do
+    generate_channel_data(i, channel_angles[i])
 end
 
-for i = 1, Cnum do
-    MakeImage(col[i], i)
+for i = 1, separation_color_count do
+    render_channel(channel_colors[i], i)
 end
 
-if Dcut > 0 then
-    for i = 1, Cnum do
-        obj.copybuffer("obj", "cache:C" .. i)
-        obj.effect("単色化", "強さ", 100, "輝度を保持する", 0, "color", Bcol)
+if select_cutout_method > 0 then
+    for i = 1, separation_color_count do
+        obj.copybuffer("object", "cache:C" .. i)
+        obj.effect("単色化", "強さ", 100, "輝度を保持する", 0, "color", background_color)
         obj.draw()
     end
-    if Dcut == 2 then
-        obj.copybuffer("obj", "cache:ori_img")
-        obj.effect("単色化", "強さ", 100, "輝度を保持する", 0, "color", Bcol)
+    if select_cutout_method == 2 then
+        obj.copybuffer("object", "cache:ori_img")
+        obj.effect("単色化", "強さ", 100, "輝度を保持する", 0, "color", background_color)
         obj.draw()
     end
 else
-    obj.load("figure", "四角形", Bcol, 1)
-    obj.drawpoly(-w2, -h2, 0, w2, -h2, 0, w2, h2, 0, -w2, h2, 0)
+    obj.load("figure", "四角形", background_color, 1)
+    obj.drawpoly(
+        -half_width,
+        -half_height,
+        0,
+        half_width,
+        -half_height,
+        0,
+        half_width,
+        half_height,
+        0,
+        -half_width,
+        half_height,
+        0
+    )
 end
 
 obj.setoption("blend", 2)
-for i = 1, Cnum do
-    obj.copybuffer("obj", "cache:C" .. i)
+for i = 1, separation_color_count do
+    obj.copybuffer("object", "cache:C" .. i)
     obj.draw()
 end
 
 obj.load("tempbuffer")
-if EAP == 1 then
+if simple_preview_active == 1 then
     obj.effect("リサイズ", "拡大率", 400)
 end
 obj.setoption("blend", 0)

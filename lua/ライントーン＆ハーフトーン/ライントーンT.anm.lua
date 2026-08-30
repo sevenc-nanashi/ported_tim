@@ -24,56 +24,57 @@ local track_percent_2 = 60
 local track_shift = 0
 
 ---$color:ライン色
-local Lcol = 0x000000
+local line_color = 0x000000
 
 ---$color:背景色
-local Bcol = 0xffffff
+local background_color = 0xffffff
 
 ---$check:背景色非表示
-local bkap = 0
+local check_hide_background_color = 0
 
 ---$track:横分割倍率%
 ---min=1
 ---max=1000
 ---step=0.1
-local bai = 200
+local track_horizontal_split_scale_percent = 200
 
 ---$check:反転
-local rev = 0
+local check_invert = 0
 
---hide@Bcol:bkap==1
+--hide@background_color:check_hide_background_color==1
 
 --[[pixelshader@linetone_t
 ---$include "./shaders/linetone_t.hlsl"
 ]]
 
-local spN = track_split_count
-local spM = math.max(1, math.floor(spN * bai * 0.01))
-local tsi1 = track_percent * 0.01
-local tsi2 = math.max(track_percent_2 - track_percent, 0) * 0.01
-local sf = track_shift
+local vertical_split_count = track_split_count
+local horizontal_split_count =
+    math.max(1, math.floor(vertical_split_count * track_horizontal_split_scale_percent * 0.01))
+local minimum_line_ratio = track_percent * 0.01
+local line_ratio_range = math.max(track_percent_2 - track_percent, 0) * 0.01
+local vertical_shift = track_shift
 
-local w, h = obj.getpixel()
-local sw = w / spM
-local sh = h / spN
-sf = sf % sh
-obj.copybuffer("cache:ori_img", "obj")
+local image_width, image_height = obj.getpixel()
+local cell_width = image_width / horizontal_split_count
+local cell_height = image_height / vertical_split_count
+vertical_shift = vertical_shift % cell_height
+obj.copybuffer("cache:ori_img", "object")
 
-obj.setoption("drawtarget", "tempbuffer", w, h)
+obj.setoption("drawtarget", "tempbuffer", image_width, image_height)
 obj.pixelshader("linetone_t", "tempbuffer", "cache:ori_img", {
-    w,
-    h,
-    spM,
-    spN,
-    sw,
-    sh,
-    sf,
-    tsi1,
-    tsi2,
-    rev,
-    bkap,
-    Lcol,
-    Bcol,
+    image_width,
+    image_height,
+    horizontal_split_count,
+    vertical_split_count,
+    cell_width,
+    cell_height,
+    vertical_shift,
+    minimum_line_ratio,
+    line_ratio_range,
+    check_invert,
+    check_hide_background_color,
+    line_color,
+    background_color,
 })
 
 obj.copybuffer("object", "cache:ori_img")

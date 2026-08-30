@@ -24,22 +24,22 @@ local track_intensity = 40
 local track_rotation = 0
 
 ---$check:ベースカラー
-local basechk = 1
+local check_use_base_color = 1
 
 ---$color:光芒色
-local col = 0x9999ff
+local ray_color = 0x9999ff
 
 ---$track:幅比率％
 ---min=0
 ---max=100
 ---step=0.1
-local dH0 = 8
+local base_width_ratio = 8
 
 ---$track:高さランダム％
 ---min=0
 ---max=100
 ---step=0.1
-local hrnd = 50
+local height_randomness = 50
 
 ---$track:ぼかし
 ---min=0
@@ -51,29 +51,29 @@ local blur = 5
 ---min=-3600
 ---max=3600
 ---step=0.1
-local spdeg = 0
+local angle_step = 0
 
 ---$track:誤差角度
 ---min=0
 ---max=3600
 ---step=0.1
-local ddeg = 360
+local angle_randomness = 360
 
 ---$track:位置％
 ---min=-5000
 ---max=5000
 ---step=0.1
-local t = -100
+local position_percent = -100
 
 ---$value:位置オフセット％
-local OFSET = { 0, 0, 0 }
+local position_offset = { 0, 0, 0 }
 
 ---$select:形状
 ---1=1
 ---2=2
 ---3=3
 ---4=4
-local fig = 1
+local shape_index = 1
 
 ---$track:点滅
 ---min=0
@@ -87,63 +87,107 @@ local blink = 0.2
 ---step=1
 local seed = 0
 
---hide@col:basechk==1
+--hide@ray_color:check_use_base_color==1
 
 local figmax = 4
-obj.copybuffer("tmp", "obj")
+obj.copybuffer("tempbuffer", "object")
 obj.setoption("drawtarget", "tempbuffer")
-obj.setoption("blend", CustomFlareMode)
-if basechk == 1 then
-    col = CustomFlareColor
+obj.setoption("blend", T_CUSTOM_FLARE_BLEND_MODE)
+if check_use_base_color == 1 then
+    ray_color = T_CUSTOM_FLARE_COLOR
 end
-local dL0 = track_length * 0.5
-local n = track_count
+local base_half_length = track_length * 0.5
+local ray_count = track_count
 local alpha = obj.rand(0, 100) / 100 + (1 - blink)
 if alpha > 1 then
     alpha = 1
 end
 alpha = alpha * track_intensity * 0.02
-dH0 = dL0 * dH0 * 0.01
-ddeg = ddeg * 0.5
-fig = math.floor(fig)
-if fig > figmax then
-    fig = figmax
+base_width_ratio = base_half_length * base_width_ratio * 0.01
+angle_randomness = angle_randomness * 0.5
+shape_index = math.floor(shape_index)
+if shape_index > figmax then
+    shape_index = figmax
 end
-if fig < 1 then
-    fig = 1
+if shape_index < 1 then
+    shape_index = 1
 end
-local dx = (t + OFSET[1]) * 0.01 * CustomFlaredX + CustomFlareCX
-local dy = (t + OFSET[2]) * 0.01 * CustomFlaredY + CustomFlareCY
-local dz = (t + OFSET[3]) * 0.01 * CustomFlaredZ + CustomFlareCZ
+local draw_x = (position_percent + position_offset[1]) * 0.01 * T_CUSTOM_FLARE_DELTA_X + T_CUSTOM_FLARE_CENTER_X
+local draw_y = (position_percent + position_offset[2]) * 0.01 * T_CUSTOM_FLARE_DELTA_Y + T_CUSTOM_FLARE_CENTER_Y
+local draw_z = (position_percent + position_offset[3]) * 0.01 * T_CUSTOM_FLARE_DELTA_Z + T_CUSTOM_FLARE_CENTER_Z
 local tim2_images = obj.module("tim2")
-local data, w, h = tim2_images.custom_flare_load_image("spike" .. fig)
+local data, w, h = tim2_images.custom_flare_load_image("spike" .. shape_index)
 obj.putpixeldata("object", data, w, h)
-obj.effect("グラデーション", "color", col, "color2", col, "blend", 3)
+obj.effect("グラデーション", "color", ray_color, "color2", ray_color, "blend", 3)
 obj.effect("ぼかし", "範囲", blur)
 local w0, h0 = obj.getpixel()
 local rz = {}
-for i = 1, n do
-    local rnd = obj.rand(100 - hrnd, 100, i, seed) * 0.01
-    local dH = dH0 * rnd
-    local dL = dL0 * rnd
-    dH = w0 * dH / 30
-    dL = h0 * dL / 100
-    local rz = math.rad(i * spdeg + obj.rand(-ddeg, ddeg, i, 1000 + seed) - track_rotation)
-    local r = dL
+for i = 1, ray_count do
+    local rnd = obj.rand(100 - height_randomness, 100, i, seed) * 0.01
+    local d_h = base_width_ratio * rnd
+    local d_l = base_half_length * rnd
+    d_h = w0 * d_h / 30
+    d_l = h0 * d_l / 100
+    local rz = math.rad(i * angle_step + obj.rand(-angle_randomness, angle_randomness, i, 1000 + seed) - track_rotation)
+    local r = d_l
     local s = math.sin(rz)
     local c = math.cos(rz)
-    local Lr1 = dL + r
-    local Lr2 = -dL + r
-    local x0, y0 = -dH * c + Lr1 * s + dx, dH * s + Lr1 * c + dy
-    local x1, y1 = dH * c + Lr1 * s + dx, -dH * s + Lr1 * c + dy
-    local x2, y2 = dH * c + Lr2 * s + dx, -dH * s + Lr2 * c + dy
-    local x3, y3 = -dH * c + Lr2 * s + dx, dH * s + Lr2 * c + dy
-    local rp = math.floor(alpha)
-    local md = alpha - rp
-    for i = 1, rp do
-        obj.drawpoly(x0, y0, dz, x1, y1, dz, x2, y2, dz, x3, y3, dz, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h, 1)
+    local lr1 = d_l + r
+    local lr2 = -d_l + r
+    local x0, y0 = -d_h * c + lr1 * s + draw_x, d_h * s + lr1 * c + draw_y
+    local x1, y1 = d_h * c + lr1 * s + draw_x, -d_h * s + lr1 * c + draw_y
+    local x2, y2 = d_h * c + lr2 * s + draw_x, -d_h * s + lr2 * c + draw_y
+    local x3, y3 = -d_h * c + lr2 * s + draw_x, d_h * s + lr2 * c + draw_y
+    local alpha_integer_part = math.floor(alpha)
+    local alpha_fractional_part = alpha - alpha_integer_part
+    for i = 1, alpha_integer_part do
+        obj.drawpoly(
+            x0,
+            y0,
+            draw_z,
+            x1,
+            y1,
+            draw_z,
+            x2,
+            y2,
+            draw_z,
+            x3,
+            y3,
+            draw_z,
+            0,
+            0,
+            obj.w,
+            0,
+            obj.w,
+            obj.h,
+            0,
+            obj.h,
+            1
+        )
     end
-    obj.drawpoly(x0, y0, dz, x1, y1, dz, x2, y2, dz, x3, y3, dz, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h, md)
+    obj.drawpoly(
+        x0,
+        y0,
+        draw_z,
+        x1,
+        y1,
+        draw_z,
+        x2,
+        y2,
+        draw_z,
+        x3,
+        y3,
+        draw_z,
+        0,
+        0,
+        obj.w,
+        0,
+        obj.w,
+        obj.h,
+        0,
+        obj.h,
+        alpha_fractional_part
+    )
 end
 obj.load("tempbuffer")
 obj.setoption("blend", 0)

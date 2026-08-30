@@ -23,13 +23,26 @@ local center_x = 0
 ---step=0.1
 local center_y = 0
 
-local ow = width * 0.5
-local oh = height * 0.5
-local cx = ow * center_x * 0.01
-local cy = oh * center_y * 0.01
+local half_width = width * 0.5
+local half_height = height * 0.5
+local center_offset_x = half_width * center_x * 0.01
+local center_offset_y = half_height * center_y * 0.01
 
-obj.setoption("drawtarget", "tempbuffer", 2 * ow + 2, 2 * oh + 2)
-obj.drawpoly(-ow, -oh, 0, ow, -oh, 0, ow, oh, 0, -ow, oh, 0)
+obj.setoption("drawtarget", "tempbuffer", 2 * half_width + 2, 2 * half_height + 2)
+obj.drawpoly(
+    -half_width,
+    -half_height,
+    0,
+    half_width,
+    -half_height,
+    0,
+    half_width,
+    half_height,
+    0,
+    -half_width,
+    half_height,
+    0
+)
 obj.load("tempbuffer")
-obj.cx = cx
-obj.cy = cy
+obj.center_offset_x = center_offset_x
+obj.center_offset_y = center_offset_y

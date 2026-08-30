@@ -15,27 +15,27 @@ local track_height = 50
 ---min=10
 ---max=1000
 ---step=1
-local track_left_right = 30
+local track_horizontal_margin = 30
 
 ---$track:上下余白
 ---min=10
 ---max=1000
 ---step=1
-local track_up_down = 20
+local track_vertical_margin = 20
 
 ---$string:データ
-local TXT = "AviUtl"
+local value_data = "AviUtl"
 
 ---$color:線色
-local col1 = 0x0
+local color_bars = 0x0
 
 ---$color:背景色
-local col2 = 0xffffff
+local color_background = 0xffffff
 
 ---$check:CodeCも併用
-local UseC = 0
+local check_use_code_c = 0
 
-local PT = {
+local bar_patterns = {
     [0] = 212222,
     222122,
     222221,
@@ -143,7 +143,7 @@ local PT = {
     211214,
     211232,
 }
-local NM = {
+local character_values = {
     [" "] = 0,
     ["!"] = 1,
     ['"'] = 2,
@@ -240,115 +240,133 @@ local NM = {
     ["}"] = 93,
     ["~"] = 94,
 }
-local B = math.floor(track_min_width)
-local H = math.floor(track_height)
-local S = math.floor(track_left_right)
-local D = 2 * math.floor(track_up_down)
-S = 2 * math.max(S, 10 * B)
-local N = string.len(TXT)
-local MJ
-local APT
-if UseC == 1 then
-    local st, ed = string.find(TXT, "%d+", 1)
-    if st == nil then
-        UseC = 0
+local module_width = math.floor(track_min_width)
+local barcode_height = math.floor(track_height)
+local horizontal_margin = math.floor(track_horizontal_margin)
+local vertical_margin = 2 * math.floor(track_vertical_margin)
+horizontal_margin = 2 * math.max(horizontal_margin, 10 * module_width)
+local data_length = string.len(value_data)
+local checksum
+local encoded_pattern
+if check_use_code_c == 1 then
+    local digit_run_start, digit_run_end = string.find(value_data, "%d+", 1)
+    if digit_run_start == nil then
+        check_use_code_c = 0
     else
-        local CoB = {}
-        local CoC = {}
-        for i = 1, N do
-            CoB[i] = string.sub(TXT, i, i)
+        local code_b_characters = {}
+        local code_c_digits = {}
+        for i = 1, data_length do
+            code_b_characters[i] = string.sub(value_data, i, i)
         end
-        while st do
-            local L = ed - st + 1
-            if L > 3 then
-                L = L - L % 2
-                for i = 0, L - 1 do
-                    local ii = st + i
-                    CoC[ii], CoB[ii] = CoB[ii], nil
+        while digit_run_start do
+            local run_length = digit_run_end - digit_run_start + 1
+            if run_length > 3 then
+                run_length = run_length - run_length % 2
+                for i = 0, run_length - 1 do
+                    local ii = digit_run_start + i
+                    code_c_digits[ii], code_b_characters[ii] = code_b_characters[ii], nil
                 end
             end
-            st, ed = string.find(TXT, "%d+", ed + 1)
+            digit_run_start, digit_run_end = string.find(value_data, "%d+", digit_run_end + 1)
         end
-        local s = 1
-        local t = 1
-        if CoB[1] then --CodeBスタート
-            MJ = 104 * 1
-            APT = "211214"
+        local data_position = 1
+        local checksum_weight = 1
+        if code_b_characters[1] then --CodeBスタート
+            checksum = 104 * 1
+            encoded_pattern = "211214"
         else --CodeCスタート
-            MJ = 105 * 1
-            APT = "211232"
+            checksum = 105 * 1
+            encoded_pattern = "211232"
         end
-        while s <= N do
-            if CoB[s] then --CodeB
-                while CoB[s] do
-                    local Cn = NM[CoB[s]] or 0
-                    MJ = MJ + t * Cn
-                    APT = APT .. PT[Cn]
-                    s = s + 1
-                    t = t + 1
+        while data_position <= data_length do
+            if code_b_characters[data_position] then --CodeB
+                while code_b_characters[data_position] do
+                    local symbol_value = character_values[code_b_characters[data_position]] or 0
+                    checksum = checksum + checksum_weight * symbol_value
+                    encoded_pattern = encoded_pattern .. bar_patterns[symbol_value]
+                    data_position = data_position + 1
+                    checksum_weight = checksum_weight + 1
                 end
-                if s <= N then
-                    MJ = MJ + t * 99
-                    APT = APT .. "113141"
-                    t = t + 1
+                if data_position <= data_length then
+                    checksum = checksum + checksum_weight * 99
+                    encoded_pattern = encoded_pattern .. "113141"
+                    checksum_weight = checksum_weight + 1
                 end
             else --CodeC
-                while CoC[s] do
-                    local Cn = CoC[s] * 10 + CoC[s + 1]
-                    MJ = MJ + t * Cn
-                    APT = APT .. PT[Cn]
-                    s = s + 2
-                    t = t + 1
+                while code_c_digits[data_position] do
+                    local symbol_value = code_c_digits[data_position] * 10 + code_c_digits[data_position + 1]
+                    checksum = checksum + checksum_weight * symbol_value
+                    encoded_pattern = encoded_pattern .. bar_patterns[symbol_value]
+                    data_position = data_position + 2
+                    checksum_weight = checksum_weight + 1
                 end
-                if s <= N then
-                    MJ = MJ + t * 100
-                    APT = APT .. "114131"
-                    t = t + 1
+                if data_position <= data_length then
+                    checksum = checksum + checksum_weight * 100
+                    encoded_pattern = encoded_pattern .. "114131"
+                    checksum_weight = checksum_weight + 1
                 end
             end
         end
     end
 end
-if UseC == 0 then
-    MJ = 104 * 1
-    APT = "211214"
-    for i = 1, N do
-        local chr = string.sub(TXT, i, i)
-        local Cn = NM[chr] or 0
-        MJ = MJ + i * Cn
-        APT = APT .. PT[Cn]
+if check_use_code_c == 0 then
+    checksum = 104 * 1
+    encoded_pattern = "211214"
+    for i = 1, data_length do
+        local character = string.sub(value_data, i, i)
+        local symbol_value = character_values[character] or 0
+        checksum = checksum + i * symbol_value
+        encoded_pattern = encoded_pattern .. bar_patterns[symbol_value]
     end
 end
-MJ = MJ % 103
-APT = APT .. PT[MJ] .. "2331112"
-BW = {}
-local M = string.len(APT)
-L = 0
-for i = 1, M do
-    BW[i] = string.sub(APT, i, i)
-    L = L + BW[i]
+checksum = checksum % 103
+encoded_pattern = encoded_pattern .. bar_patterns[checksum] .. "2331112"
+local module_widths = {}
+local pattern_length = string.len(encoded_pattern)
+local total_module_count = 0
+for i = 1, pattern_length do
+    module_widths[i] = string.sub(encoded_pattern, i, i)
+    total_module_count = total_module_count + module_widths[i]
 end
-local W = B * L
-local dw = math.abs(obj.screen_w - W) % 2
-local dh = math.abs(obj.screen_h - H) % 2
+local barcode_width = module_width * total_module_count
+local width_parity_adjust = math.abs(obj.screen_w - barcode_width) % 2
+local height_parity_adjust = math.abs(obj.screen_h - barcode_height) % 2
 obj.setoption("drawtarget", "tempbuffer")
-obj.load("figure", "四角形", col2, 1)
-obj.effect("リサイズ", "X", W + dw + S, "Y", H + dh + D, "ドット数でサイズ指定", 1)
-obj.copybuffer("tmp", "obj")
-obj.load("figure", "四角形", col2, 1)
-obj.effect("リサイズ", "X", L, "Y", 1, "ドット数でサイズ指定", 1)
-M = math.floor(M / 2)
+obj.load("figure", "四角形", color_background, 1)
+obj.effect(
+    "リサイズ",
+    "X",
+    barcode_width + width_parity_adjust + horizontal_margin,
+    "Y",
+    barcode_height + height_parity_adjust + vertical_margin,
+    "ドット数でサイズ指定",
+    1
+)
+obj.copybuffer("tempbuffer", "object")
+obj.load("figure", "四角形", color_background, 1)
+obj.effect("リサイズ", "X", total_module_count, "Y", 1, "ドット数でサイズ指定", 1)
+pattern_length = math.floor(pattern_length / 2)
 obj.pixeloption("type", "col")
-SUM = 0
-for i = 1, M + 1 do
-    for k = 0, BW[2 * i - 1] - 1 do
-        obj.putpixel(SUM + k, 0, col1, 1)
+local pixel_offset = 0
+for i = 1, pattern_length + 1 do
+    for k = 0, module_widths[2 * i - 1] - 1 do
+        obj.putpixel(pixel_offset + k, 0, color_bars, 1)
     end
-    SUM = SUM + BW[2 * i - 1] + (BW[2 * i] or 0)
+    pixel_offset = pixel_offset + module_widths[2 * i - 1] + (module_widths[2 * i] or 0)
 end
-obj.effect("リサイズ", "X", W, "Y", H, "ドット数でサイズ指定", 1, "補間なし", 1)
-obj.effect("領域拡張", "塗りつぶし", 0, "下", dh, "右", dw)
+obj.effect(
+    "リサイズ",
+    "X",
+    barcode_width,
+    "Y",
+    barcode_height,
+    "ドット数でサイズ指定",
+    1,
+    "補間なし",
+    1
+)
+obj.effect("領域拡張", "塗りつぶし", 0, "下", height_parity_adjust, "右", width_parity_adjust)
 obj.draw()
-obj.copybuffer("obj", "tmp")
+obj.copybuffer("object", "tempbuffer")
 obj.cx = 0
 obj.cy = 0

@@ -3,13 +3,13 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local track_size = 200
+local track_cup_size = 200
 
 ---$track:水面高さ
 ---min=0
 ---max=100
 ---step=0.1
-local track_height = 80
+local track_tea_level_percent = 80
 
 ---$track:透明度
 ---min=0
@@ -24,53 +24,53 @@ local track_opacity = 20
 local track_cup_saucer_gap = 13
 
 ---$value:分割数
-local N = 40
+local segment_count = 40
 
 ---$color:カップ(色)
-local colc = 0xffffff
+local color_cup = 0xffffff
 
 ---$color:ソーサー(色)
-local cols = 0x02d2d2
+local color_saucer = 0x02d2d2
 
 ---$color:ティー(色)
-local colt = 0xa14250
+local color_tea = 0xa14250
 
 -- ---$value:ティー境界補正
 ---$track:ティー境界補正
 ---min=-1000
 ---max=1000
 ---step=0.1
-local hosei = 5
+local tea_boundary_adjust = 5
 
 -- ---$value:取っ手幅
 ---$track:取っ手幅
 ---min=0
 ---max=1000
 ---step=0.01
-local tw = 0.03
+local handle_width_ratio = 0.03
 
 -- ---$value:取っ手位置補正
 ---$track:取っ手位置補正
 ---min=-1000
 ---max=1000
 ---step=0.1
-local tp = 1
+local handle_position_adjust = 1
 
 -- ---$value:ｱﾝﾁｴｲﾘｱｽ[0/1/2]
 -- local ANT = 0
 
-local function CupLine(x)
+local function calculate_cup_profile(x)
     if x <= 0.9 then
         return 1.191156183 * x ^ 4
     else
-        local BB = -12.88588146
-        local CC = 26.66799905
-        return BB * x * x + CC * x + 1 - BB - CC
+        local quadratic_coefficient = -12.88588146
+        local linear_coefficient = 26.66799905
+        return quadratic_coefficient * x * x + linear_coefficient * x + 1 - quadratic_coefficient - linear_coefficient
     end
 end
 
-local function Rot(u, s)
-    return u * math.cos(s), u * math.sin(s)
+local function polar_to_cartesian(radius, angle)
+    return radius * math.cos(angle), radius * math.sin(angle)
 end
 
 local vertices_buffer = {}
@@ -85,115 +85,180 @@ local function flush_polys()
     vertices_buffer = {}
 end
 
-local size = track_size / 2
-local ds = track_cup_saucer_gap / 1000
+local cup_radius = track_cup_size / 2
+local cup_saucer_gap_ratio = track_cup_saucer_gap / 1000
 -- ANT = math.floor(ANT)
-local mpi = math.pi
+local pi = math.pi
 
 --ティーカップ本体作成
-obj.load("figure", "四角形", colc, size)
+obj.load("figure", "四角形", color_cup, cup_radius)
 
 -- if ANT < 2 then
 --     obj.setoption("antialias", ANT)
 -- end
 
-local y1 = -size * CupLine(0) - size * ds
-local u1 = 0
-for i = 0, N - 1 do
+local y1 = -cup_radius * calculate_cup_profile(0) - cup_radius * cup_saucer_gap_ratio
+local previous_radius = 0
+for i = 0, segment_count - 1 do
     -- if ANT >= 2 then
-    --     if i == N - 1 then
+    --     if i == segment_count - 1 then
     --         obj.setoption("antialias", 1)
     --     else
     --         obj.setoption("antialias", 0)
     --     end
     -- end
-    local v0 = (i + 1) / N
-    local y0 = -size * CupLine(v0) - size * ds
-    local u0 = size * v0
-    local x0, z0 = Rot(u0, 0)
-    local x3, z3 = Rot(u1, 0)
-    for j = 0, N - 1 do
-        -- local s1 = j * 2 * mpi / N
-        local s2 = (j + 1) * 2 * mpi / N
-        local x1, z1 = Rot(u0, s2)
-        local x2, z2 = Rot(u1, s2)
+    local profile_ratio = (i + 1) / segment_count
+    local y0 = -cup_radius * calculate_cup_profile(profile_ratio) - cup_radius * cup_saucer_gap_ratio
+    local current_radius = cup_radius * profile_ratio
+    local x0, z0 = polar_to_cartesian(current_radius, 0)
+    local x3, z3 = polar_to_cartesian(previous_radius, 0)
+    for j = 0, segment_count - 1 do
+        -- local start_angle = j * 2 * pi / segment_count
+        local end_angle = (j + 1) * 2 * pi / segment_count
+        local x1, z1 = polar_to_cartesian(current_radius, end_angle)
+        local x2, z2 = polar_to_cartesian(previous_radius, end_angle)
         push_poly(x0, y0, z0, x1, y0, z1, x2, y1, z2, x3, y1, z3)
         x0, z0 = x1, z1
         x3, z3 = x2, z2
     end
     y1 = y0
-    u1 = u0
+    previous_radius = current_radius
 end
 flush_polys()
 
 --皿作成
-obj.load("figure", "四角形", cols, size)
+obj.load("figure", "四角形", color_saucer, cup_radius)
 -- if ANT < 2 then
 --     obj.setoption("antialias", ANT)
 -- end
 local v1 = 0
 y1 = 0
-u1 = 0
-for i = 0, N - 1 do
+previous_radius = 0
+for i = 0, segment_count - 1 do
     -- if ANT >= 2 then
-    --     if i == N - 1 then
+    --     if i == segment_count - 1 then
     --         obj.setoption("antialias", 1)
     --     else
     --         obj.setoption("antialias", 0)
     --     end
     -- end
-    local v0 = (i + 1) / N
-    local y0 = -0.26 * size * v0 ^ 2.4
-    local u0 = 1.5 * size * v0
-    for j = 0, N - 1 do
-        local s1 = j * 2 * mpi / N
-        local s2 = (j + 1) * 2 * mpi / N
-        local x0, z0 = Rot(u0, s1)
-        local x1, z1 = Rot(u0, s2)
-        local x2, z2 = Rot(u1, s2)
-        local x3, z3 = Rot(u1, s1)
+    local profile_ratio = (i + 1) / segment_count
+    local y0 = -0.26 * cup_radius * profile_ratio ^ 2.4
+    local current_radius = 1.5 * cup_radius * profile_ratio
+    for j = 0, segment_count - 1 do
+        local start_angle = j * 2 * pi / segment_count
+        local end_angle = (j + 1) * 2 * pi / segment_count
+        local x0, z0 = polar_to_cartesian(current_radius, start_angle)
+        local x1, z1 = polar_to_cartesian(current_radius, end_angle)
+        local x2, z2 = polar_to_cartesian(previous_radius, end_angle)
+        local x3, z3 = polar_to_cartesian(previous_radius, start_angle)
         push_poly(x0, y0, z0, x1, y0, z1, x2, y1, z2, x3, y1, z3)
     end
-    -- local v1 = v0
+    -- local v1 = profile_ratio
     y1 = y0
-    u1 = u0
+    previous_radius = current_radius
 end
 flush_polys()
 
 --取っ手作成
-obj.load("figure", "四角形", colc, size * 0.6)
+obj.load("figure", "四角形", color_cup, cup_radius * 0.6)
 -- if ANT > 1 then
 --     ANT = 1
 -- end
 --obj.setoption("antialias", ANT)
-local oy = size * CupLine(0.85) + size * ds
-local ox = (0.85 + 0.315) * size + tp
-local dz = size * tw
-for j = 0, N - 1 do
-    local s1 = j * 2 * mpi / N
-    local s2 = (j + 1) * 2 * mpi / N
-    local hi1 = 1 + 0.5 * ((1 + math.cos(s1)) / 2) ^ 12
-    local hi2 = 1 + 0.5 * ((1 + math.cos(s2)) / 2) ^ 12
-    local x0, y0 = Rot(size * 0.30 * hi1, s1 + 0.7 * mpi)
-    local x1, y1 = Rot(size * 0.30 * hi2, s2 + 0.7 * mpi)
-    local x2, y2 = Rot(size * 0.24 * hi2, s2 + 0.7 * mpi)
-    local x3, y3 = Rot(size * 0.24 * hi1, s1 + 0.7 * mpi)
-    push_poly(x0 + ox, y0 - oy, dz, x1 + ox, y1 - oy, dz, x2 + ox, y2 - oy, dz, x3 + ox, y3 - oy, dz)
-    push_poly(x0 + ox, y0 - oy, -dz, x1 + ox, y1 - oy, -dz, x2 + ox, y2 - oy, -dz, x3 + ox, y3 - oy, -dz)
-    push_poly(x0 + ox, y0 - oy, dz, x1 + ox, y1 - oy, dz, x1 + ox, y1 - oy, -dz, x0 + ox, y0 - oy, -dz)
-    push_poly(x2 + ox, y2 - oy, dz, x3 + ox, y3 - oy, dz, x3 + ox, y3 - oy, -dz, x2 + ox, y2 - oy, -dz)
+local handle_offset_y = cup_radius * calculate_cup_profile(0.85) + cup_radius * cup_saucer_gap_ratio
+local handle_offset_x = (0.85 + 0.315) * cup_radius + handle_position_adjust
+local handle_half_depth = cup_radius * handle_width_ratio
+for j = 0, segment_count - 1 do
+    local start_angle = j * 2 * pi / segment_count
+    local end_angle = (j + 1) * 2 * pi / segment_count
+    local start_height_scale = 1 + 0.5 * ((1 + math.cos(start_angle)) / 2) ^ 12
+    local end_height_scale = 1 + 0.5 * ((1 + math.cos(end_angle)) / 2) ^ 12
+    local x0, y0 = polar_to_cartesian(cup_radius * 0.30 * start_height_scale, start_angle + 0.7 * pi)
+    local x1, y1 = polar_to_cartesian(cup_radius * 0.30 * end_height_scale, end_angle + 0.7 * pi)
+    local x2, y2 = polar_to_cartesian(cup_radius * 0.24 * end_height_scale, end_angle + 0.7 * pi)
+    local x3, y3 = polar_to_cartesian(cup_radius * 0.24 * start_height_scale, start_angle + 0.7 * pi)
+    push_poly(
+        x0 + handle_offset_x,
+        y0 - handle_offset_y,
+        handle_half_depth,
+        x1 + handle_offset_x,
+        y1 - handle_offset_y,
+        handle_half_depth,
+        x2 + handle_offset_x,
+        y2 - handle_offset_y,
+        handle_half_depth,
+        x3 + handle_offset_x,
+        y3 - handle_offset_y,
+        handle_half_depth
+    )
+    push_poly(
+        x0 + handle_offset_x,
+        y0 - handle_offset_y,
+        -handle_half_depth,
+        x1 + handle_offset_x,
+        y1 - handle_offset_y,
+        -handle_half_depth,
+        x2 + handle_offset_x,
+        y2 - handle_offset_y,
+        -handle_half_depth,
+        x3 + handle_offset_x,
+        y3 - handle_offset_y,
+        -handle_half_depth
+    )
+    push_poly(
+        x0 + handle_offset_x,
+        y0 - handle_offset_y,
+        handle_half_depth,
+        x1 + handle_offset_x,
+        y1 - handle_offset_y,
+        handle_half_depth,
+        x1 + handle_offset_x,
+        y1 - handle_offset_y,
+        -handle_half_depth,
+        x0 + handle_offset_x,
+        y0 - handle_offset_y,
+        -handle_half_depth
+    )
+    push_poly(
+        x2 + handle_offset_x,
+        y2 - handle_offset_y,
+        handle_half_depth,
+        x3 + handle_offset_x,
+        y3 - handle_offset_y,
+        handle_half_depth,
+        x3 + handle_offset_x,
+        y3 - handle_offset_y,
+        -handle_half_depth,
+        x2 + handle_offset_x,
+        y2 - handle_offset_y,
+        -handle_half_depth
+    )
 end
 
 flush_polys()
 
 --紅茶作成
-u1 = track_height / 100
-y1 = -size * CupLine(u1) - size * ds
-u1 = size * u1 - hosei
-obj.load("figure", "円", colt, 2 * u1)
+previous_radius = track_tea_level_percent / 100
+y1 = -cup_radius * calculate_cup_profile(previous_radius) - cup_radius * cup_saucer_gap_ratio
+previous_radius = cup_radius * previous_radius - tea_boundary_adjust
+obj.load("figure", "円", color_tea, 2 * previous_radius)
 -- if ANT > 1 then
 --     ANT = 1
 -- end
 -- obj.setoption("antialias", ANT)
 obj.alpha = 1 - track_opacity / 100
-obj.drawpoly(-u1, y1, -u1, u1, y1, -u1, u1, y1, u1, -u1, y1, u1)
+obj.drawpoly(
+    -previous_radius,
+    y1,
+    -previous_radius,
+    previous_radius,
+    y1,
+    -previous_radius,
+    previous_radius,
+    y1,
+    previous_radius,
+    -previous_radius,
+    y1,
+    previous_radius
+)

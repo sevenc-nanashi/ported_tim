@@ -9,7 +9,7 @@ local track_intensity = 50
 ---min=3
 ---max=500
 ---step=1
-local track_size = 10
+local track_cell_size = 10
 
 ---$track:角度
 ---min=-3600
@@ -21,84 +21,148 @@ local track_angle = 0
 ---min=0
 ---max=500
 ---step=0.1
-local track_percent = 100
+local track_blur_percent = 100
 
 ---$color:色1
-local col1 = 0xffffff
+local color_primary = 0xffffff
 
 ---$color:色2
-local col2 = nil
+local color_secondary = nil
 
 ---$check:直線
-local Lc = 0
+local check_straight_lines = 0
 
 ---$check:網表示
-local Ap = 0
+local check_show_grid_only = 0
 
 ---$check:ブロック描画
-local check0 = false
+local check_draw_blocks = false
 
---hide@track_percent:check0==1
+--hide@track_blur_percent:check_draw_blocks==1
 
-local L = track_intensity / 100
-local S = math.floor(track_size)
-local w0, h0 = obj.getpixel()
-local D = track_angle
-local N = track_percent / 100
-local ty, tw
-if Lc == 0 then
-    ty, tw = 1, 100
+local intensity_ratio = track_intensity / 100
+local cell_size = math.floor(track_cell_size)
+local original_width, original_height = obj.getpixel()
+local rotation_degrees = track_angle
+local blur_ratio = track_blur_percent / 100
+local gradient_type, gradient_width
+if check_straight_lines == 0 then
+    gradient_type, gradient_width = 1, 100
 else
-    ty, tw = 3, 69
+    gradient_type, gradient_width = 3, 69
 end
-if col2 == nil then
-    local r, g, b = RGB(col1)
-    col2 = RGB(255 - r, 255 - g, 255 - b)
+if color_secondary == nil then
+    local r, g, b = RGB(color_primary)
+    color_secondary = RGB(255 - r, 255 - g, 255 - b)
 end
-if D ~= 0 then
-    local sin = math.abs(math.sin(D * math.pi / 180))
-    local cos = math.abs(math.cos(D * math.pi / 180))
-    local iw = w0 * cos + h0 * sin
-    local ih = w0 * sin + h0 * cos
-    obj.setoption("drawtarget", "tempbuffer", iw + S, ih + S)
-    obj.effect("領域拡張", "上", S, "下", S, "左", S, "右", S, "塗りつぶし", 1)
-    obj.draw(0, 0, 0, 1, 1, 0, 0, -D)
+if rotation_degrees ~= 0 then
+    local absolute_sine = math.abs(math.sin(rotation_degrees * math.pi / 180))
+    local absolute_cosine = math.abs(math.cos(rotation_degrees * math.pi / 180))
+    local rotated_width = original_width * absolute_cosine + original_height * absolute_sine
+    local rotated_height = original_width * absolute_sine + original_height * absolute_cosine
+    obj.setoption("drawtarget", "tempbuffer", rotated_width + cell_size, rotated_height + cell_size)
+    obj.effect(
+        "領域拡張",
+        "上",
+        cell_size,
+        "下",
+        cell_size,
+        "左",
+        cell_size,
+        "右",
+        cell_size,
+        "塗りつぶし",
+        1
+    )
+    obj.draw(0, 0, 0, 1, 1, 0, 0, -rotation_degrees)
     obj.copybuffer("object", "tempbuffer")
 end
 local w, h = obj.getpixel()
-local nx2 = 2 * math.ceil(0.5 * w / S)
-local ny2 = 2 * math.ceil(0.5 * h / S)
-if check0 then
-    local ws, hs = nx2 * S, ny2 * S
-    local dx, dy = (ws - w) / 2, (hs - h) / 2
-    obj.effect("領域拡張", "上", dy, "下", dy, "左", dx, "右", dx, "塗りつぶし", 1)
-    obj.effect("リサイズ", "X", nx2, "Y", ny2, "ドット数でサイズ指定", 1)
-    obj.effect("リサイズ", "X", ws, "Y", hs, "補間なし", 1, "ドット数でサイズ指定", 1)
-    obj.effect("クリッピング", "上", dy, "下", dy, "左", dx, "右", dx)
+local horizontal_repeat_count = 2 * math.ceil(0.5 * w / cell_size)
+local vertical_repeat_count = 2 * math.ceil(0.5 * h / cell_size)
+if check_draw_blocks then
+    local canvas_width, canvas_height = horizontal_repeat_count * cell_size, vertical_repeat_count * cell_size
+    local canvas_offset_x, canvas_offset_y = (canvas_width - w) / 2, (canvas_height - h) / 2
+    obj.effect(
+        "領域拡張",
+        "上",
+        canvas_offset_y,
+        "下",
+        canvas_offset_y,
+        "左",
+        canvas_offset_x,
+        "右",
+        canvas_offset_x,
+        "塗りつぶし",
+        1
+    )
+    obj.effect(
+        "リサイズ",
+        "X",
+        horizontal_repeat_count,
+        "Y",
+        vertical_repeat_count,
+        "ドット数でサイズ指定",
+        1
+    )
+    obj.effect(
+        "リサイズ",
+        "X",
+        canvas_width,
+        "Y",
+        canvas_height,
+        "補間なし",
+        1,
+        "ドット数でサイズ指定",
+        1
+    )
+    obj.effect(
+        "クリッピング",
+        "上",
+        canvas_offset_y,
+        "下",
+        canvas_offset_y,
+        "左",
+        canvas_offset_x,
+        "右",
+        canvas_offset_x
+    )
 else
-    obj.effect("ぼかし", "範囲", S * N, "サイズ固定", 1)
+    obj.effect("ぼかし", "範囲", cell_size * blur_ratio, "サイズ固定", 1)
 end
-if L ~= 0 or Ap == 1 then
+if intensity_ratio ~= 0 or check_show_grid_only == 1 then
     obj.copybuffer("cache:ORGL", "object")
     obj.setoption("drawtarget", "tempbuffer", w, h)
-    obj.load("figure", "四角形", col2, 100)
-    obj.effect("グラデーション", "type", ty, "強さ", 75, "幅", tw, "color", col1, "color2", col2)
-    if L < 0 then
-        L = -L
+    obj.load("figure", "四角形", color_secondary, 100)
+    obj.effect(
+        "グラデーション",
+        "type",
+        gradient_type,
+        "強さ",
+        75,
+        "幅",
+        gradient_width,
+        "color",
+        color_primary,
+        "color2",
+        color_secondary
+    )
+    if intensity_ratio < 0 then
+        intensity_ratio = -intensity_ratio
         obj.effect("反転", "輝度反転", 1)
     end
-    obj.effect("リサイズ", "X", S, "Y", S, "ドット数でサイズ指定", 1)
+    obj.effect("リサイズ", "X", cell_size, "Y", cell_size, "ドット数でサイズ指定", 1)
 
-    if nx2 > 400 or ny2 > 400 then
-        local nx1 = math.floor(math.sqrt(nx2))
-        local ny1 = math.floor(math.sqrt(ny2))
-        nx2 = math.ceil(nx2 / nx1)
-        ny2 = math.ceil(ny2 / ny1)
-        nx1 = nx1 + nx1 % 2
-        ny1 = ny1 + ny1 % 2
-        obj.effect("画像ループ", "横回数", nx1, "縦回数", ny1)
+    if horizontal_repeat_count > 400 or vertical_repeat_count > 400 then
+        local horizontal_block_count = math.floor(math.sqrt(horizontal_repeat_count))
+        local vertical_block_count = math.floor(math.sqrt(vertical_repeat_count))
+        horizontal_repeat_count = math.ceil(horizontal_repeat_count / horizontal_block_count)
+        vertical_repeat_count = math.ceil(vertical_repeat_count / vertical_block_count)
+        horizontal_block_count = horizontal_block_count + horizontal_block_count % 2
+        vertical_block_count = vertical_block_count + vertical_block_count % 2
+        obj.effect("画像ループ", "横回数", horizontal_block_count, "縦回数", vertical_block_count)
     end
-    obj.effect("画像ループ", "横回数", nx2, "縦回数", ny2)
+    obj.effect("画像ループ", "横回数", horizontal_repeat_count, "縦回数", vertical_repeat_count)
     obj.draw()
     obj.copybuffer("object", "cache:ORGL")
     obj.effect("反転", "透明度反転", 1)
@@ -106,21 +170,21 @@ if L ~= 0 or Ap == 1 then
     obj.draw()
     obj.copybuffer("object", "tempbuffer")
 
-    if Ap == 0 then
+    if check_show_grid_only == 0 then
         obj.copybuffer("tempbuffer", "cache:ORGL")
         obj.setoption("blend", 5)
-        if L <= 1 then
-            obj.draw(0, 0, 0, 1, L)
+        if intensity_ratio <= 1 then
+            obj.draw(0, 0, 0, 1, intensity_ratio)
         else
             obj.draw(0, 0, 0, 1, 1)
-            obj.draw(0, 0, 0, 1, L - 1)
+            obj.draw(0, 0, 0, 1, intensity_ratio - 1)
         end
     end
     obj.copybuffer("object", "tempbuffer")
     obj.setoption("blend", 0)
 end
-if D ~= 0 then
-    obj.setoption("drawtarget", "tempbuffer", w0, h0)
-    obj.draw(0, 0, 0, 1, 1, 0, 0, D)
+if rotation_degrees ~= 0 then
+    obj.setoption("drawtarget", "tempbuffer", original_width, original_height)
+    obj.draw(0, 0, 0, 1, 1, 0, 0, rotation_degrees)
     obj.copybuffer("object", "tempbuffer")
 end

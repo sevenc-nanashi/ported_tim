@@ -14,7 +14,7 @@ local track_threshold = 128
 ---RGB平均=0
 ---NTSC加重平均法=1
 ---HDTV法=2
-local track_gray_process = 1
+local select_grayscale_method = 1
 
 -- ---$track:自動判定
 -- ---min=0
@@ -28,50 +28,50 @@ local track_gray_process = 1
 ---Kittlerらの閾値選定法=4
 ---微分ヒストグラム法=5
 ---ラプラシアン・ヒストグラム法=6
-local track_auto_detect = 0
+local select_automatic_detection = 0
 
 --group:色変更
 ---$check:色付け
-local colorize = false
+local check_colorize = false
 ---$color:明部色
-local col1 = 0xff0000
+local bright_custom_color = 0xff0000
 ---$color:暗部色
-local col2 = 0x0000ff
+local dark_custom_color = 0x0000ff
 
---hide@track_threshold:track_auto_detect~=0
---hide@col1:colorize==0
---hide@col2:colorize==0
+--hide@track_threshold:select_automatic_detection~=0
+--hide@bright_custom_color:check_colorize==0
+--hide@dark_custom_color:check_colorize==0
 
 --[[pixelshader@color_binarization
 ---$include "./shaders/binarization.hlsl"
 ]]
 
 local threshold = track_threshold / 255
-if track_auto_detect ~= 0 then
-    local T_Color_Module = obj.module("tim2")
-    local userdata, w, h = obj.getpixeldata("object", "bgra")
-    threshold = T_Color_Module.color_binarization_threshold(
-        userdata,
-        w,
-        h,
+if select_automatic_detection ~= 0 then
+    local color_module = obj.module("tim2")
+    local pixel_data, width, height = obj.getpixeldata("object", "bgra")
+    threshold = color_module.color_binarization_threshold(
+        pixel_data,
+        width,
+        height,
         track_threshold,
-        track_gray_process,
-        track_auto_detect
+        select_grayscale_method,
+        select_automatic_detection
     ) / 255
 end
 
-local bright_color = colorize and col1 or 0xffffff
-local dark_color = colorize and col2 or 0x000000
-local bright_r, bright_g, bright_b = RGB(bright_color)
-local dark_r, dark_g, dark_b = RGB(dark_color)
+local bright_color = check_colorize and bright_custom_color or 0xffffff
+local dark_color = check_colorize and dark_custom_color or 0x000000
+local bright_red, bright_green, bright_blue = RGB(bright_color)
+local dark_red, dark_green, dark_blue = RGB(dark_color)
 
 obj.pixelshader("color_binarization", "object", "object", {
     threshold,
-    track_gray_process,
-    bright_r / 255,
-    bright_g / 255,
-    bright_b / 255,
-    dark_r / 255,
-    dark_g / 255,
-    dark_b / 255,
+    select_grayscale_method,
+    bright_red / 255,
+    bright_green / 255,
+    bright_blue / 255,
+    dark_red / 255,
+    dark_green / 255,
+    dark_blue / 255,
 })

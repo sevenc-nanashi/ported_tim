@@ -28,7 +28,7 @@ local track_divide = 0
 ---ノイズ四角=1
 ---四角ガラス=2
 ---円ガラス=3
-local fig = 1
+local select_shape = 1
 
 ---$track:変化速度
 ---min=-1000
@@ -42,15 +42,27 @@ local track_change_speed = 0
 ---step=1
 local track_seed = 0
 
---hide@track_change_speed:fig~=1
---hide@track_seed:fig~=1
+--hide@track_change_speed:select_shape~=1
+--hide@track_seed:select_shape~=1
 
-local size = track_distortion_amount
-local per = track_period_size
+local distortion_amount = track_distortion_amount
+local period_size = track_period_size
 local seed = track_seed
-local nv = track_change_speed
-fig = ((fig or 1) - 1) % 3 + 1
-obj.effect("領域拡張", "塗りつぶし", 1, "上", size, "下", size, "左", size, "右", size)
+local change_speed = track_change_speed
+select_shape = ((select_shape or 1) - 1) % 3 + 1
+obj.effect(
+    "領域拡張",
+    "塗りつぶし",
+    1,
+    "上",
+    distortion_amount,
+    "下",
+    distortion_amount,
+    "左",
+    distortion_amount,
+    "右",
+    distortion_amount
+)
 obj.copybuffer("cache:ori", "object")
 local w, h = obj.getpixel()
 
@@ -73,10 +85,24 @@ local function loop_image(nx, ny)
     obj.pixelshader("loop", "object", "cache:loop_src")
 end
 
-if fig == 1 then
+if select_shape == 1 then
     obj.setoption("drawtarget", "tempbuffer", w, h)
     obj.load("figure", "四角形", 0xffffff, math.max(w, h))
-    obj.effect("ノイズ", "周期X", per, "周期Y", per, "type", 0, "mode", 1, "seed", seed, "変化速度", nv)
+    obj.effect(
+        "ノイズ",
+        "周期X",
+        period_size,
+        "周期Y",
+        period_size,
+        "type",
+        0,
+        "mode",
+        1,
+        "seed",
+        seed,
+        "変化速度",
+        change_speed
+    )
     obj.pixelshader("flat_rgb", "object", "object", { 1 })
     obj.setoption("blend", 5)
     obj.draw()
@@ -84,9 +110,9 @@ if fig == 1 then
     obj.effect(
         "ノイズ",
         "周期X",
-        per,
+        period_size,
         "周期Y",
-        per,
+        period_size,
         "ノイズの種類",
         "Type1",
         "合成モード",
@@ -94,27 +120,27 @@ if fig == 1 then
         "シード",
         seed + 100,
         "変化速度",
-        nv
+        change_speed
     )
     obj.pixelshader("flat_rgb", "object", "object", { 2 })
     obj.setoption("blend", 5)
     obj.draw()
     obj.setoption("blend", 0)
-elseif fig == 2 then
-    local siz = per * 2.5
+elseif select_shape == 2 then
+    local tile_size = period_size * 2.5
     obj.load("figure", "四角形", 0x808080, 50)
     obj.pixelshader("glass_sq", "object", "object")
     obj.effect("ぼかし", "範囲", 2, "サイズ固定", 1)
-    local pp = siz / 50 * 100
-    obj.effect("リサイズ", "拡大率", pp)
-    local nx = -math.floor(-w / siz)
-    local ny = -math.floor(-h / siz)
+    local scale_percent = tile_size / 50 * 100
+    obj.effect("リサイズ", "拡大率", scale_percent)
+    local nx = -math.floor(-w / tile_size)
+    local ny = -math.floor(-h / tile_size)
     nx = 2 * math.floor((nx + 1) / 2)
     ny = 2 * math.floor((ny + 1) / 2)
     -- obj.effect("画像ループ", "横回数", nx, "縦回数", ny)
     loop_image(nx, ny)
 else
-    local siz = per * 5
+    local tile_size = period_size * 5
     obj.setoption("drawtarget", "tempbuffer", 100, 100)
     obj.load("figure", "四角形", 0x808080, 100)
     obj.draw()
@@ -128,20 +154,20 @@ else
     obj.draw(0, 50, 0)
     obj.draw(0, -50, 0)
     obj.load("tempbuffer")
-    obj.effect("リサイズ", "拡大率", siz)
-    local nx = -math.floor(-w / siz)
-    local ny = -math.floor(-h / siz)
+    obj.effect("リサイズ", "拡大率", tile_size)
+    local nx = -math.floor(-w / tile_size)
+    local ny = -math.floor(-h / tile_size)
     nx = 2 * math.floor((nx + 1) / 2)
     ny = 2 * math.floor((ny + 1) / 2)
     -- obj.effect("画像ループ", "横回数", nx, "縦回数", ny)
     loop_image(nx, ny)
-    obj.effect("ぼかし", "範囲", siz * 0.02, "サイズ固定", 1)
+    obj.effect("ぼかし", "範囲", tile_size * 0.02, "サイズ固定", 1)
 end
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 obj.pixelshader("flattening", "tempbuffer", "tempbuffer", { track_divide * 0.01 })
 
-obj.copybuffer("obj", "cache:ori")
+obj.copybuffer("object", "cache:ori")
 obj.effect(
     "ディスプレイスメントマップ",
     "type",
@@ -151,10 +177,20 @@ obj.effect(
     "元のサイズに合わせる",
     1,
     "param0",
-    size,
+    distortion_amount,
     "param1",
-    size,
+    distortion_amount,
     "ぼかし",
     track_smooth
 )
-obj.effect("クリッピング", "上", size, "下", size, "左", size, "右", size)
+obj.effect(
+    "クリッピング",
+    "上",
+    distortion_amount,
+    "下",
+    distortion_amount,
+    "左",
+    distortion_amount,
+    "右",
+    distortion_amount
+)

@@ -24,30 +24,30 @@ local track_start_point = 0
 local track_threshold = 128
 
 ---$color:色
-local col = 0xffffff
+local line_color = 0xffffff
 
 ---$check:逆回転
-local rev = 0
+local check_reverse = 0
 
 ---$check:輪郭のみ
-local rin = 0
+local check_contour_only = 0
 
 ---$check:輪郭を下に
-local Rover = 0
+local check_draw_contour_below = 0
 
 ---$check:中心補正
-local reC = 1
+local check_restore_center = 1
 
 ---$track:スキャン粗さ
 ---min=1
 ---max=100
 ---step=1
-local Scsp = 1
+local track_scan_step = 1
 
 --group:拡張機能,false
 
 ---$check:拡張機能を使用
-local use_extension = 0
+local check_use_extension = 0
 
 ---$track:破線周期
 ---min=0
@@ -77,10 +77,10 @@ local track_opacity = 0
 local extension_figure = "円"
 
 ---$check:進行方向
-local extension_direction = 0
+local check_follow_direction = 0
 
 ---$check:先端表示
-local extension_tip_enabled = 0
+local check_show_tip = 0
 
 ---$figure:先端図形
 local extension_tip_figure = "三角形"
@@ -93,125 +93,129 @@ local extension_tip_size = 50
 
 --group:
 
---hide@track_line_period:use_extension==0
---hide@track_line_spacing:use_extension==0
---hide@track_smoothness:use_extension==0
---hide@track_opacity:use_extension==0
---hide@extension_figure:use_extension==0
---hide@extension_direction:use_extension==0
---hide@extension_tip_enabled:use_extension==0
---hide@extension_tip_figure:use_extension==0
---hide@extension_tip_figure:extension_tip_enabled==0
---hide@extension_tip_size:use_extension==0
---hide@extension_tip_size:extension_tip_enabled==0
+--hide@track_line_period:check_use_extension==0
+--hide@track_line_spacing:check_use_extension==0
+--hide@track_smoothness:check_use_extension==0
+--hide@track_opacity:check_use_extension==0
+--hide@extension_figure:check_use_extension==0
+--hide@check_follow_direction:check_use_extension==0
+--hide@check_show_tip:check_use_extension==0
+--hide@extension_tip_figure:check_use_extension==0
+--hide@extension_tip_figure:check_show_tip==0
+--hide@extension_tip_size:check_use_extension==0
+--hide@extension_tip_size:check_show_tip==0
 
-local icx = obj.cx
-local icy = obj.cy
-reC = reC or 0
+local original_center_x = obj.cx
+local original_center_y = obj.cy
+check_restore_center = check_restore_center or 0
 
-local fig, ivf, ivl, td, sm, halp, senp, senz, sens
+local line_figure, line_period, line_spacing, follow_direction, smoothness, body_opacity, show_tip, tip_figure, tip_size
 
-if use_extension == 1 then
-    fig = extension_figure
-    ivf = track_line_period * 0.01
-    ivl = track_line_spacing * 0.01
-    td = extension_direction
-    sm = math.floor(track_smoothness)
-    halp = 1 - track_opacity * 0.01
-    senp = extension_tip_enabled
-    senz = extension_tip_figure
-    sens = extension_tip_size
-elseif Trin_ehn == nil then
-    fig = "円"
-    ivf = 1
-    ivl = 0
-    td = 0
-    sm = 0
-    halp = 1
-    senp = 0
-    senz = nil
-    sens = nil
+if check_use_extension == 1 then
+    line_figure = extension_figure
+    line_period = track_line_period * 0.01
+    line_spacing = track_line_spacing * 0.01
+    follow_direction = check_follow_direction
+    smoothness = math.floor(track_smoothness)
+    body_opacity = 1 - track_opacity * 0.01
+    show_tip = check_show_tip
+    tip_figure = extension_tip_figure
+    tip_size = extension_tip_size
+elseif T_CONTOUR_TRACE_EXTENSION == nil then
+    line_figure = "円"
+    line_period = 1
+    line_spacing = 0
+    follow_direction = 0
+    smoothness = 0
+    body_opacity = 1
+    show_tip = 0
+    tip_figure = nil
+    tip_size = nil
 else
-    fig = Trin_ehn.fig
-    ivf = Trin_ehn.ivf
-    ivl = Trin_ehn.ivl
-    td = Trin_ehn.td
-    sm = Trin_ehn.sm
-    halp = Trin_ehn.halp
-    senp = Trin_ehn.senp
-    senz = Trin_ehn.senz
-    sens = Trin_ehn.sens
+    line_figure = T_CONTOUR_TRACE_EXTENSION.line_figure
+    line_period = T_CONTOUR_TRACE_EXTENSION.line_period
+    line_spacing = T_CONTOUR_TRACE_EXTENSION.line_spacing
+    follow_direction = T_CONTOUR_TRACE_EXTENSION.follow_direction
+    smoothness = T_CONTOUR_TRACE_EXTENSION.smoothness
+    body_opacity = T_CONTOUR_TRACE_EXTENSION.body_opacity
+    show_tip = T_CONTOUR_TRACE_EXTENSION.show_tip
+    tip_figure = T_CONTOUR_TRACE_EXTENSION.tip_figure
+    tip_size = T_CONTOUR_TRACE_EXTENSION.tip_size
 end
 
-local hp = track_draw_amount * 0.01
-local lw = track_line_width
-local zure = track_start_point * 0.01
-local T = track_threshold
-Scsp = math.floor(Scsp or 1)
-Scsp = (Scsp < 1 and 1) or Scsp
+local draw_ratio = track_draw_amount * 0.01
+local line_width = track_line_width
+local start_ratio = track_start_point * 0.01
+local threshold = track_threshold
+track_scan_step = math.floor(track_scan_step or 1)
+track_scan_step = (track_scan_step < 1 and 1) or track_scan_step
 
-local tim2 = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-local nn, ALL, points = tim2.rgline_trace_contour(userdata, w, h, T, Scsp, sm)
-local ii = math.floor(nn * zure)
+local contour_module = obj.module("tim2")
+local pixel_data, width, height = obj.getpixeldata("object", "bgra")
+local point_count, total_length, points =
+    contour_module.rgline_trace_contour(pixel_data, width, height, threshold, track_scan_step, smoothness)
+local point_index = math.floor(point_count * start_ratio)
 
-obj.setoption("drawtarget", "tempbuffer", w + lw, h + lw)
+obj.setoption("drawtarget", "tempbuffer", width + line_width, height + line_width)
 
-if rin == 0 and Rover ~= 1 then
-    obj.draw(0, 0, 0, 1, halp)
+if check_contour_only == 0 and check_draw_contour_below ~= 1 then
+    obj.draw(0, 0, 0, 1, body_opacity)
 else
-    obj.copybuffer("cache:IMG", "obj")
+    obj.copybuffer("cache:IMG", "object")
 end
 
-obj.load("figure", fig, col, lw)
+obj.load("figure", line_figure, line_color, line_width)
 
-local ALP = ALL * hp
-local AL = 0
-local i = 0
-local oz
-local px
-local py
+local target_length = total_length * draw_ratio
+local drawn_length = 0
+local traversed_point_count = 0
+local point_rotation
+local point_x
+local point_y
 
-if ALP > 0 and ALL > 0 and nn > 0 then
+if target_length > 0 and total_length > 0 and point_count > 0 then
     repeat
-        i = i + 1
-        ii = (i + math.floor(nn * zure)) % nn
-        if rev == 0 then
-            ii = nn - ii - 1
+        traversed_point_count = traversed_point_count + 1
+        point_index = (traversed_point_count + math.floor(point_count * start_ratio)) % point_count
+        if check_reverse == 0 then
+            point_index = point_count - point_index - 1
         end
-        ii = ii + 1
-        local base = (ii - 1) * 4
-        px = points[base + 1]
-        py = points[base + 2]
-        AL = AL + points[base + 3]
+        point_index = point_index + 1
+        local base = (point_index - 1) * 4
+        point_x = points[base + 1]
+        point_y = points[base + 2]
+        drawn_length = drawn_length + points[base + 3]
 
-        local hanl = AL / ALL
-        local count = math.floor(hanl / ivf)
+        local progress_ratio = drawn_length / total_length
+        local segment_index = math.floor(progress_ratio / line_period)
 
-        if count * ivf < hanl and hanl <= (count + 1) * ivf - ivl then
-            if td == 1 then
-                oz = points[base + 4]
+        if
+            segment_index * line_period < progress_ratio
+            and progress_ratio <= (segment_index + 1) * line_period - line_spacing
+        then
+            if follow_direction == 1 then
+                point_rotation = points[base + 4]
             else
-                oz = 0
+                point_rotation = 0
             end
-            obj.draw(px - w / 2, py - h / 2, 0, 1, 1, 0, 0, oz)
+            obj.draw(point_x - width / 2, point_y - height / 2, 0, 1, 1, 0, 0, point_rotation)
         end
-    until AL >= ALP
+    until drawn_length >= target_length
 
-    if senp == 1 then
-        obj.load("figure", senz, col, sens)
-        obj.draw(px - w / 2, py - h / 2, 0, 1, 1, 0, 0, (oz or 0) - 90)
+    if show_tip == 1 then
+        obj.load("figure", tip_figure, line_color, tip_size)
+        obj.draw(point_x - width / 2, point_y - height / 2, 0, 1, 1, 0, 0, (point_rotation or 0) - 90)
     end
 end
 
-if rin == 0 and Rover == 1 then
-    obj.copybuffer("obj", "cache:IMG")
-    obj.draw(0, 0, 0, 1, halp)
+if check_contour_only == 0 and check_draw_contour_below == 1 then
+    obj.copybuffer("object", "cache:IMG")
+    obj.draw(0, 0, 0, 1, body_opacity)
 end
 
 obj.load("tempbuffer")
 
-if reC == 1 then
-    obj.cx = icx
-    obj.cy = icy
+if check_restore_center == 1 then
+    obj.cx = original_center_x
+    obj.cy = original_center_y
 end

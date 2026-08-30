@@ -16,96 +16,148 @@ local select_flow_direction = 0
 ---step=1
 local track_split_count = 20
 
-local calP = function(s, N)
-    local t
+local calculate_warp_position = function(frame_position, half_frame_count)
+    local normalized_position
 
-    if N > 2 then
-        local ss = s
-        if s > N * 0.5 then
-            ss = N - s
+    if half_frame_count > 2 then
+        local mirrored_position = frame_position
+        if frame_position > half_frame_count * 0.5 then
+            mirrored_position = half_frame_count - frame_position
         end
-        if ss > 0.5 then
-            t = 0.25 + (math.sqrt((8 * ss - 4) * (N - 2) + 1) - 1) / (8 * (N - 2))
+        if mirrored_position > 0.5 then
+            normalized_position = 0.25
+                + (math.sqrt((8 * mirrored_position - 4) * (half_frame_count - 2) + 1) - 1)
+                    / (8 * (half_frame_count - 2))
         else
-            t = ss * 0.5
+            normalized_position = mirrored_position * 0.5
         end
-        if s > N * 0.5 then
-            t = 1 - t
+        if frame_position > half_frame_count * 0.5 then
+            normalized_position = 1 - normalized_position
         end
     else
-        t = s / N
+        normalized_position = frame_position / half_frame_count
     end
 
-    return t
+    return normalized_position
 end
 
-local range = track_blur_amount * 0.5
-local stype = math.floor(select_flow_direction)
+local blur_range = track_blur_amount * 0.5
+local flow_direction = math.floor(select_flow_direction)
 local split_count = math.floor(track_split_count)
 
-local TF = obj.totalframe - 1
-local N = (TF + 2) * 0.5
-local s = obj.frame -- math.floor(obj.getvalue("scenechange") * TF)
+local last_frame = obj.totalframe - 1
+local half_frame_count = (last_frame + 2) * 0.5
+local frame_position = obj.frame -- math.floor(obj.getvalue("scenechange") * TF)
 
-local w, h = obj.getpixel()
-local w2, h2 = w / 2, h / 2
+local image_width, image_height = obj.getpixel()
+local half_width, half_height = image_width / 2, image_height / 2
 
 obj.copybuffer("cache:ch", "object")
 obj.copybuffer("cache:after", "framebuffer")
-obj.setoption("drawtarget", "tempbuffer", w, h)
+obj.setoption("drawtarget", "tempbuffer", image_width, image_height)
 
-if stype == 0 then
-    obj.drawpoly(-w2, -h2, 0, 0, -h2, 0, 0, h2, 0, -w2, h2, 0)
+if flow_direction == 0 then
+    obj.drawpoly(-half_width, -half_height, 0, 0, -half_height, 0, 0, half_height, 0, -half_width, half_height, 0)
     obj.copybuffer("object", "cache:after")
-    obj.drawpoly(0, -h2, 0, w2, -h2, 0, w2, h2, 0, 0, h2, 0)
+    obj.drawpoly(0, -half_height, 0, half_width, -half_height, 0, half_width, half_height, 0, 0, half_height, 0)
     obj.copybuffer("object", "tempbuffer")
-    obj.effect("方向ブラー", "範囲", range, "角度", -90, "サイズ固定", 1)
-    local dx = 1 / split_count
-    local dw = w / split_count
+    obj.effect("方向ブラー", "範囲", blur_range, "角度", -90, "サイズ固定", 1)
+    local normalized_segment_width = 1 / split_count
+    local segment_width = image_width / split_count
     for i = 0, split_count - 1 do
-        local x0 = s * 0.5 + i * dx
-        local x1 = x0 + dx
-        local u0 = w * calP(x0, N)
-        local u1 = w * calP(x1, N)
-        x0 = -w2 + i * dw
-        x1 = x0 + dw
-        obj.drawpoly(x0, -h2, 0, x1, -h2, 0, x1, h2, 0, x0, h2, 0, u0, 0, u1, 0, u1, h, u0, h)
+        local x0 = frame_position * 0.5 + i * normalized_segment_width
+        local x1 = x0 + normalized_segment_width
+        local u0 = image_width * calculate_warp_position(x0, half_frame_count)
+        local u1 = image_width * calculate_warp_position(x1, half_frame_count)
+        x0 = -half_width + i * segment_width
+        x1 = x0 + segment_width
+        obj.drawpoly(
+            x0,
+            -half_height,
+            0,
+            x1,
+            -half_height,
+            0,
+            x1,
+            half_height,
+            0,
+            x0,
+            half_height,
+            0,
+            u0,
+            0,
+            u1,
+            0,
+            u1,
+            image_height,
+            u0,
+            image_height
+        )
     end
-    if s == 0 then
-        obj.copybuffer("obj", "cache:ch")
-        obj.effect("斜めクリッピング", "角度", -90, "ぼかし", w / 3, "中心X", -w / 6)
+    if frame_position == 0 then
+        obj.copybuffer("object", "cache:ch")
+        obj.effect("斜めクリッピング", "角度", -90, "ぼかし", image_width / 3, "中心X", -image_width / 6)
         obj.draw()
     end
-    if s == TF then
+    if frame_position == last_frame then
         obj.load("framebuffer")
-        obj.effect("斜めクリッピング", "角度", 90, "ぼかし", w / 3, "中心X", w / 6)
+        obj.effect("斜めクリッピング", "角度", 90, "ぼかし", image_width / 3, "中心X", image_width / 6)
         obj.draw()
     end
 else
-    obj.drawpoly(-w2, -h2, 0, w2, -h2, 0, w2, 0, 0, -w2, 0, 0)
-    obj.copybuffer("obj", "frm")
-    obj.drawpoly(-w2, 0, 0, w2, 0, 0, w2, h2, 0, -w2, h2, 0)
-    obj.copybuffer("obj", "tmp")
-    obj.effect("方向ブラー", "範囲", range, "角度", 0, "サイズ固定", 1)
-    local dy = 1 / split_count
-    local dh = h / split_count
+    obj.drawpoly(-half_width, -half_height, 0, half_width, -half_height, 0, half_width, 0, 0, -half_width, 0, 0)
+    obj.copybuffer("object", "frame")
+    obj.drawpoly(-half_width, 0, 0, half_width, 0, 0, half_width, half_height, 0, -half_width, half_height, 0)
+    obj.copybuffer("object", "tempbuffer")
+    obj.effect("方向ブラー", "範囲", blur_range, "角度", 0, "サイズ固定", 1)
+    local normalized_segment_height = 1 / split_count
+    local segment_height = image_height / split_count
     for i = 0, split_count - 1 do
-        local y0 = s * 0.5 + i * dy
-        local y1 = y0 + dy
-        local v0 = h * calP(y0, N)
-        local v1 = h * calP(y1, N)
-        y0 = -h2 + i * dh
-        y1 = y0 + dh
-        obj.drawpoly(-w2, y0, 0, w2, y0, 0, w2, y1, 0, -w2, y1, 0, 0, v0, w, v0, w, v1, 0, v1)
+        local y0 = frame_position * 0.5 + i * normalized_segment_height
+        local y1 = y0 + normalized_segment_height
+        local v0 = image_height * calculate_warp_position(y0, half_frame_count)
+        local v1 = image_height * calculate_warp_position(y1, half_frame_count)
+        y0 = -half_height + i * segment_height
+        y1 = y0 + segment_height
+        obj.drawpoly(
+            -half_width,
+            y0,
+            0,
+            half_width,
+            y0,
+            0,
+            half_width,
+            y1,
+            0,
+            -half_width,
+            y1,
+            0,
+            0,
+            v0,
+            image_width,
+            v0,
+            image_width,
+            v1,
+            0,
+            v1
+        )
     end
-    if s == 0 then
-        obj.copybuffer("obj", "cache:ch")
-        obj.effect("斜めクリッピング", "角度", 0, "ぼかし", h / 3, "中心Y", -h / 6)
+    if frame_position == 0 then
+        obj.copybuffer("object", "cache:ch")
+        obj.effect("斜めクリッピング", "角度", 0, "ぼかし", image_height / 3, "中心Y", -image_height / 6)
         obj.draw()
     end
-    if s == TF then
+    if frame_position == last_frame then
         obj.load("framebuffer")
-        obj.effect("斜めクリッピング", "角度", 180, "ぼかし", h / 3, "中心Y", h / 6)
+        obj.effect(
+            "斜めクリッピング",
+            "角度",
+            180,
+            "ぼかし",
+            image_height / 3,
+            "中心Y",
+            image_height / 6
+        )
         obj.draw()
     end
 end

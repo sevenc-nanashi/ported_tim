@@ -1,2 +1,2 @@
 --label:${ROOT_CATEGORY}\カメラ制御\@カメラデータコピー
-aviutl_camera_param_copy = obj.getoption("camera_param")
+T_AVIUTL_CAMERA_PARAM_COPY = obj.getoption("camera_param")

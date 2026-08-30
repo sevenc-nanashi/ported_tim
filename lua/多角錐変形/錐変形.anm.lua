@@ -24,246 +24,246 @@ local track_upper_radius = 100
 local track_lower_radius = 300
 
 ---$check:蓋
-local Futa = 0
+local check_cap = 0
 
 ---$check:中心基準
-local cchk = 1
+local check_center_origin = 1
 
 ---$check:両面化
-local rev = 0
+local check_double_sided = 0
 
 ---$check:星型化
-local star = 0
+local check_star_shape = 0
 
 ---$track:くびれ率
 ---min=0
 ---max=100
 ---step=0.1
-local cst = 50
+local track_constriction_ratio = 50
 
 ---$check:角を整数化
-local int = 0
+local check_integer_sides = 0
 
---hide@cst:star==0
+--hide@track_constriction_ratio:check_star_shape==0
 
 -- ---$check:アンチエイリアス
 -- local ant = 0
 
-local zoom = obj.getvalue("zoom") * 0.01
-local N = track_sides
-local H = track_height * zoom
-local R1 = track_upper_radius * zoom
-local R2 = track_lower_radius * zoom
-local obh = obj.h
-local iso = Futa and math.pi * 0.5 or 0
+local zoom_scale = obj.getvalue("zoom_scale") * 0.01
+local side_count = track_sides
+local scaled_height = track_height * zoom_scale
+local upper_radius = track_upper_radius * zoom_scale
+local lower_radius = track_lower_radius * zoom_scale
+local texture_height = obj.h
+local angle_offset = check_cap and math.pi * 0.5 or 0
 -- ant = ant or 1
-int = int or 0
-Futa = Futa or 0
-cchk = cchk or 1
-rev = rev or 0
-star = star or 0
-cst = cst or 50
-local uX = {}
-local uZ = {}
-local dX = {}
-local dZ = {}
+check_integer_sides = check_integer_sides or 0
+check_cap = check_cap or 0
+check_center_origin = check_center_origin or 1
+check_double_sided = check_double_sided or 0
+check_star_shape = check_star_shape or 0
+track_constriction_ratio = track_constriction_ratio or 50
+local upper_x_positions = {}
+local upper_z_positions = {}
+local lower_x_positions = {}
+local lower_z_positions = {}
 -- obj.setoption("antialias", ant)
-if int == 1 then
-    N = math.floor(N)
+if check_integer_sides == 1 then
+    side_count = math.floor(side_count)
 end
-if star == 0 then
-    for i = 0, N do
-        local rad = 2 * i * math.pi / N + iso
-        local cos = math.cos(rad)
-        local sin = math.sin(rad)
-        uX[i] = R1 * cos
-        uZ[i] = R1 * sin
-        dX[i] = R2 * cos
-        dZ[i] = R2 * sin
+if check_star_shape == 0 then
+    for i = 0, side_count do
+        local angle_radians = 2 * i * math.pi / side_count + angle_offset
+        local angle_cosine = math.cos(angle_radians)
+        local angle_sine = math.sin(angle_radians)
+        upper_x_positions[i] = upper_radius * angle_cosine
+        upper_z_positions[i] = upper_radius * angle_sine
+        lower_x_positions[i] = lower_radius * angle_cosine
+        lower_z_positions[i] = lower_radius * angle_sine
     end
 else
-    cst = 1 - cst * 0.01
-    N = 2 * N
-    for i = 0, N, 2 do
-        local rad = 2 * i * math.pi / N + iso
-        local cos = math.cos(rad)
-        local sin = math.sin(rad)
-        uX[i] = R1 * cos
-        uZ[i] = R1 * sin
-        dX[i] = R2 * cos
-        dZ[i] = R2 * sin
+    track_constriction_ratio = 1 - track_constriction_ratio * 0.01
+    side_count = 2 * side_count
+    for i = 0, side_count, 2 do
+        local angle_radians = 2 * i * math.pi / side_count + angle_offset
+        local angle_cosine = math.cos(angle_radians)
+        local angle_sine = math.sin(angle_radians)
+        upper_x_positions[i] = upper_radius * angle_cosine
+        upper_z_positions[i] = upper_radius * angle_sine
+        lower_x_positions[i] = lower_radius * angle_cosine
+        lower_z_positions[i] = lower_radius * angle_sine
     end
-    R1 = R1 * cst
-    R2 = R2 * cst
-    for i = 1, N, 2 do
-        local rad = 2 * i * math.pi / N + iso
-        local cos = math.cos(rad)
-        local sin = math.sin(rad)
-        uX[i] = R1 * cos
-        uZ[i] = R1 * sin
-        dX[i] = R2 * cos
-        dZ[i] = R2 * sin
+    upper_radius = upper_radius * track_constriction_ratio
+    lower_radius = lower_radius * track_constriction_ratio
+    for i = 1, side_count, 2 do
+        local angle_radians = 2 * i * math.pi / side_count + angle_offset
+        local angle_cosine = math.cos(angle_radians)
+        local angle_sine = math.sin(angle_radians)
+        upper_x_positions[i] = upper_radius * angle_cosine
+        upper_z_positions[i] = upper_radius * angle_sine
+        lower_x_positions[i] = lower_radius * angle_cosine
+        lower_z_positions[i] = lower_radius * angle_sine
     end
 end
 
-local U = {}
-for i = 0, N do
-    U[i] = i / N * obj.w
+local texture_u_positions = {}
+for i = 0, side_count do
+    texture_u_positions[i] = i / side_count * obj.w
 end
 
-local Y1, Y2
-if cchk == 1 and rev == 0 then
-    Y1 = -H * 0.5
-    Y2 = H * 0.5
+local upper_y, lower_y
+if check_center_origin == 1 and check_double_sided == 0 then
+    upper_y = -scaled_height * 0.5
+    lower_y = scaled_height * 0.5
 else
-    Y1 = -H
-    Y2 = 0
+    upper_y = -scaled_height
+    lower_y = 0
 end
 
-for i = 0, N - 1 do
+for i = 0, side_count - 1 do
     obj.drawpoly(
-        uX[i],
-        Y1,
-        uZ[i],
-        uX[i + 1],
-        Y1,
-        uZ[i + 1],
-        dX[i + 1],
-        Y2,
-        dZ[i + 1],
-        dX[i],
-        Y2,
-        dZ[i],
-        U[i],
+        upper_x_positions[i],
+        upper_y,
+        upper_z_positions[i],
+        upper_x_positions[i + 1],
+        upper_y,
+        upper_z_positions[i + 1],
+        lower_x_positions[i + 1],
+        lower_y,
+        lower_z_positions[i + 1],
+        lower_x_positions[i],
+        lower_y,
+        lower_z_positions[i],
+        texture_u_positions[i],
         0,
-        U[i + 1],
+        texture_u_positions[i + 1],
         0,
-        U[i + 1],
-        obh,
-        U[i],
-        obh
+        texture_u_positions[i + 1],
+        texture_height,
+        texture_u_positions[i],
+        texture_height
     )
 end
 
-if rev == 0 then
-    if Futa == 1 then
-        for i = 0, N - 1 do
+if check_double_sided == 0 then
+    if check_cap == 1 then
+        for i = 0, side_count - 1 do
             obj.drawpoly(
                 0,
-                Y1,
+                upper_y,
                 0,
                 0,
-                Y1,
+                upper_y,
                 0,
-                uX[i + 1],
-                Y1,
-                uZ[i + 1],
-                uX[i],
-                Y1,
-                uZ[i],
-                U[i],
+                upper_x_positions[i + 1],
+                upper_y,
+                upper_z_positions[i + 1],
+                upper_x_positions[i],
+                upper_y,
+                upper_z_positions[i],
+                texture_u_positions[i],
                 0,
-                U[i + 1],
+                texture_u_positions[i + 1],
                 0,
-                U[i + 1],
+                texture_u_positions[i + 1],
                 0,
-                U[i],
+                texture_u_positions[i],
                 0
             )
             obj.drawpoly(
                 0,
-                Y2,
+                lower_y,
                 0,
                 0,
-                Y2,
+                lower_y,
                 0,
-                dX[i],
-                Y2,
-                dZ[i],
-                dX[i + 1],
-                Y2,
-                dZ[i + 1],
-                U[i + 1],
-                obh,
-                U[i],
-                obh,
-                U[i],
-                obh,
-                U[i + 1],
-                obh
+                lower_x_positions[i],
+                lower_y,
+                lower_z_positions[i],
+                lower_x_positions[i + 1],
+                lower_y,
+                lower_z_positions[i + 1],
+                texture_u_positions[i + 1],
+                texture_height,
+                texture_u_positions[i],
+                texture_height,
+                texture_u_positions[i],
+                texture_height,
+                texture_u_positions[i + 1],
+                texture_height
             )
         end
     end
 else
-    for i = 0, N - 1 do
+    for i = 0, side_count - 1 do
         obj.drawpoly(
-            uX[i + 1],
-            -Y1,
-            uZ[i + 1],
-            uX[i],
-            -Y1,
-            uZ[i],
-            dX[i],
+            upper_x_positions[i + 1],
+            -upper_y,
+            upper_z_positions[i + 1],
+            upper_x_positions[i],
+            -upper_y,
+            upper_z_positions[i],
+            lower_x_positions[i],
             0,
-            dZ[i],
-            dX[i + 1],
+            lower_z_positions[i],
+            lower_x_positions[i + 1],
             0,
-            dZ[i + 1],
-            U[i + 1],
+            lower_z_positions[i + 1],
+            texture_u_positions[i + 1],
             0,
-            U[i],
+            texture_u_positions[i],
             0,
-            U[i],
-            obh,
-            U[i + 1],
-            obh
+            texture_u_positions[i],
+            texture_height,
+            texture_u_positions[i + 1],
+            texture_height
         )
     end
 
-    if Futa == 1 then
-        for i = 0, N - 1 do
+    if check_cap == 1 then
+        for i = 0, side_count - 1 do
             obj.drawpoly(
                 0,
-                Y1,
+                upper_y,
                 0,
                 0,
-                Y1,
+                upper_y,
                 0,
-                uX[i + 1],
-                Y1,
-                uZ[i + 1],
-                uX[i],
-                Y1,
-                uZ[i],
-                U[i],
+                upper_x_positions[i + 1],
+                upper_y,
+                upper_z_positions[i + 1],
+                upper_x_positions[i],
+                upper_y,
+                upper_z_positions[i],
+                texture_u_positions[i],
                 0,
-                U[i + 1],
+                texture_u_positions[i + 1],
                 0,
-                U[i + 1],
+                texture_u_positions[i + 1],
                 0,
-                U[i],
+                texture_u_positions[i],
                 0
             )
             obj.drawpoly(
                 0,
-                -Y1,
+                -upper_y,
                 0,
                 0,
-                -Y1,
+                -upper_y,
                 0,
-                uX[i],
-                -Y1,
-                uZ[i],
-                uX[i + 1],
-                -Y1,
-                uZ[i + 1],
-                U[i + 1],
+                upper_x_positions[i],
+                -upper_y,
+                upper_z_positions[i],
+                upper_x_positions[i + 1],
+                -upper_y,
+                upper_z_positions[i + 1],
+                texture_u_positions[i + 1],
                 0,
-                U[i],
+                texture_u_positions[i],
                 0,
-                U[i],
+                texture_u_positions[i],
                 0,
-                U[i + 1],
+                texture_u_positions[i + 1],
                 0
             )
         end

@@ -25,21 +25,21 @@ local track_offset = 0
 local track_threshold = 0
 
 ---$check:偏差補正
-local check0 = false
+local check_enable_deviation_correction = false
 
---hide@track_threshold:check0==0
+--hide@track_threshold:check_enable_deviation_correction==0
 
 --require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Color_Module.color_bias_deletion(
-    userdata,
-    w,
-    h,
+local color_module = obj.module("tim2")
+local pixel_data, width, height = obj.getpixeldata("object", "bgra")
+color_module.color_bias_deletion(
+    pixel_data,
+    width,
+    height,
     track_range,
     track_adjust_amount,
     track_offset,
     track_threshold,
-    check0
+    check_enable_deviation_correction
 )
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.putpixeldata("object", pixel_data, width, height, "bgra")

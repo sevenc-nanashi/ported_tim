@@ -24,7 +24,7 @@ local track_center_offset = 0
 local track_switch_video = 0
 
 ---$check:レイヤー読込
-local check0 = true
+local check_load_layer = true
 
 ---$track:分割数
 ---min=5
@@ -59,26 +59,26 @@ local track_expand_x = 0
 ---step=1
 local track_expand_y = 0
 
-local Twister = function(
-    posx,
-    posy,
-    Tw,
-    Rt,
-    Cw,
-    N,
-    w,
-    h,
-    w2,
-    h2,
-    sin,
-    cos,
-    wd,
-    hd,
-    cx,
-    cy,
-    dr,
-    num,
-    muki,
+local twister = function(
+    grid_x_positions,
+    grid_y_positions,
+    normalized_twist,
+    rotation_radians,
+    center_offset,
+    division_count,
+    image_width,
+    image_height,
+    half_width,
+    half_height,
+    rotation_sine,
+    rotation_cosine,
+    rotated_width,
+    rotated_height,
+    twist_center_x,
+    twist_center_y,
+    convergence_radius_squared,
+    source_image_index,
+    intersection_orientation,
     x1,
     y1,
     x2,
@@ -90,99 +90,115 @@ local Twister = function(
     x5,
     y5
 )
-    obj.copybuffer("obj", "cache:img" .. num)
+    obj.copybuffer("object", "cache:img" .. source_image_index)
 
     if x5 == nil then
         x4 = x4 or x3
         y4 = y4 or y3
-        for i = 0, N do
-            local xa = (i * x4 + (N - i) * x1) / N
-            local ya = (i * y4 + (N - i) * y1) / N
-            local xb = (i * x3 + (N - i) * x2) / N
-            local yb = (i * y3 + (N - i) * y2) / N
-            for j = 0, N do
-                posx[i][j] = (j * xb + (N - j) * xa) / N
-                posy[i][j] = (j * yb + (N - j) * ya) / N
+        for i = 0, division_count do
+            local edge_start_x = (i * x4 + (division_count - i) * x1) / division_count
+            local edge_start_y = (i * y4 + (division_count - i) * y1) / division_count
+            local edge_end_x = (i * x3 + (division_count - i) * x2) / division_count
+            local edge_end_y = (i * y3 + (division_count - i) * y2) / division_count
+            for j = 0, division_count do
+                grid_x_positions[i][j] = (j * edge_end_x + (division_count - j) * edge_start_x) / division_count
+                grid_y_positions[i][j] = (j * edge_end_y + (division_count - j) * edge_start_y) / division_count
             end
         end
     else
-        if muki == 0 then
+        if intersection_orientation == 0 then
             x1, x2, x3, x4, x5 = x2, x1, x5, x4, x3
             y1, y2, y3, y4, y5 = y2, y1, y5, y4, y3
         end
-        local K1 = math.sqrt((x2 - x3) * (x2 - x3) + (y2 - y3) * (y2 - y3))
-        local K2 = math.sqrt((x4 - x5) * (x4 - x5) + (y4 - y5) * (y4 - y5))
-        local N2 = math.min(math.max(1, math.floor(N * K1 / K2)), N - 1)
-        local N1 = N - N2
-        for i = 0, N do
-            local xa
-            local ya
-            if i <= N1 then
-                xa = (i * x2 + (N1 - i) * x1) / N1
-                ya = (i * y2 + (N1 - i) * y1) / N1
+        local first_edge_length = math.sqrt((x2 - x3) * (x2 - x3) + (y2 - y3) * (y2 - y3))
+        local second_edge_length = math.sqrt((x4 - x5) * (x4 - x5) + (y4 - y5) * (y4 - y5))
+        local second_division_count = math.min(
+            math.max(1, math.floor(division_count * first_edge_length / second_edge_length)),
+            division_count - 1
+        )
+        local first_division_count = division_count - second_division_count
+        for i = 0, division_count do
+            local edge_start_x
+            local edge_start_y
+            if i <= first_division_count then
+                edge_start_x = (i * x2 + (first_division_count - i) * x1) / first_division_count
+                edge_start_y = (i * y2 + (first_division_count - i) * y1) / first_division_count
             else
-                xa = ((i - N1) * x3 + (N - i) * x2) / N2
-                ya = ((i - N1) * y3 + (N - i) * y2) / N2
+                edge_start_x = ((i - first_division_count) * x3 + (division_count - i) * x2) / second_division_count
+                edge_start_y = ((i - first_division_count) * y3 + (division_count - i) * y2) / second_division_count
             end
-            local xb = (i * x4 + (N - i) * x5) / N
-            local yb = (i * y4 + (N - i) * y5) / N
-            for j = 0, N do
-                posx[i][j] = (j * xb + (N - j) * xa) / N
-                posy[i][j] = (j * yb + (N - j) * ya) / N
+            local edge_end_x = (i * x4 + (division_count - i) * x5) / division_count
+            local edge_end_y = (i * y4 + (division_count - i) * y5) / division_count
+            for j = 0, division_count do
+                grid_x_positions[i][j] = (j * edge_end_x + (division_count - j) * edge_start_x) / division_count
+                grid_y_positions[i][j] = (j * edge_end_y + (division_count - j) * edge_start_y) / division_count
             end
         end
     end
 
-    dr = dr * dr
-    local wd2, hd2 = wd * 0.5, hd * 0.5
-    local posu = {}
-    local posv = {}
-    local scx = cos * Cw
-    local scy = -sin * Cw
+    convergence_radius_squared = convergence_radius_squared * convergence_radius_squared
+    local half_rotated_width, half_rotated_height = rotated_width * 0.5, rotated_height * 0.5
+    local texture_u_positions = {}
+    local texture_v_positions = {}
+    local center_shift_x = rotation_cosine * center_offset
+    local center_shift_y = -rotation_sine * center_offset
     local vertices = {}
-    for i = 0, N do
-        posu[i] = {}
-        posv[i] = {}
-        for j = 0, N do
-            posu[i][j] = posx[i][j] + w2
-            posv[i][j] = posy[i][j] + h2
+    for i = 0, division_count do
+        texture_u_positions[i] = {}
+        texture_v_positions[i] = {}
+        for j = 0, division_count do
+            texture_u_positions[i][j] = grid_x_positions[i][j] + half_width
+            texture_v_positions[i][j] = grid_y_positions[i][j] + half_height
 
-            local t = sin * posx[i][j] + cos * posy[i][j] - 2 * hd * Tw
-            if -hd2 <= t and t <= hd2 then
-                t = math.abs(math.sin(t * math.pi / hd))
-                local x = posx[i][j] + cos * (-cos * (posx[i][j] + scx) + sin * (posy[i][j] + scy)) * (1 - t)
-                local y = posy[i][j] - sin * (-cos * (posx[i][j] + scx) + sin * (posy[i][j] + scy)) * (1 - t)
-                if (x - cx + scx) * (x - cx + scx) + (y - cy + scy) * (y - cy + scy) < dr then
-                    posx[i][j], posy[i][j] = cx - scx, cy - scy
+            local twist_weight = rotation_sine * grid_x_positions[i][j]
+                + rotation_cosine * grid_y_positions[i][j]
+                - 2 * rotated_height * normalized_twist
+            if -half_rotated_height <= twist_weight and twist_weight <= half_rotated_height then
+                twist_weight = math.abs(math.sin(twist_weight * math.pi / rotated_height))
+                local x = grid_x_positions[i][j]
+                    + rotation_cosine
+                        * (-rotation_cosine * (grid_x_positions[i][j] + center_shift_x) + rotation_sine * (grid_y_positions[i][j] + center_shift_y))
+                        * (1 - twist_weight)
+                local y = grid_y_positions[i][j]
+                    - rotation_sine
+                        * (-rotation_cosine * (grid_x_positions[i][j] + center_shift_x) + rotation_sine * (grid_y_positions[i][j] + center_shift_y))
+                        * (1 - twist_weight)
+                if
+                    (x - twist_center_x + center_shift_x) * (x - twist_center_x + center_shift_x)
+                        + (y - twist_center_y + center_shift_y) * (y - twist_center_y + center_shift_y)
+                    < convergence_radius_squared
+                then
+                    grid_x_positions[i][j], grid_y_positions[i][j] =
+                        twist_center_x - center_shift_x, twist_center_y - center_shift_y
                 else
-                    posx[i][j], posy[i][j] = x, y
+                    grid_x_positions[i][j], grid_y_positions[i][j] = x, y
                 end
             end
         end
     end
-    for i = 0, N - 1 do
-        for j = 0, N - 1 do
+    for i = 0, division_count - 1 do
+        for j = 0, division_count - 1 do
             vertices[#vertices + 1] = {
-                posx[i][j],
-                posy[i][j],
+                grid_x_positions[i][j],
+                grid_y_positions[i][j],
                 0,
-                posx[i + 1][j],
-                posy[i + 1][j],
+                grid_x_positions[i + 1][j],
+                grid_y_positions[i + 1][j],
                 0,
-                posx[i + 1][j + 1],
-                posy[i + 1][j + 1],
+                grid_x_positions[i + 1][j + 1],
+                grid_y_positions[i + 1][j + 1],
                 0,
-                posx[i][j + 1],
-                posy[i][j + 1],
+                grid_x_positions[i][j + 1],
+                grid_y_positions[i][j + 1],
                 0,
-                posu[i][j],
-                posv[i][j],
-                posu[i + 1][j],
-                posv[i + 1][j],
-                posu[i + 1][j + 1],
-                posv[i + 1][j + 1],
-                posu[i][j + 1],
-                posv[i][j + 1],
+                texture_u_positions[i][j],
+                texture_v_positions[i][j],
+                texture_u_positions[i + 1][j],
+                texture_v_positions[i + 1][j],
+                texture_u_positions[i + 1][j + 1],
+                texture_v_positions[i + 1][j + 1],
+                texture_u_positions[i][j + 1],
+                texture_v_positions[i][j + 1],
             }
         end
     end
@@ -191,38 +207,48 @@ local Twister = function(
     end
 end
 
-local MakeShading = function(cx, cy, wd, hd, sin, cos, Cw, sdg, srev)
-    local cl
-    if srev == 0 then
-        cl = 0xffffff
+local draw_shading = function(
+    twist_center_x,
+    twist_center_y,
+    rotated_width,
+    rotated_height,
+    rotation_sine,
+    rotation_cosine,
+    center_offset,
+    shading_strength,
+    reverse_shading
+)
+    local shading_color
+    if reverse_shading == 0 then
+        shading_color = 0xffffff
     else
-        cl = 0x000000
+        shading_color = 0x000000
     end
 
-    obj.load("figure", "円", cl, hd / 3)
-    obj.effect("ぼかし", "範囲", hd / 8)
+    obj.load("figure", "円", shading_color, rotated_height / 3)
+    obj.effect("ぼかし", "範囲", rotated_height / 8)
 
-    local wd2 = wd * 0.5
-    local hd8 = hd / 8
+    local half_rotated_width = rotated_width * 0.5
+    local shading_blur_radius = rotated_height / 8
 
-    local x = cx - hd8 * sin - wd2 * cos
-    local y = cy - hd8 * cos + wd2 * sin
-    local dx1 = wd2 * cos
-    local dy1 = -wd2 * sin
-    local dx2 = hd / 4 * sin
-    local dy2 = hd / 4 * cos
+    local x = twist_center_x - shading_blur_radius * rotation_sine - half_rotated_width * rotation_cosine
+    local y = twist_center_y - shading_blur_radius * rotation_cosine + half_rotated_width * rotation_sine
+    local width_vector_x = half_rotated_width * rotation_cosine
+    local width_vector_y = -half_rotated_width * rotation_sine
+    local height_vector_x = rotated_height / 4 * rotation_sine
+    local height_vector_y = rotated_height / 4 * rotation_cosine
     obj.drawpoly(
-        x - dx1 - dx2,
-        y - dy1 - dy2,
+        x - width_vector_x - height_vector_x,
+        y - width_vector_y - height_vector_y,
         0,
-        x + dx1 - dx2 - cos * Cw,
-        y + dy1 - dy2 + sin * Cw,
+        x + width_vector_x - height_vector_x - rotation_cosine * center_offset,
+        y + width_vector_y - height_vector_y + rotation_sine * center_offset,
         0,
-        x + dx1 + dx2 - cos * Cw,
-        y + dy1 + dy2 + sin * Cw,
+        x + width_vector_x + height_vector_x - rotation_cosine * center_offset,
+        y + width_vector_y + height_vector_y + rotation_sine * center_offset,
         0,
-        x - dx1 + dx2,
-        y - dy1 + dy2,
+        x - width_vector_x + height_vector_x,
+        y - width_vector_y + height_vector_y,
         0,
         0,
         0,
@@ -232,24 +258,24 @@ local MakeShading = function(cx, cy, wd, hd, sin, cos, Cw, sdg, srev)
         obj.h,
         0,
         obj.h,
-        sdg
+        shading_strength
     )
 
     obj.effect("反転", "輝度反転", 1)
-    x = cx + hd8 * sin + wd2 * cos
-    y = cy + hd8 * cos - wd2 * sin
+    x = twist_center_x + shading_blur_radius * rotation_sine + half_rotated_width * rotation_cosine
+    y = twist_center_y + shading_blur_radius * rotation_cosine - half_rotated_width * rotation_sine
     obj.drawpoly(
-        x - dx1 - dx2 - cos * Cw,
-        y - dy1 - dy2 + sin * Cw,
+        x - width_vector_x - height_vector_x - rotation_cosine * center_offset,
+        y - width_vector_y - height_vector_y + rotation_sine * center_offset,
         0,
-        x + dx1 - dx2,
-        y + dy1 - dy2,
+        x + width_vector_x - height_vector_x,
+        y + width_vector_y - height_vector_y,
         0,
-        x + dx1 + dx2,
-        y + dy1 + dy2,
+        x + width_vector_x + height_vector_x,
+        y + width_vector_y + height_vector_y,
         0,
-        x - dx1 + dx2 - cos * Cw,
-        y - dy1 + dy2 + sin * Cw,
+        x - width_vector_x + height_vector_x - rotation_cosine * center_offset,
+        y - width_vector_y + height_vector_y + rotation_sine * center_offset,
         0,
         0,
         0,
@@ -259,15 +285,15 @@ local MakeShading = function(cx, cy, wd, hd, sin, cos, Cw, sdg, srev)
         obj.h,
         0,
         obj.h,
-        sdg
+        shading_strength
     )
 end
 
-local Tw = track_twist_amount * 0.01 - 0.5
-local Do = track_rotation
-local Rt = math.rad(180 - Do)
-local Cw = track_center_offset
-local id = math.floor(track_switch_video)
+local normalized_twist = track_twist_amount * 0.01 - 0.5
+local rotation = track_rotation
+local rotation_radians = math.rad(180 - rotation)
+local center_offset = track_center_offset
+local layer_index = math.floor(track_switch_video)
 
 local division_count = math.floor(math.max(track_division_count or 25, 5))
 local convergence_radius = math.abs(track_convergence_radius or 0.1)
@@ -275,527 +301,547 @@ local shading_strength = math.abs(track_shading_strength or 100) * 0.01
 local expand_x = track_expand_x or 0
 local expand_y = track_expand_y or 0
 
-local w, h = obj.getpixel()
-local w2, h2 = w * 0.5, h * 0.5
+local image_width, image_height = obj.getpixel()
+local half_width, half_height = image_width * 0.5, image_height * 0.5
 
-local sin = math.sin(Rt)
-local cos = math.cos(Rt)
+local rotation_sine = math.sin(rotation_radians)
+local rotation_cosine = math.cos(rotation_radians)
 
-local hd = w * math.abs(sin) + h * math.abs(cos)
-local wd = w * math.abs(cos) + h * math.abs(sin)
+local rotated_height = image_width * math.abs(rotation_sine) + image_height * math.abs(rotation_cosine)
+local rotated_width = image_width * math.abs(rotation_cosine) + image_height * math.abs(rotation_sine)
 
-local cx = Tw * hd * sin * 2
-local cy = Tw * hd * cos * 2
+local twist_center_x = normalized_twist * rotated_height * rotation_sine * 2
+local twist_center_y = normalized_twist * rotated_height * rotation_cosine * 2
 
 if shading_strength > 0 then
-    obj.setoption("drawtarget", "tempbuffer", w, h)
+    obj.setoption("drawtarget", "tempbuffer", image_width, image_height)
     obj.draw()
-    MakeShading(cx, cy, wd, hd, sin, cos, Cw, shading_strength, check_reverse_shading)
-    obj.copybuffer("cache:img0", "tmp")
+    draw_shading(
+        twist_center_x,
+        twist_center_y,
+        rotated_width,
+        rotated_height,
+        rotation_sine,
+        rotation_cosine,
+        center_offset,
+        shading_strength,
+        check_reverse_shading
+    )
+    obj.copybuffer("cache:img0", "tempbuffer")
 else
-    obj.copybuffer("cache:img0", "obj")
+    obj.copybuffer("cache:img0", "object")
 end
 
-if id > 0 then
-    if check0 == false then
+if layer_index > 0 then
+    if check_load_layer == false then
         ---$embed
         local extbuffer = require("extbuffer")
-        extbuffer.read(id)
+        extbuffer.read(layer_index)
     else
-        obj.load("layer", id, true)
+        obj.load("layer", layer_index, true)
     end
 
     if shading_strength > 0 then
-        obj.setoption("drawtarget", "tempbuffer", w, h)
+        obj.setoption("drawtarget", "tempbuffer", image_width, image_height)
         obj.draw()
-        MakeShading(cx, cy, wd, hd, sin, cos, Cw, shading_strength, check_reverse_shading)
-        obj.copybuffer("cache:img1", "tmp")
+        draw_shading(
+            twist_center_x,
+            twist_center_y,
+            rotated_width,
+            rotated_height,
+            rotation_sine,
+            rotation_cosine,
+            center_offset,
+            shading_strength,
+            check_reverse_shading
+        )
+        obj.copybuffer("cache:img1", "tempbuffer")
     else
-        obj.copybuffer("cache:img1", "obj")
+        obj.copybuffer("cache:img1", "object")
     end
-elseif id < 0 then
-    obj.setoption("drawtarget", "tempbuffer", w, h)
-    obj.copybuffer("cache:img1", "tmp")
+elseif layer_index < 0 then
+    obj.setoption("drawtarget", "tempbuffer", image_width, image_height)
+    obj.copybuffer("cache:img1", "tempbuffer")
 else
-    obj.copybuffer("obj", "cache:img0")
-    obj.copybuffer("cache:img1", "obj")
+    obj.copybuffer("object", "cache:img0")
+    obj.copybuffer("cache:img1", "object")
 end
 
-obj.setoption("drawtarget", "tempbuffer", math.max(w + expand_x, 1), math.max(h + expand_y, 1))
+obj.setoption("drawtarget", "tempbuffer", math.max(image_width + expand_x, 1), math.max(image_height + expand_y, 1))
 obj.setoption("blend", "alpha_add")
 
-local posx = {}
-local posy = {}
+local grid_x_positions = {}
+local grid_y_positions = {}
 for i = 0, division_count do
-    posx[i] = {}
-    posy[i] = {}
+    grid_x_positions[i] = {}
+    grid_y_positions[i] = {}
 end
 
-local muki = 0
-if math.abs(cos) < math.abs(sin) then -- if math.abs(cos*h)<math.abs(sin*w) then
-    muki = 1
+local intersection_orientation = 0
+if math.abs(rotation_cosine) < math.abs(rotation_sine) then -- if math.abs(cos*h)<math.abs(sin*w) then
+    intersection_orientation = 1
 end
 
-local z = {}
+local boundary_intersections = {}
 local kasan = 0
 
-if (Do - 90) % 180 == 0 then
-    if -w2 < cx and cx < w2 then
+if (rotation - 90) % 180 == 0 then
+    if -half_width < twist_center_x and twist_center_x < half_width then
         kasan = 5
-        z[0] = cx
-        z[2] = cx
+        boundary_intersections[0] = twist_center_x
+        boundary_intersections[2] = twist_center_x
     end
-elseif Do % 180 == 0 then
-    if -h2 < cy and cy < h2 then
+elseif rotation % 180 == 0 then
+    if -half_height < twist_center_y and twist_center_y < half_height then
         kasan = 10
-        z[1] = cy
-        z[3] = cy
+        boundary_intersections[1] = twist_center_y
+        boundary_intersections[3] = twist_center_y
     end
 else
-    local A1 = cos * h2 / sin
-    local B1 = cos * cy / sin + cx
-    local A2 = sin * w2 / cos
-    local B2 = sin * cx / cos + cy
+    local a1 = rotation_cosine * half_height / rotation_sine
+    local b1 = rotation_cosine * twist_center_y / rotation_sine + twist_center_x
+    local a2 = rotation_sine * half_width / rotation_cosine
+    local b2 = rotation_sine * twist_center_x / rotation_cosine + twist_center_y
 
-    z[0] = A1 + B1
-    z[1] = -A2 + B2
-    z[2] = -A1 + B1
-    z[3] = A2 + B2
+    boundary_intersections[0] = a1 + b1
+    boundary_intersections[1] = -a2 + b2
+    boundary_intersections[2] = -a1 + b1
+    boundary_intersections[3] = a2 + b2
 
-    if -w2 <= z[0] and z[0] < w2 then
+    if -half_width <= boundary_intersections[0] and boundary_intersections[0] < half_width then
         kasan = kasan + 1
     end
-    if -h2 <= z[1] and z[1] < h2 then
+    if -half_height <= boundary_intersections[1] and boundary_intersections[1] < half_height then
         kasan = kasan + 2
     end
-    if -w2 < z[2] and z[2] <= w2 then
+    if -half_width < boundary_intersections[2] and boundary_intersections[2] <= half_width then
         kasan = kasan + 4
     end
-    if -h2 < z[3] and z[3] <= h2 then
+    if -half_height < boundary_intersections[3] and boundary_intersections[3] <= half_height then
         kasan = kasan + 8
     end
 end
 
-local num = 1
+local source_image_index = 1
 
 if kasan == 3 then
-    if sin > 0 then
-        num = 1
+    if rotation_sine > 0 then
+        source_image_index = 1
     else
-        num = 0
+        source_image_index = 0
     end
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        num,
-        muki,
-        z[0],
-        -h2,
-        w2,
-        z[1],
-        w2,
-        h2,
-        -w2,
-        h2,
-        -w2,
-        -h2
+        source_image_index,
+        intersection_orientation,
+        boundary_intersections[0],
+        -half_height,
+        half_width,
+        boundary_intersections[1],
+        half_width,
+        half_height,
+        -half_width,
+        half_height,
+        -half_width,
+        -half_height
     )
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        1 - num,
-        muki,
-        w2,
-        z[1],
-        z[0],
-        -h2,
-        w2,
-        -h2
+        1 - source_image_index,
+        intersection_orientation,
+        half_width,
+        boundary_intersections[1],
+        boundary_intersections[0],
+        -half_height,
+        half_width,
+        -half_height
     )
 elseif kasan == 6 then
-    if sin > 0 then
-        num = 1
+    if rotation_sine > 0 then
+        source_image_index = 1
     else
-        num = 0
+        source_image_index = 0
     end
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        num,
-        muki,
-        w2,
-        z[1],
-        z[2],
-        h2,
-        -w2,
-        h2,
-        -w2,
-        -h2,
-        w2,
-        -h2
+        source_image_index,
+        intersection_orientation,
+        half_width,
+        boundary_intersections[1],
+        boundary_intersections[2],
+        half_height,
+        -half_width,
+        half_height,
+        -half_width,
+        -half_height,
+        half_width,
+        -half_height
     )
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        1 - num,
-        muki,
-        z[2],
-        h2,
-        w2,
-        z[1],
-        w2,
-        h2
+        1 - source_image_index,
+        intersection_orientation,
+        boundary_intersections[2],
+        half_height,
+        half_width,
+        boundary_intersections[1],
+        half_width,
+        half_height
     )
 elseif kasan == 12 then
-    if sin < 0 then
-        num = 1
+    if rotation_sine < 0 then
+        source_image_index = 1
     else
-        num = 0
+        source_image_index = 0
     end
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        num,
-        muki,
-        z[2],
-        h2,
-        -w2,
-        z[3],
-        -w2,
-        -h2,
-        w2,
-        -h2,
-        w2,
-        h2
+        source_image_index,
+        intersection_orientation,
+        boundary_intersections[2],
+        half_height,
+        -half_width,
+        boundary_intersections[3],
+        -half_width,
+        -half_height,
+        half_width,
+        -half_height,
+        half_width,
+        half_height
     )
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        1 - num,
-        muki,
-        -w2,
-        z[3],
-        z[2],
-        h2,
-        -w2,
-        h2
+        1 - source_image_index,
+        intersection_orientation,
+        -half_width,
+        boundary_intersections[3],
+        boundary_intersections[2],
+        half_height,
+        -half_width,
+        half_height
     )
 elseif kasan == 9 then
-    if sin < 0 then
-        num = 1
+    if rotation_sine < 0 then
+        source_image_index = 1
     else
-        num = 0
+        source_image_index = 0
     end
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        num,
-        muki,
-        -w2,
-        z[3],
-        z[0],
-        -h2,
-        w2,
-        -h2,
-        w2,
-        h2,
-        -w2,
-        h2
+        source_image_index,
+        intersection_orientation,
+        -half_width,
+        boundary_intersections[3],
+        boundary_intersections[0],
+        -half_height,
+        half_width,
+        -half_height,
+        half_width,
+        half_height,
+        -half_width,
+        half_height
     )
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        1 - num,
-        muki,
-        z[0],
-        -h2,
-        -w2,
-        z[3],
-        -w2,
-        -h2
+        1 - source_image_index,
+        intersection_orientation,
+        boundary_intersections[0],
+        -half_height,
+        -half_width,
+        boundary_intersections[3],
+        -half_width,
+        -half_height
     )
 elseif kasan == 5 then
-    if sin > 0 then
-        num = 1
+    if rotation_sine > 0 then
+        source_image_index = 1
     else
-        num = 0
+        source_image_index = 0
     end
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        num,
-        muki,
-        -w2,
-        -h2,
-        z[0],
-        -h2,
-        z[2],
-        h2,
-        -w2,
-        h2
+        source_image_index,
+        intersection_orientation,
+        -half_width,
+        -half_height,
+        boundary_intersections[0],
+        -half_height,
+        boundary_intersections[2],
+        half_height,
+        -half_width,
+        half_height
     )
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        1 - num,
-        muki,
-        w2,
-        -h2,
-        w2,
-        h2,
-        z[2],
-        h2,
-        z[0],
-        -h2
+        1 - source_image_index,
+        intersection_orientation,
+        half_width,
+        -half_height,
+        half_width,
+        half_height,
+        boundary_intersections[2],
+        half_height,
+        boundary_intersections[0],
+        -half_height
     )
 elseif kasan == 10 then
-    if cos > 0 then
-        num = 1
+    if rotation_cosine > 0 then
+        source_image_index = 1
     else
-        num = 0
+        source_image_index = 0
     end
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        num,
-        muki,
-        -w2,
-        -h2,
-        w2,
-        -h2,
-        w2,
-        z[1],
-        -w2,
-        z[3]
+        source_image_index,
+        intersection_orientation,
+        -half_width,
+        -half_height,
+        half_width,
+        -half_height,
+        half_width,
+        boundary_intersections[1],
+        -half_width,
+        boundary_intersections[3]
     )
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        1 - num,
-        muki,
-        w2,
-        h2,
-        -w2,
-        h2,
-        -w2,
-        z[3],
-        w2,
-        z[1]
+        1 - source_image_index,
+        intersection_orientation,
+        half_width,
+        half_height,
+        -half_width,
+        half_height,
+        -half_width,
+        boundary_intersections[3],
+        half_width,
+        boundary_intersections[1]
     )
 else
-    if Tw > 0 then
-        num = 1
+    if normalized_twist > 0 then
+        source_image_index = 1
     else
-        num = 0
+        source_image_index = 0
     end
-    Twister(
-        posx,
-        posy,
-        Tw,
-        Rt,
-        Cw,
+    twister(
+        grid_x_positions,
+        grid_y_positions,
+        normalized_twist,
+        rotation_radians,
+        center_offset,
         division_count,
-        w,
-        h,
-        w2,
-        h2,
-        sin,
-        cos,
-        wd,
-        hd,
-        cx,
-        cy,
+        image_width,
+        image_height,
+        half_width,
+        half_height,
+        rotation_sine,
+        rotation_cosine,
+        rotated_width,
+        rotated_height,
+        twist_center_x,
+        twist_center_y,
         convergence_radius,
-        num,
-        muki,
-        -w2,
-        -h2,
-        w2,
-        -h2,
-        w2,
-        h2,
-        -w2,
-        h2
+        source_image_index,
+        intersection_orientation,
+        -half_width,
+        -half_height,
+        half_width,
+        -half_height,
+        half_width,
+        half_height,
+        -half_width,
+        half_height
     )
 end
 

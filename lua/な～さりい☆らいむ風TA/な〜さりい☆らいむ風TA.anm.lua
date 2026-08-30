@@ -35,7 +35,7 @@ local track_center_offset = 70
 ---step=1
 local track_random_seed = 0
 
-local T = obj.time
+local current_time = obj.time
 local animation_duration = track_time_ms * 0.001
 local max_size = track_size_percent * 0.01
 local size_error = track_size_error
@@ -46,32 +46,33 @@ local random_seed = math.floor(track_random_seed or 0)
 local object_count = obj.num - 1
 local object_index = obj.index - 1
 
-local T1 = (object_count - object_index) / object_count * animation_duration / 4
-local T2 = T1 + animation_duration / 4
-local T3 = object_index / object_count * animation_duration / 4 + animation_duration / 2
-local T4 = object_index / object_count * animation_duration / 2 + animation_duration / 2
+local appearance_start_time = (object_count - object_index) / object_count * animation_duration / 4
+local appearance_end_time = appearance_start_time + animation_duration / 4
+local settling_start_time = object_index / object_count * animation_duration / 4 + animation_duration / 2
+local settling_end_time = object_index / object_count * animation_duration / 2 + animation_duration / 2
 
-local z1 = obj.rand(-size_error, size_error, object_index, random_seed) * 0.01
-local z2 = obj.rand(-size_error / 2, size_error / 2, object_index, 1000 + random_seed) * 0.01
-local x = 1
+local initial_size_variation = obj.rand(-size_error, size_error, object_index, random_seed) * 0.01
+local settled_size_variation = obj.rand(-size_error / 2, size_error / 2, object_index, 1000 + random_seed) * 0.01
+local size_transition = 1
 
-if T < T1 then
+if current_time < appearance_start_time then
     obj.alpha = 0
-elseif T < T2 then
-    local al = (T - T1) / (T2 - T1)
-    x = al + z1
-    obj.alpha = math.min(2 * al, 1)
-elseif T < T3 then
+elseif current_time < appearance_end_time then
+    local appearance_progress = (current_time - appearance_start_time) / (appearance_end_time - appearance_start_time)
+    size_transition = appearance_progress + initial_size_variation
+    obj.alpha = math.min(2 * appearance_progress, 1)
+elseif current_time < settling_start_time then
     obj.alpha = 1
-    x = (T - T2) / (T3 - T2)
-    x = (1 - x) * (1 + z1) + x * (1 + z2)
-elseif T < T4 then
+    size_transition = (current_time - appearance_end_time) / (settling_start_time - appearance_end_time)
+    size_transition = (1 - size_transition) * (1 + initial_size_variation)
+        + size_transition * (1 + settled_size_variation)
+elseif current_time < settling_end_time then
     obj.alpha = 1
-    x = (T - T3) / (T4 - T3)
-    x = (1 - x) * (1 + z2) + x
+    size_transition = (current_time - settling_start_time) / (settling_end_time - settling_start_time)
+    size_transition = (1 - size_transition) * (1 + settled_size_variation) + size_transition
 else
     obj.alpha = 1
 end
 
-obj.zoom = obj.zoom * (1 + (max_size - 1) * (1 - x))
-obj.ox = obj.ox + horizontal_offset * (obj.ox - center_offset) * (1 - x)
+obj.zoom = obj.zoom * (1 + (max_size - 1) * (1 - size_transition))
+obj.ox = obj.ox + horizontal_offset * (obj.ox - center_offset) * (1 - size_transition)

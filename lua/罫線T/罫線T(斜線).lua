@@ -29,23 +29,25 @@ local line_color = 0xffffff
 ---$value:斜線アンカー
 local line_anchors = { 0, 0 }
 
-RuledlineT = RuledlineT or {}
+T_RULED_LINE_STATE = T_RULED_LINE_STATE or {}
+T_RULED_LINE_STATE.definition = T_RULED_LINE_STATE.definition or {}
+local ruled_line = T_RULED_LINE_STATE.definition
 local anchor_count = track_line_count
 obj.setanchor("line_anchors", anchor_count)
-RuledlineT.SLX = RuledlineT.SLX or {}
-RuledlineT.SLY = RuledlineT.SLY or {}
-RuledlineT.Scl = RuledlineT.Scl or {}
-RuledlineT.SLC = RuledlineT.SLC or {}
-RuledlineT.Sdw = RuledlineT.Sdw or {}
-RuledlineT.Pdw = RuledlineT.Pdw or {}
-local line_index = (#RuledlineT.SLX or 0) + 1
-RuledlineT.Scl[line_index] = line_color
-RuledlineT.Sdw[line_index] = track_line_width
-RuledlineT.Pdw[line_index] = (1 - track_length_percent * 0.01) * 0.5
-RuledlineT.SLC[line_index] = math.floor(select_shape)
-RuledlineT.SLX[line_index] = {}
-RuledlineT.SLY[line_index] = {}
-for k = 1, anchor_count do
-    RuledlineT.SLX[line_index][k] = line_anchors[2 * k - 1]
-    RuledlineT.SLY[line_index][k] = line_anchors[2 * k]
+ruled_line.diagonal_anchor_x_groups = ruled_line.diagonal_anchor_x_groups or {}
+ruled_line.diagonal_anchor_y_groups = ruled_line.diagonal_anchor_y_groups or {}
+ruled_line.diagonal_colors = ruled_line.diagonal_colors or {}
+ruled_line.diagonal_shapes = ruled_line.diagonal_shapes or {}
+ruled_line.diagonal_widths = ruled_line.diagonal_widths or {}
+ruled_line.diagonal_padding_ratios = ruled_line.diagonal_padding_ratios or {}
+local line_index = (#ruled_line.diagonal_anchor_x_groups or 0) + 1
+ruled_line.diagonal_colors[line_index] = line_color
+ruled_line.diagonal_widths[line_index] = track_line_width
+ruled_line.diagonal_padding_ratios[line_index] = (1 - track_length_percent * 0.01) * 0.5
+ruled_line.diagonal_shapes[line_index] = math.floor(select_shape)
+ruled_line.diagonal_anchor_x_groups[line_index] = {}
+ruled_line.diagonal_anchor_y_groups[line_index] = {}
+for anchor_index = 1, anchor_count do
+    ruled_line.diagonal_anchor_x_groups[line_index][anchor_index] = line_anchors[2 * anchor_index - 1]
+    ruled_line.diagonal_anchor_y_groups[line_index][anchor_index] = line_anchors[2 * anchor_index]
 end

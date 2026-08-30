@@ -3,39 +3,39 @@
 ---min=0
 ---max=5000
 ---step=0.1
-local rename_me_track0 = 100
+local track_scale_percent = 100
 
 ---$check:X軸反転
-local mx = 0
+local check_invert_x = 0
 
 ---$check:Y軸反転
-local my = 0
+local check_invert_y = 0
 
 ---$check:Z軸反転
-local mz = 0
+local check_invert_z = 0
 
-local bai = rename_me_track0 * 0.01
+local scale_ratio = track_scale_percent * 0.01
 
-if mx == 1 then
-    aviutl_camera_param_copy.x = -aviutl_camera_param_copy.x
+if check_invert_x == 1 then
+    T_AVIUTL_CAMERA_PARAM_COPY.x = -T_AVIUTL_CAMERA_PARAM_COPY.x
 end
-if my == 1 then
-    aviutl_camera_param_copy.y = -aviutl_camera_param_copy.y
+if check_invert_y == 1 then
+    T_AVIUTL_CAMERA_PARAM_COPY.y = -T_AVIUTL_CAMERA_PARAM_COPY.y
 end
-if mz == 1 then
-    aviutl_camera_param_copy.z = -aviutl_camera_param_copy.z
+if check_invert_z == 1 then
+    T_AVIUTL_CAMERA_PARAM_COPY.z = -T_AVIUTL_CAMERA_PARAM_COPY.z
 end
 
-aviutl_camera_param_copy.x = bai * aviutl_camera_param_copy.x
-aviutl_camera_param_copy.y = bai * aviutl_camera_param_copy.y
-aviutl_camera_param_copy.z = bai * aviutl_camera_param_copy.z
+T_AVIUTL_CAMERA_PARAM_COPY.x = scale_ratio * T_AVIUTL_CAMERA_PARAM_COPY.x
+T_AVIUTL_CAMERA_PARAM_COPY.y = scale_ratio * T_AVIUTL_CAMERA_PARAM_COPY.y
+T_AVIUTL_CAMERA_PARAM_COPY.z = scale_ratio * T_AVIUTL_CAMERA_PARAM_COPY.z
 
-aviutl_camera_param_copy.rz = aviutl_camera_param_copy.rz
+T_AVIUTL_CAMERA_PARAM_COPY.rz = T_AVIUTL_CAMERA_PARAM_COPY.rz
 
-aviutl_camera_param_copy.tx = aviutl_camera_param_copy.tx
-aviutl_camera_param_copy.ty = aviutl_camera_param_copy.ty
-aviutl_camera_param_copy.tz = aviutl_camera_param_copy.tz
+T_AVIUTL_CAMERA_PARAM_COPY.tx = T_AVIUTL_CAMERA_PARAM_COPY.tx
+T_AVIUTL_CAMERA_PARAM_COPY.ty = T_AVIUTL_CAMERA_PARAM_COPY.ty
+T_AVIUTL_CAMERA_PARAM_COPY.tz = T_AVIUTL_CAMERA_PARAM_COPY.tz
 
-aviutl_camera_param_copy.d = aviutl_camera_param_copy.d
+T_AVIUTL_CAMERA_PARAM_COPY.d = T_AVIUTL_CAMERA_PARAM_COPY.d
 
-obj.setoption("camera_param", aviutl_camera_param_copy)
+obj.setoption("camera_param", T_AVIUTL_CAMERA_PARAM_COPY)

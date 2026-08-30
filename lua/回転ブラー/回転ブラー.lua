@@ -44,7 +44,7 @@ local check_high_quality_export = true
 ---$include "./shaders/rot_blur.hlsl"
 ]]
 
-local log2 = math.log(2)
+local log_two = math.log(2)
 
 local is_enabled = function(value)
     return value == true or value == 1
@@ -58,7 +58,7 @@ local rotation_blur_iterations = function(width, height, center_x, center_y, blu
         return 2
     end
 
-    local exponent = math.ceil(math.log(arc_length) / log2 - math.abs(resolution_down))
+    local exponent = math.ceil(math.log(arc_length) / log_two - math.abs(resolution_down))
     local iterations = 2 ^ exponent
     if iterations ~= iterations or iterations == math.huge or iterations < 2 then
         return 2
@@ -66,38 +66,45 @@ local rotation_blur_iterations = function(width, height, center_x, center_y, blu
     return math.floor(iterations)
 end
 
-local w, h = obj.getpixel()
-local r = math.sqrt(w * w + h * h)
+local image_width, image_height = obj.getpixel()
+local image_diagonal = math.sqrt(image_width * image_width + image_height * image_height)
 if not is_enabled(check_keep_size) then
-    local addX, addY = math.ceil((r - w) / 2 + 1), math.ceil((r - h) / 2 + 1)
-    obj.effect("領域拡張", "上", addY, "下", addY, "右", addX, "左", addX)
+    local add_x, add_y =
+        math.ceil((image_diagonal - image_width) / 2 + 1), math.ceil((image_diagonal - image_height) / 2 + 1)
+    obj.effect("領域拡張", "上", add_y, "下", add_y, "右", add_x, "左", add_x)
 end
 
-w, h = obj.getpixel()
+image_width, image_height = obj.getpixel()
 obj.setanchor("track_center_x,track_center_y", 0, "line")
 local center_x = track_center_x
 local center_y = track_center_y
 local use_high_quality = (not obj.getinfo("saving") and is_enabled(check_high_quality_preview))
     or (obj.getinfo("saving") and is_enabled(check_high_quality_export))
-if w > 0 and h > 0 then
+if image_width > 0 and image_height > 0 then
     local blur_rad = track_blur_amount * math.pi / 180
     local base_position = track_base_position * 0.01
-    local iterations =
-        rotation_blur_iterations(w, h, w * 0.5 + center_x, h * 0.5 + center_y, blur_rad, track_angle_resolution_down)
-    local step = use_high_quality and (blur_rad / (iterations - 1)) or (blur_rad / iterations)
+    local iterations = rotation_blur_iterations(
+        image_width,
+        image_height,
+        image_width * 0.5 + center_x,
+        image_height * 0.5 + center_y,
+        blur_rad,
+        track_angle_resolution_down
+    )
+    local angle_step = use_high_quality and (blur_rad / (iterations - 1)) or (blur_rad / iterations)
     local current = math.floor(iterations / 2)
     local high_quality = use_high_quality and 1 or 0
 
     while true do
-        local half = math.floor(current / 2)
+        local half_iterations = math.floor(current / 2)
         local angle_pos, angle_neg
         if use_high_quality then
-            local center_component = half * step * base_position
-            local span = blur_rad / current * 0.25
-            angle_pos = center_component + span
-            angle_neg = center_component - span
+            local center_component = half_iterations * angle_step * base_position
+            local sample_span = blur_rad / current * 0.25
+            angle_pos = center_component + sample_span
+            angle_neg = center_component - sample_span
         else
-            local delta = half * step
+            local delta = half_iterations * angle_step
             local base_offset = base_position * delta
             angle_pos = base_offset + delta
             angle_neg = base_offset - delta
@@ -116,6 +123,6 @@ if w > 0 and h > 0 then
         if current < 2 then
             break
         end
-        current = half
+        current = half_iterations
     end
 end

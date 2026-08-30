@@ -27,16 +27,16 @@ local dx = track_offset_x
 local dy = track_offset_y
 local dz = track_offset_z
 local adjust_method = math.floor(select_adjust_method)
-local cam = obj.getoption("camera_param")
+local camera = obj.getoption("camera_param")
 
 if adjust_method == 1 or adjust_method == 3 then
-    cam.x = cam.x + dx
-    cam.y = cam.y + dy
-    cam.z = cam.z + dz
+    camera.x = camera.x + dx
+    camera.y = camera.y + dy
+    camera.z = camera.z + dz
 end
 if adjust_method == 2 or adjust_method == 3 then
-    cam.tx = cam.tx + dx
-    cam.ty = cam.ty + dy
-    cam.tz = cam.tz + dz
+    camera.tx = camera.tx + dx
+    camera.ty = camera.ty + dy
+    camera.tz = camera.tz + dz
 end
-obj.setoption("camera_param", cam)
+obj.setoption("camera_param", camera)

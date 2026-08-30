@@ -84,7 +84,7 @@ local track_slide_amount = 10
 local track_slide_probability = 20
 
 ---$check:方向指定
-local dirchk = 0
+local check_use_fixed_direction = 0
 
 ---$track:指定方向（度）
 ---min=-360
@@ -99,16 +99,16 @@ local track_direction_deg = 0
 ---赤緑B=3
 ---赤青B=4
 ---緑青B=5
-local Cdir = 0
+local select_color_offset_type = 0
 
 --group:乱数
 ---$value:シード
-local seed = 0
+local value_seed = 0
 
 ---$check:レイヤー依存なし
-local Lset = 1
+local check_layer_independent = 1
 
---hide@track_direction_deg:dirchk==0
+--hide@track_direction_deg:check_use_fixed_direction==0
 
 local function clamp_percentage(value)
     if value < 0 then
@@ -119,41 +119,41 @@ local function clamp_percentage(value)
     return value
 end
 
-local Cal = (function(LS)
-    if LS == 0 then
-        return function(time, p, rn1, rn2, seed)
-            local tt = time * 1000 / track_interval_ms + 3103
-            local tf, dt = math.modf(tt)
-            local v = {}
+local calculate_random_value = (function(layer_independent)
+    if layer_independent == 0 then
+        return function(time, probability, minimum_value, maximum_value, value_seed)
+            local interval_time = time * 1000 / track_interval_ms + 3103
+            local interval_index, time_fraction = math.modf(interval_time)
+            local samples = {}
             for i = 0, 3 do
-                local ti = tf + i - 1
-                if p > obj.rand(0, 100, ti, seed) then
-                    local q = obj.rand(0, 100, ti + 1000, seed) * 0.01
-                    v[i] = rn1 * q + rn2 * (1 - q)
+                local sample_index = interval_index + i - 1
+                if probability > obj.rand(0, 100, sample_index, value_seed) then
+                    local mix_ratio = obj.rand(0, 100, sample_index + 1000, value_seed) * 0.01
+                    samples[i] = minimum_value * mix_ratio + maximum_value * (1 - mix_ratio)
                 else
-                    v[i] = 0
+                    samples[i] = 0
                 end
             end
-            return obj.interpolation(dt, v[0], v[1], v[2], v[3])
+            return obj.interpolation(time_fraction, samples[0], samples[1], samples[2], samples[3])
         end
     else
-        return function(time, p, rn1, rn2, seed)
-            local tt = time * 1000 / track_interval_ms + 3103
-            local tf, dt = math.modf(tt)
-            local v = {}
+        return function(time, probability, minimum_value, maximum_value, value_seed)
+            local interval_time = time * 1000 / track_interval_ms + 3103
+            local interval_index, time_fraction = math.modf(interval_time)
+            local samples = {}
             for i = 0, 3 do
-                local ti = tf + i
-                if p > obj.rand(0, 100, -ti, seed) then
-                    local q = obj.rand(0, 100, -ti, seed + 100) * 0.01
-                    v[i] = rn1 * q + rn2 * (1 - q)
+                local sample_index = interval_index + i
+                if probability > obj.rand(0, 100, -sample_index, value_seed) then
+                    local mix_ratio = obj.rand(0, 100, -sample_index, value_seed + 100) * 0.01
+                    samples[i] = minimum_value * mix_ratio + maximum_value * (1 - mix_ratio)
                 else
-                    v[i] = 0
+                    samples[i] = 0
                 end
             end
-            return obj.interpolation(dt, v[0], v[1], v[2], v[3])
+            return obj.interpolation(time_fraction, samples[0], samples[1], samples[2], samples[3])
         end
     end
-end)(Lset or 0)
+end)(check_layer_independent or 0)
 local blur_amount = clamp_percentage(track_blur_amount)
 local blur_probability = clamp_percentage(track_blur_probability)
 local color_amount = clamp_percentage(track_color_amount)
@@ -165,87 +165,113 @@ local zoom_probability = clamp_percentage(track_zoom_probability)
 local slide_amount = clamp_percentage(track_slide_amount)
 local slide_probability = clamp_percentage(track_slide_probability)
 
-local bl = blur_amount
-local cl = 360 * color_amount * 0.01
-local li = light_amount
-local zm = zoom_amount
-local sl0 = slide_amount * 0.01
-dirchk = dirchk or 0
-local Drad = (track_direction_deg or 0) * math.pi / 180
-Cdir = Cdir or 0
+local blur_strength = blur_amount
+local hue_shift = 360 * color_amount * 0.01
+local brightness_shift = light_amount
+local zoom_shift = zoom_amount
+local slide_ratio = slide_amount * 0.01
+check_use_fixed_direction = check_use_fixed_direction or 0
+local direction_radians = (track_direction_deg or 0) * math.pi / 180
+select_color_offset_type = select_color_offset_type or 0
 local w, h = obj.getpixel()
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.setoption("blend", "alpha_add")
-local t = obj.time
-zm = zm * Cal(t, zoom_probability, 0, 1, seed)
-local slx, sly
-local cosDrad = math.cos(Drad)
-local sinDrad = math.sin(Drad)
-if dirchk == 1 then
-    local r = w * sl0 * Cal(t, slide_probability, -1, 1, seed + 1000)
-    slx = r * cosDrad
-    sly = r * sinDrad
+local current_time = obj.time
+zoom_shift = zoom_shift * calculate_random_value(current_time, zoom_probability, 0, 1, value_seed)
+local slide_x, slide_y
+local cos_drad = math.cos(direction_radians)
+local sin_drad = math.sin(direction_radians)
+if check_use_fixed_direction == 1 then
+    local slide_distance = w
+        * slide_ratio
+        * calculate_random_value(current_time, slide_probability, -1, 1, value_seed + 1000)
+    slide_x = slide_distance * cos_drad
+    slide_y = slide_distance * sin_drad
 else
-    slx = w * sl0 * Cal(t, slide_probability, -1, 1, seed + 1000)
-    sly = h * sl0 * Cal(t, slide_probability, -1, 1, seed + 2000)
+    slide_x = w * slide_ratio * calculate_random_value(current_time, slide_probability, -1, 1, value_seed + 1000)
+    slide_y = h * slide_ratio * calculate_random_value(current_time, slide_probability, -1, 1, value_seed + 2000)
 end
-local slxZ, slyZ = slx, sly
-slx = (slx + w * 0.5) % w - w * 0.5
-sly = (sly + h * 0.5) % h - h * 0.5
-local zmp = 1 + zm * 0.01
-local dw = w * zmp
-local dh = h * zmp
-obj.draw(slx - dw, sly - dh, 0, zmp, 1, 0, 0, 180)
-obj.draw(slx, sly - dh, 0, zmp, 1, 180, 0, 0)
-obj.draw(slx + dw, sly - dh, 0, zmp, 1, 0, 0, 180)
-obj.draw(slx - dw, sly, 0, zmp, 1, 0, 180, 0)
-obj.draw(slx, sly, 0, zmp)
-obj.draw(slx + dw, sly, 0, zmp, 1, 0, 180, 0)
-obj.draw(slx - dw, sly + dh, 0, zmp, 1, 0, 0, 180)
-obj.draw(slx, sly + dh, 0, zmp, 1, 180, 0, 0)
-obj.draw(slx + dw, sly + dh, 0, zmp, 1, 0, 0, 180)
+local unwrapped_slide_x, unwrapped_slide_y = slide_x, slide_y
+slide_x = (slide_x + w * 0.5) % w - w * 0.5
+slide_y = (slide_y + h * 0.5) % h - h * 0.5
+local zoom_ratio = 1 + zoom_shift * 0.01
+local tiled_width = w * zoom_ratio
+local tiled_height = h * zoom_ratio
+obj.draw(slide_x - tiled_width, slide_y - tiled_height, 0, zoom_ratio, 1, 0, 0, 180)
+obj.draw(slide_x, slide_y - tiled_height, 0, zoom_ratio, 1, 180, 0, 0)
+obj.draw(slide_x + tiled_width, slide_y - tiled_height, 0, zoom_ratio, 1, 0, 0, 180)
+obj.draw(slide_x - tiled_width, slide_y, 0, zoom_ratio, 1, 0, 180, 0)
+obj.draw(slide_x, slide_y, 0, zoom_ratio)
+obj.draw(slide_x + tiled_width, slide_y, 0, zoom_ratio, 1, 0, 180, 0)
+obj.draw(slide_x - tiled_width, slide_y + tiled_height, 0, zoom_ratio, 1, 0, 0, 180)
+obj.draw(slide_x, slide_y + tiled_height, 0, zoom_ratio, 1, 180, 0, 0)
+obj.draw(slide_x + tiled_width, slide_y + tiled_height, 0, zoom_ratio, 1, 0, 0, 180)
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
-bl = bl * Cal(t, blur_probability, 0, 1, seed + 3000)
-cl = cl * Cal(t, color_probability, -1, 1, seed + 4000)
-li = li * Cal(t, light_probability, 0, 1, seed + 5000)
-obj.effect("ぼかし", "範囲", bl, "サイズ固定", 1)
-obj.effect("色調補正", "明るさ", 100 + li, "色相", cl)
+blur_strength = blur_strength * calculate_random_value(current_time, blur_probability, 0, 1, value_seed + 3000)
+hue_shift = hue_shift * calculate_random_value(current_time, color_probability, -1, 1, value_seed + 4000)
+brightness_shift = brightness_shift * calculate_random_value(current_time, light_probability, 0, 1, value_seed + 5000)
+obj.effect("ぼかし", "範囲", blur_strength, "サイズ固定", 1)
+obj.effect("色調補正", "明るさ", 100 + brightness_shift, "色相", hue_shift)
 obj.effect(
     "放射ブラー",
     "範囲",
-    zm * track_zoom_blur * 0.01,
+    zoom_shift * track_zoom_blur * 0.01,
     "X",
-    -zmp * slxZ,
+    -zoom_ratio * unwrapped_slide_x,
     "Y",
-    -zmp * slyZ,
+    -zoom_ratio * unwrapped_slide_y,
     "サイズ固定",
     1
 )
-local slx1, sly1, slx2, sly2
-local dt = 0.5 / obj.framerate
-if dirchk == 1 then
-    local r = w * sl0 * Cal(t - dt, slide_probability, -1, 1, seed + 1000)
-    slx1 = r * cosDrad
-    sly1 = r * sinDrad
-    r = w * sl0 * Cal(t + dt, slide_probability, -1, 1, seed + 1000)
-    slx2 = r * cosDrad
-    sly2 = r * sinDrad
+local previous_slide_x, previous_slide_y, next_slide_x, next_slide_y
+local time_fraction = 0.5 / obj.framerate
+if check_use_fixed_direction == 1 then
+    local slide_distance = w
+        * slide_ratio
+        * calculate_random_value(current_time - time_fraction, slide_probability, -1, 1, value_seed + 1000)
+    previous_slide_x = slide_distance * cos_drad
+    previous_slide_y = slide_distance * sin_drad
+    slide_distance = w
+        * slide_ratio
+        * calculate_random_value(current_time + time_fraction, slide_probability, -1, 1, value_seed + 1000)
+    next_slide_x = slide_distance * cos_drad
+    next_slide_y = slide_distance * sin_drad
 else
-    slx1 = w * sl0 * Cal(t - dt, slide_probability, -1, 1, seed + 1000)
-    slx2 = w * sl0 * Cal(t + dt, slide_probability, -1, 1, seed + 1000)
-    sly1 = h * sl0 * Cal(t - dt, slide_probability, -1, 1, seed + 2000)
-    sly2 = h * sl0 * Cal(t + dt, slide_probability, -1, 1, seed + 2000)
+    previous_slide_x = w
+        * slide_ratio
+        * calculate_random_value(current_time - time_fraction, slide_probability, -1, 1, value_seed + 1000)
+    next_slide_x = w
+        * slide_ratio
+        * calculate_random_value(current_time + time_fraction, slide_probability, -1, 1, value_seed + 1000)
+    previous_slide_y = h
+        * slide_ratio
+        * calculate_random_value(current_time - time_fraction, slide_probability, -1, 1, value_seed + 2000)
+    next_slide_y = h
+        * slide_ratio
+        * calculate_random_value(current_time + time_fraction, slide_probability, -1, 1, value_seed + 2000)
 end
-local dx = slx2 - slx1
-local dy = sly2 - sly1
-local dr = math.sqrt(dx * dx + dy * dy)
-local deg = math.atan2(-dx, dy) * 180 / math.pi
-dr = dr * track_slide_blur * 0.01
-local dc = dr * track_color_offset_adjust * 0.0025
-obj.effect("方向ブラー", "角度", deg, "範囲", dr, "サイズ固定", 1)
-obj.effect("領域拡張", "上", dc, "右", dc, "下", dc, "左", dc, "塗りつぶし", 1)
-local dir_name_map = {
+local slide_delta_x = next_slide_x - previous_slide_x
+local slide_delta_y = next_slide_y - previous_slide_y
+local slide_distance = math.sqrt(slide_delta_x * slide_delta_x + slide_delta_y * slide_delta_y)
+local slide_angle_degrees = math.atan2(-slide_delta_x, slide_delta_y) * 180 / math.pi
+slide_distance = slide_distance * track_slide_blur * 0.01
+local color_offset_distance = slide_distance * track_color_offset_adjust * 0.0025
+obj.effect("方向ブラー", "角度", slide_angle_degrees, "範囲", slide_distance, "サイズ固定", 1)
+obj.effect(
+    "領域拡張",
+    "上",
+    color_offset_distance,
+    "右",
+    color_offset_distance,
+    "下",
+    color_offset_distance,
+    "左",
+    color_offset_distance,
+    "塗りつぶし",
+    1
+)
+local color_offset_type_names = {
     [0] = "赤緑A",
     [1] = "赤青A",
     [2] = "緑青A",
@@ -253,7 +279,15 @@ local dir_name_map = {
     [4] = "赤青B",
     [5] = "緑青B",
 }
-obj.effect("色ずれ", "ずれ幅", dc, "角度", deg, "色ずれの種類", dir_name_map[Cdir] or "赤緑A")
+obj.effect(
+    "色ずれ",
+    "ずれ幅",
+    color_offset_distance,
+    "角度",
+    slide_angle_degrees,
+    "色ずれの種類",
+    color_offset_type_names[select_color_offset_type] or "赤緑A"
+)
 obj.setoption("drawtarget", "tempbuffer", w, h)
 obj.draw()
 obj.load("tempbuffer")

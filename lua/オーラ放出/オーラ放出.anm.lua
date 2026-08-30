@@ -24,58 +24,61 @@ local track_speed = 100
 local track_offset = 0
 
 ---$check:ミッドトーン無視
-local egm = 0
+local check_ignore_midtone = 0
 
 ---$color:ハイライト
-local col1 = 0xffffff
+local highlight_color = 0xffffff
 
 ---$color:ミッドトーン
-local col2 = 0x0080ff
+local midtone_color = 0x0080ff
 
 ---$color:シャドウ
-local col3 = 0x0080ff
+local shadow_color = 0x0080ff
 
 ---$track:ぼかし
 ---min=0
 ---max=1000
 ---step=1
-local bl = 1
+local track_blur = 1
 
 ---$check:オリジナル表示
-local show_original = true
+local check_show_original = true
 
---hide@col2:egm==1
+--hide@midtone_color:check_ignore_midtone==1
 
-local ox, oy, oz = obj.ox, obj.oy, obj.oz
-local cx, cy, cz = obj.cx, obj.cy, obj.cz
+local original_origin_x, original_origin_y, original_origin_z = obj.ox, obj.oy, obj.oz
+local original_center_x, original_center_y, original_center_z = obj.cx, obj.cy, obj.cz
 obj.copybuffer("cache:ori", "object")
 
-local sz = track_range
+local aura_range = track_range
 
-local repN = math.floor(track_cycle)
-local sft = ((obj.time * track_speed + track_offset) % 100) * 0.01
+local cycle_count = math.floor(track_cycle)
+local phase_offset = ((obj.time * track_speed + track_offset) % 100) * 0.01
 
-local r1, g1, b1 = RGB(col1)
-local r3, g3, b3 = RGB(col3)
-local r2, g2, b2
-if egm == 0 then
-    r2, g2, b2 = RGB(col2)
+local highlight_red, highlight_green, highlight_blue = RGB(highlight_color)
+local shadow_red, shadow_green, shadow_blue = RGB(shadow_color)
+local midtone_red, midtone_green, midtone_blue
+if check_ignore_midtone == 0 then
+    midtone_red, midtone_green, midtone_blue = RGB(midtone_color)
 else
-    r2, g2, b2 = math.floor((r1 + r3) * 0.5), math.floor((g1 + g3) * 0.5), math.floor((b1 + b3) * 0.5)
+    midtone_red, midtone_green, midtone_blue =
+        math.floor((highlight_red + shadow_red) * 0.5),
+        math.floor((highlight_green + shadow_green) * 0.5),
+        math.floor((highlight_blue + shadow_blue) * 0.5)
 end
 
 obj.effect("単色化", "color", 0xffffff, "輝度を保持する", 0)
-obj.effect("縁取り", "サイズ", sz * 0.5, "ぼかし", 0, "color", 0xffffff)
-obj.effect("縁取り", "サイズ", sz * 0.5, "ぼかし", 0, "color", 0x0)
-obj.effect("ぼかし", "範囲", sz)
+obj.effect("縁取り", "サイズ", aura_range * 0.5, "ぼかし", 0, "color", 0xffffff)
+obj.effect("縁取り", "サイズ", aura_range * 0.5, "ぼかし", 0, "color", 0x0)
+obj.effect("ぼかし", "範囲", aura_range)
 
 --[[pixelshader@colorama
 ---$include "../色調調整セットver6/shaders/colorama.hlsl"
 ]]
 
 obj.pixelshader("colorama", "object", "object", {
-    sft,
-    repN,
+    phase_offset,
+    cycle_count,
     2,
     255,
     255,
@@ -97,12 +100,12 @@ obj.pixelshader("colorama", "object", "object", {
     0,
 })
 
-local w, h = obj.w, obj.h
+local width, height = obj.w, obj.h
 
 obj.copybuffer("cache:wave", "object")
 
-obj.load("figure", "四角形", 0x0, (w < h and h or w))
-obj.setoption("drawtarget", "tempbuffer", w, h)
+obj.load("figure", "四角形", 0x0, (width < height and height or width))
+obj.setoption("drawtarget", "tempbuffer", width, height)
 obj.draw()
 obj.copybuffer("object", "cache:wave")
 obj.draw()
@@ -123,15 +126,15 @@ obj.effect(
 -- local userdata, w, h = obj.getpixeldata("object", "bgra")
 -- T_Color_Module.color_tritone_v2(userdata, w, h, r1, g1, b1, r2, g2, b2, r3, g3, b3, 255, 128, 0)
 -- obj.putpixeldata("object", userdata, w, h, "bgra")
-obj.effect("ぼかし", "範囲", bl)
+obj.effect("ぼかし", "範囲", track_blur)
 obj.effect(
     "トライトーン@T_Color_Module@tim.anm2",
     "シャドウ",
-    RGB(r3, g3, b3),
+    RGB(shadow_red, shadow_green, shadow_blue),
     "ミッドトーン",
-    RGB(r2, g2, b2),
+    RGB(midtone_red, midtone_green, midtone_blue),
     "ハイライト",
-    RGB(r1, g1, b1),
+    RGB(highlight_red, highlight_green, highlight_blue),
     "飽和点1",
     255,
     "中心点",
@@ -140,12 +143,12 @@ obj.effect(
     0
 )
 
-if show_original then
+if check_show_original then
     obj.copybuffer("tempbuffer", "object")
     obj.copybuffer("object", "cache:ori")
     obj.draw()
     obj.copybuffer("object", "tempbuffer")
 end
 obj.setoption("draw_state", false)
-obj.ox, obj.oy, obj.oz = ox, oy, oz
-obj.cx, obj.cy, obj.cz = cx, cy, cz
+obj.ox, obj.oy, obj.oz = original_origin_x, original_origin_y, original_origin_z
+obj.cx, obj.cy, obj.cz = original_center_x, original_center_y, original_center_z

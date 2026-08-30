@@ -22,7 +22,7 @@ local track_threshold_2 = 128
 ---R=2
 ---G=3
 ---B=4
-local track_detect_method = 0
+local select_detection_method = 0
 
 ---$track:透明度
 ---min=-100
@@ -31,10 +31,10 @@ local track_detect_method = 0
 local track_opacity = 0
 
 ---$color:置換色
-local col = 0x0
+local replacement_color = 0x0
 
 ---$check:範囲を反転
-local invert_range = false
+local check_invert_range = false
 
 --[[pixelshader@threshold
 ---$include "./shaders/threshold.hlsl"
@@ -46,45 +46,45 @@ end
 
 local threshold_1 = track_threshold_1 / 255
 local threshold_2 = track_threshold_2 / 255
-local col_r, col_g, col_b = RGB(col)
+local replacement_red, replacement_green, replacement_blue = RGB(replacement_color)
 
-local weight_r, weight_g, weight_b = 0, 0, 0
-if track_detect_method == 0 then
-    weight_r = 0.33
-    weight_g = 0.34
-    weight_b = 0.33
-elseif track_detect_method == 1 then
-    weight_r = 0.298
-    weight_g = 0.588
-    weight_b = 0.114
-elseif track_detect_method == 2 then
-    weight_r = 1.0
-elseif track_detect_method == 3 then
-    weight_g = 1.0
-elseif track_detect_method == 4 then
-    weight_b = 1.0
+local red_weight, green_weight, blue_weight = 0, 0, 0
+if select_detection_method == 0 then
+    red_weight = 0.33
+    green_weight = 0.34
+    blue_weight = 0.33
+elseif select_detection_method == 1 then
+    red_weight = 0.298
+    green_weight = 0.588
+    blue_weight = 0.114
+elseif select_detection_method == 2 then
+    red_weight = 1.0
+elseif select_detection_method == 3 then
+    green_weight = 1.0
+elseif select_detection_method == 4 then
+    blue_weight = 1.0
 else
     error("unreachable")
 end
 
-local out_scale = 1.0
-local in_scale = 1.0
+local outside_opacity_scale = 1.0
+local inside_opacity_scale = 1.0
 if track_opacity <= 0 then
-    out_scale = 1.0 + (track_opacity / 100.0)
+    outside_opacity_scale = 1.0 + (track_opacity / 100.0)
 else
-    in_scale = 1.0 - (track_opacity / 100.0)
+    inside_opacity_scale = 1.0 - (track_opacity / 100.0)
 end
 
 obj.pixelshader("threshold", "object", "object", {
     threshold_1,
     threshold_2,
-    weight_r,
-    weight_g,
-    weight_b,
-    in_scale,
-    out_scale,
-    col_r / 255,
-    col_g / 255,
-    col_b / 255,
-    invert_range and 1 or 0,
+    red_weight,
+    green_weight,
+    blue_weight,
+    inside_opacity_scale,
+    outside_opacity_scale,
+    replacement_red / 255,
+    replacement_green / 255,
+    replacement_blue / 255,
+    check_invert_range and 1 or 0,
 })

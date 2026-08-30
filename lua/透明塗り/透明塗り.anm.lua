@@ -26,27 +26,27 @@ local track_alpha = 255
 local track_opacity = 0
 
 ---$color:塗り潰し色
-local col = 0xffcccc
+local fill_color = 0xffcccc
 
 ---$check:改良計算
-local check0 = true
+local check_use_improved_calculation = true
 
-local T_Alpha_Module = obj.module("tim2")
+local tim2 = obj.module("tim2")
 
 obj.setanchor("track_target_position_x,track_target_position_y", 0)
-local r, g, b = RGB(col)
-local userdata, w, h = obj.getpixeldata("object", "bgra")
-T_Alpha_Module.alpha_fill_color(
-    userdata,
-    w,
-    h,
+local r, g, b = RGB(fill_color)
+local pixel_data, width, height = obj.getpixeldata("object", "bgra")
+tim2.alpha_fill_color(
+    pixel_data,
+    width,
+    height,
     r,
     g,
     b,
     track_target_position_x,
     track_target_position_y,
     track_alpha,
-    check0,
+    check_use_improved_calculation,
     1 - track_opacity * 0.01
 )
-obj.putpixeldata("object", userdata, w, h, "bgra")
+obj.putpixeldata("object", pixel_data, width, height, "bgra")

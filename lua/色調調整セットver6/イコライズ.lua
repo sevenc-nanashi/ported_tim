@@ -4,26 +4,34 @@
 ---イコライズ+RGB補正=0
 ---イコライズ=1
 ---RGB補正=2
-local calc_method = 0
+local select_calculation_method = 0
 
 --[[pixelshader@equalize
 ---$include "./shaders/equalize.hlsl"
 ]]
 
 -- require("T_Color_Module")
-local T_Color_Module = obj.module("tim2")
-local userdata, w, h = obj.getpixeldata("object", "bgra")
+local color_module = obj.module("tim2")
+local pixel_data, width, height = obj.getpixeldata("object", "bgra")
 
 obj.clearbuffer("cache:equalize_lut", 1021, 1)
-local lut, lut_w, lut_h = obj.getpixeldata("cache:equalize_lut", "bgra")
-local params = T_Color_Module.color_prepare_equalize_lut(userdata, w, h, lut, lut_w, lut_h, calc_method)
+local lookup_table, lookup_table_width, lookup_table_height = obj.getpixeldata("cache:equalize_lut", "bgra")
+local equalize_parameters = color_module.color_prepare_equalize_lut(
+    pixel_data,
+    width,
+    height,
+    lookup_table,
+    lookup_table_width,
+    lookup_table_height,
+    select_calculation_method
+)
 
-if params[3] >= 0.5 then
-    obj.putpixeldata("cache:equalize_lut", lut, lut_w, lut_h, "bgra")
+if equalize_parameters[3] >= 0.5 then
+    obj.putpixeldata("cache:equalize_lut", lookup_table, lookup_table_width, lookup_table_height, "bgra")
     obj.pixelshader("equalize", "object", { "object", "cache:equalize_lut" }, {
-        params[1],
-        params[2],
-        calc_method,
-        params[3],
+        equalize_parameters[1],
+        equalize_parameters[2],
+        select_calculation_method,
+        equalize_parameters[3],
     })
 end

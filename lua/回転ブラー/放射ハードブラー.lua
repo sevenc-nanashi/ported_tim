@@ -78,7 +78,7 @@ local track_display_limit_scale = 3
 ---$include "./shaders/rad_hard_blur.hlsl"
 ]]
 
-local log2 = math.log(2)
+local log_two = math.log(2)
 
 local is_enabled = function(value)
     return value == true or value == 1
@@ -88,7 +88,7 @@ local next_power_of_two = function(value)
     if value <= 0 or value ~= value or value == math.huge then
         return 1
     end
-    return math.floor(2 ^ math.ceil(math.log(value) / log2))
+    return math.floor(2 ^ math.ceil(math.log(value) / log_two))
 end
 
 local blur_amount = track_blur_amount * 0.01
@@ -106,48 +106,51 @@ if blur_amount ~= 0 then
     local change_seed = math.abs(math.floor(track_change_seed))
     local blur_correction_scale = track_blur_correction_scale
 
-    local w, h = obj.getpixel()
-    local r = math.sqrt(w * w + h * h)
+    local image_width, image_height = obj.getpixel()
+    local image_diagonal = math.sqrt(image_width * image_width + image_height * image_height)
 
     if not is_enabled(check_keep_size) and blur_amount > 0 then
         local display_limit_scale = math.max(0, (track_display_limit_scale - 1) / 2)
-        local iw, ih = w * display_limit_scale, h * display_limit_scale
+        local maximum_expand_x, maximum_expand_y = image_width * display_limit_scale, image_height * display_limit_scale
         local blur_scale = blur_amount / 2 * (1 + base_position)
-        local addX, addY
+        local add_x, add_y
         if blur_scale < 1 then
             blur_scale = blur_scale / (1 - blur_scale)
-            addX, addY = (w / 2 + math.abs(center_x)) * blur_scale + 1, (h / 2 + math.abs(center_y)) * blur_scale + 1
-            addX = (addX > iw) and iw or addX
-            addY = (addY > ih) and ih or addY
+            add_x, add_y =
+                (image_width / 2 + math.abs(center_x)) * blur_scale + 1,
+                (image_height / 2 + math.abs(center_y)) * blur_scale + 1
+            add_x = (add_x > maximum_expand_x) and maximum_expand_x or add_x
+            add_y = (add_y > maximum_expand_y) and maximum_expand_y or add_y
         else
-            addX, addY = iw, ih
+            add_x, add_y = maximum_expand_x, maximum_expand_y
         end
-        addX, addY = math.ceil(addX), math.ceil(addY)
-        obj.effect("領域拡張", "上", addY, "下", addY, "右", addX, "左", addX)
+        add_x, add_y = math.ceil(add_x), math.ceil(add_y)
+        obj.effect("領域拡張", "上", add_y, "下", add_y, "右", add_x, "左", add_x)
     end
 
-    w, h = obj.getpixel()
+    image_width, image_height = obj.getpixel()
     if change_seed == 0 then
         change_seed = math.floor(obj.time * obj.framerate)
     end
 
-    if is_enabled(check_blur_correction) and w > 0 and h > 0 then
+    if is_enabled(check_blur_correction) and image_width > 0 and image_height > 0 then
         local correction_blur_amount = blur_correction_scale * blur_amount * sample_count / 600
         local blur_scale = correction_blur_amount / 200
         local inner = 1 - blur_scale
         local outer_scale = 1 + blur_scale
-        local sign = 1
+        local inner_scale_sign = 1
         local inner_abs = inner
         if inner < 0 then
-            sign = -1
+            inner_scale_sign = -1
             inner_abs = -inner
         end
 
-        local origin_x = w * 0.5 + center_x
-        local origin_y = h * 0.5 + center_y
-        local max_dx = math.max(math.abs(origin_x), math.abs(w - origin_x))
-        local max_dy = math.max(math.abs(origin_y), math.abs(h - origin_y))
-        local displacement = math.sqrt(max_dx * max_dx + max_dy * max_dy) * math.abs(outer_scale - sign * inner_abs)
+        local origin_x = image_width * 0.5 + center_x
+        local origin_y = image_height * 0.5 + center_y
+        local max_dx = math.max(math.abs(origin_x), math.abs(image_width - origin_x))
+        local max_dy = math.max(math.abs(origin_y), math.abs(image_height - origin_y))
+        local displacement = math.sqrt(max_dx * max_dx + max_dy * max_dy)
+            * math.abs(outer_scale - inner_scale_sign * inner_abs)
         local iterations = math.max(next_power_of_two(displacement), 2)
 
         while iterations > 1 do
@@ -157,7 +160,7 @@ if blur_amount ~= 0 then
             obj.pixelshader("rad_blur", "object", "object", {
                 center_x,
                 center_y,
-                sign,
+                inner_scale_sign,
                 inner_abs,
                 outer_scale,
                 scale_sum,
@@ -166,7 +169,7 @@ if blur_amount ~= 0 then
         end
     end
 
-    if w > 0 and h > 0 then
+    if image_width > 0 and image_height > 0 then
         obj.pixelshader("rad_hard_blur", "object", "object", {
             blur_amount,
             center_x,

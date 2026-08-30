@@ -3,7 +3,7 @@
 ---min=0
 ---max=500
 ---step=1
-local track_size = 100
+local track_cell_size = 100
 
 ---$track:横数
 ---min=1
@@ -23,13 +23,15 @@ local track_vertical_count = 4
 ---step=0.1
 local track_aspect_ratio_percent = -38.2
 
-RuledlineT = RuledlineT or {}
-RuledlineT.typ = 1
-RuledlineT.dw = track_size
-RuledlineT.nx = math.floor(track_horizontal_count)
-RuledlineT.ny = math.floor(track_vertical_count)
-RuledlineT.asp = track_aspect_ratio_percent * 0.01
-RuledlineT.LPX = {}
-RuledlineT.LPY = {}
-RuledlineT.cx = 0
-RuledlineT.cy = 0
+T_RULED_LINE_STATE = T_RULED_LINE_STATE or {}
+T_RULED_LINE_STATE.definition = {}
+local ruled_line = T_RULED_LINE_STATE.definition
+ruled_line.type = 1
+ruled_line.cell_width = track_cell_size
+ruled_line.horizontal_count = math.floor(track_horizontal_count)
+ruled_line.vertical_count = math.floor(track_vertical_count)
+ruled_line.aspect_ratio = track_aspect_ratio_percent * 0.01
+ruled_line.vertical_line_x_positions = {}
+ruled_line.horizontal_line_y_positions = {}
+ruled_line.center_x = 0
+ruled_line.center_y = 0

@@ -6,27 +6,27 @@
 local track_guide_size = 50
 
 ---$color:ガイド色
-local colG = 0xff0000
+local guide_color = 0xff0000
 
 ---$figure:図形
-local fig = "円"
+local guide_figure = "円"
 
-obj.load("figure", fig, colG, track_guide_size)
-NTBS_N = obj.getoption("section_num") + 1
-NTBS_pos = {}
-for i = 1, NTBS_N - 1 do
-    NTBS_pos[i] = {}
-    NTBS_pos[i].x = obj.getvalue("x", 0, i - 1)
-    NTBS_pos[i].y = obj.getvalue("y", 0, i - 1)
+obj.load("figure", guide_figure, guide_color, track_guide_size)
+T_POLYGON_SPLIT_COUNT = obj.getoption("section_num") + 1
+T_POLYGON_SPLIT_POSITIONS = {}
+for i = 1, T_POLYGON_SPLIT_COUNT - 1 do
+    T_POLYGON_SPLIT_POSITIONS[i] = {}
+    T_POLYGON_SPLIT_POSITIONS[i].x = obj.getvalue("x", 0, i - 1)
+    T_POLYGON_SPLIT_POSITIONS[i].y = obj.getvalue("y", 0, i - 1)
 end
-NTBS_pos[NTBS_N] = {}
-NTBS_pos[NTBS_N].x = obj.getvalue("x", 0, -1)
-NTBS_pos[NTBS_N].y = obj.getvalue("y", 0, -1)
-NTBS_pos[0] = {}
-NTBS_pos[0] = NTBS_pos[NTBS_N]
-NTBS_pos[NTBS_N + 1] = {}
-NTBS_pos[NTBS_N + 1] = NTBS_pos[1]
+T_POLYGON_SPLIT_POSITIONS[T_POLYGON_SPLIT_COUNT] = {}
+T_POLYGON_SPLIT_POSITIONS[T_POLYGON_SPLIT_COUNT].x = obj.getvalue("x", 0, -1)
+T_POLYGON_SPLIT_POSITIONS[T_POLYGON_SPLIT_COUNT].y = obj.getvalue("y", 0, -1)
+T_POLYGON_SPLIT_POSITIONS[0] = {}
+T_POLYGON_SPLIT_POSITIONS[0] = T_POLYGON_SPLIT_POSITIONS[T_POLYGON_SPLIT_COUNT]
+T_POLYGON_SPLIT_POSITIONS[T_POLYGON_SPLIT_COUNT + 1] = {}
+T_POLYGON_SPLIT_POSITIONS[T_POLYGON_SPLIT_COUNT + 1] = T_POLYGON_SPLIT_POSITIONS[1]
 
-for i = 1, NTBS_N do
-    obj.draw(NTBS_pos[i].x - obj.getvalue("x"), NTBS_pos[i].y - obj.getvalue("y"))
+for i = 1, T_POLYGON_SPLIT_COUNT do
+    obj.draw(T_POLYGON_SPLIT_POSITIONS[i].x - obj.getvalue("x"), T_POLYGON_SPLIT_POSITIONS[i].y - obj.getvalue("y"))
 end

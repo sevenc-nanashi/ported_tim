@@ -1,4 +1,5 @@
 --label:${ROOT_CATEGORY}\カスタムオブジェクト
+local draw_rectangle, core_size
 ---$track:パターン
 ---min=0
 ---max=1000
@@ -24,15 +25,15 @@ local track_size = 6
 local track_interval = 3
 
 ---$value:位置
-local pos = { 0, -150, 0, 150 }
+local core_position = { 0, -150, 0, 150 }
 
 ---$color:コア色
-local c_col = 0xffffff
+local core_color = 0xffffff
 
 --group:発光
 
 ---$color:発光色
-local g_col = 0x0000ff
+local glow_color = 0x0000ff
 
 ---$track:発光強さ
 ---min=0
@@ -82,20 +83,20 @@ local track_branch_range = 30
 ---min=0
 ---max=100
 ---step=0.1
-local c_tf = 80
+local track_bend_probability = 80
 
 --group:
 
 ---$value:領域サイズ
-local AS = { -180, -180, 180, 180 }
+local track_area_size = { -180, -180, 180, 180 }
 
 ---$check:枠表示
 local check_show_frame = true
 
-local frnd = math.floor(track_pattern)
+local random_seed = math.floor(track_pattern)
 
-local at = 100 - track_unfold_amount
-at = (math.exp(0.10 * at) - 1) / 62
+local attenuation_rate = 100 - track_unfold_amount
+attenuation_rate = (math.exp(0.10 * attenuation_rate) - 1) / 62
 
 local fast_draw_buffer = {}
 local function fast_draw(x, y, zoom)
@@ -130,137 +131,182 @@ local function flush_fast_draw()
     fast_draw_buffer = {}
 end
 
-local function Lightning(stx, sty, enx, eny, c_d, c_s, stl, f_n, gr)
-    if c_d < 0.3 then
+local function draw_lightning_branch(
+    start_x,
+    start_y,
+    end_x,
+    end_y,
+    core_interval,
+    branch_size,
+    straightness,
+    remaining_forks,
+    branch_range
+)
+    if core_interval < 0.3 then
         return
     end
 
-    local Lx, Ly = enx - stx, eny - sty
-    local LL = Lx * Lx + Ly * Ly
-    local L = math.sqrt(LL)
-    local dLx = Lx * c_d / L
-    local dLy = Ly * c_d / L
+    local branch_vector_x, branch_vector_y = end_x - start_x, end_y - start_y
+    local branch_length_squared = branch_vector_x * branch_vector_x + branch_vector_y * branch_vector_y
+    local branch_length = math.sqrt(branch_length_squared)
+    local base_step_x = branch_vector_x * core_interval / branch_length
+    local base_step_y = branch_vector_y * core_interval / branch_length
 
-    fast_draw(stx, sty, c_s / Ac_s)
+    fast_draw(start_x, start_y, branch_size / core_size)
 
-    local ss = obj.rand(-75, 75, 0, 10 + frnd) * 0.01
-    local sin = math.sin(ss)
-    local cos = math.cos(ss)
-    local dx, dy = cos * dLx + sin * dLy, -sin * dLx + cos * dLy
-    local ox = 0
-    local oy = 0
+    local angle_jitter = obj.rand(-75, 75, 0, 10 + random_seed) * 0.01
+    local angle_sine = math.sin(angle_jitter)
+    local angle_cosine = math.cos(angle_jitter)
+    local step_x, step_y =
+        angle_cosine * base_step_x + angle_sine * base_step_y, -angle_sine * base_step_x + angle_cosine * base_step_y
+    local offset_x = 0
+    local offset_y = 0
     local i = 0
 
-    local bl = {}
+    local branch_trigger_offsets = {}
 
     for j = 1, 3 do
-        bl[j] = obj.rand(0, Ly * 0.5, i, j + frnd)
+        branch_trigger_offsets[j] = obj.rand(0, branch_vector_y * 0.5, i, j + random_seed)
     end
 
-    while oy * oy < Ly * Ly do
+    while offset_y * offset_y < branch_vector_y * branch_vector_y do
         i = i + 1
-        local gen = math.exp(-at * oy / Ly)
+        local attenuation = math.exp(-attenuation_rate * offset_y / branch_vector_y)
 
-        if gen < 0.005 then
+        if attenuation < 0.005 then
             return
         end
 
-        local ii = 0
+        local retry_count = 0
         repeat
-            ii = ii + 1
-            ss = obj.rand(-75, 75, i, 12 + frnd + 100 * ii) * 0.01
-            sin = math.sin(ss)
-            cos = math.cos(ss)
-            dx, dy = (cos * dLx + sin * dLy) * gen, (-sin * dLx + cos * dLy) * gen
-        until dy * dLy > 0
+            retry_count = retry_count + 1
+            angle_jitter = obj.rand(-75, 75, i, 12 + random_seed + 100 * retry_count) * 0.01
+            angle_sine = math.sin(angle_jitter)
+            angle_cosine = math.cos(angle_jitter)
+            step_x, step_y =
+                (angle_cosine * base_step_x + angle_sine * base_step_y) * attenuation,
+                (-angle_sine * base_step_x + angle_cosine * base_step_y) * attenuation
+        until step_y * base_step_y > 0
 
-        local rn = math.log(obj.rand(2, 100, i, 11 + frnd)) / math.log(c_tf) / c_d
+        local run_length_factor = math.log(obj.rand(2, 100, i, 11 + random_seed))
+            / math.log(track_bend_probability)
+            / core_interval
 
-        for k = 0, stl * rn do
-            fast_draw(stx + ox + k * dx, sty + oy + k * dy, c_s / Ac_s * gen)
+        for k = 0, straightness * run_length_factor do
+            fast_draw(
+                start_x + offset_x + k * step_x,
+                start_y + offset_y + k * step_y,
+                branch_size / core_size * attenuation
+            )
         end
 
-        ox = ox + stl * rn * dx
-        oy = oy + stl * rn * dy
+        offset_x = offset_x + straightness * run_length_factor * step_x
+        offset_y = offset_y + straightness * run_length_factor * step_y
 
         for j = 1, 3 do
-            if bl[j] ~= nil and bl[j] * bl[j] < oy * oy and f_n > 1 then
-                frnd = frnd + 1
-                f_n = f_n - 1
-                local gx = obj.rand(-gr, gr, i, 13 + frnd) * 0.01 * Ly
-                Lightning(stx + ox, sty + oy, enx + gx, eny, c_d * 0.8 * gen, c_s * 0.8 * gen, stl, f_n, gr)
-                bl[j] = nil
+            if
+                branch_trigger_offsets[j] ~= nil
+                and branch_trigger_offsets[j] * branch_trigger_offsets[j] < offset_y * offset_y
+                and remaining_forks > 1
+            then
+                random_seed = random_seed + 1
+                remaining_forks = remaining_forks - 1
+                local fork_end_offset_x = obj.rand(-branch_range, branch_range, i, 13 + random_seed)
+                    * 0.01
+                    * branch_vector_y
+                draw_lightning_branch(
+                    start_x + offset_x,
+                    start_y + offset_y,
+                    end_x + fork_end_offset_x,
+                    end_y,
+                    core_interval * 0.8 * attenuation,
+                    branch_size * 0.8 * attenuation,
+                    straightness,
+                    remaining_forks,
+                    branch_range
+                )
+                branch_trigger_offsets[j] = nil
             end
         end
     end
 end
 
-function Szdrawpoly(x1, y1, x2, y2)
+function draw_rectangle(x1, y1, x2, y2)
     obj.drawpoly(x1, y1, 0, x2, y1, 0, x2, y2, 0, x1, y2, 0, 0, 0, obj.w, 0, obj.w, obj.h, 0, obj.h)
 end
 
-Ac_s = track_size
-local f_n = math.floor(track_fork_count or 0)
-local stl = math.floor(track_straightness or 1)
-local gr = track_branch_range or 30
-local g_s = track_glow_strength or 40
-local g_k = track_glow_diffusion or 300
-local g_th = track_glow_threshold or 0
-local g_kv = track_glow_diffusion_speed or 10
+core_size = track_size
+local remaining_forks = math.floor(track_fork_count or 0)
+local straightness = math.floor(track_straightness or 1)
+local branch_range = track_branch_range or 30
+local glow_strength = track_glow_strength or 40
+local glow_diffusion = track_glow_diffusion or 300
+local glow_threshold = track_glow_threshold or 0
+local glow_diffusion_speed = track_glow_diffusion_speed or 10
 
-local c_d = track_interval
+local core_interval = track_interval
 
-obj.setanchor("pos", 2, "line")
-local stx, sty, enx, eny = unpack(pos)
-obj.setanchor("AS", 2)
-local ASx0, ASy0, ASx1, ASy1 = unpack(AS)
-local cx, cy = (ASx1 + ASx0) / 2, (ASy1 + ASy0) / 2
+obj.setanchor("core_position", 2, "line")
+local start_x, start_y, end_x, end_y = unpack(core_position)
+obj.setanchor("track_area_size", 2)
+local area_min_x, area_min_y, area_max_x, area_max_y = unpack(track_area_size)
+local area_center_x, area_center_y = (area_max_x + area_min_x) / 2, (area_max_y + area_min_y) / 2
 
-if f_n > 25 then
-    f_n = 25
+if remaining_forks > 25 then
+    remaining_forks = 25
 end
 
-stl = math.floor(stl)
-if stl < 1 then
-    stl = 1
+straightness = math.floor(straightness)
+if straightness < 1 then
+    straightness = 1
 end
 
-obj.setoption("drawtarget", "tempbuffer", math.abs(ASx1 - ASx0), math.abs(ASy1 - ASy0))
+obj.setoption("drawtarget", "tempbuffer", math.abs(area_max_x - area_min_x), math.abs(area_max_y - area_min_y))
 
-obj.load("figure", "円", c_col, Ac_s)
+obj.load("figure", "円", core_color, core_size)
 
-Lightning(stx - cx, sty - cy, enx - cx, eny - cy, c_d, Ac_s, stl, f_n, gr)
+draw_lightning_branch(
+    start_x - area_center_x,
+    start_y - area_center_y,
+    end_x - area_center_x,
+    end_y - area_center_y,
+    core_interval,
+    core_size,
+    straightness,
+    remaining_forks,
+    branch_range
+)
 flush_fast_draw()
 
 if obj.getoption("gui") == true and obj.getinfo("saving") == false and check_show_frame then
     obj.load("figure", "四角形", 0xffffff, 100)
-    ASx0 = ASx0 - cx
-    ASx1 = ASx1 - cx
-    ASy0 = ASy0 - cy
-    ASy1 = ASy1 - cy
-    Szdrawpoly(ASx0, ASy0 - 0.5, ASx1, ASy0 + 0.5)
-    Szdrawpoly(ASx0, ASy1 - 0.5, ASx1, ASy1 + 0.5)
-    Szdrawpoly(ASx0 - 0.5, ASy0, ASx0 + 0.5, ASy1)
-    Szdrawpoly(ASx1 - 0.5, ASy0, ASx1 + 0.5, ASy1)
+    area_min_x = area_min_x - area_center_x
+    area_max_x = area_max_x - area_center_x
+    area_min_y = area_min_y - area_center_y
+    area_max_y = area_max_y - area_center_y
+    draw_rectangle(area_min_x, area_min_y - 0.5, area_max_x, area_min_y + 0.5)
+    draw_rectangle(area_min_x, area_max_y - 0.5, area_max_x, area_max_y + 0.5)
+    draw_rectangle(area_min_x - 0.5, area_min_y, area_min_x + 0.5, area_max_y)
+    draw_rectangle(area_max_x - 0.5, area_min_y, area_max_x + 0.5, area_max_y)
 end
 
 obj.load("tempbuffer")
 
-obj.cx, obj.cy = obj.cx - cx, obj.cy - cy
+obj.cx, obj.cy = obj.cx - area_center_x, obj.cy - area_center_y
 
 obj.effect("色調補正", "明るさ", 200)
 obj.effect(
     "発光",
     "強さ",
-    g_s,
+    glow_strength,
     "拡散",
-    g_k,
+    glow_diffusion,
     "しきい値",
-    g_th,
+    glow_threshold,
     "拡散速度",
-    g_kv,
+    glow_diffusion_speed,
     "color",
-    c_col,
+    core_color,
     "no_color",
     0,
     "サイズ固定",
@@ -269,15 +315,15 @@ obj.effect(
 obj.effect(
     "発光",
     "強さ",
-    g_s,
+    glow_strength,
     "拡散",
-    g_k,
+    glow_diffusion,
     "しきい値",
-    g_th,
+    glow_threshold,
     "拡散速度",
-    g_kv,
+    glow_diffusion_speed,
     "color",
-    g_col,
+    glow_color,
     "no_color",
     0,
     "サイズ固定",

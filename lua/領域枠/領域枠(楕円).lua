@@ -21,76 +21,102 @@ local track_extra_height = 0
 ---min=0
 ---max=100
 ---step=0.1
-local track_density = 20
+local track_background_density = 20
 
 ---$color:枠色
-local col1 = 0xffffff
+local color_border = 0xffffff
 
 ---$color:背景色
-local col2 = 0xccccff
+local color_background = 0xccccff
 
 ---$value:基準
-local base = { 0, 0 }
+local value_origin_percent = { 0, 0 }
 
 local w, h = obj.getpixel()
-local lw = track_stroke_width
-local pw = track_extra_width
-local ph = track_extra_height
-local backC = track_density * 0.01
-local w, h = pw + w + 2 * lw, ph + h + 2 * lw
-base = base or { 0, 0 }
+local stroke_width = track_stroke_width
+local extra_width = track_extra_width
+local extra_height = track_extra_height
+local background_alpha = track_background_density * 0.01
+local w, h = extra_width + w + 2 * stroke_width, extra_height + h + 2 * stroke_width
+value_origin_percent = value_origin_percent or { 0, 0 }
 w = ((w > 1) and w) or 1
 h = ((h > 1) and h) or 1
-local w1 = w * 0.5
-local h1 = h * 0.5
-local w0 = w1 - lw
-local h0 = h1 - lw
-w0 = ((w0 > 0) and w0) or 0
-h0 = ((h0 > 0) and h0) or 0
-local wh = math.max(w, h)
+local half_width = w * 0.5
+local half_height = h * 0.5
+local inner_half_width = half_width - stroke_width
+local inner_half_height = half_height - stroke_width
+inner_half_width = ((inner_half_width > 0) and inner_half_width) or 0
+inner_half_height = ((inner_half_height > 0) and inner_half_height) or 0
+local max_dimension = math.max(w, h)
 
-obj.copybuffer("cache:cache-ori", "obj") --オリジナル保存
+obj.copybuffer("cache:cache-ori", "object") --オリジナル保存
 
 obj.setoption("drawtarget", "tempbuffer", w + 10, h + 10)
-obj.load("figure", "円", 0xffffff, 2 * wh)
-obj.drawpoly(-w0, -h0, 0, w0, -h0, 0, w0, h0, 0, -w0, h0, 0)
-obj.copybuffer("cache:cache-Itiji", "tmp")
-obj.load("figure", "四角形", col1, wh)
+obj.load("figure", "円", 0xffffff, 2 * max_dimension)
+obj.drawpoly(
+    -inner_half_width,
+    -inner_half_height,
+    0,
+    inner_half_width,
+    -inner_half_height,
+    0,
+    inner_half_width,
+    inner_half_height,
+    0,
+    -inner_half_width,
+    inner_half_height,
+    0
+)
+obj.copybuffer("cache:cache-Itiji", "tempbuffer")
+obj.load("figure", "四角形", color_border, max_dimension)
 obj.draw()
-obj.copybuffer("obj", "cache:cache-Itiji")
+obj.copybuffer("object", "cache:cache-Itiji")
 obj.setoption("blend", "alpha_sub")
 obj.draw()
 obj.setoption("blend", 0)
-obj.copybuffer("cache:cache-waku", "tmp") --枠保存
+obj.copybuffer("cache:cache-waku", "tempbuffer") --枠保存
 
 obj.setoption("drawtarget", "tempbuffer", w + 10, h + 10)
-obj.load("figure", "円", 0xffffff, 2 * wh)
-obj.drawpoly(-w1, -h1, 0, w1, -h1, 0, w1, h1, 0, -w1, h1, 0)
-obj.copybuffer("cache:cache-Itiji", "tmp")
-obj.load("figure", "四角形", 0xffffff, wh)
+obj.load("figure", "円", 0xffffff, 2 * max_dimension)
+obj.drawpoly(
+    -half_width,
+    -half_height,
+    0,
+    half_width,
+    -half_height,
+    0,
+    half_width,
+    half_height,
+    0,
+    -half_width,
+    half_height,
+    0
+)
+obj.copybuffer("cache:cache-Itiji", "tempbuffer")
+obj.load("figure", "四角形", 0xffffff, max_dimension)
 obj.draw()
-obj.copybuffer("obj", "cache:cache-Itiji")
+obj.copybuffer("object", "cache:cache-Itiji")
 obj.setoption("blend", "alpha_sub")
 obj.draw()
 obj.setoption("blend", 0)
-obj.copybuffer("cache:cache-del", "tmp") --背景保存
+obj.copybuffer("cache:cache-del", "tempbuffer") --背景保存
 
 --描画
 obj.setoption("drawtarget", "tempbuffer", w, h)
-obj.load("figure", "四角形", col2, wh)
-obj.draw(0, 0, 0, 1, backC)
+obj.load("figure", "四角形", color_background, max_dimension)
+obj.draw(0, 0, 0, 1, background_alpha)
 
-obj.copybuffer("obj", "cache:cache-ori")
+obj.copybuffer("object", "cache:cache-ori")
 obj.draw()
 
-obj.copybuffer("obj", "cache:cache-waku")
+obj.copybuffer("object", "cache:cache-waku")
 obj.draw()
 
-obj.copybuffer("obj", "cache:cache-del")
+obj.copybuffer("object", "cache:cache-del")
 obj.setoption("blend", "alpha_sub")
 obj.draw()
 
 obj.load("tempbuffer")
 obj.setoption("blend", 0)
-obj.cx = obj.cx + w * base[1] * 0.01
-obj.cy = obj.cy + h * base[2] * 0.01
+obj.cx = obj.cx + w * value_origin_percent[1] * 0.01
+obj.cy = obj.cy + h * value_origin_percent[2] * 0.01

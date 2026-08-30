@@ -24,13 +24,13 @@ local track_threshold = 60
 local track_glow_rotation = 45
 
 ---$color:発光色
-local col = 0xffffff
+local color_glow = 0xffffff
 
 ---$check:オリジナル色発光
-local chk = 1
+local check_use_original_color = 1
 
 ---$check:光のみ
-local Lonly = 0
+local check_light_only = 0
 
 ---$select:形状
 ---通常=0
@@ -40,33 +40,33 @@ local Lonly = 0
 ---クロス(10本)=4
 ---クロス(12本)=5
 ---ライン=6
-local fig = 1
+local select_shape = 1
 
 ---$track:ぼかし
 ---min=0
 ---max=50
 ---step=1
-local blur = 1
+local track_blur = 1
 
---hide@col:chk==1
+--hide@color_glow:check_use_original_color==1
 
 local w, h = obj.getpixel()
 
-obj.copybuffer("cache:ori_img", "obj")
+obj.copybuffer("cache:ori_img", "object")
 
-local deg = track_glow_rotation
+local rotation_degrees = track_glow_rotation
 
-local sin = math.abs(math.sin(math.rad(deg)))
-local cos = math.abs(math.cos(math.rad(deg)))
+local absolute_sine = math.abs(math.absolute_sine(math.rad(rotation_degrees)))
+local absolute_cosine = math.abs(math.absolute_cosine(math.rad(rotation_degrees)))
 
-local w0 = w * cos + h * sin
-local h0 = h * cos + w * sin
+local rotated_width = w * absolute_cosine + h * absolute_sine
+local rotated_height = h * absolute_cosine + w * absolute_sine
 
-obj.setoption("drawtarget", "tempbuffer", w0, h0)
-obj.draw(0, 0, 0, 1, 1, 0, 0, -deg)
-obj.copybuffer("obj", "tmp")
+obj.setoption("drawtarget", "tempbuffer", rotated_width, rotated_height)
+obj.draw(0, 0, 0, 1, 1, 0, 0, -rotation_degrees)
+obj.copybuffer("object", "tempbuffer")
 
-local fig_map = {
+local shape_names = {
     [0] = "通常",
     [1] = "クロス(4本)",
     [2] = "クロス(6本)",
@@ -85,21 +85,21 @@ obj.effect(
     "しきい値",
     track_threshold,
     "ぼかし",
-    blur,
+    track_blur,
     "形状",
-    fig_map[fig] or "通常",
+    shape_names[select_shape] or "通常",
     "光成分のみ",
     1,
     "光色",
-    chk == 0 and col or ""
+    check_use_original_color == 0 and color_glow or ""
 )
-if Lonly == 0 then
-    obj.copybuffer("tmp", "cache:ori_img")
+if check_light_only == 0 then
+    obj.copybuffer("tempbuffer", "cache:ori_img")
     obj.setoption("blend", 1)
 else
     obj.setoption("drawtarget", "tempbuffer", w, h)
 end
-obj.draw(0, 0, 0, 1, 1, 0, 0, deg)
+obj.draw(0, 0, 0, 1, 1, 0, 0, rotation_degrees)
 
 obj.load("tempbuffer")
 obj.setoption("blend", 0)

@@ -24,16 +24,16 @@ local track_base_rotation = 0
 local track_base_scale = 100
 
 ---$check:重なり順
-local AP = 0
+local check_reverse_order = 0
 
 ---$check:色の上書き
-local cop = 0
+local check_override_color = 0
 
 ---$color:基準色
-local colo1 = 0xff0000
+local start_color = 0xff0000
 
 ---$color:最終色
-local colo2 = 0x0000ff
+local end_color = 0x0000ff
 
 ---$select:合成モード
 ---通常=0
@@ -49,146 +49,157 @@ local colo2 = 0x0000ff
 ---陰影=10
 ---明暗=11
 ---差分=12
-local adm = 0
+local blend_mode = 0
 
 ---$check:位置ズレ補正
-local reC = 1
+local check_restore_position = 1
 
---hide@colo1:cop==0
---hide@colo2:cop==0
---hide@adm:cop==0
+--hide@start_color:check_override_color==0
+--hide@end_color:check_override_color==0
+--hide@blend_mode:check_override_color==0
 
-local repch = function(pr, hen)
-    if hen > 0 then
-        return pr ^ (1 + 5 * hen)
+local apply_change_rate = function(progress, change_rate)
+    if change_rate > 0 then
+        return progress ^ (1 + 5 * change_rate)
     else
-        return 1 - (1 - pr) ^ (1 - 5 * hen)
+        return 1 - (1 - progress) ^ (1 - 5 * change_rate)
     end
 end
 
-local iox = obj.ox
-local ioy = obj.oy
-local icx = obj.cx
-local icy = obj.cy
-reC = reC or 0
+local original_ox = obj.ox
+local original_oy = obj.oy
+local original_cx = obj.cx
+local original_cy = obj.cy
+check_restore_position = check_restore_position or 0
 
-local LAL = track_transparency_percent * 0.01
-local N = math.floor(track_count)
-local rz_ori = track_base_rotation
-local zoom_ori = track_base_scale * 0.01
+local transparency_ratio = track_transparency_percent * 0.01
+local repeat_count = math.floor(track_count)
+local base_rotation = track_base_rotation
+local base_scale = track_base_scale * 0.01
 
-local col1 = { RGB(colo1) }
-local col2 = { RGB(colo2) }
+local start_rgb = { RGB(start_color) }
+local end_rgb = { RGB(end_color) }
 
-local dx = repeater_dx
-local dy = repeater_dy
-local dr = repeater_dr
-local dk = repeater_dk
-local rep = repeater_rep
+local position_x = T_REPEATER_X
+local position_y = T_REPEATER_Y
+local rotation_step = T_REPEATER_ROTATION
+local scale_step = T_REPEATER_SCALE
+local mode = T_REPEATER_MODE
 
-local SS, dS, mrp, alf
-if rep == 1 then
-    SS = repeater_SS
-    dS = repeater_dS
-    mrp = repeater_mrp
-    alf = repeater_alf
+local file_path, start_time, time_step, loop_movie, load_alpha
+if mode == 1 then
+    file_path = T_REPEATER_FILE
+    start_time = T_REPEATER_START_TIME
+    time_step = T_REPEATER_TIME_STEP
+    loop_movie = T_REPEATER_LOOP
+    load_alpha = T_REPEATER_LOAD_ALPHA
 
-    repeater_SS = nil
-    repeater_dS = nil
-    repeater_mrp = nil
-    repeater_alf = nil
+    T_REPEATER_FILE = nil
+    T_REPEATER_START_TIME = nil
+    T_REPEATER_TIME_STEP = nil
+    T_REPEATER_LOOP = nil
+    T_REPEATER_LOAD_ALPHA = nil
 end
 
-local henx = repeater_henx or 0
-local heny = repeater_heny or 0
-local henzo = repeater_henzo or 0
-local henrz = repeater_henrz or 0
+local x_change_rate = T_REPEATER_X_RATE or 0
+local y_change_rate = T_REPEATER_Y_RATE or 0
+local scale_change_rate = T_REPEATER_SCALE_RATE or 0
+local rotation_change_rate = T_REPEATER_ROTATION_RATE or 0
 
-repeater_dx = nil
-repeater_dy = nil
-repeater_dr = nil
-repeater_dk = nil
-repeater_rep = nil
-repeater_henx = nil
-repeater_heny = nil
-repeater_henzo = nil
-repeater_henrz = nil
+T_REPEATER_X = nil
+T_REPEATER_Y = nil
+T_REPEATER_ROTATION = nil
+T_REPEATER_SCALE = nil
+T_REPEATER_MODE = nil
+T_REPEATER_X_RATE = nil
+T_REPEATER_Y_RATE = nil
+T_REPEATER_SCALE_RATE = nil
+T_REPEATER_ROTATION_RATE = nil
 
-local is, ie, di
-if AP == 0 then
-    is, ie, di = 0, N - 1, 1
+local start_index, end_index, index_step
+if check_reverse_order == 0 then
+    start_index, end_index, index_step = 0, repeat_count - 1, 1
 else
-    is, ie, di = N - 1, 0, -1
+    start_index, end_index, index_step = repeat_count - 1, 0, -1
 end
 
-local ott
-if rep == 1 then
-    ott = obj.load("movie", file)
+local movie_duration
+if mode == 1 then
+    movie_duration = obj.load("movie", file_path)
 end
 
 local w, h = obj.getpixel()
 
-local xx = {}
-local yy = {}
-local zo = {}
-local rz = {}
+local positions_x = {}
+local positions_y = {}
+local scales = {}
+local rotations = {}
 local max_x = 0
 local max_y = 0
 local min_x = 0
 local min_y = 0
 
-for i = 0, N - 1 do
-    local pr = i / (N - 1)
-    local prx = repch(pr, henx)
-    local pry = repch(pr, heny)
-    local przo = repch(pr, henzo)
-    local prrz = repch(pr, henrz)
-    xx[i] = dx * prx
-    yy[i] = dy * pry
-    zo[i] = (1 + (dk - 1) * przo) * zoom_ori
-    rz[i] = rz_ori + dr * prrz
+for i = 0, repeat_count - 1 do
+    local progress = i / (repeat_count - 1)
+    local prx = apply_change_rate(progress, x_change_rate)
+    local pry = apply_change_rate(progress, y_change_rate)
+    local przo = apply_change_rate(progress, scale_change_rate)
+    local prrz = apply_change_rate(progress, rotation_change_rate)
+    positions_x[i] = position_x * prx
+    positions_y[i] = position_y * pry
+    scales[i] = (1 + (scale_step - 1) * przo) * base_scale
+    rotations[i] = base_rotation + rotation_step * prrz
 
-    local rz = math.rad(rz[i])
-    local co = math.abs(math.cos(rz))
-    local si = math.abs(math.sin(rz))
-    local ww1 = (w * co + h * si) * zo[i] * 0.5
-    local hh1 = (w * si + h * co) * zo[i] * 0.5
-    max_x = math.max(ww1 + xx[i], max_x)
-    max_y = math.max(hh1 + yy[i], max_y)
-    min_x = math.min(-ww1 + xx[i], min_x)
-    min_y = math.min(-hh1 + yy[i], min_y)
+    local rotations = math.rad(rotations[i])
+    local co = math.abs(math.cos(rotations))
+    local si = math.abs(math.sin(rotations))
+    local ww1 = (w * co + h * si) * scales[i] * 0.5
+    local hh1 = (w * si + h * co) * scales[i] * 0.5
+    max_x = math.max(ww1 + positions_x[i], max_x)
+    max_y = math.max(hh1 + positions_y[i], max_y)
+    min_x = math.min(-ww1 + positions_x[i], min_x)
+    min_y = math.min(-hh1 + positions_y[i], min_y)
 end
 
-local cx = (max_x + min_x) * 0.5
-local cy = (max_y + min_y) * 0.5
+local center_x = (max_x + min_x) * 0.5
+local center_y = (max_y + min_y) * 0.5
 
 obj.setoption("drawtarget", "tempbuffer", max_x - min_x, max_y - min_y)
 
-for i = is, ie, di do
-    local pr = i / (N - 1)
-    if rep == 1 then
-        TT = SS + i * dS
-        if mrp == 1 then
-            TT = TT % ott
+for i = start_index, end_index, index_step do
+    local progress = i / (repeat_count - 1)
+    if mode == 1 then
+        local time = start_time + i * time_step
+        if loop_movie == 1 then
+            time = time % movie_duration
         end
-        obj.load("movie", file, TT, alf)
+        obj.load("movie", file_path, time, load_alpha)
     end
-    if cop == 1 then
+    if check_override_color == 1 then
         local cc = RGB(
-            math.floor((1 - pr) * col1[1] + pr * col2[1]),
-            math.floor((1 - pr) * col1[2] + pr * col2[2]),
-            math.floor((1 - pr) * col1[3] + pr * col2[3])
+            math.floor((1 - progress) * start_rgb[1] + progress * end_rgb[1]),
+            math.floor((1 - progress) * start_rgb[2] + progress * end_rgb[2]),
+            math.floor((1 - progress) * start_rgb[3] + progress * end_rgb[3])
         )
-        obj.effect("グラデーション", "color", cc, "color2", cc, "blend", adm)
+        obj.effect("グラデーション", "color", cc, "color2", cc, "blend", blend_mode)
     end
-    obj.draw(xx[i] - cx, yy[i] - cy, 0, zo[i], 1 - pr * LAL, 0, 0, rz[i])
+    obj.draw(
+        positions_x[i] - center_x,
+        positions_y[i] - center_y,
+        0,
+        scales[i],
+        1 - progress * transparency_ratio,
+        0,
+        0,
+        rotations[i]
+    )
 end
 obj.load("tempbuffer")
-if reC == 1 then
-    obj.ox = iox
-    obj.oy = ioy
-    obj.cx = icx
-    obj.cy = icy
+if check_restore_position == 1 then
+    obj.ox = original_ox
+    obj.oy = original_oy
+    obj.cx = original_cx
+    obj.cy = original_cy
 end
-obj.cx = obj.cx - cx
-obj.cy = obj.cy - cy
+obj.cx = obj.cx - center_x
+obj.cy = obj.cy - center_y
