@@ -34,6 +34,11 @@ local pos = { -100, 0, 0, 0, 100, 0 }
 ---$check:ポイント表示
 local check0 = false
 
+--hide@track_point_size:check0==0
+--hide@track_size:check0==0
+--hide@pcol:check0==0
+--hide@fcol:check0==0
+
 Morphing_drawANC = function()
     if Morphing_check0 then
         local MO = Morphing_obj[Morphing_PC]

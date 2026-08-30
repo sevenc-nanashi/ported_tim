@@ -56,6 +56,8 @@ local track_division_count = 10
 ---$value:領域
 local are = { -80, -100, 80, -105, 100, 105, -100, 100 }
 
+--hide@track_division_count:tar==1
+
 local b, c, tx, ty, flx, fly
 
 local function cal_koten(a, b, c, d)

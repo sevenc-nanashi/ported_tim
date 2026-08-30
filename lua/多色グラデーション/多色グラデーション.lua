@@ -53,6 +53,20 @@ local size = 100
 ---$color:ガイド色
 local colG = 0xffffff
 
+--hide@track_width:show_guide==1
+--hide@track_center_x:show_guide==1
+--hide@track_center_y:show_guide==1
+--hide@col1:show_guide==1
+--hide@col2:show_guide==1
+--hide@col3:show_guide==1
+--hide@col4:show_guide==1
+--hide@col5:show_guide==1
+--hide@col6:show_guide==1
+--hide@col7:show_guide==1
+--hide@col8:show_guide==1
+--hide@size:show_guide==0
+--hide@colG:show_guide==0
+
 if show_guide == 1 then
     obj.load("figure", "円", colG, size)
     obj.effect("縁取り")

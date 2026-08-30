@@ -14,6 +14,10 @@ local pos = { 0, 0, 100, 100 }
 ---$check:頂点追加を無効にする
 local check0 = false
 
+--hide@track_plus_vertex_count:check0==1
+--hide@cy:check0==1
+--hide@pos:check0==1
+
 if not check0 then
     local num = track_plus_vertex_count
     obj.setanchor("pos", num, "line")

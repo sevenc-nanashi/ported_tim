@@ -30,6 +30,8 @@ local col2 = 0xb5982c
 ---$color: ハイライト
 local col1 = 0xffffff
 
+--hide@col2:ignore_midtone==1
+
 --[[pixelshader@tritone
 ---$include "./shaders/tritone.hlsl"
 ]]

@@ -66,6 +66,11 @@ local TOPA = 0
 ---タイプ2=2
 local SEC = 0
 
+--hide@PCOL:APP==0
+--hide@QCOL:APP==0
+--hide@foc:APP==0
+--hide@TOPA:CHA>2
+
 -- 関数共通
 
 function PassXYZ(s) -- s<=1

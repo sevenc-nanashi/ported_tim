@@ -51,6 +51,11 @@ local totsu2 = 1
 ---step=1
 local totsu3 = -45
 
+--hide@backS:backC==1
+--hide@totsu1:totsuC==0
+--hide@totsu2:totsuC==0
+--hide@totsu3:totsuC==0
+
 local draw = obj.draw
 local effect = obj.effect
 

@@ -47,6 +47,21 @@ local fcol = 0x0
 ---$check:ガイド表示
 local check0 = false
 
+--hide@lchk:check0==0
+--hide@Lcol:check0==0
+--hide@Lcol:lchk==0
+--hide@Lw:check0==0
+--hide@Lw:lchk==0
+--hide@pchk:check0==0
+--hide@track_point_size:check0==0
+--hide@track_point_size:pchk==0
+--hide@track_size:check0==0
+--hide@track_size:pchk==0
+--hide@pcol:check0==0
+--hide@pcol:pchk==0
+--hide@fcol:check0==0
+--hide@fcol:pchk==0
+
 (function()
     local Triangulation = function(Num)
         local RepJudge = function(p1, p2, p3, q) --外接円より内部（境界含まない）なら真

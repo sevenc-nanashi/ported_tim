@@ -27,6 +27,11 @@ local shift_24bit = false
 ---step=1
 local track_n_24bit = 0
 
+--hide@track_r8bit:shift_24bit==1
+--hide@track_g8bit:shift_24bit==1
+--hide@track_b8bit:shift_24bit==1
+--hide@track_n_24bit:shift_24bit==0
+
 -- require("T_Color_Module")
 --[[pixelshader@cycle_bit_shift
 ---$include "./shaders/cycle_bit_shift.hlsl"

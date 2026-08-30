@@ -80,6 +80,10 @@ local reduce_distortion = 0
 ---$check:アルファ補正
 local correct_alpha = true
 
+--hide@random_pattern:randomize_sway==0
+--hide@repeat_count:repeat_horizontally==0
+--hide@repeat_spacing:repeat_horizontally==0
+
 --[[pixelshader@extract_straight_color
 ---$include "./shaders/alpha_correction.hlsl"
 ]]

@@ -56,6 +56,8 @@ local auto_threshold = true
 ---GPU=2
 local gpu_mode = 0
 
+--hide@track_threshold:auto_threshold==1
+
 local T_Filter_Module = obj.module("tim2")
 
 --[[pixelshader@graphicpen

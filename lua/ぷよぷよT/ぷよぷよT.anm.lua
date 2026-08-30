@@ -108,6 +108,12 @@ local check_mask_display = false
 
 --group:
 
+--hide@track_deform_amount:check_map_display==1
+--hide@track_smoothness:check_map_display==1
+--hide@check_mask_display:check_map_display==1
+--hide@Mcl:check_map_display==1
+--hide@Mcl:check_mask_display==0
+
 local Ratio = function(a, b, t)
     local s = (2 * t + 1) * (t - 1) ^ 2
     return s * a + (1 - s) * b

@@ -61,6 +61,9 @@ local seed = 0
 ---$check:フレームバッファ表示
 local fbapp = 0
 
+--hide@RnD:track_mode~=3
+--hide@seed:track_mode~=3
+
 local sp1 = track_keep_left_edge
 local sp2 = track_keep_right_edge
 local t = track_progress * 0.01

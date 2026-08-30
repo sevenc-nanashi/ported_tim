@@ -44,6 +44,8 @@ local track_random_seed = 0
 ---$check:周囲を少し残す
 local check_keep_border = false
 
+--hide@track_period_y:check_link_y_period==1
+
 local is_enabled = function(value)
     return value == true or value == 1
 end

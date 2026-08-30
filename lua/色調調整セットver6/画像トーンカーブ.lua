@@ -46,6 +46,8 @@ local Lck = false
 ---$check:極座標移動
 local check0 = false
 
+--hide@col:Lck==1
+
 col = col or 0x0
 obj.setanchor("track_center_x,track_center_y", 0)
 -- require("T_Color_Module")

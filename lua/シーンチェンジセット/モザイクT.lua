@@ -14,6 +14,8 @@ local ho = 1
 ---$check:滑らか
 local smooth = false
 
+--hide@ho:te==0
+
 local t = obj.getvalue("scenechange")
 if smooth then
     t = t * t * (3 - 2 * t)

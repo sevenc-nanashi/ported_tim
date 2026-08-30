@@ -25,6 +25,8 @@ local col = 0xffffff
 ---$check:処理後α補正
 local Af = 1
 
+--hide@col:track_adjust_method==0
+
 --[[pixelshader@fringe_fix
 ---$include "./shaders/fringe_fix.hlsl"
 ]]

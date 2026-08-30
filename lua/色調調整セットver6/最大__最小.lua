@@ -67,6 +67,12 @@ local Aen = 0
 ---$check:結果を保存(同条件1度のみ)
 local check0 = false
 
+--hide@HC:fig~=0
+--hide@VC:fig~=0
+--hide@Sym2:fig~=0
+--hide@lmt:fig==0
+--hide@lmt:fig==3
+
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local Deg = -track_angle % 360

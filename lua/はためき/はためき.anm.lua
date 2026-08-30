@@ -52,6 +52,8 @@ local Yck = false
 ---step=0.1
 local HC = 100
 
+--hide@HC:Yck==0
+
 N = math.max(2, math.floor(N or 30))
 local w, h = obj.w, obj.h
 local w2, h2 = w / 2, h / 2

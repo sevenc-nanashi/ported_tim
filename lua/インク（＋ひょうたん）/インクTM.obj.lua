@@ -83,6 +83,14 @@ local track_splash_seed_2 = 0
 ---$check:新描画法
 local check_use_new_rendering = true
 
+--hide@track_body_scale_percent:check_use_new_rendering==0
+--hide@track_splash_1_width_scale_percent:check_use_new_rendering==0
+--hide@track_splash_2_scale_percent:check_use_new_rendering==0
+--hide@track_splash_2_distortion_percent:check_use_new_rendering==0
+--hide@track_body_shape_seed:check_use_new_rendering==0
+--hide@track_splash_seed_1:check_use_new_rendering==0
+--hide@track_splash_seed_2:check_use_new_rendering==0
+
 local use_new_rendering = check_use_new_rendering == true or check_use_new_rendering == 1
 local wN = math.floor(math.abs(track_splash_count_1 or 0))
 local tN = math.floor(math.abs(track_splash_count_2 or 0))

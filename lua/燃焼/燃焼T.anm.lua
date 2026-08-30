@@ -76,6 +76,10 @@ local IE = 0
 ---$check:展開を調整
 local check0 = false
 
+--hide@GE:track_layer_index==0
+--hide@GE:IE==1
+--hide@IE:track_layer_index==0
+
 --[[pixelshader@saturate_brightness
 ---$include "./shaders/saturate_brightness.hlsl"
 ]]

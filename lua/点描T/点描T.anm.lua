@@ -74,6 +74,14 @@ local track_random_seed = 0
 local track_seed_change_interval = 0
 --group:
 
+--hide@color_background:check_colorize_background==0
+--hide@color_background:check_use_original_background==1
+--hide@check_use_original_background:check_colorize_background==0
+--hide@track_ambient_light:check_enable_3d==0
+--hide@track_diffuse_light:check_enable_3d==0
+--hide@track_specular_light:check_enable_3d==0
+--hide@track_shininess:check_enable_3d==0
+
 ---$value: PI
 local _0 = nil
 

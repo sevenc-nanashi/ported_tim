@@ -33,6 +33,8 @@ local curve_size = 260
 ---$check:カーブ表示
 local show_curve = false
 
+--hide@curve_size:show_curve==0
+
 --[[pixelshader@extended_contrast
 ---$include "./shaders/extended_contrast.hlsl"
 ]]

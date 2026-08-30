@@ -44,6 +44,8 @@ local cst = 50
 ---$check:角を整数化
 local int = 0
 
+--hide@cst:star==0
+
 -- ---$check:アンチエイリアス
 -- local ant = 0
 

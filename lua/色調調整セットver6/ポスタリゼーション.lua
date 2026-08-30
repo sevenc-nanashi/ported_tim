@@ -30,6 +30,9 @@ local check0 = false
 ---$check:誤差拡散
 local ED = false
 
+--hide@track_g_count:check0==1
+--hide@track_b_count:check0==1
+
 --[[pixelshader@posterize
 ---$include "./shaders/posterize.hlsl"
 ]]

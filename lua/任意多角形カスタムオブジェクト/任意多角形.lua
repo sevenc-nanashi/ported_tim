@@ -24,6 +24,10 @@ local colG = 0xff0000
 ---$figure:図形
 local fig = "円"
 
+--hide@track_guide_size:check_show_guide==0
+--hide@colG:check_show_guide==0
+--hide@fig:check_show_guide==0
+
 function muki(ax, ay, bx, by)
     if ax * by - ay * bx > 0 then
         return 1

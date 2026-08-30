@@ -83,6 +83,10 @@ local seed_interval = 0
 ---step=1
 local arc = 0
 
+--hide@col2:line_only==1
+--hide@bal:line_only==1
+--hide@oal:line_only==1
+
 if seed_interval > 0 then
     seed = seed + math.floor(obj.time * obj.framerate / seed_interval)
 end

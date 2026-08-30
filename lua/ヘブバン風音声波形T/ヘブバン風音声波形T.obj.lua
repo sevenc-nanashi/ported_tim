@@ -82,6 +82,9 @@ local _0 = nil
 ---$check:波形反転
 local check_reverse_waveform = false
 
+--hide@track_wave_opacity_percent:check_original_background==0
+--hide@track_time_offset:check_original_background==0
+
 local floor = math.floor
 local abs = math.abs
 local max = math.max

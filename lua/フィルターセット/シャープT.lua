@@ -17,6 +17,8 @@ local track_radius = 1
 ---シャープ=0
 local mode = 1
 
+--hide@track_radius:mode~=1
+
 local St = track_strength * 0.01
 
 --[[pixelshader@sharp

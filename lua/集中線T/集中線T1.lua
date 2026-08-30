@@ -98,6 +98,8 @@ local track_follow_center_layer = 0
 ---$check:最大本数自動計算
 local check_auto_max_line_count = false
 
+--hide@track_max_line_count:check_auto_max_line_count==1
+
 local CalXY = function(x0, y0, x1, y1, a, b)
     local AA = ((x1 - x0) / a) ^ 2 + ((y1 - y0) / b) ^ 2
     local BB = x0 * (x1 - x0) / (a * a) + y0 * (y1 - y0) / (b * b)

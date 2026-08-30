@@ -128,6 +128,8 @@ local param_seed_step = 0
 ---$value:PI
 local param_override = {}
 
+--hide@param_time_expand_mode:check0==0
+
 local PI = math.pi
 local sin = math.sin
 local cos = math.cos

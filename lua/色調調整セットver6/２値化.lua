@@ -38,6 +38,10 @@ local col1 = 0xff0000
 ---$color:暗部色
 local col2 = 0x0000ff
 
+--hide@track_threshold:track_auto_detect~=0
+--hide@col1:colorize==0
+--hide@col2:colorize==0
+
 --[[pixelshader@color_binarization
 ---$include "./shaders/binarization.hlsl"
 ]]

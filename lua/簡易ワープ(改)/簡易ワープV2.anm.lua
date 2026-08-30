@@ -79,6 +79,13 @@ local track_line_width = 3
 ---$check:中心XY基準
 local check_center_xy_base = false
 
+--hide@move_color:check_show_path==0
+--hide@affect_color:check_show_path==0
+--hide@falloff_color:check_show_path==0
+--hide@text_color:check_show_path==0
+--hide@track_display_size:check_show_path==0
+--hide@track_line_width:check_show_path==0
+
 local is_enabled = function(value)
     return value == true or value == 1
 end
@@ -222,7 +229,10 @@ if obj.getoption("script_name") ~= obj.getoption("script_name", 1) then
             local py2 = v1 + dy[i + 1][j + 1] - h2
             local py3 = v1 + dy[i][j + 1] - h2
 
-            table.insert(polygons, { px0, py0, 0, px1, py1, 0, px2, py2, 0, px3, py3, 0, u0, v0, u1, v0, u1, v1, u0, v1 })
+            table.insert(
+                polygons,
+                { px0, py0, 0, px1, py1, 0, px2, py2, 0, px3, py3, 0, u0, v0, u1, v0, u1, v1, u0, v1 }
+            )
         end
     end
     obj.drawpoly(polygons)

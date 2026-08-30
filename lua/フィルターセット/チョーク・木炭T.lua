@@ -60,6 +60,8 @@ local track_seed = 0
 
 --group:
 
+--hide@track_threshold:auto_threshold==1
+
 local T_Filter_Module = obj.module("tim2")
 local seed = track_seed
 local length = track_length

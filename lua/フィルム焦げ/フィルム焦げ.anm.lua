@@ -59,6 +59,9 @@ local lsig = 7.5
 ---$check:縁発光
 local glow_edge = false
 
+--hide@lst:glow_edge==0
+--hide@lsig:glow_edge==0
+
 local burn = track_burn * 0.01
 local blur = track_contour_blur * 0.01
 local fiR = track_radius * 0.01

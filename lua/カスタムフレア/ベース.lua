@@ -19,6 +19,8 @@ local mv = 0
 ---$value:座標
 local pos = { -200, -100, 0, 0, 0, 0 }
 
+--hide@track_move_amount:mv==0
+
 if mv == 0 then
     obj.setanchor("pos", 2, "line", "xyz")
     CustomFlareXX = pos[1]

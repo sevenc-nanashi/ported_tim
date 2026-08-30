@@ -28,6 +28,10 @@ local track_b_threshold = 128
 ---ラプラシアン・ヒストグラム法=6
 local track_auto_detect = 0
 
+--hide@track_r_threshold:track_auto_detect~=0
+--hide@track_g_threshold:track_auto_detect~=0
+--hide@track_b_threshold:track_auto_detect~=0
+
 --[[pixelshader@color_binarization_rgb
 ---$include "./shaders/binarization_rgb.hlsl"
 ]]

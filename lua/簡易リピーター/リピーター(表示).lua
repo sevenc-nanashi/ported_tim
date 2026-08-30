@@ -54,6 +54,10 @@ local adm = 0
 ---$check:位置ズレ補正
 local reC = 1
 
+--hide@colo1:cop==0
+--hide@colo2:cop==0
+--hide@adm:cop==0
+
 local repch = function(pr, hen)
     if hen > 0 then
         return pr ^ (1 + 5 * hen)

@@ -48,6 +48,8 @@ local fig = 1
 ---step=1
 local blur = 1
 
+--hide@col:chk==1
+
 local w, h = obj.getpixel()
 
 obj.copybuffer("cache:ori_img", "obj")

@@ -67,6 +67,9 @@ local track_change_seed = 1
 ---step=0.1
 local track_display_limit_scale = 3
 
+--hide@track_blur_correction_scale:check_blur_correction==0
+--hide@track_display_limit_scale:check_keep_size==1
+
 --[[pixelshader@rad_blur
 ---$include "./shaders/rad_blur.hlsl"
 ]]

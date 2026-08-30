@@ -68,6 +68,10 @@ local pos = { 0, 0, 100, 100 }
 ---$check:頂点群を分離
 local check0 = false
 
+--hide@C:dm~=2
+--hide@Ac:ec==0
+--hide@Ac:dm==0
+
 Tracking = {}
 
 Tracking.DoTrackingLineEasy = function(Trk)

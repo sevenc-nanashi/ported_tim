@@ -33,6 +33,9 @@ local col2 = 0x0
 ---$check:時間変動
 local check0 = false
 
+--hide@col1:track_processing_method==2
+--hide@col2:track_processing_method~=1
+
 local N = track_seed
 if check0 then
     N = obj.rand(0, 10000, -obj.time * obj.framerate, 1)

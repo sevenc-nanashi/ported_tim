@@ -42,6 +42,9 @@ local track_change_speed = 0
 ---step=1
 local track_seed = 0
 
+--hide@track_change_speed:fig~=1
+--hide@track_seed:fig~=1
+
 local size = track_distortion_amount
 local per = track_period_size
 local seed = track_seed

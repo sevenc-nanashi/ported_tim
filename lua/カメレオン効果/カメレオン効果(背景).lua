@@ -35,6 +35,9 @@ local col = 0xffffff
 ---step=1
 local Lw = 2
 
+--hide@col:check0==0
+--hide@Lw:check0==0
+
 obj.setanchor("track_center_x,track_center_y", 2)
 local tim2 = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")

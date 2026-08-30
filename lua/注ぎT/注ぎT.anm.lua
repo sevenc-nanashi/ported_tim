@@ -81,6 +81,8 @@ local track_frame_blur = 4
 
 --group:
 
+--hide@colr:Rw==0
+
 local pi = math.pi
 local Pr = { obj.ox, obj.oy, obj.oz, obj.rx, obj.ry, obj.rz, obj.cx, obj.cy, obj.cz, obj.zoom, obj.alpha, obj.aspect }
 local Z = -track_water_level

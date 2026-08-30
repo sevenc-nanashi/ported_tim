@@ -38,6 +38,11 @@ local select_order = 0
 local check_last_object = false
 --group:
 
+--hide@track_start_position:check_auto_place==1
+--hide@track_end_position:check_auto_place==1
+--hide@select_order:check_auto_place==0
+--hide@check_last_object:check_auto_place==0
+
 local is_enabled = function(value)
     return value == true or value == 1
 end

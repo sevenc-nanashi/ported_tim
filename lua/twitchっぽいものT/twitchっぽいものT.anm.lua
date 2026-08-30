@@ -108,6 +108,8 @@ local seed = 0
 ---$check:レイヤー依存なし
 local Lset = 1
 
+--hide@track_direction_deg:dirchk==0
+
 local function clamp_percentage(value)
     if value < 0 then
         return 0

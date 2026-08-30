@@ -44,6 +44,8 @@ local bl = 1
 ---$check:オリジナル表示
 local show_original = true
 
+--hide@col2:egm==1
+
 local ox, oy, oz = obj.ox, obj.oy, obj.oz
 local cx, cy, cz = obj.cx, obj.cy, obj.cz
 obj.copybuffer("cache:ori", "object")

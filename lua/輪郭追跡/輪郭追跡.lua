@@ -93,6 +93,18 @@ local extension_tip_size = 50
 
 --group:
 
+--hide@track_line_period:use_extension==0
+--hide@track_line_spacing:use_extension==0
+--hide@track_smoothness:use_extension==0
+--hide@track_opacity:use_extension==0
+--hide@extension_figure:use_extension==0
+--hide@extension_direction:use_extension==0
+--hide@extension_tip_enabled:use_extension==0
+--hide@extension_tip_figure:use_extension==0
+--hide@extension_tip_figure:extension_tip_enabled==0
+--hide@extension_tip_size:use_extension==0
+--hide@extension_tip_size:extension_tip_enabled==0
+
 local icx = obj.cx
 local icy = obj.cy
 reC = reC or 0

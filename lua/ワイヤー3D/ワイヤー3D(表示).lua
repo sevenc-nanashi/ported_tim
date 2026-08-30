@@ -71,6 +71,13 @@ local fallback_line_width = 2
 ---$check:YZ反転
 local check0 = false
 
+--hide@BR:PC==1
+--hide@colorF:BR==0
+--hide@colorF:PC==1
+--hide@Pst:PC==0
+--hide@fig:PC==0
+--hide@adi:PC==0
+
 if WireT_c_nw == nil then
     WireT_c_nw = math.floor(fallback_horizontal_split_count or 10)
     WireT_c_nh = math.floor(fallback_vertical_split_count or 10)

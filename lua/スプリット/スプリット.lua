@@ -50,6 +50,8 @@ local pos = { -100, 0, 100, 0 }
 ---step=0.1
 local bl = 1
 
+--hide@track_n_2:spC==1
+
 local sp1 = track_n_1 * 0.01
 local sp2 = track_n_2 * 0.01
 local fig = track_shape * 0.01
@@ -164,7 +166,7 @@ for i = 0, spN do
         ys1[i][j] = z1 * (1 - j / spNy) - j / spNy
         ys2[i][j] = z2 * (1 - j / spNy) + j / spNy
     end --j
-end     --i
+end --i
 
 --表示座標計算
 local split_W2 = split_W * 0.5
@@ -182,7 +184,7 @@ for i = 0, spN do
         xs1[i][j], ys1[i][j] = cos * x[i] - sin * ys1[i][j] + split_CX, sin * x[i] + cos * ys1[i][j] + split_CY
         xs2[i][j], ys2[i][j] = cos * x[i] - sin * ys2[i][j] + split_CX, sin * x[i] + cos * ys2[i][j] + split_CY
     end --j
-end     --i
+end --i
 
 if hoC == 0 then
     for j = 0, spNy do
@@ -225,7 +227,7 @@ if hoC then
             u3, v3 = us2[i][j + 1], vs2[i][j + 1]
             table.insert(polygons, { x0, y0, 0, x1, y1, 0, x2, y2, 0, x3, y3, 0, u0, v0, u1, v1, u2, v2, u3, v3 })
         end --i
-    end     --j
+    end --j
     obj.drawpoly(polygons)
 end
 

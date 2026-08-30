@@ -25,6 +25,10 @@ local colG = 0xff0000
 ---$figure:図形
 local fig = "円"
 
+--hide@track_guide_size:check_show_guide==0
+--hide@colG:check_show_guide==0
+--hide@fig:check_show_guide==0
+
 local guide_size = track_guide_size
 TC = track_thickness / 2
 N = obj.getoption("section_num") + 1

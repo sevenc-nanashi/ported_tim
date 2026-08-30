@@ -17,6 +17,8 @@ local resize = 1
 ---$check:水平と垂直をリンク
 local check0 = true
 
+--hide@track_v_range:check0==1
+
 if resize == 1 then
     local w, h = obj.getpixel()
     if 2 * h > w then

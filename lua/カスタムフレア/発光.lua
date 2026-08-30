@@ -53,6 +53,9 @@ local aubg = 0
 ---step=0.1
 local Rmax = 400
 
+--hide@col:basechk==1
+--hide@Rmax:aubg==0
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)

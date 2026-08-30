@@ -93,6 +93,8 @@ local param_override = {}
 ---$check:単一線
 local check0 = false
 
+--hide@param_aspect_ratio:check0==1
+
 param_override = param_override or {}
 local FgS = math.floor(param_override[1] or track_size)
 local LnW = math.floor(param_override[2] or track_line_width)

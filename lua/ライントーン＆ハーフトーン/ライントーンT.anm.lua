@@ -41,6 +41,8 @@ local bai = 200
 ---$check:反転
 local rev = 0
 
+--hide@Bcol:bkap==1
+
 --[[pixelshader@linetone_t
 ---$include "./shaders/linetone_t.hlsl"
 ]]

@@ -59,6 +59,10 @@ local adjust_alpha_blur = 25
 ---内側=2
 local mode = 0
 
+--hide@color2:gradient==0
+--hide@adjust_color_blur:enable_adjust==0
+--hide@adjust_alpha_blur:enable_adjust==0
+
 --[[pixelshader@distance_map:
 ---$include "./shaders/distance_map.hlsl"
 ]]

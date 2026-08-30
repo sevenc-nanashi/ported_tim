@@ -74,6 +74,8 @@ local blur = 0
 ---step=1
 local seed = 0
 
+--hide@col:basechk==1
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)

@@ -123,6 +123,9 @@ local FBR = 0
 ---$check:マップ反転
 local check0 = false
 
+--hide@mapdeg:loadmap==1
+--hide@Cmap:loadmap==1
+
 local Ct = { track_scatter_center_x, track_scatter_center_y }
 local Gr = { track_gravity_x, track_gravity_y, track_gravity_z }
 

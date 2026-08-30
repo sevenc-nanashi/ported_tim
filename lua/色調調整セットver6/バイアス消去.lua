@@ -27,6 +27,8 @@ local track_threshold = 0
 ---$check:偏差補正
 local check0 = false
 
+--hide@track_threshold:check0==0
+
 --require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")

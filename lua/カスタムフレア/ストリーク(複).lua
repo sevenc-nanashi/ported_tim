@@ -74,6 +74,8 @@ local dw = 10
 ---step=0.01
 local blink = 0.1
 
+--hide@col:basechk==1
+
 obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存
 if basechk == 1 then
     col = CustomFlareColor

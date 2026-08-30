@@ -38,6 +38,8 @@ local Ap = 0
 ---$check:ブロック描画
 local check0 = false
 
+--hide@track_percent:check0==1
+
 local L = track_intensity / 100
 local S = math.floor(track_size)
 local w0, h0 = obj.getpixel()

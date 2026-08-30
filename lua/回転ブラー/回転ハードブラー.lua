@@ -62,6 +62,8 @@ local track_blur_correction_scale = 100
 ---step=1
 local track_change_seed = 1
 
+--hide@track_blur_correction_scale:check_blur_correction==0
+
 --[[pixelshader@rot_blur
 ---$include "./shaders/rot_blur.hlsl"
 ]]

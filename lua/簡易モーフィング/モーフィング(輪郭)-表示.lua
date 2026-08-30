@@ -45,6 +45,8 @@ local td = 0
 ---$check:一時保存EXT
 local IE = 0
 
+--hide@GE:IE==1
+
 Outlinemorphing_T = function(OT)
     local makeOutline = function(ni, nj, ky, T, w, h, SF)
         local r2 = math.sqrt(2)

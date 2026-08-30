@@ -44,6 +44,10 @@ local PT = 0
 ---$check:マップ表示
 local check0 = false
 
+--hide@track_offset:check0==1
+--hide@track_glass_intensity:check0==1
+--hide@Edg:check0==1
+
 local Sh = track_threshold
 local bkb = track_blur
 PT = math.abs(PT or 0)

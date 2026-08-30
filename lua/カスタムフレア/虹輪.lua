@@ -87,6 +87,9 @@ local blink = 0.2
 ---$value:発光
 local lt = { 0, 250, 80, 0 }
 
+--hide@Rmax:aubg==0
+--hide@ovcol:ovchk==0
+
 local figmax = 4
 obj.copybuffer("cache:BKIMG", "obj") --背景をBKIMGに保存
 local n = 10

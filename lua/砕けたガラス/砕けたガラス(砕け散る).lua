@@ -120,6 +120,9 @@ local fvrd = { 70, 50 }
 ---step=1
 local rnd = 100
 
+--hide@track_limit_size:track_split_pattern<3
+--hide@split_file:track_split_pattern~=0
+
 function sqsplit1()
     local frdm = frd * 0.0001
     local Nw = -math.floor(-w / gsize)

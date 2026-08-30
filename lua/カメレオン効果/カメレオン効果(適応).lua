@@ -54,6 +54,8 @@ local reC = false
 ---step=0.1
 local reH = 30
 
+--hide@reH:reC==0
+
 local tim2 = obj.module("tim2")
 
 local P = track_adapt_rate / 100

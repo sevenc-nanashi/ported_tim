@@ -80,6 +80,11 @@ local Rmax = 400
 ---step=0.01
 local blink = 0.2
 
+--hide@col1:basechk==1
+--hide@col2:basechk==1
+--hide@grh:basechk==1
+--hide@Rmax:auba==0
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)

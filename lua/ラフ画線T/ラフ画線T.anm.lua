@@ -104,6 +104,11 @@ local value_direction_mask = "11110000"
 ---$value:PI
 local param_override = {}
 
+--hide@color_background:check_line_only==1
+--hide@track_original_ratio:check_line_only==1
+--hide@track_background_alpha:check_line_only==1
+--hide@color_boundary_adjust:check_boundary_adjust==0
+
 local is_enabled = function(v)
     return v == true or v == 1
 end

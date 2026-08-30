@@ -44,6 +44,12 @@ local gr = 40
 ---step=1
 local lw = 4
 
+--hide@track_view_x_depth:display_mode==0
+--hide@track_view_point_y:display_mode~=1
+--hide@N:display_mode~=2
+--hide@gr:display_mode~=0
+--hide@lw:display_mode~=0
+
 -- ---$check:アンチエイリアス
 -- local ANT = 1
 

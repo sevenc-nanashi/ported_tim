@@ -38,6 +38,8 @@ local OFSET = { 0, 0, 0 }
 ---step=0.01
 local blink = 0.2
 
+--hide@col:basechk==1
+
 obj.copybuffer("tmp", "obj")
 obj.setoption("drawtarget", "tempbuffer")
 obj.setoption("blend", CustomFlareMode)

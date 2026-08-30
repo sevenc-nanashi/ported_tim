@@ -48,6 +48,17 @@ local Cap = false
 ---$check:指定色を有効にする
 local check0 = false
 
+--hide@col1:check0==0
+--hide@col2:check0==0
+--hide@col3:check0==0
+--hide@col4:check0==0
+--hide@col5:check0==0
+--hide@col6:check0==0
+--hide@col7:check0==0
+--hide@col8:check0==0
+--hide@col9:check0==0
+--hide@col10:check0==0
+
 -- require("T_Color_Module")
 local T_Color_Module = obj.module("tim2")
 local userdata, w, h = obj.getpixeldata("object", "bgra")

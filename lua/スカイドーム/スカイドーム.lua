@@ -36,6 +36,8 @@ local chk = 1
 ---$check:親カメラデータを使用
 local check0 = false
 
+--hide@track_fov:check0==1
+
 local chgRP = function(t, f)
     f = -f + math.pi
     return math.sin(f) * math.sin(t), -math.cos(t), -math.cos(f) * math.sin(t)

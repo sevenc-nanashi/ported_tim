@@ -74,6 +74,8 @@ local track_size_adjust_x = 0
 ---step=1
 local track_size_adjust_y = 0
 
+--hide@col:chk==1
+
 local w, h = obj.getpixel()
 
 w, h = w + track_size_adjust_x, h + track_size_adjust_y

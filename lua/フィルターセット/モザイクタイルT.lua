@@ -80,6 +80,8 @@ local seed = 0
 ---$check:がさつきを有効化
 local check0 = true
 
+--hide@gs:check0==0
+
 local w, h = obj.getpixel()
 asp = asp * 0.01
 local Sw = track_size
