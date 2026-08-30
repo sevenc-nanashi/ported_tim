@@ -504,6 +504,7 @@ namespace :i18n do
           [lang, content]
         end
     groups = translations[DEFAULT_LANG]
+    Dir.mkdir_p("./build")
     translations.each_key do |lang|
       File.open("./build/#{lang}.ported_tim.aul2", "w") do |file|
         groups.each do |group, entries|
