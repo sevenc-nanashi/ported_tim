@@ -43,7 +43,7 @@ obj.load("layer", track_alpha_layer, (check_apply_effects == 1))
 obj.pixelshader("set_alpha_from_channel", "object", "object", {
     select_target_channel,
 })
-obj.check_apply_effects("反転", "透明度反転", check_invert_alpha and 0 or 1)
+obj.effect("反転", "透明度反転", check_invert_alpha and 0 or 1)
 
 obj.copybuffer("tempbuffer", "cache:original")
 obj.setoption("drawtarget", "tempbuffer")

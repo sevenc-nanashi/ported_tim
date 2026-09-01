@@ -276,7 +276,7 @@ else
     cx_value = -cx_value + 0.5 * ((line_width - obj.screen_w) % 2) * edge_adjust_factor
     cy_value = -cy_value + 0.5 * ((line_width - obj.screen_h) % 2) * edge_adjust_factor
 end
-obj.center_x, obj.center_y = cx_value, cy_value
+obj.cx, obj.cy = cx_value, cy_value
 if is_enabled(check_save_coordinates) then
     ruled_line_state.coordinates = {}
     ruled_line_state.coordinates.x_positions = vertical_line_x_positions

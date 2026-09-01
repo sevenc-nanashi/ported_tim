@@ -44,5 +44,5 @@ obj.drawpoly(
     0
 )
 obj.load("tempbuffer")
-obj.center_offset_x = center_offset_x
-obj.center_offset_y = center_offset_y
+obj.cx = center_offset_x
+obj.cy = center_offset_y

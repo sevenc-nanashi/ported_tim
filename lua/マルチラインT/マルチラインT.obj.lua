@@ -206,5 +206,5 @@ if check_round_corners == 1 then
 end
 
 obj.load("tempbuffer")
-obj.center_x = obj.center_x - center_x
-obj.center_y = obj.center_y - center_y
+obj.cx = obj.cx - center_x
+obj.cy = obj.cy - center_y
