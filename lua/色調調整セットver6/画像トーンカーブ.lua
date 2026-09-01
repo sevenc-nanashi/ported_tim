@@ -37,11 +37,11 @@ local track_center_y = 0
 
 --trackgroup@track_center_x,track_center_y:中心
 
----$color:線色
-local line_color = 0xff0000
-
 ---$check:線を非表示
 local check_hide_line = false
+
+---$color:線色
+local line_color = 0xff0000
 
 ---$check:極座標移動
 local check_use_polar_movement = false

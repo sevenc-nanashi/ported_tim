@@ -1,5 +1,10 @@
 --label:${ROOT_CATEGORY}\加工\@T_Filter_Module
 --filter
+---$select:処理方式
+---アンシャープマスク=1
+---シャープ=0
+local select_processing_method = 1
+
 ---$track:強さ
 ---min=0
 ---max=1000
@@ -11,11 +16,6 @@ local track_strength = 100
 ---max=100
 ---step=1
 local track_radius = 1
-
----$select:処理方式
----アンシャープマスク=1
----シャープ=0
-local select_processing_method = 1
 
 --hide@track_radius:select_processing_method~=1
 

@@ -26,14 +26,14 @@ local track_change_speed = 0
 ---6=6
 local select_shape = 1
 
+---$check:X周期と同じ
+local check_link_y_period = true
+
 ---$track:Y周期
 ---min=0
 ---max=200
 ---step=0.01
 local track_period_y = 2
-
----$check:X周期と同じ
-local check_link_y_period = true
 
 ---$track:乱数シード
 ---min=0

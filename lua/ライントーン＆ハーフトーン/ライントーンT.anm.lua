@@ -23,14 +23,14 @@ local track_percent_2 = 60
 ---step=0.1
 local track_shift = 0
 
+---$check:背景色非表示
+local check_hide_background_color = 0
+
 ---$color:ライン色
 local line_color = 0x000000
 
 ---$color:背景色
 local background_color = 0xffffff
-
----$check:背景色非表示
-local check_hide_background_color = 0
 
 ---$track:横分割倍率%
 ---min=1

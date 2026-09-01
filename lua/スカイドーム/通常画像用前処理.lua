@@ -1,4 +1,7 @@
 --label:${ROOT_CATEGORY}\変形\@スカイドーム
+---$check:水平と垂直をリンク
+local check_use_separate_vertical_range = true
+
 ---$track:水平範囲
 ---min=0
 ---max=360
@@ -13,9 +16,6 @@ local track_vertical_range = 60
 
 ---$check:画像サイズ調整
 local check_resize = 1
-
----$check:水平と垂直をリンク
-local check_use_separate_vertical_range = true
 
 --hide@track_vertical_range:check_use_separate_vertical_range==1
 

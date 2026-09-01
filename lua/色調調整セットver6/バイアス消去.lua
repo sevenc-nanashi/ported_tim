@@ -18,14 +18,14 @@ local track_adjust_amount = 100
 ---step=0.1
 local track_offset = 0
 
+---$check:偏差補正
+local check_enable_deviation_correction = false
+
 ---$track:偏差閾値
 ---min=0
 ---max=1000
 ---step=0.1
 local track_threshold = 0
-
----$check:偏差補正
-local check_enable_deviation_correction = false
 
 --hide@track_threshold:check_enable_deviation_correction==0
 

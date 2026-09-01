@@ -17,6 +17,9 @@ local track_intensity = 300
 ---step=1
 local track_threshold = 0
 
+---$check:ラインのみ
+local check_line_only = false
+
 ---$color:ライン色
 local line_color = 0xff0000
 
@@ -37,9 +40,6 @@ local track_original_opacity = 100
 
 ---$check:輝度反転
 local check_invert_luminance = false
-
----$check:ラインのみ
-local check_line_only = false
 
 ---$track:粒子化幅
 ---min=0

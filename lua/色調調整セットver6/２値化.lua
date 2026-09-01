@@ -1,25 +1,5 @@
 --label:${ROOT_CATEGORY}\色調整\@T_Color_Module
 --filter
----$track:閾値
----min=0
----max=255
----step=1
-local track_threshold = 128
-
--- ---$track:ｸﾞﾚｰ処理
--- ---min=0
--- ---max=2
--- ---step=1
----$select:グレー処理
----RGB平均=0
----NTSC加重平均法=1
----HDTV法=2
-local select_grayscale_method = 1
-
--- ---$track:自動判定
--- ---min=0
--- ---max=6
--- ---step=1
 ---$select:自動判定
 ---なし=0
 ---平均値=1
@@ -29,6 +9,18 @@ local select_grayscale_method = 1
 ---微分ヒストグラム法=5
 ---ラプラシアン・ヒストグラム法=6
 local select_automatic_detection = 0
+
+---$track:閾値
+---min=0
+---max=255
+---step=1
+local track_threshold = 128
+
+---$select:グレー処理
+---RGB平均=0
+---NTSC加重平均法=1
+---HDTV法=2
+local select_grayscale_method = 1
 
 --group:色変更
 ---$check:色付け

@@ -12,6 +12,9 @@ local track_median_cut_color_count = 16
 ---step=1
 local track_cluster_color_count = 0
 
+---$check:指定色を有効にする
+local check_enable_specified_colors = false
+
 ---$color:指定色1
 local specified_color_1 = nil
 
@@ -44,9 +47,6 @@ local specified_color_10 = nil
 
 ---$check:色表示
 local check_show_colors = false
-
----$check:指定色を有効にする
-local check_enable_specified_colors = false
 
 --hide@specified_color_1:check_enable_specified_colors==0
 --hide@specified_color_2:check_enable_specified_colors==0

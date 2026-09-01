@@ -25,6 +25,30 @@ local track_rotation = 0
 ---step=0.1
 local track_deform_speed = 100
 
+--group:マップ,false
+
+---$check:マップ表示
+local check_map_display = false
+
+---$track:マップサイズ
+---min=32
+---max=4096
+---step=1
+local track_map_size = 256
+
+---$track:滑らかさ
+---min=0
+---max=100
+---step=0.1
+local track_smoothness = 1
+
+---$track:乱数シード
+---min=0
+---max=100000
+---step=1
+local track_seed = 0
+
+
 --group:波形,false
 
 ---$track:波数
@@ -49,6 +73,9 @@ local track_roughness_random = 30
 local center_and_mask_coordinates = { 0, 0, 50, 0 }
 
 --group:マスク,false
+
+---$check:マスク表示
+local check_mask_display = false
 
 ---$figure:形状
 local mask_figure = "円"
@@ -79,32 +106,6 @@ local track_mask_rotation = 0
 ---max=1000
 ---step=0.1
 local track_mask_blur = 0
-
---group:マップ,false
-
----$track:マップサイズ
----min=32
----max=4096
----step=1
-local track_map_size = 256
-
----$track:滑らかさ
----min=0
----max=100
----step=0.1
-local track_smoothness = 1
-
----$track:乱数シード
----min=0
----max=100000
----step=1
-local track_seed = 0
-
----$check:マップ表示
-local check_map_display = false
-
----$check:マスク表示
-local check_mask_display = false
 
 --group:
 

@@ -27,14 +27,14 @@ local track_blend_amount = 100
 -- ---$check:高精度
 -- local high_precision = false
 
+---$check:距離グラデ
+local check_distance_gradient = true
+
 ---$color:色1
 local outline_color_parameter = 0xffffff
 
 ---$color:色2
 local fill_color_parameter = 0x0
-
----$check:距離グラデ
-local check_distance_gradient = true
 
 --group:錯覚補正,false
 ---$check:錯覚補正を有効化

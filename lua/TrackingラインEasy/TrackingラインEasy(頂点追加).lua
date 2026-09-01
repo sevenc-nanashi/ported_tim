@@ -1,4 +1,7 @@
 --label:${ROOT_CATEGORY}\配置\@TrackingラインEasy
+---$check:頂点追加を無効にする
+local disable_vertex_addition = false
+
 ---$track:+頂点数
 ---min=2
 ---max=16
@@ -10,9 +13,6 @@ local closed_loop = 0
 
 ---$value:座標
 local control_points = { 0, 0, 100, 100 }
-
----$check:頂点追加を無効にする
-local disable_vertex_addition = false
 
 --hide@track_plus_vertex_count:disable_vertex_addition==1
 --hide@closed_loop:disable_vertex_addition==1

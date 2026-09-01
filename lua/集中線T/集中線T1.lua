@@ -64,6 +64,9 @@ local track_change_speed = 0
 ---step=0.1
 local track_blur = 0
 
+---$check:最大本数自動計算
+local check_auto_max_line_count = false
+
 ---$track:最大本数
 ---min=1
 ---max=5000
@@ -94,9 +97,6 @@ local track_height = 0
 ---step=1
 ---zero_label=なし
 local track_follow_center_layer = 0
-
----$check:最大本数自動計算
-local check_auto_max_line_count = false
 
 --hide@track_max_line_count:check_auto_max_line_count==1
 

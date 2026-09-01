@@ -36,7 +36,6 @@ local select_order = 0
 
 ---$check:最終オブジェクト
 local check_last_object = false
---group:
 
 --hide@track_start_position:check_auto_place==1
 --hide@track_end_position:check_auto_place==1

@@ -1,5 +1,7 @@
 --label:${ROOT_CATEGORY}\色調整\@多色グラデーション
-local active_color_count, gradient_center_x, gradient_center_y, cen_x, cen_y, gradient_colors, gradient_width, center_offset_x, center_offset_y, haba2
+---$check:表示
+local check_show_guide = 0
+
 ---$track:幅
 ---min=0
 ---max=5000
@@ -17,9 +19,6 @@ local track_center_x = 0
 ---max=20000
 ---step=0.1
 local track_center_y = 0
-
----$check:表示
-local check_show_guide = 0
 
 ---$color:色1
 local gradient_color_1 = 0x00ff00
@@ -72,13 +71,13 @@ if check_show_guide == 1 then
     obj.load("figure", "円", guide_color, track_guide_radius)
     obj.effect("縁取り")
 
-    active_color_count = obj.getoption("section_num") + 1
+    local active_color_count = obj.getoption("section_num") + 1
     if active_color_count > 8 then
         active_color_count = 8
     end
     for i = 1, active_color_count - 1 do
-        gradient_center_x = obj.getvalue("x", 0, i - 1) - obj.getvalue("x")
-        gradient_center_y = obj.getvalue("y", 0, i - 1) - obj.getvalue("y")
+        local gradient_center_x = obj.getvalue("x", 0, i - 1) - obj.getvalue("x")
+        local gradient_center_y = obj.getvalue("y", 0, i - 1) - obj.getvalue("y")
         obj.drawpoly(
             gradient_center_x - track_guide_radius / 2,
             gradient_center_y - track_guide_radius / 2,
@@ -102,8 +101,8 @@ if check_show_guide == 1 then
             obj.h
         )
     end
-    gradient_center_x = obj.getvalue("x", 0, -1) - obj.getvalue("x")
-    gradient_center_y = obj.getvalue("y", 0, -1) - obj.getvalue("y")
+    local gradient_center_x = obj.getvalue("x", 0, -1) - obj.getvalue("x")
+    local gradient_center_y = obj.getvalue("y", 0, -1) - obj.getvalue("y")
     obj.drawpoly(
         gradient_center_x - track_guide_radius / 2,
         gradient_center_y - track_guide_radius / 2,
@@ -128,9 +127,9 @@ if check_show_guide == 1 then
     )
 else
     obj.setoption("focus_mode", "fixed_size")
-    cen_x = {}
-    cen_y = {}
-    gradient_colors = {
+    local cen_x = {}
+    local cen_y = {}
+    local gradient_colors = {
         gradient_color_1,
         gradient_color_2,
         gradient_color_3,
@@ -140,10 +139,10 @@ else
         gradient_color_7,
         gradient_color_8,
     }
-    gradient_width = track_width
-    center_offset_x = track_center_x
-    center_offset_y = track_center_y
-    active_color_count = obj.getoption("section_num") + 1
+    local gradient_width = track_width
+    local center_offset_x = track_center_x
+    local center_offset_y = track_center_y
+    local active_color_count = obj.getoption("section_num") + 1
     if active_color_count > 8 then
         active_color_count = 8
     end
@@ -155,6 +154,7 @@ else
     cen_y[active_color_count] = obj.getvalue("y", 0, -1) + center_offset_y
 
     for i = 1, active_color_count do
+        local haba2
         if T_GRADIENT_EXTENSION_ACTIVE == 1 then
             cen_x[i] = cen_x[i] + T_GRADIENT_OFFSET_X[i]
             cen_y[i] = cen_y[i] + T_GRADIENT_OFFSET_Y[i]

@@ -20,14 +20,14 @@ local track_chalk_apply = 0
 ---step=0.1
 local track_pen_pressure = 50
 
+---$check:しきい値を自動計算
+local check_auto_threshold = true
+
 ---$track:しきい値
 ---min=0
 ---max=255
 ---step=1
 local track_threshold = 0
-
----$check:しきい値を自動計算
-local check_auto_threshold = true
 
 --group:仕上げ,true
 

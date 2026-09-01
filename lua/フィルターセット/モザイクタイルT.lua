@@ -59,6 +59,9 @@ local track_edge_height = 1
 ---左下=135
 local select_edge_angle = -45
 
+---$check:がさつきを有効化
+local check_enable_roughness = true
+
 ---$track:がさつき
 ---min=0
 ---max=200
@@ -76,9 +79,6 @@ local track_change_speed = 0
 ---max=9999
 ---step=1
 local track_seed = 0
-
----$check:がさつきを有効化
-local check_enable_roughness = true
 
 --hide@track_roughness:check_enable_roughness==0
 

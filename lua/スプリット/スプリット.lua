@@ -1,4 +1,7 @@
 --label:${ROOT_CATEGORY}\変形\@スプリット
+---$check:上下を揃える
+local check_use_single_count = false
+
 ---$track:スプリット1
 ---min=0
 ---max=100
@@ -22,9 +25,6 @@ local track_shape = 100
 ---max=1000
 ---step=0.1
 local track_range = 100
-
----$check:上下を揃える
-local check_use_single_count = false
 
 ---$check:穴だけ開ける
 local check_horizontal_only = false

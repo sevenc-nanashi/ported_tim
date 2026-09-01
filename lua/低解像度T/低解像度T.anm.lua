@@ -17,6 +17,9 @@ local track_cell_size = 10
 ---step=0.1
 local track_angle = 0
 
+---$check:ブロック描画
+local check_draw_blocks = false
+
 ---$track:ぼかし%
 ---min=0
 ---max=500
@@ -34,9 +37,6 @@ local check_straight_lines = 0
 
 ---$check:網表示
 local check_show_grid_only = 0
-
----$check:ブロック描画
-local check_draw_blocks = false
 
 --hide@track_blur_percent:check_draw_blocks==1
 

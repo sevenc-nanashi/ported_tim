@@ -5,23 +5,14 @@
 ---step=0.1
 local track_change_amount = 50
 
----$track:ポイントサイズ
----min=0
----max=500
----step=1
-local track_point_size = 30
-
----$track:フォントサイズ
----min=0
----max=500
----step=1
-local track_font_size = 30
-
 ---$check:レイヤースクリプト1
 local layer_script_1 = 1
 
 ---$check:レイヤースクリプト2
 local layer_script_2 = 1
+
+---$check:ガイド表示
+local check_show_guide = false
 
 ---$check:ライン表示
 local check_show_lines = 1
@@ -38,14 +29,23 @@ local track_line_width = 3
 ---$check:ポイント表示
 local check_show_points = 1
 
+---$track:ポイントサイズ
+---min=0
+---max=500
+---step=1
+local track_point_size = 30
+
+---$track:フォントサイズ
+---min=0
+---max=500
+---step=1
+local track_font_size = 30
+
 ---$color:ポイント色
 local point_color = 0xffffff
 
 ---$color:文字色
 local label_color = 0x0
-
----$check:ガイド表示
-local check_show_guide = false
 
 --hide@check_show_lines:check_show_guide==0
 --hide@line_color:check_show_guide==0

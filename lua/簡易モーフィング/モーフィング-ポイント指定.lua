@@ -11,6 +11,9 @@ local track_point_count = 3
 ---変化後=2
 local track_image_index = 1
 
+---$check:ポイント表示
+local check_show_points = false
+
 ---$track:ポイントサイズ
 ---min=0
 ---max=500
@@ -31,9 +34,6 @@ local label_color = 0x0
 
 ---$value:座標
 local point_positions = { -100, 0, 0, 0, 100, 0 }
-
----$check:ポイント表示
-local check_show_points = false
 
 --hide@track_point_size:check_show_points==0
 --hide@track_font_size:check_show_points==0

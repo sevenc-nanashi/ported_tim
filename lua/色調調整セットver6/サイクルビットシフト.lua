@@ -1,5 +1,6 @@
 --label:${ROOT_CATEGORY}\色調整\@T_Color_Module
 --filter
+
 ---$track:R8bit
 ---min=-100
 ---max=100

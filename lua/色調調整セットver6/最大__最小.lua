@@ -26,6 +26,14 @@ local track_range = 10
 ---scale=0.05
 local track_angle = 0
 
+---$select:形状
+---四角=0
+---円=1
+---菱形=2
+---十字=3
+---六角形=4
+local select_shape = 0
+
 ---$check:水平
 local check_horizontal = true
 
@@ -43,14 +51,6 @@ local check_symmetric_range = true
 
 ---$check:色も保存
 local check_preserve_color = false
-
----$select:形状
----四角=0
----円=1
----菱形=2
----十字=3
----六角形=4
-local select_shape = 0
 
 ---$track:限界範囲
 ---min=1

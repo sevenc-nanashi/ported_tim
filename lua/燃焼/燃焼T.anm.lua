@@ -67,11 +67,11 @@ local select_blend_mode = 1
 ---zero_label=なし
 local track_layer_index = 0
 
----$check:エフェクト取得
-local check_include_effects = 1
-
 ---$check:一時保存EXT
 local check_use_temp_save_extension = 0
+
+---$check:エフェクト取得
+local check_include_effects = 1
 
 ---$check:展開を調整
 local check_adjust_unfold = false

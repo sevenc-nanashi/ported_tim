@@ -27,11 +27,11 @@ local track_color_width = 32
 ---$check:背景に着色::背景に着色
 local check_colorize_background = false
 
----$color:背景色
-local color_background = 0xffffff
-
 ---$check:背景を元絵に
 local check_use_original_background = false
+
+---$color:背景色
+local color_background = 0xffffff
 
 --group:3D
 ---$check:3D表示

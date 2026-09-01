@@ -44,6 +44,9 @@ local track_burn_blur_percent = 5
 ---step=0.1
 local track_position_offset_percent = 5
 
+---$check:縁発光
+local check_edge_glow = false
+
 ---$track:縁発光
 ---min=0
 ---max=1000
@@ -55,9 +58,6 @@ local track_edge_glow = 300
 ---max=100
 ---step=0.1
 local track_edge_glow_diffusion_percent = 7.5
-
----$check:縁発光
-local check_edge_glow = false
 
 --hide@track_edge_glow:check_edge_glow==0
 --hide@track_edge_glow_diffusion_percent:check_edge_glow==0

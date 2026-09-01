@@ -18,6 +18,9 @@ local track_rotation_2 = 0
 ---step=0.1
 local track_rotation_3 = 0
 
+---$check:親カメラデータを使用
+local check_use_parent_camera = false
+
 ---$track:視野角
 ---min=0
 ---max=120
@@ -32,9 +35,6 @@ local division_count = 30
 
 ---$check:描画処理
 local check_additive_blend = 1
-
----$check:親カメラデータを使用
-local check_use_parent_camera = false
 
 --hide@track_fov:check_use_parent_camera==1
 

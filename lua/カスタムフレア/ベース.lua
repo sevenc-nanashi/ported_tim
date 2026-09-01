@@ -1,4 +1,7 @@
 --label:${ROOT_CATEGORY}\光効果\@カスタムフレア
+---$check:位置移動
+local interpolate_position = 0
+
 ---$track:移動量
 ---min=-500
 ---max=500
@@ -12,9 +15,6 @@ local track_blend_mode = 0
 
 ---$color:ベースカラー
 local base_color = 0x5588ff
-
----$check:位置移動
-local interpolate_position = 0
 
 ---$value:座標
 local positions = { -200, -100, 0, 0, 0, 0 }

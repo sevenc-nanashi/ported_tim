@@ -27,6 +27,9 @@ local track_fluctuation_length = 70
 ---$color:線色
 local param_line_color = 0xffffff
 
+---$check:単一線
+local check_single_line = false
+
 ---$figure:形状
 local param_figure = "円"
 
@@ -90,9 +93,6 @@ local param_seed_change_interval = 0
 
 ---$value: PI
 local param_override = {}
-
----$check:単一線
-local check_single_line = false
 
 --hide@param_aspect_ratio:check_single_line==1
 

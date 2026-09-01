@@ -26,6 +26,9 @@ local track_unfold = 100
 ---$color:色
 local color = 0xffffff
 
+---$check:新描画法
+local check_use_new_rendering = true
+
 ---$track:本体拡大率%
 ---min=0
 ---max=300
@@ -79,9 +82,6 @@ local track_splash_seed_1 = 0
 ---max=100000
 ---step=1
 local track_splash_seed_2 = 0
-
----$check:新描画法
-local check_use_new_rendering = true
 
 --hide@track_body_scale_percent:check_use_new_rendering==0
 --hide@track_splash_1_width_scale_percent:check_use_new_rendering==0

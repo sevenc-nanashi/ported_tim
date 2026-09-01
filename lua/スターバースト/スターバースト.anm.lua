@@ -17,6 +17,9 @@ local track_diffusion = 100
 ---step=0.1
 local track_threshold = 60
 
+---$check:オリジナル色発光
+local check_use_original_color = 1
+
 ---$track:発光回転
 ---min=-3600
 ---max=3600
@@ -25,9 +28,6 @@ local track_glow_rotation = 45
 
 ---$color:発光色
 local color_glow = 0xffffff
-
----$check:オリジナル色発光
-local check_use_original_color = 1
 
 ---$check:光のみ
 local check_light_only = 0

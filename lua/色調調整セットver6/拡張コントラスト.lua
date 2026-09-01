@@ -24,14 +24,14 @@ local track_brightness = 0
 ---step=0.001
 local track_smoothness = 50
 
+---$check:カーブ表示
+local check_show_curve = false
+
 ---$track:カーブサイズ
 ---min=100
 ---max=1000
 ---step=1
 local track_curve_size = 260
-
----$check:カーブ表示
-local check_show_curve = false
 
 --hide@track_curve_size:check_show_curve==0
 

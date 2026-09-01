@@ -1,5 +1,15 @@
 --label:${ROOT_CATEGORY}\色調整\@T_Color_Module
 --filter
+---$select:自動判定
+---なし=0
+---平均値=1
+---中央値=2
+---判別分析法=3
+---Kittlerらの閾値選定法=4
+---微分ヒストグラム法=5
+---ラプラシアン・ヒストグラム法=6
+local select_automatic_detection = 0
+
 ---$track:R閾値
 ---min=0
 ---max=255
@@ -17,16 +27,6 @@ local track_green_threshold = 128
 ---max=255
 ---step=1
 local track_blue_threshold = 128
-
----$select:自動判定
----なし=0
----平均値=1
----中央値=2
----判別分析法=3
----Kittlerらの閾値選定法=4
----微分ヒストグラム法=5
----ラプラシアン・ヒストグラム法=6
-local select_automatic_detection = 0
 
 --hide@track_red_threshold:select_automatic_detection~=0
 --hide@track_green_threshold:select_automatic_detection~=0

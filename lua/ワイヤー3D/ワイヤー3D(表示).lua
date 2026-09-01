@@ -23,18 +23,6 @@ local track_height = 150
 ---step=0.01
 local track_height_base = 0
 
----$color:線色
-local color = 0xffffff
-
----$check:塗り
-local check_fill = 0
-
----$color:塗色
-local fill_color = 0x0000ff
-
----$check:アンチエイリアス
-local check_antialias = 1
-
 ---$check:高精度(線のみ)
 local check_high_precision = 0
 
@@ -49,6 +37,18 @@ local high_precision_shape = "円"
 
 ---$check:高精度自動向き
 local check_auto_direction = 1
+
+---$color:線色
+local color = 0xffffff
+
+---$check:塗り
+local check_fill = 0
+
+---$color:塗色
+local fill_color = 0x0000ff
+
+---$check:アンチエイリアス
+local check_antialias = 1
 
 ---$track:単体横分割数
 ---min=1

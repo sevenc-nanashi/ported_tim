@@ -31,6 +31,9 @@ local track_offset = 0
 ---zero_label=なし
 local track_source_layer_index = 0
 
+---$check:一時保存EXT
+local check_use_temp_save_extension = 0
+
 ---$check:エフェクト取得
 local check_include_effects = 1
 
@@ -42,9 +45,6 @@ local guide_color = 0xffffff
 
 ---$check:自動方向
 local check_auto_direction = 0
-
----$check:一時保存EXT
-local check_use_temp_save_extension = 0
 
 --hide@check_include_effects:check_use_temp_save_extension==1
 

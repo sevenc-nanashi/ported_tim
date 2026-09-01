@@ -1,4 +1,7 @@
 --label:${ROOT_CATEGORY}\アニメーション効果
+---$check:マップ表示
+local check_show_map = false
+
 ---$track:しきい値
 ---min=0
 ---max=255
@@ -40,9 +43,6 @@ local map_background_color = 0x0
 ---max=10000
 ---step=1
 local select_pattern = 0
-
----$check:マップ表示
-local check_show_map = false
 
 --hide@track_offset:check_show_map==1
 --hide@track_glass_intensity:check_show_map==1

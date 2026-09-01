@@ -6,6 +6,9 @@
 ---step=1
 local track_line_length = 40
 
+---$check:しきい値を自動計算
+local check_auto_threshold = true
+
 ---$track:しきい値
 ---min=0
 ---max=255
@@ -45,9 +48,6 @@ local check_fix_seed = true
 ---max=99999
 ---step=1
 local track_seed = 0
-
----$check:しきい値を自動計算
-local check_auto_threshold = true
 
 --group:高度な設定
 ---$select:処理モード

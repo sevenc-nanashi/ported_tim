@@ -23,11 +23,11 @@ local track_range = 50
 ---step=0.1
 local track_opacity = 0
 
----$color:発光色
-local glow_color = 0xffffff
-
 ---$check:オリジナル色発光
 local check_use_original_color = 0
+
+---$color:発光色
+local glow_color = 0xffffff
 
 ---$track:発光中心X
 ---min=-10000

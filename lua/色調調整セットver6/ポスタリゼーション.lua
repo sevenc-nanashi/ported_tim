@@ -1,5 +1,8 @@
 --label:${ROOT_CATEGORY}\色調整\@T_Color_Module
 --filter
+---$check:全体をRで調整
+local check_use_red_for_all_channels = false
+
 ---$track:R階調数
 ---min=2
 ---max=256
@@ -23,9 +26,6 @@ local track_blue_levels = 8
 ---max=1000
 ---step=0.1
 local track_size = 1
-
----$check:全体をRで調整
-local check_use_red_for_all_channels = false
 
 ---$check:誤差拡散
 local check_error_diffusion = false
